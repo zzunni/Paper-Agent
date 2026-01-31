@@ -24,6 +24,9 @@ env/
 .env.local
 .env.*.local
 
+# Temp
+.commit_msg.txt
+
 # IDE
 .idea/
 .vscode/

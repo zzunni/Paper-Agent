@@ -217,7 +217,7 @@ export default function Page() {
                 title="현재 단계 후보 다시 생성"
               >
                 <FileText size={16} />
-                {busy ? "생성 중... (50~60초)" : "다시 생성"}
+                {busy ? "생성 중... (5~15분 소요)" : "다시 생성"}
               </button>
             </div>
           </div>

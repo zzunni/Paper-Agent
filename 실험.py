@@ -3,7 +3,7 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 def main():
-    model_name = "LGAI-EXAONE/EXAONE-4.0-1.2B"
+    model_name = "LGAI-EXAONE/EXAONE-4.0-32B"
 
     # ✅ tokenizer 먼저 (pad/eos 처리용)
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)

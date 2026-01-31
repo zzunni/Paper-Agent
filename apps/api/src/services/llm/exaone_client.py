@@ -10,7 +10,7 @@ from src.utils.logger import logger
 load_dotenv()
 
 LLM_MODE = os.getenv("LLM_MODE", "local")  # local | stub
-MODEL_ID = os.getenv("EXAONE_MODEL_ID", "LGAI-EXAONE/EXAONE-4.0-1.2B")
+MODEL_ID = os.getenv("EXAONE_MODEL_ID", "LGAI-EXAONE/EXAONE-4.0-32B")
 TORCH_DTYPE = os.getenv("TORCH_DTYPE", "bfloat16")
 MAX_NEW_TOKENS = int(os.getenv("MAX_NEW_TOKENS", "10000"))
 

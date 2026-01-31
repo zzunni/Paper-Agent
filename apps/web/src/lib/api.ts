@@ -16,7 +16,7 @@ export async function createProject(user_input: string): Promise<ProjectState> {
   return data;
 }
 
-const GENERATE_TIMEOUT_MS = 5 * 60 * 1000; // 5분 (LLM 3개 생성에 50~60초 소요)
+const GENERATE_TIMEOUT_MS = 20 * 60 * 1000; // 20분 (32B 모델 3개 생성에 5~15분 소요)
 
 export async function generateCandidates(project_id: string, section: Section) {
   const controller = new AbortController();
@@ -40,7 +40,7 @@ export async function generateCandidates(project_id: string, section: Section) {
   } catch (e) {
     if (e instanceof Error) {
       if (e.name === "AbortError") {
-        return { error: "생성 시간이 초과되었습니다. (최대 5분) 잠시 후 다시 시도해주세요." };
+        return { error: "생성 시간이 초과되었습니다. (최대 20분) 잠시 후 다시 시도해주세요." };
       }
       return { error: e.message || "네트워크 오류가 발생했습니다." };
     }

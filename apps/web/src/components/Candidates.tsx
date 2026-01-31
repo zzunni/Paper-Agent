@@ -32,7 +32,7 @@ export default function Candidates({
           <div className="message-role">Paper Agent</div>
           <div className="message-content text-muted">
             {busy
-              ? "후보를 생성하고 있습니다... (50~60초 소요)"
+              ? "후보를 생성하고 있습니다... (5~15분 소요)"
               : "아직 후보가 없습니다. 생성 버튼을 눌러 후보를 만드세요."}
           </div>
         </div>
