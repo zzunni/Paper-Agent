@@ -1,0 +1,85 @@
+paper-draft-agent/
+  apps/
+    web/                       # 프론트 (최소 UI)
+      src/
+        app/
+          page.tsx             # 화면 1장짜리
+          layout.tsx
+        components/
+          ChatInput.tsx        # 채팅 입력창 + 생성 버튼
+          Candidates.tsx       # 3개 선택지 카드/리스트
+          SelectedDraft.tsx    # 선택된 섹션 누적 출력
+        lib/
+          api.ts               # fetch 래퍼 (generate/select/project)
+          types.ts             # 프론트 타입
+        styles/
+          globals.css
+      package.json
+      next.config.js
+      .env.local
+
+    api/                       # 백엔드 (FastAPI 추천)
+      src/
+        main.py                # FastAPI 엔트리
+        routes/
+          project.py           # 프로젝트 생성/상태 조회
+          generate.py          # 섹션 후보 생성
+          select.py            # 후보 선택 반영
+        services/
+          agent/
+            orchestrator.py    # 단계 제어(서론->데이터셋->방법->결론)
+            state_manager.py   # 프로젝트 state 로드/세이브
+            prompt_builder.py  # 섹션별 프롬프트 생성
+            section_rules.py   # 섹션별 규칙(톤/분량/구성)
+          retrieval/
+            corpus_index.py    # 논문 100개 인덱싱/검색(RAG)
+            chunker.py         # PDF/텍스트 청킹
+            embedder.py        # 임베딩 생성(선택)
+            ranker.py          # top-k 랭킹(선택)
+          llm/
+            exaone_client.py   # EXAONE 4.0 호출 어댑터
+            prompts/
+              system.md
+              introduction.md
+              dataset.md
+              method.md
+              conclusion.md
+          storage/
+            project_store.py   # 프로젝트 상태 저장(SQLite/JSON)
+            corpus_store.py    # 논문 코퍼스 메타/인덱스 저장
+        schemas/
+          project.py           # Pydantic 모델들
+          section.py
+          candidate.py
+        utils/
+          ids.py               # UUID, slug
+          logger.py
+      tests/
+      requirements.txt (또는 pyproject.toml)
+      .env
+
+  data/
+    corpus/
+      raw/                     # 반도체 논문 원문(PDF/TXT) 100개
+      parsed/                  # 텍스트로 파싱된 결과
+      index/                   # 벡터 인덱스/메타데이터 저장
+    projects/
+      P0001/                   # 생성된 프로젝트별 상태/결과 저장
+        project.json
+        drafts/
+          introduction/
+          dataset/
+          method/
+          conclusion/
+
+  packages/
+    shared/                    # (선택) 프론트/백 공용 스키마
+      paper_spec.schema.json
+      prompt_contract.md
+
+  docker/
+    docker-compose.yml
+    api.Dockerfile
+    web.Dockerfile
+
+  README.md

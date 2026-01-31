@@ -1,0 +1,1269 @@
+
+
+===== Page 1 =====
+
+arXiv:2506.17474v1  [physics.app-ph]  20 Jun 2025
+Improving the lifetime of aluminum-based superconducting qubits through atomic
+layer etching and deposition
+Neha Mahuli
+,∗Joaquin Minguzzi, Jiansong Gao, Rachel Resnick,† Sandra Diez,‡ Cosmic Raj, Guillaume
+Marcaud
+, Matthew Hunt, Loren Swenson, Jefferson Rose, Oskar Painter
+, and Ignace Jarrige
+§
+AWS Center for Quantum Computing, Pasadena, CA 91106, USA
+(Dated: June 24, 2025)
+We present a dry surface treatment combining atomic layer etching and deposition (ALE and
+ALD) to mitigate dielectric loss in fully fabricated superconducting quantum devices formed from
+aluminum thin films on silicon. The treatment, performed as a final processing step prior to device
+packaging, starts by conformally removing the native metal oxide and fabrication residues from the
+exposed surfaces through ALE before in situ encapsulating the metal surfaces with a thin dielectric
+layer using ALD. We measure a two-fold reduction in loss attributed to two-level system (TLS)
+absorption in treated aluminum-based resonators and planar transmon qubits. Treated transmons
+with compact capacitor plates and gaps achieve median Q and T1 values of 3.69 ± 0.42 × 106 and
+196 ± 22 µs, respectively. These improvements were found to be sustained over several months.
+We discuss how the combination of ALE and ALD reverses fabrication-induced surface damages to
+significantly and durably improve device performance via a reduction of the TLS defect density in
+the capacitive elements.
+I.
+INTRODUCTION
+Superconducting transmons are a leading platform for
+building a scalable, fault-tolerant quantum computer capable of solving problems currently intractable with classical computing architecture1.
+In the early stages of
+development, transmon performance improved primarily
+through design optimizations, such as reducing dielectric
+participation in critical surfaces2–4 and enhancing readout via Purcell filtering5,6. More recently, the focus has
+shifted toward enhancing the quality of materials, a strategy that has already shown great promise in mitigating
+two-level system (TLS) losses and improving transmon
+energy-relaxation times7–9.
+Among the main dielectric regions in superconducting
+circuits, the metal-air (MA) and substrate-air (SA) interfaces are particularly susceptible to degradation during the fabrication process.
+These interfaces are often
+characterized by polymeric residues, interstitial contaminants, morphological damage, and thickened oxide layers, resulting in a larger loss tangent compared to other
+interfaces10.
+This stresses the need to develop postfabrication surface treatment methods that alleviate or
+eliminate these effects without introducing new damage.
+Recent efforts to reduce dielectric loss at the MA interface have centered on three primary approaches: (i)
+exploring new ground-layer materials that form low-loss
+native oxides8, (ii) chemically etching defect-rich surface
+layers11–14, and (iii) capping the top surface of the ground
+layer with a lower-loss superconductor, or a noble metal
+to prevent oxidation15–18. In (iii), surface capping was
+performed on the blanket ground layer prior to fabrication, as subsequent etching exposed the sidewalls of
+the superconductor. As a result, amorphous oxides and
+process-induced defects on the sidewalls likely dominated
+the dielectric loss in these capped devices18. Here, we
+present an alternative surface engineering approach that
+overcomes this limitation by treating all exposed surfaces
+of fully fabricated devices using a combination of atomic
+layer etching and deposition (ALE and ALD) as a final
+surface modification step prior to device packaging.
+Both ALE and ALD rely on a self-limiting, sequential gas-phase surface reaction mechanism to respectively
+remove and form material layers with monolayer precision and a high conformality compatible with threedimensional structures.
+By applying these techniques
+to aluminum (Al)-based coplanar waveguide (CPW) resonators and planar transmons, we show that fabricationrelated contamination of the Al and silicon (Si) substrate
+surfaces is substantially reduced and the lossy native Al
+oxide layer is selectively replaced with a thin and stoichiometric Al2O3 capping layer.
+These modifications
+to the MA and SA interfaces correlate with a 50% reduction in dielectric loss in the resonators and a twofold increase in both the transmon median quality factor
+(Q) and energy relaxation times (T1), reaching median
+Q and T1 values of 3.69 ± 0.42 × 106 and 196 ± 22 µs, respectively. These improvements are achieved for several
+fabricated chips, and across a frequency range spanning
+2.2-4.4 GHz. This study shows that the in situ combination of ALE and ALD serves as an effective and scalable
+surface engineering strategy for Al-on-Si superconducting quantum circuits, with potential applications across
+a myriad of architectures and materials.
+II.
+RESULTS AND DISCUSSION
+A.
+Surface Engineering Effects on Resonator Loss
+Tangent
+Superconducting microwave resonators provide an effective platform for evaluating materials-induced dielectric loss, minimizing the design, fabrication, and measurement overhead compared to transmons19,20.
+λ/4CPW resonators were fabricated using 100-nm thick Al
+
+===== Page 2 =====
+
+B
+Surface Engineering Effects on Transmon Performance
+2
+FIG. 1.
+δTLS as a function of power for three representative resonators, comparing untreated and ALE+ALD treated
+chips. Inset: Micrograph of a CPW resonator chip.
+films on high-resistivity (> 20 kΩ· cm) silicon substrates,
+with trace and gap widths of 30 µm each.
+Each chip
+contains 12 resonators with frequencies ranging from
+5.2 to 6.2 GHz, inductively coupled to the transmission line, as shown in the inset of Figure 1.
+We performed S21 transmission measurements in a dilution refrigerator at a base temperature of 10 mK and the intrinsic quality factors (Qi) were extracted using a circlefitting method21,22.
+Measurements were conducted on
+untreated devices to establish a baseline, and directly
+compared with ALE+ALD treated devices.
+Our devices exhibit the typical saturation behavior
+of Qi as a function of photon number.
+In the singlephoton limit, losses are dominated by unsaturated or
+partially saturated TLSs, while at higher power levels, Qi
+is predominantly limited by other loss mechanisms such
+as vortices, non-equilibrium quasi-particles, or packaging
+modes. We quantify the TLS contribution to loss, δTLS,
+from high-power (HP) and low-power (LP) Qi per the
+following equation23:
+δTLS =
+1
+QTLS
+=
+1
+QLP
+i
+−
+1
+QHP
+i
+(1)
+Figure 1 shows a power sweep of δTLS for three untreated/treated pairs of representative resonators at 5.3,
+5.4 and 5.45 GHz frequencies. At single-photon powers,
+the loss of the ALE+ALD treated resonators is approximately half that of the untreated resonators. This shows
+that materials-based losses can be efficiently reduced in
+single-layer Al devices using the ALE+ALD treatment.
+B.
+Surface Engineering Effects on Transmon
+Performance
+Motivated by the promising resonator results, we extend our study to transmons made from Al on Si.
+Here, we compare the transmon qubit energy relaxation time (T1), and corresponding effective quality factor (Q), before and after the treatment.
+The measurements were conducted on Josephson junction (JJ)
+based planar transmons coupled to CPW readout resonators. Five chips, each containing four tunable transmons with variable-size junctions and constant-geometry
+shunt capacitors (24-µm in-plane dimension, 30-µm gapto-ground plane), were measured in the frequency range
+of 2.2–4.4 GHz before and after the treatment. Further
+qubit design details and a micrograph of a representative transmon device are provided in Figure SI-1 of the
+Supplementary Information (SI). To improve the pretreatment statistical analysis, six additional untreated
+chips were measured. One chip was also measured before
+and after annealing at 300◦C under vacuum in the ALD
+chamber to disentangle the impact of heating from the
+ALE+ALD treatment, which also takes place at 300◦C.
+Transmon and readout resonator frequencies were measured, and qubit T1-time data collected over several hours
+across a broad frequency range. This approach enabled
+us to sample a wider distribution of possible TLS defects,
+facilitating faster and more accurate characterization of
+the T1 distribution24,25. Based on the standard tunneling model (STM)26, it can be approximated that the
+TLS density remains constant across the measured frequency range, suggesting a frequency-independent metric
+of transmon“quality” based on the effective quality factor
+Q = 2πf01T1 4, where f01 is the ground-to-first excited
+state transition frequency of the transmon.
+T1 and Q measurements of treated and untreated
+transmons are presented in Figure 2(a) and (b), respectively. Across the measured frequency range, median Q
+values remain mainly under 3 × 106 for the untreated
+control and annealed-only devices and increase to 37 × 106 after the treatment, with some values exceeding
+the 9 × 106 mark. Similarly, most median T1 times for
+the untreated and annealed-only devices are below 150
+µs, whereas treated devices achieve median T1 values in
+the 150–400 µs range. These results highlight the effectiveness of the ALE+ALD treatment in reducing the TLS
+losses in planar transmon devices, consistent with earlier
+observations from single layer resonators.
+This improvement can be further quantified by comparing the pre- and post-treatment empirical probability density function (e-PDF) and cumulative distribution
+function (e-CDF) of a frequency-independent parameter,
+Q, shown in Figure 2(c). Prior to the treatment, the ePDF exhibits a median Q of 1.91 ± 0.18 × 106, while the
+e-CDF shows a 90th-percentile of 2.67×106, which corresponds to a median T1 of 101±10 µs and a 90th-percentile
+T1 of 142 µs for f01 of 3 GHz. Following the treatment,
+the median Q in the e-PDF increases to 3.69±0.42×106,
+while the 90th-percentile Q in the e-CDF rises to 5.9×106,
+corresponding to a median T1 of 196 ± 22 µs and 90thpercentile T1 of 313 µs for f01 of 3 GHz.
+While this
+enhancement reflects a reduction in TLS density after
+treatment, the T1 floor remains largely unchanged, likely
+
+===== Page 3 =====
+
+B
+Surface Engineering Effects on Transmon Performance
+3
+(a)
+(b)
+(c)
+FIG. 2.
+Frequency dependence of (a) measured T1 times and (b) estimated Q for various devices: untreated, ALE+ALD
+treated, and annealed-only. The dashed lines are a guide to the eye. (c) The empirical probability distribution function (ePDF) and cumulative distribution function (e-CDF) are also shown for Q before and after the treatment; the dotted horizontal
+line, vertical lines and shaded areas represent the 90th-percentile, median, and median absolute deviation (MAD), respectively.
+due to the finite residual population of more strongly
+coupled TLSs still present on the capacitor pads. As a
+result, the spread in T1 and Q values increases, leading
+to a higher standard deviation after treatment.
+The highest performing treated devices are consistently observed within the 2.6–3.7 GHz range, with some
+of the Q values surpassing 6 × 106. Purcell loss due to
+radiation into the qubit read-out resonator, illustrated
+in Figure SI-2, is presumed to contribute to the reduction in T1 and Q at higher frequencies. Regardless of the
+Purcell effect, the consistent enhancement in T1 and Q
+post-ALE+ALD treatment across the studied frequency
+range, which is not achieved by annealing alone, provides compelling evidence that the surface dielectric loss
+of the transmons is reduced by the ALE+ALD treatment specifically. No decline in T1 and Q was observed in
+transmons measured over periods of up to 8-9 months after the treatment, highlighting the long-term stability of
+this treatment for Al-on-Si based superconducting quantum circuits.
+Additionally, a consistent increase in transmon frequency (f01) by several hundreds of MHz was also observed for all treated transmons (as shown in Figure SI3). This increase originates from junction evolution, as
+we observe a rise in junction energy (Ej) after the treatment, while capacitive energy (Ec) remains unaffected.
+This frequency shift results from the elevated processing temperatures during treatment, which was also confirmed with annealed-only devices; however, its absolute
+magnitude is likely influenced by additional factors, such
+as the initial interface quality before the JJ deposition
+and fabrication variability. Additionally, we observe that
+transmon Q decreases with increasing frequency shift (as
+shown in Figure SI-4), likely due to enhanced Purcell loss
+as f01 approaches the readout frequency.
+C.
+Surface Chemistry
+The ALE chemistry, utilizing alternating exposures
+of trimethylaluminum (TMA) and hydrogen fluoridepyridine (HF-pyridine) at 300◦C27, was developed to etch
+the native aluminum oxide. The subsequent ALD process, using TMA and water (H2O)28, was tuned to regrow a 1-nm thick Al2O3 layer. Detailed process parameters and methodology are provided in the Methods section. Here, we characterize the effect of these processes
+on the chemical properties of the surface of our devices,
+using a combination of X-ray photoelectron spectroscopy
+(XPS), photo-induced force infrared microscopy (PiFM),
+and transmission electron microscopy complemented by
+electron energy loss spectroscopy (TEM-EELS). Using
+lab-scale XPS with an Al Kα X-ray source (1486.6 eV),
+we measured the Al 2p, C 1s, and O 1s core levels on
+the surface of transmon qubit chips. A detailed description of the fitting procedure is provided in SI (Figures
+SI-5 through 7).
+To check the consistency of the observed trends, we measured two sites per untreated and
+annealed-only chip, and a total of four sites on two different treated chips.
+The XPS data is shown in Figure 3 for the surfaces of
+untreated, annealed-only, and ALE+ALD treated transmon qubit chips, and compared with blanket films of
+ALD-grown Al2O3 and evaporated Al.
+In the fits, up
+to four characteristic binding energies (BE) can be distinguished for the Al 2p oxide components. Ranked by
+increasing BE (see Figure 3(a)), these are assigned to native Al oxide, ALD-grown Al2O3, post-fabrication AlOx,
+and an aluminum oxyhydroxide phase (Al-O-OH). The
+differences in BE (see table in Figure 3(b)) were found to
+be consistent across the measured chips and sites. The
+higher BE of the oxide components for the untreated
+and annealed-only devices suggests the formation of an
+oxygen-rich aluminum oxide on their surface29–31. Additionally, the untreated chip shows a relatively strong AlO-OH component, which is commonly found on surfaces
+
+===== Page 4 =====
+
+C
+Surface Chemistry
+4
+(a)
+(b)
+(c)
+(d)
+FIG. 3. (a) Al 2p, (c) C 1s, and (d) O 1s core-level XPS spectra measured on reference blanket films and transmon qubit chips.
+The spectra in (a) are aligned in energy and normalized in intensity to the metallic Al 2p3/2 peak at ∼70.8 eV, and in (c)
+and (d) they are calibrated to the C-C bonding feature at 284.5 eV. Dashed lines highlight the different oxidation states and
+chemical bonds inferred from the relative energy shifts. Information inferred from the deconvolution of the experimental Al 2p
+spectra is summarized in the table shown in (b).
+subjected to wet chemical treatments.
+Annealing removes most of those Al-O-OH groups, while ALE+ALD
+removes all of them.
+Furthermore, we find that the
+ALE+ALD-treated Al surface has the thinnest oxide
+layer (2.52±0.18 nm), followed by the native oxide of the
+Al blanket film (2.76 ± 0.24 nm), and then the untreated
+and annealed-only (3.1±0.25 nm) chips. The thinning of
+the surface oxide layer of Al after ALE+ALD was confirmed by TEM-EELS, see Figure SI-8(a-d).
+The fact
+that the surface oxide in the ALE+ALD treated chip is
+thicker than the anticipated 1-nm thick ALD-grown layer
+can be attributed to the partial regrowth of a native oxide layer during the 20 seconds that the sample spends at
+300◦C in the 6-7 Torr atmosphere of the process chamber
+upon completion of the ALE step and prior to the start
+of the ALD process32.
+The deconvolution of the C 1s core level reveals three
+distinct chemical environments of carbon, which, in order
+of increasing BE, are: adventitious carbon or C-C bonding, C-OH or C-O-C bonding, and O=C-O bonding. The
+reduced intensity of the O=C-O bonding component after annealing, but especially after ALE+ALD where it is
+even weaker than in blanket Al, points to a reduction of
+organic species primarily stemming from residual resist
+contamination. The clear broadening of the O 1s peak
+observed in the untreated chip surface can be assigned
+to a contribution from adsorbed hydroxyl species such
+as Al-O-OH or Al(OH)3 around 531.7 eV and adsorbed
+H2O near 533 eV. These features are not observed after
+annealing or ALE+ALD treatment, which is consistent
+with the Al 2p data. Taken together, the XPS data shows
+that the ALE+ALD treatment results in a thinner and
+stoichiometric surface layer of Al2O3 with minimal polymeric contamination.
+In order to gain spatially-resolved insights into this
+surface modification, we used PiFM to collect infrared
+spectroscopic data in the 800-1800 cm−1 range with a
+∼10 nm lateral resolution. Areas of a few µm2 centered
+around a junction and a portion of the Al/Si sidewall
+from a readout resonator were measured on untreated
+and ALE+ALD treated qubit chips. To introduce the
+spectroscopic features detected on the surface of our samples, Figure 4 shows the PiFM spectra averaged over the
+Si and Al regions, with each spectrum obtained by averaging 20-30 individual scans across the measured areas. The spectra are area-normalized to account for differences in absolute intensity and enable a more direct
+comparison of spectral features between the two samples.
+
+===== Page 5 =====
+
+C
+Surface Chemistry
+5
+FIG. 4.
+Comparison of area-normalized PiFM spectra averaged across Si and Al regions measured on the untreated
+and ALE+ALD-treated transmon qubit chips. Dashed lines
+indicate characteristic peaks: blue for those present before
+and after the treatment, red for peaks that emerged after
+the treatment, and red shaded area represents the broad AlO stretching vibration appearing only after the ALE+ALD
+treatment.
+Dashed lines serve as visual guides for the wavenumbers
+of peaks present either before and after the treatment
+(blue) or only after the treatment (red), respectively. A
+detailed peak assignment is provided in Table 1 in the
+SI. In the untreated chip, the signal measured across
+all areas is dominated by spectral features assigned to
+poly(methyl methacrylate) (PMMA, blue dashed lines in
+Figure 4)33,34, which is a resist used during liftoff and
+dicing steps of our fabrication flow.
+Despite soaking
+the chips in a heated solution of N-methyl pyrrolidone
+(NMP) followed by an acetone and isopropyl alcohol rinse
+to strip the PMMA, the absence of a signal from AlOx
+suggests that sufficient residual PMMA remains to form
+a continuous layer of at least ∼2 nm thickness on the untreated surface. This lower bound on the residual PMMA
+thickness is derived from tests conducted to estimate the
+minimum thickness of a thin polymer layer that can effectively shield the infrared signal from the underlying
+sample.
+Conversely, we observe a broad absorbance feature
+around 850-1000 cm−1 assigned to Al-O stretching
+vibrations35,36 on both the resonator and junction areas
+of the ALE+ALD treated chip as shown by the shaded
+area in Figure 4. A peak corresponding to C-O stretching
+vibrations also appears at 1020 cm−1 (red dashed line)
+in the resonator area, suggesting PMMA decomposition.
+Previous studies showed that, at elevated temperatures,
+PMMA degrades into its monomer, MMA, which shares
+similar infrared features and can further undergo random
+scission around 300◦C, breaking ester bonds into smaller
+fragments like C–O37,38. Additionally, we find that the
+characteristic PMMA absorbance features are weaker in
+the resonator area and nearly suppressed in the junction area, indicating a significant reduction in the overall
+PMMA contamination. The fact that the junction surface is cleaner can be attributed to the fewer exposures
+of the junction to MMA- and PMMA-containing resists
+compared to the ground plane, resulting in a thinner contamination layer and a more effective removal. Alongside
+these changes, a new peak appears near 1170 cm−1 (red
+dashed line), attributed to C-H bending vibrations from
+Al-CH3 bonds. Such features have been previously reported during the ALD or ALE reactions involving TMA
+as one of the precursors35,39–41. Additionally, the selectivity of the Al2O3 growth in the nucleation regime is
+highly dependent on the functionalization of the starting surface, particularly for Si42–44. This can explain the
+absence of a feature corresponding to Al-O stretching in
+the 850-1000 cm−1 range in the Si trench area, which suggests that no Al2O3 is formed on the Si surface. The absence of Al2O3 on the Si surface following the ALE+ALD
+treatment is further confirmed by the TEM-EELS maps
+shown in Figure SI-8(e).
+The effectiveness of the ALE+ALD treatment in reducing PMMA contamination on both Al and Si surfaces
+despite the intended selectivity of our ALE chemistry
+for AlOx may seem surprising. The strong adhesion of
+PMMA to aluminum and silicon oxides has been previously attributed to the bonding between PMMA and the
+surface hydroxyl groups45,46. The annealing-induced removal of hydroxyl bonds, suggested by the Al 2p and O
+1s XPS data for the annealed-only chips, is expected to
+substantially weaken the adhesion of PMMA to both Al
+and Si surfaces, making it easier for the HF used in the
+ALE chemistry to indiscriminately etch the PMMA away.
+The degradation of PMMA at the ALE process temperature (300◦C)47, as described above, is also anticipated
+to ease the etch.
+Chemical maps were measured to gain detailed insight
+into the spatial uniformity of our surface treatment. Figures 5(a) and (b) present PiFM maps for untreated and
+treated resonator area, respectively.
+They were measured at 912 cm−1, corresponding to the Al–O stretching vibration, and normalized by the map measured at
+1740 cm−1, associated with the C=O stretching vibration
+in PMMA. This normalization reduces local variations
+of the gap-field enhancement from topographic effects48,
+which are considered to be constant across the measured
+spectral range, thereby enhancing imaging contrast based
+on the local ratio of Al oxide to PMMA. The raw maps
+are shown in Figure SI-9.
+The signal at 912 cm−1 is
+barely visible in the map of the untreated surface, consistent with a uniform coverage of the aluminum oxide
+by PMMA. After treatment, the surface shows a stronger
+Al-O signal across the entire Al surface. This indicates
+a uniform thinning of the PMMA residues revealing the
+aluminum oxide underneath.
+
+===== Page 6 =====
+
+D
+Discussion
+6
+FIG. 5. (a) and (b) PiFM maps measured at 912 cm−1 (characteristic of Al-O) normalized by the map measured at 1740
+cm−1 (characteristic of PMMA), for untreated and treated
+resonator areas, respectively.
+D.
+Discussion
+We showed that post-fabrication ALE+ALD can improve resonator and transmon performance by treating
+both top and sidewall surfaces, and provide compatibility with Al unlike conventional wet chemical treatments
+like buffered oxide etchant (BOE) or triacid11,12,49. We
+find that ALE+ALD treated surfaces exhibit a reduction in polymeric residues, along with a more stoichiometric Al native oxide. While our study does not disentangle the individual contributions of polymeric residue
+removal and Al oxide layer modification, it establishes a
+direct correlation between improved material quality at
+the MA and SA interfaces and increased resonator Q and
+transmon T1. The comparable improvement observed in
+both the resonator and transmon Q further suggests that
+the weakly coupled TLS defects located on the surfaces
+of the capacitor pads limit the lifetime of our transmon
+qubits.
+Our findings also suggest pathways for future optimization of our process. These include incorporating a
+step in the ALE process to remove the silicon oxide from
+the substrate surface, gaining a deeper understanding of
+the mechanism by which ALE etches organic contamination to further enhance process efficiency, and exploring
+lower-loss dielectric coatings beyond Al2O3. Finally, we
+find that changes in the junction also occur during the
+ALE/ALD process, which can lead to large shifts in the
+junction resistance; further studies are necessary to understand both the mechanism for, or source of, the resistance change, and the intrinsic variability of the change.
+III.
+CONCLUSION
+We have demonstrated that the energy-relaxation
+times of Al transmons can be systematically and durably
+increased by more than two-fold using a combination of
+ALE and ALD. These processes uniquely enable postfabrication surface treatment by removing fabrication
+residues from all exposed surfaces and replacing the Al
+native oxide from the top surface and sidewalls with a
+conformal, stoichiometric Al2O3 layer. Another differentiator of this approach from other surface treatments is
+the full compatibility with Al, a rarity among commonly
+used native oxide etchants. The concurrent doubling of
+the quality factor in Al-based resonators and transmons
+subjected to the same ALE+ALD treatment suggests
+that the observed improvement primarily stems from a
+reduction in the density of coherence-limiting TLS defects located on the surface of the capacitor pads. These
+findings establish a clear correlation between TLS loss,
+transmon relaxation times, and the chemical composition
+and purity of the MA and SA interfaces. They also provide a framework for continued improvements in quantum device performance through controlled, conformal,
+and Al-compatible surface treatments.
+IV.
+METHODS
+A.
+Surface Treatment: ALE and ALD process
+The ALE chemistry developed for this work relies on
+alternating exposures of HF-pyridine and TMA at 300◦C
+resulting in an etch rate of 0.5 ˚A/cycle27. The reaction
+mechanism for the ALE of Al2O3 is depicted in Figure
+6(a). The proposed two-half cycle reaction can be written
+as follows:
+Al2O∗
+3 + 6HF(g) →2AlF∗
+3 + 3H2O(g) ↑
+(2)
+2AlF∗
+3 + 4Al(CH3)3(g) →6AlF(CH3)2(g) ↑
+(3)
+where the asterisk (*) denotes the surface species at the
+end of each half-cycle. In this ALE chemistry, HF reacts with the top few monolayers of Al2O3 to form AlF3
+in the first half cycle ‘A’ (equation (2)). In the second
+half cycles ‘B’ (equation (3)), AlF3 is subsequently removed from the surface as AlF(CH3)2, a volatile species
+at 300◦C, when reacted with TMA. Repetition of ABAB..
+half cycles leads to the layer-by-layer etching.
+Following the successful removal of the native Al oxide, the surface is encapsulated in situ with a thin layer
+of Al2O3 via ALD. The Al2O3 ALD process involves alternating exposures of TMA and water (H2O)28 at the
+same temperature of 300◦C, resulting in a growth rate
+of 1 ˚A/cycle. This process begins immediately after the
+ALE to minimize spontaneous re-oxidation of the underlying Al surface. The reaction mechanism for the ALD of
+
+===== Page 7 =====
+
+A
+Surface Treatment: ALE and ALD process
+7
+(a)
+(b)
+FIG. 6. Schematic representation of (a) ALE and (b) ALD using self-limiting surface chemistry and an AB binary reaction
+sequence.
+Al2O3 is depicted in Figure 6(b). The proposed two-half
+cycle reaction can be written as follows:
+AlOH∗+ Al(CH3)3(g) →AlOAl(CH3)∗
+2 + CH4(g) ↑
+(4)
+AlOAl(CH3)∗
+2 + H2O(g) →AlOH∗+ CH4(g) ↑
+(5)
+The ALD surface chemistry involves formation of Al-OAl(CH3)2 surface species during the first half cycle ‘C’
+(equation (4)) when Al-OH* surface species react with
+TMA. In the second half cycle ‘D’ (equation (5)), these
+species are converted back to Al-OH* when reacted with
+H2O, ultimately leading to the formation of the Al2O3
+monolayer on the surface.
+The ALD and ALE processes were developed using a
+Picosun/AMAT R-200 tool at 300◦C. TMA (99.9999%
+purity from Strem) and HPLC grade water (H2O) were
+used as the metal and the oxygen precursors for the
+Al2O3 ALD process while TMA and HF-pyridine (70%
+from Sigma Aldrich) served as the metal and fluorine
+sources for the etching of Al2O3. All the precursors were
+kept at room temperature.
+High purity nitrogen (N2,
+99.999% purity) was employed as the carrier gas to carry
+the precursors into the reaction chamber. The process
+base pressure was maintained at ∼11 hPa, with 300
+sccm of N2 directed into the chamber and ∼50 sccm of
+N2 through all the precursor lines. The partial pressures
+of TMA, Al2O3 and HF-pyridine were maintained at 1.7
+± 0.2 hPa, 2.3 ± 0.2 hPa and 4 ± 0.5 hPa, respectively.
+N2 was also used as a purge gas between successive doses
+of reactants. The optimized dosing sequence can be expressed as (t1 - t2 - t3 - t4), where t1 is the dose time
+of TMA and t3 is the dose time of H2O or HF-pyridine,
+with t2 and t4 representing intermediate purge times. All
+the times are presented in seconds. The optimized dosing sequence for ALD Al2O3 was (0.2-10-0.2-10), while
+the dosing sequence for ALE Al2O3 was (1-10-1-10). The
+combined ALE+ALD process includes 50 cycles of Al2O3
+ALE, followed by 10 cycles of Al2O3 ALD at 300◦C. The
+combined recipe was applied to individual resonator and
+transmon chips, enabling the in situ removal of native
+Al oxide followed by encapsulation with ∼1 nm of ALD
+Al2O3 without breaking vacuum.
+B.
+Device Fabrication
+The 2D transmons and resonators were fabricated on
+high-resistivity silicon (> 20 kΩ· cm) wafers, beginning
+with a 10-minute remote oxygen plasma clean at 150 W
+in a Tergeo asher. The first step was to deposit the Al
+ground layer using a lift-off process, which began with
+spin coating an adhesion promoter (SurPass 3000) and
+resist (ma-N 2403), followed by baking at 90◦C, electron
+beam (e-beam) lithography, and development using maD 525. The wafers were then treated with a 10-second
+direct oxygen plasma exposure in an Oxford etcher and a
+15-second immersion in 10:1 BOE, prior to depositing a
+100-nm thick Al layer with a 10 ˚A/s growth rate under a
+base pressure of 10−9 Torr in an Angstrom e-beam evaporator. The lift-off process was completed by soaking the
+wafers in a hot NMP solution at 150◦C for 2 hours, followed by 5 minutes of sonication in acetone and thorough
+rinsing with IPA and acetone.
+For the second layer (JJ), the Al ground plane was first
+exposed to a 5-minute remote oxygen plasma treatment
+in a Tergeo asher. This was followed by spin coating bilayer resists (MMA EL11 and PMMA A4 950K), with
+bake steps at 170◦C both before and after spin coating.
+After e-beam lithography and cold development in a 3:1
+IPA:H2O solution at 1.6◦C, the wafers underwent an O2
+plasma descum step in an Oxford etcher. They were then
+
+===== Page 8 =====
+
+C
+Resonator and Transmon Measurement
+8
+exposed to a 5-minute vapor HF treatment and loaded
+into an Angstrom e-beam double angle evaporator within
+5 minutes for junction deposition (same growth rate and
+base pressure as the ground layer), with deposition angles of 60◦and 0◦. Finally, the resist was removed with
+a 2-hour hot NMP treatment at 150◦C, followed by 5
+minutes of sonication in acetone, thorough rinsing with
+IPA and acetone, and a 10-minute remote oxygen plasma
+treatment in a Tergeo asher to remove any residual photoresist.
+Scaffold oxide features were fabricated in the next step
+by exposing the wafers to a 10-minute remote oxygen
+plasma treatment in a Tergeo asher, followed by spin
+coating of a tri-layer resist stack (PMMA A4 950K,
+PMGI SF11 and ZEP 520a) with pre- and post-spin coating bake steps at 182◦C. After e-beam lithography, the
+wafers were developed sequentially in three solutions:
+ZED-N50 to develop the ZEP 520a layer, MF-319 for
+the PMGI SF11 layer, and 3:1 IPA:H2O mixture for the
+PMMA A4 layer, followed by an O2 descum step in an
+Oxford etcher. A 1 µm SiO2 layer was deposited using
+an Angstrom evaporator at a growth rate of 1 ˚A/sec and
+base pressure below 10−6 Torr. The oxide layer was lifted
+off in a 2-hour hot NMP treatment at 150◦C, followed by
+rinsing with IPA and acetone and a final 10-minute remote oxygen plasma treatment in a Tergeo asher. For
+the Al airbridges, which form the final fabrication layer,
+the same process was used except that the SiO2 deposition was replaced by in situ pre-deposition ion milling
+and deposition of a 400-nm thick Al layer in an Angstrom
+e-beam evaporator at a 10 ˚A/s growth rate and a base
+pressure of 10−9 Torr.
+As a final step, the wafers underwent a 10-minute remote oxygen plasma treatment in a Tergeo asher, followed by spin coating of PMMA EL11 resist and baking at 182◦C. The wafers were then diced using an ADT
+dicing saw, UV-cured for 7 minutes, and subsequently
+singulated and sorted. After dicing, the resist was removed with a 10-minute hot NMP bath at 150◦C, followed by rinsing with IPA and acetone and a 10-minute
+remote oxygen plasma treatment in a Tergeo asher. Vapor HF treatment was used to remove the scaffold oxide, thereby releasing the airbridges and completing the
+fabrication. The devices were then either subjected to
+ALE+ALD treatment or left untreated as control samples before mounting on the PCB for wirebonding.
+C.
+Resonator and Transmon Measurement
+Measurements were conducted using a vector network
+analyzer (VNA) in a conventional set up to capture the
+S21 transmission of the resonators in a dilution refrigerator (DR) with a base temperature of 10 mK. The input
+lines consists of 75 dB total input attenuation and output line consists of a high electron mobility transistor
+(HEMT) amplifier at 4K stage and a room temperature
+amplifier.
+To measure the resonator internal loss, we implemented a parameter-constrained diameter correction
+method (PC-DCM)50,
+which reduces the parameter
+space in resonator data fitting and the uncertainty in
+the fitting result. Key parameters such as the coupling
+quality factor (Qc) and impedance mismatch angle (ϕ)
+are extracted from high-power measurements and fixed
+for low-power analysis, improving fitting efficiency and
+robustness.
+For low-power measurements, we reduced
+the S21 frequency span to within one line-width of the
+resonance.
+The quality factors reported in this study are based on
+measurements across three resonators on two devices for
+both untreated control and ALE+ALD-treated samples.
+The TLS-induced loss (δTLS =
+1
+QTLS ) is derived from
+the quality factors measured at low power (1/Qi,LP,
+collected at 1 photon or less) and high power (1/Qi,HP)
+as δTLS =
+1
+QTLS =
+1
+Qi,LP −
+1
+Qi,HP .
+Similar to the resonator measurements, transmon measurements were conducted using the same DR setup at a
+base temperature of 10 mK. Further details on packaging
+and the cryogenic setup for transmon measurements can
+be found elsewhere51. T1 and T2 were estimated by fitting an exponential decay to the inversion recovery52,53
+and an exponentially decaying sinusoidal to the Ramsey curve53, respectively, with each operating point measured for at least 3 hours. The measured anharmonicity
+was within 10% of the design value, which is approximately 220 MHz for all transmons.
+Notably, the anharmonicity remained unchanged after both ALE+ALD
+treatment and annealing.
+We measured transmon decoherence at various flux points away from the sweet
+spot (zero flux) over a frequency range of 1.0 to 1.5 GHz
+from the design value.
+While the designed qubit frequencies were initially between 4 and 5.5 GHz, factors
+such as junction energy mis-targeting due to fabrication
+variabilities, high-temperature annealing effects, and T1
+measurements taken off the sweet spot shifted the qubit
+frequencies to 2.5–5 GHz.
+D.
+Materials Characterization
+The XPS measurements were performed using a Scienta Omicron instrument, with a 300 W Al Kα X-ray
+source (1486.6 eV) and a base pressure of 10−10 mbar.
+The analysis area was ∼400 µm, and photoelectrons were
+collected at normal take-off angle. The acquired spectra
+were energy calibrated using the C 1s peak at ∼284.5
+eV.
+PiFM measurements were performed in ambient conditions using a VistaScope (Molecular Vista Inc.) system,
+coupled with a LaserTune QCL. The system covered an
+infrared spectral range from 760 to 1800 cm−1 with a
+spectral resolution of 4 cm−1.
+The morphology, surface oxide thickness, and elemental distribution at the Al and Si interfaces in the res-
+
+===== Page 9 =====
+
+D
+Materials Characterization
+9
+onator and junction areas of our transmon devices, both
+untreated and ALE+ALD treated, were imaged using
+STEM-EELS. Samples were prepared via a focused ion
+beam (FIB) lift-out technique, using spin-on polymer
+(SOP) and electron-beam deposited platinum (e-Pt) before milling. The lamella thickness was ∼70 nm. Measurements were performed on an FEI probe-corrected TITAN operated at 200 kV, in bright-field STEM and Zcontrast high-angle annular dark-field (HAADF) STEM
+modes, achieving a resolution of ∼0.78 ˚A.
+V.
+ACKNOWLEDGEMENTS
+We thank the staff from across the AWS Center for
+Quantum Computing (CQC) that enabled this project.
+We also thank Simone Severini and Peter DeSantis for
+their support of the research activities at the CQC.
+∗Corresponding email address: mahuli@amazon.com
+† Current affiliation: Google Research
+‡ Current affiliation: National Institute of Standards and
+Technology
+§ Corresponding email address: jarrige@amazon.com
+1 G. Wendin, “Quantum information processing with superconducting circuits:
+a review,” Reports on Progress in
+Physics, vol. 80, no. 10, p. 106001, 2017.
+2 J. Wenner, R. Barends, R. C. Bialczak, Y. Chen, J. Kelly,
+E. Lucero, M. Mariantoni, A. Megrant, P. J. J. O’Malley,
+D. Sank, et al., “Surface loss simulations of superconducting coplanar waveguide resonators,” Applied Physics
+Letters, vol. 99, no. 11, 2011.
+3 C. Wang, C. Axline, Y. Y. Gao, T. Brecht, Y. Chu,
+L. Frunzio, M. H. Devoret, and R. J. Schoelkopf, “Surface participation and dielectric loss in superconducting
+qubits,” Applied Physics Letters, vol. 107, no. 16, 2015.
+4 J. M. Gambetta, C. E. Murray, Y.-K.-K. Fung, D. T. McClure, O. Dial, W. Shanks, J. W. Sleight, and M. Steffen, “Investigating surface loss effects in superconducting transmon qubits,” IEEE Transactions on Applied
+Superconductivity, vol. 27, no. 1, pp. 1–5, 2016.
+5 M. D. Reed, B. R. Johnson, A. A. Houck, L. DiCarlo, J. M.
+Chow, D. I. Schuster, L. Frunzio, and R. J. Schoelkopf,
+“Fast reset and suppressing spontaneous emission of a superconducting qubit,” Applied Physics Letters, vol. 96,
+no. 20, 2010.
+6 E. Jeffrey, D. Sank, J. Y. Mutus, T. C. White, J. Kelly,
+R. Barends, Y. Chen, Z. Chen, B. Chiaro, A. Dunsworth,
+et al., “Fast accurate state measurement with superconducting qubits,” Physical review letters, vol. 112, no. 19,
+p. 190504, 2014.
+7 C. E. Murray,
+“Material matters in superconducting
+qubits,” Materials Science and Engineering: R: Reports,
+vol. 146, p. 100646, 2021.
+8 A. P. M. Place, L. V. H. Rodgers, P. Mundada, B. M.
+Smitham,
+M.
+Fitzpatrick,
+Z.
+Leng,
+A.
+Premkumar,
+J. Bryon,
+A. Vrajitoarea,
+S. Sussman, et al.,
+“New
+material platform for superconducting transmon qubits
+with coherence times exceeding 0.3 milliseconds,” Nature
+communications, vol. 12, no. 1, p. 1779, 2021.
+9 M. P. Bland, F. Bahrami, J. G. C. Martinez, P. H. Prestegaard, B. M. Smitham, A. Joshi, E. Hedrick, A. PakpourTabrizi, S. Kumar, A. Jindal, et al., “2D transmons with
+lifetimes and coherence times exceeding 1 millisecond,”
+arXiv preprint arXiv:2503.14798, 2025.
+10 W. Woods, G. Calusine, A. Melville, A. Sevi, E. Golden,
+D. K. Kim, D. Rosenberg, J. L. Yoder, and W. D. Oliver,
+“Determining interface dielectric losses in superconducting
+coplanar-waveguide resonators,” Physical Review Applied,
+vol. 12, no. 1, p. 014012, 2019.
+11 M.
+V.
+P.
+Alto´e,
+A.
+Banerjee,
+C.
+Berk,
+A.
+Hajr,
+A. Schwartzberg, C. Song, M. Alghadeer, S. Aloni, M. J.
+Elowson, J. M. Kreikebaum, et al., “Localization and mitigation of loss in niobium superconducting circuits,” PRX
+Quantum, vol. 3, no. 2, p. 020312, 2022.
+12 K. D. Crowley, R. A. McLellan, A. Dutta, N. Shumiya,
+A. P. M. Place, X. H. Le, Y. Gang, T. Madhavan, M. P.
+Bland, R. Chang, et al., “Disentangling losses in tantalum superconducting circuits,” Physical Review X, vol. 13,
+no. 4, p. 041005, 2023.
+13 C. J. Kopas, D. P. Goronzy, T. Pham, C. G. Torres Castanedo, M. Cheng, R. Cochrane, P. Nast, E. Lachman,
+N. Z. Zhelev, A. Valli`eres, et al., “Enhanced superconducting qubit performance through ammonium fluoride etch,”
+Materials for Quantum Technology, 2024.
+14 D. P. Lozano, M. Mongillo, X. Piao, S. Couet, D. Wan,
+Y. Canvel,
+A. M. Vadiraj,
+T. Ivanov,
+J. Verjauw,
+R. Acharya, et al., “Low-loss α-tantalum coplanar waveguide resonators on silicon wafers: fabrication, characterization and surface modification,” Materials for Quantum
+Technology, vol. 4, no. 2, p. 025801, 2024.
+15 C. Zhou, J. Mun, J. Yao, A. k. Anbalagan, M. D. Hossain,
+R. A. McLellan, R. Li, K. Kisslinger, G. Li, X. Tong, et al.,
+“Ultrathin magnesium-based coating as an efficient oxygen
+barrier for superconducting circuit materials,” Advanced
+Materials, vol. 36, no. 18, p. 2310280, 2024.
+16 M. Bal, A. A. Murthy, S. Zhu, F. Crisa, X. You, Z. Huang,
+T. Roy, J. Lee, D. v. Zanten, R. Pilipenko, et al., “Systematic improvements in transmon qubit coherence enabled by niobium surface encapsulation,” npj Quantum
+Information, vol. 10, no. 1, p. 43, 2024.
+17 S. K. Karuppannan, D. Huang, N. M. Kommanaboina,
+K. Anil, G. Yan, D. V. M. Repaka, Y. Zhang, K. E. J.
+Goh, W. S. Kai, N. L. C. Beng, et al., “Improved interface
+of niobium superconducting resonator with ruthenium as
+a capping layer,” ACS Applied Electronic Materials, 2024.
+18 R. D. Chang, N. Shumiya, R. A. McLellan, Y. Zhang,
+M. P. Bland, F. Bahrami, J. Mun, C. Zhou, K. Kisslinger,
+G. Cheng, et al., “Eliminating surface oxides of superconducting circuits with noble metal encapsulation,” Physical
+review letters, vol. 134, no. 9, p. 097001, 2025.
+19 C. R. H. McRae, H. Wang, J. Gao, M. R. Vissers,
+T. Brecht, A. Dunsworth, D. P. Pappas, and J. Mutus, “Materials loss measurements using superconducting
+microwave resonators,” Review of Scientific Instruments,
+vol. 91, no. 9, 2020.
+
+===== Page 10 =====
+
+10
+20 G. Marcaud, D. Perello, C. Chen, E. Umbarkar, C. Weiland, J. Gao, S. Diez, V. Ly, N. Mahuli, N. D’Souza, et al.,
+“Low-loss superconducting resonators fabricated from tantalum films grown at room temperature,” arXiv preprint
+arXiv:2501.09885, 2025.
+21 Q.-M. Chen, M. Pfeiffer, M. Partanen, F. Fesquet, K. E.
+Honasoge, F. Kronowetter, Y. Nojiri, M. Renger, K. G.
+Fedorov, A. Marx, et al., “Scattering coefficients of superconducting microwave resonators. i. transfer matrix approach,” Physical Review B, vol. 106, no. 21, p. 214505,
+2022.
+22 P. G. Baity, C. Maclean, V. Seferai, J. Bronstein, Y. Shu,
+T. Hemakumara, and M. Weides, “Circle fit optimization
+for resonator quality factor measurements: Point redistribution for maximal accuracy,” Physical Review Research,
+vol. 6, no. 1, p. 013329, 2024.
+23 G. Calusine, A. Melville, W. Woods, R. Das, C. Stull,
+V. Bolkhovsky, D. Braje, D. Hover, D. K. Kim, X. Miloshi,
+et al., “Analysis and mitigation of interface losses in
+trenched superconducting coplanar waveguide resonators,”
+Applied Physics Letters, vol. 112, no. 6, 2018.
+24 R. Barends, J. Kelly, A. Megrant, D. Sank, E. Jeffrey,
+Y. Chen, Y. Yin, B. Chiaro, J. Mutus, C. Neill, et al.,
+“Coherent josephson qubit suitable for scalable quantum
+integrated circuits,” Physical review letters, vol. 111, no. 8,
+p. 080502, 2013.
+25 P. V. Klimov, J. Kelly, Z. Chen, M. Neeley, A. Megrant,
+B. Burkett, R. Barends, K. Arya, B. Chiaro, Y. Chen,
+et al., “Fluctuations of energy-relaxation times in superconducting qubits,” Physical review letters, vol. 121, no. 9,
+p. 090502, 2018.
+26 C. C Yu and H. M. Carruzzo, “Two-level systems and
+the tunneling model: A critical view,” Low-temperature
+Thermal And Vibrational Properties Of Disordered Solids:
+A Half-century Of Universal” Anomalies” Of Glasses,
+p. 113, 2022.
+27 Y. Lee, J. W. DuMont, and S. M. George, “Trimethylaluminum as the metal precursor for the atomic layer etching
+of Al2O3 using sequential, self-limiting thermal reactions,”
+Chemistry of Materials, vol. 28, no. 9, pp. 2994–3003, 2016.
+28 R. L. Puurunen, “Surface chemistry of atomic layer deposition: A case study for the trimethylaluminum/water
+process,” Journal of applied physics, vol. 97, no. 12, 2005.
+29 S. Prasanna, G. Krishnendu, S. Shalini, P. Biji, G. M.
+Rao, S. Jayakumar, and R. Balasundaraprabhu, “Composition, structure and electrical properties of DC reactive
+magnetron sputtered Al2O3 thin films,” Materials science
+in semiconductor processing, vol. 16, no. 3, pp. 705–711,
+2013.
+30 N. Reddy, P. Bera, V. R. Reddy, N. Sridhara, A. Dey,
+C. Anandan, and A. K. Sharma, “XPS study of sputtered
+alumina thin films,” Ceramics International, vol. 40, no. 7,
+pp. 11099–11107, 2014.
+31 G. A. Mengesha, J. P. Chu, B.-S. Lou, and J.-W. Lee,
+“Corrosion performance of plasma electrolytic oxidation
+grown oxide coating on pure aluminum:
+effect of borax concentration,” Journal of Materials Research and
+Technology, vol. 9, no. 4, pp. 8766–8779, 2020.
+32 L. Nguyen, T. Hashimoto, D. N. Zakharov, E. A. Stach,
+A. P. Rooney, B. Berkels, G. E. Thompson, S. J. Haigh,
+and T. L. Burnett, “Atomic-scale insights into the oxidation of aluminum,” ACS applied materials & interfaces,
+vol. 10, no. 3, pp. 2230–2235, 2018.
+33 G. Duan, C. Zhang, A. Li, X. Yang, L. Lu, and X. Wang,
+“Preparation and characterization of mesoporous zirconia
+made by using a poly (methyl methacrylate) template,”
+Nanoscale research letters, vol. 3, pp. 118–122, 2008.
+34 S. B. Aziz, O. G. Abdullah, M. Brza, A. K. Azawy, and
+D. A. Tahir, “Effect of carbon nano-dots (CNDs) on structural and optical properties of PMMA polymer composite,” Results in Physics, vol. 15, p. 102776, 2019.
+35 D. N. Goldstein, J. A. McCormick, and S. M. George,
+“Al2O3 atomic layer deposition with trimethylaluminum
+and ozone studied by in situ transmission FTIR spectroscopy and quadrupole mass spectrometry,” The Journal
+of Physical Chemistry C, vol. 112, no. 49, pp. 19530–19539,
+2008.
+36 V. Vemuri, S. W. King, W. A. Lanford, J. T. Gaskins,
+P. E. Hopkins, J. Van Derslice, H. Li, and N. C. Strandwitz, “Comprehensive study of the chemical, physical, and
+structural evolution of molecular layer deposited alucone
+films during thermal processing,” Chemistry of Materials,
+vol. 35, no. 5, pp. 1916–1925, 2023.
+37 T.
+Kashiwagi,
+A.
+Inabi,
+and
+A.
+Hamins,
+“Behavior of primary radicals during thermal degradation of
+poly (methyl methacrylate),” Polymer Degradation and
+Stability, vol. 26, no. 2, pp. 161–184, 1989.
+38 L.
+E.
+Manring,
+“Thermal
+degradation
+of
+poly
+(methyl
+methacrylate).
+4.
+random
+side-group
+scission,” Macromolecules, vol. 24, no. 11, pp. 3304–3309,
+1991.
+39 H. A. Al-Abadleh and V. Grassian, “FT-IR study of water adsorption on aluminum oxide surfaces,” Langmuir,
+vol. 19, no. 2, pp. 341–347, 2003.
+40 Y. Lee, J. W. DuMont, A. S. Cavanagh, and S. M. George,
+“Atomic layer deposition of AlF3 using trimethylaluminum
+and hydrogen fluoride,” The Journal of Physical Chemistry
+C, vol. 119, no. 25, pp. 14185–14194, 2015.
+41 J. W. DuMont and S. M. George, “Competition between
+Al2O3 atomic layer etching and AlF3 atomic layer deposition using sequential exposures of trimethylaluminum
+and hydrogen fluoride,” The Journal of Chemical Physics,
+vol. 146, no. 5, 2017.
+42 G. P. Gakis, H. Vergnes, F. Cristiano, Y. Tison, C. Vahlas,
+B. Caussat, A. G. Boudouvis, and E. Scheid, “In situ N2NH3 plasma pre-treatment of silicon substrate enhances
+the initial growth and restricts the substrate oxidation during alumina ALD,” Journal of Applied Physics, vol. 126,
+no. 12, 2019.
+43 W. Xu, R. J. Gasvoda, P. C. Lemaire, K. Sharma, D. M.
+Hausmann, and S. Agarwal, “Area-selective atomic layer
+deposition of Al2O3 on SiNx with SiO2 as the nongrowth
+surface,” Journal of Vacuum Science & Technology A,
+vol. 40, no. 1, 2022.
+44 W. Xu, P. C. Lemaire, K. Sharma, D. M. Hausmann,
+and S. Agarwal, “Extending growth inhibition during areaselective atomic layer deposition of Al2O3 on aminosilanefunctionalized SiO2,” Chemical Communications, vol. 58,
+no. 46, pp. 6650–6652, 2022.
+45 E. Papirer, J.-M. Perrin, G. Nanse, and P. Fioux, “Adsorption of poly (methylmethacrylate) on an α alumina:
+evidence of formation of surface carboxylate bonds,”
+European polymer journal, vol. 30, no. 8, pp. 985–991,
+1994.
+46 J. F. Watts, S. R. Leadley, J. E. Castle, and C. J. Blomfield, “Adsorption of PMMA on oxidized Al and Si substrates: An investigation by high-resolution X-ray photo-
+
+===== Page 11 =====
+
+11
+electron spectroscopy,” Langmuir, vol. 16, no. 5, pp. 2292–
+2300, 2000.
+47 M.
+Ferriol,
+A.
+Gentilhomme,
+M.
+Cochez,
+N.
+Oget,
+and J. L. Mieloszynski, “Thermal degradation of poly
+(methyl methacrylate)(PMMA): modelling of DTG and
+TG curves,” Polymer degradation and stability, vol. 79,
+no. 2, pp. 271–281, 2003.
+48 M. Almajhadi and H. K. Wickramasinghe, “Contrast and
+imaging performance in photo induced force microscopy,”
+Optics Express, vol. 25, no. 22, pp. 26923–26938, 2017.
+49 R. A. McLellan, A. Dutta, C. Zhou, Y. Jia, C. Weiland,
+X. Gui, A. P. M. Place, K. D. Crowley, X. H. Le, T. Madhavan, et al., “Chemical profiles of the oxides on tantalum
+in state of the art superconducting circuits,” Advanced
+Science, vol. 10, no. 21, p. 2300921, 2023.
+50 C. Chen, D. Perello, S. Aghaeimeibodi, G. Marcaud, I. Jarrige, H. Lee, W. Fon, M. Matheny, and J. Gao, “Efficient
+methods for extracting superconducting resonator loss in
+the single-photon regime,” Journal of Applied Physics,
+vol. 137, no. 4, 2025.
+51 H. Levine,
+A. Haim,
+J. S. C. Hung,
+N. Alidoust,
+M. Kalaee, L. DeLorenzo, E. A. Wollack, P. ArrangoizArriola, A. Khalajhedayati, R. Sanil, et al., “Demonstrating a long-coherence dual-rail erasure qubit using tunable
+transmons,” Physical Review X, vol. 14, no. 1, p. 011051,
+2024.
+52 Z. Wei, Y.-J. Ma, H. Jang, W. Yang, and J. Du, “To
+measure T1 of short T2 species using an inversion recovery
+prepared three-dimensional ultrashort echo time (3D IRUTE) method: A phantom study,” Journal of Magnetic
+Resonance, vol. 314, p. 106725, 2020.
+53 J. A. Monta˜nez-Barrera, M. R. von Spakovsky, C. E.
+Damian Ascencio, and S. Cano-Andrade, “Decoherence
+predictions in a superconducting quantum processor using the steepest-entropy-ascent quantum thermodynamics
+framework,” Physical Review A, vol. 106, no. 3, p. 032426,
+2022.
+
+===== Page 12 =====
+
+12
+SUPPLEMENTARY INFORMATION FOR “IMPROVING THE LIFETIME OF ALUMINUM-BASED
+SUPERCONDUCTING QUBITS THROUGH ATOMIC LAYER ETCHING AND DEPOSITION”
+OUTLINE
+I. Transmon design and measurement parameters
+II. Calculated Purcell curves and measured Q for individual transmons
+III. Frequency shift after ALE+ALD treatment for individual transmons
+IV. Transmon Q dependence as a function of frequency shift after ALE+ALD treatment
+V. XPS peak fitting
+VI. Estimation of Al2O3 thickness from XPS analysis
+VII. TEM-EELS analysis
+VIII. IR peak assignment
+IX. PiFM mapping of resonator area
+
+===== Page 13 =====
+
+13
+I.
+TRANSMON DESIGN AND MEASUREMENT PARAMETERS
+Five different chips, each containing four tunable transmons (Q1-Q4), were measured in the frequency range of
+2.2–4.4 GHz before and after the treatment along with six additional untreated chips. One chip was also measured
+before and after annealing at 300◦C under vacuum in the ALD chamber. All these chips came from two different
+wafers fabricated with the same process flow. A micrograph of a transmon is shown in Figure SI-1(a). Design and
+measurement parameters are summarized in the table in Figure SI-1(b).
+(a)
+(b)
+Parameter
+Q1
+Q2
+Q3
+Q4
+Measurement f01 range (GHz)
+2.3-3.9 2.6-4.4 2.4-4.3 2.9-4.9
+Readout resonator frequency (GHz)
+5.55
+6.4
+5.8
+6.56
+JJ length (nm)
+200
+200
+200
+200
+JJ width (nm)
+163
+200
+157
+286
+Capacitor width (um)
+24
+24
+24
+24
+Capacitor gap (um)
+30
+30
+30
+30
+Capacitor length (um)
+684.2
+684.2
+645
+631
+Coupling strength (g) (MHz)
+59.7
+78.4
+60.6
+61.1
+Coupling capacitance (Cg) (fF)
+5.6
+6.23
+5.27
+4.32
+Qubit capacitance (Cq) (fF)
+87.1
+87.1
+86.3
+84.7
+FIG. SI-1. (a) Optical micrograph of a transmon device and (b) summary of transmon design and measurement parameters.
+II.
+CALCULATED PURCELL CURVES AND MEASURED Q FOR INDIVIDUAL TRANSMONS
+After the ALE+ALD treatment, we consistently observed a positive frequency shift across all transmon designs. As
+a consequence of this frequency shift, the readout resonator Purcell loss was enhanced at the maximum f01 transmon
+transition frequency. The increase in f01 contributed to the Purcell effect, which may have been a key factor behind
+the observed tapering of the transmon performance at higher frequencies. To investigate this behavior further, we
+calculated the Purcell curves for all four transmon designs using the experimentally determined resonator coupling
+rate (κc) limits. The Purcell curves (as shown in Figure SI-2) were calculated using the following formula: The decay
+time TP is given by:
+TP = 2π
+κc
+·
+gfr −f01
+fr
+2
+(6)
+where,
+TP is the Purcell-limited decay time of the qubit — the rate at which the qubit loses energy due to coupling to the
+readout resonator,
+κc is the resonator coupling rate (external linewidth), typically defined as κc = ωr/Qc, where Qc is the coupling
+quality factor, and ωr is the angular resonance frequency,
+g is the qubit-resonator coupling strength, describing the strength of interaction between the two systems,
+fr is the resonator frequency,
+f01 is the qubit transition frequency, corresponding to the energy difference between the ground and first excited
+state.
+The coupling g is defined as:
+g = 2πfrf01
+CquCrr
+· Cqu −Crr
+Cqu−rr
+(7)
+
+===== Page 14 =====
+
+14
+(a)
+(b)
+(c)
+(d)
+FIG. SI-2. Frequency dependence of the estimated Q for each qubit design, for various untreated and ALE+ALD treated
+devices, along with their calculated Purcell curves based on experimentally measured upper and lower limits of κc.
+where,
+Cqu is the total qubit capacitance,
+Crr is the total resonator capacitance,
+Cqu−rr is the coupling capacitance between the qubit and resonator,
+2πfrf01 arises from quantization of the circuit Hamiltonian and reflects the energy exchange rate between the
+systems.
+The Purcell-limited quality factor QP is given by:
+QP = 2πf01
+TP
+(8)
+As suggested by the plots in Figure SI-2, the readout Purcell loss appears to contribute to loss for all four transmon
+designs near their maximum f01 frequency. In future studies, we plan to investigate fabrication methods to minimize
+treatment-induced shifts of the transmon frequency toward the readout frequency, thereby reducing the Purcell loss
+in our devices.
+
+===== Page 15 =====
+
+15
+III.
+FREQUENCY SHIFT AFTER ALE+ALD TREATMENT FOR INDIVIDUAL TRANSMONS
+As shown in Figure SI-3, an upward frequency shift of +500-800 MHz is consistently observed post ALE+ALD
+across all studied transmon designs, independent of their untreated starting frequencies or source wafer. While we
+attribute this positive frequency shift to the high processing temperatures of ALE and ALD, the exact magnitude of
+this shift may be influenced by additional factors, including fabrication process variations and differences in residual
+polymeric contamination on the surface prior to treatment.
+FIG. SI-3. Measured upward frequency shift after ALE+ALD treatment on individual transmon designs, showing a consistent
+increase of 500-800 MHz, irrespective of the untreated transmon frequency.
+IV.
+TRANSMON Q DEPENDENCE AS A FUNCTION OF FREQUENCY SHIFT AFTER ALE+ALD
+TREATMENT
+FIG. SI-4. Measured dependence of transmon Q on the absolute frequency shift for various ALE+ALD treated devices.
+We observe a noticeable correlation between frequency shift and transmon quality factor Q, where the median
+transmon Q decreases with increasing frequency shift, as shown in Figure SI-4.
+This behavior is attributed to
+enhanced readout Purcell loss as the transmon f01 approaches the readout frequency, as discussed in Section II of
+the SI. Specifically, the median transmon Q decreases from approximately 4–6x106 for frequency shifts of 450 MHz
+to about 2–3x106 for shifts above 700 MHz.
+
+===== Page 16 =====
+
+16
+V.
+XPS PEAK FITTING
+Surface analysis was conducted on four samples using x-ray photoelectron spectroscopy (XPS): as-deposited blanket
+Al film, untreated device, ALE+ALD treated device, and annealed-only device. Experimental spectra for the Al 2p,
+C 1s, and O 1s core levels were individually curve-fitted after subtracting a Shirley background using CasaXPS.
+A symmetric Voigt function was used for all the three components in the curve-fitting of the C 1s spectrum (Figure
+SI-5), which reveals peaks at 284.5 eV corresponding to C-C and C-H bonds from adventitious carbon, ∼285.5 eV
+for C-OH and C-O-C species; and ∼288.5 eV for O=C-O functional groups associated with surface oxidation or
+contamination. The Al 2p core-level spectra (Figure SI-6) were analyzed with a symmetric Voigt function for oxides
+and a Lorentzian asymmetric function for metallic Al. The metallic doublet positions were constrained within 0.44
+eV with a 2:1 area ratio for Al 2p3/2 and Al 2p1/2. A single oxide component was identified in the as-deposited Al
+film and ALE+ALD treated device, while an additional peak around 75.6 eV (Al-O-OH) appeared due to organic
+or polymeric contamination in the annealed-only and untreated devices. A shift of the Al oxide component for the
+annealed-only and untreated devices towards higher binding energies suggests the formation of oxygen-rich AlOx.
+The deconvolution of the O 1s core-level spectra (Figure SI-7) using symmetric Voigt functions reveals the presence
+of three components: ∼530.7 eV for Al-O-Al bonding, ∼531.7 eV for -OH or Al-O-OH species, and ∼533 eV for
+adsorbed H2O.
+(a)
+(b)
+(c)
+(d)
+FIG. SI-5. C 1s core-level XPS spectra of (a) as-deposited blanket Al film, (b) ALE+ALD treated device, (c) annealed-only
+device, and (d) untreated device.
+
+===== Page 17 =====
+
+17
+(a)
+(b)
+(c)
+(d)
+FIG. SI-6. Al 2p core-level XPS spectra of (a) as-deposited blanket Al film, (b) ALE+ALD treated device, (c) annealed-only
+device, and (d) untreated device.
+
+===== Page 18 =====
+
+18
+(a)
+(b)
+(c)
+(d)
+FIG. SI-7. O 1s core-level XPS spectra of (a) as-deposited blanket Al film, (b) ALE+ALD treated device, (c) annealed-only
+device, and (d) untreated device.
+VI.
+ESTIMATION OF AL2O3 THICKNESS FROM XPS ANALYSIS
+The thickness of the Al2O3 layer was estimated based on the intensity ratio of the Al 2p peaks respectively corresponding to the oxide and the underlying metal in the experimental spectra. This method is based on the attenuation
+of photoelectrons emitted from the metal substrate as they pass through the oxide layer. The thickness d of the Al2O3
+layer can be inferred using the following equation based on the Beer-Lambert Law:
+dxps(˚A) = λ0 sin θ · ln
+Nmλm
+N0λ0
+· I0
+Im
++ 1
+
+where,
+d = thickness of the Al2O3 layer
+λ0 = inelastic mean free path (IMFP) of Al 2p electrons in Al2O3
+λm = IMFP of Al 2p electrons in metallic Al
+θ = take off angle
+Im = XPS intensity of metallic Al 2p peak
+I0 = XPS intensity of oxidized Al 2p peak
+Nm = Atomic density of metallic Al
+N0 = Atomic density of metallic Al2O3
+
+===== Page 19 =====
+
+19
+The XPS intensity was determined from the total area under the curve of the Al 2p core level for the metallic and
+oxide components. Using the above equation with a take-off angle of 90 degrees, and λ0 and λm values of 28 ˚A and 26
+˚A for Al oxide and Al metal, respectively, along with an Nm:N0 ratio of 1.5, the thickness was estimated for different
+samples and several locations on each chip as shown in Figure 3(b) of the main text.
+VII.
+TEM-EELS ANALYSIS
+We performed imaging of the JJ and resonator areas to study the surface oxide layers using transmission electron
+microscopy and electron energy loss spectroscopy (TEM-EELS), as shown in Figure SI-8(a-d). The thicknesses of the
+surface Al oxide layers were found to be consistent with XPS estimations: 2.5 ± 0.2 nm for the ALE+ALD treated
+chip and in the 3.1 ± 0.2 nm for the untreated chip. This confirms a measurable reduction in the oxide layer thickness
+of the treated chip, and underscores the uniformity of the treatment’s effect on the surface oxide layer. The oxide
+thickness was estimated by averaging measurements from 25 locations across all the images shown in Figure SI-8 using
+the software ImageJ. For each chip, the O/Al ratio was also estimated based on an EELS map collected across the
+surface oxide layer. This ratio was estimated to be approximately 1.5 for both chips, suggesting that the differences
+in oxidation state identified via XPS are either too small to be detected just by TEM-EELS spectral mapping alone
+or have been further minimized by the lamella preparation process used for TEM. Additionally, EELS maps (Figure
+SI-8(f-h)) measured on exposed Si areas next to the resonators indicate that the native silicon oxide is not capped by
+Al2O3, which is consistent with the PiFM data.
+(a)
+(b)
+(c)
+(d)
+(e)
+(f)
+(g)
+(h)
+FIG. SI-8. (a-d) High-resolution scanning-TEM images of the vicinity of the surface of the the JJ top electrode and read-out
+resonator trace on untreated and treated devices. (e) S-TEM image of the Si trench region in the ALE+ALD-treated resonator,
+alongwith TEM-EELS elemental maps for (f) Al, (g) Si and (h) O, showing the absence of detectable Al2O3 on the exposed Si
+surface.
+VIII.
+IR PEAK ASSIGNMENT
+Table I summarizes the peak assignments for all peaks identified in the Al and Si regions of the resonators and
+junctions on both untreated and treated surfaces.
+
+===== Page 20 =====
+
+20
+Peak Assignment
+Wavenumbers (cm−1)
+Untreated
+ALE+ALD Treated
+Resonator Junction Resonator-Al trace Resonator-Si trench Junction
+Al-O stretching vibration
+-
+-
+800-1000
+-
+800-1000
+C-O stretching vibration from PMMA
+-
+-
+1020
+1020
+-
+C-O-C stretching vibration from PMMA
+1150
+1150
+-
+-
+-
+C-H bending vibration from Al-CH3
+-
+-
+1170
+1170
+1170
+C-O-C stretching vibration from PMMA
+1197
+1197
+1197
+1197
+-
+C-O-C stretching vibration from PMMA
+1240
+1240
+-
+-
+-
+C-O-C stretching vibration from PMMA
+1265
+1265
+1265
+1265
+1265
+CHx bending deformation
+1378
+1378
+1378
+1378
+1378
+CHx bending deformation
+1445
+1445
+1445
+1445
+1445
+CHx bending deformation
+1466
+1466
+1466
+1466
+1466
+C=O stretching vibration from PMMA
+1740
+1740
+1740
+1740
+-
+TABLE I. Infrared spectra peak assignments for untreated and ALE+ALD treated devices.
+IX.
+PIFM MAPPING OF RESONATOR AREA
+In this section, we present raw PiFM maps (Figure SI-9) of the resonator area for ALE+ALD-treated devices,
+acquired at 912 cm−1 and 1740 cm−1, corresponding to the Al–O stretching vibration and the C=O stretching
+vibration in PMMA, respectively.
+(a)
+(b)
+FIG. SI-9. PiFM maps at the resontor area shown with a color scale highlighting the 912 cm−1 and 1740 cm−1 wavenumbers,
+which respectively correspond to Al-O bonds and C=O stretching vibration in PMMA

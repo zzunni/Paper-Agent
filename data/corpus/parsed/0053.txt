@@ -1,0 +1,717 @@
+
+
+===== Page 1 =====
+
+1
+Anomaly Detection for Solder Joints Using β-VAE
+Furkan Ulger, Seniha Esen Yuksel, Atila Yilmaz
+Abstract—In the assembly process of printed circuit boards
+(PCB), most of the errors are caused by solder joints in Surface
+Mount Devices (SMD). In the literature, traditional feature
+extraction based methods require designing hand-crafted features
+and rely on the tiered RGB illumination to detect solder joint
+errors, whereas the supervised Convolutional Neural Network
+(CNN) based approaches require a lot of labelled abnormal
+samples (defective solder joints) to achieve high accuracy. To solve
+the optical inspection problem in unrestricted environments with
+no special lighting and without the existence of error-free reference boards, we propose a new beta-Variational Autoencoders
+(beta-VAE) architecture for anomaly detection that can work
+on both IC and non-IC components. We show that the proposed
+model learns disentangled representation of data, leading to more
+independent features and improved latent space representations.
+We compare the activation and gradient-based representations
+that are used to characterize anomalies; and observe the effect
+of different beta parameters on accuracy and on untwining
+the feature representations in beta-VAE. Finally, we show that
+anomalies on solder joints can be detected with high accuracy via
+a model trained on directly normal samples without designated
+hardware or feature engineering.
+Index Terms—Automated Optical Inspection, Solder Joint
+Inspection, VAE, β-VAE, Unsupervised Anomaly Detection
+I. INTRODUCTION
+In the electronics manufacturing industry, SMD assembly
+lines produce printed circuit boards (PCB) with high density
+at a very fast rate, which makes them prone to errors. Detecting
+solder joint errors in the early stages of the assembly is critical
+to reduce rework cost in production and scrap rates. However,
+this task is difﬁcult due to the highly varied appearance of
+PCBs, given that even the electronic components used for the
+same purpose differ enormously in appearance. Furthermore,
+different types of solder joint errors can occur such as solder
+bridging, excessive/insufﬁcient solder, pseudo solder, solder
+skips etc. Additionally, quality requirements standardized by
+the Institute for Printed Circuits should be met for highquality production. In order to fulﬁl this need, Automated
+Optical Inspection (AOI) devices are used in assembly lines.
+These devices achieve very high recognition rates but require
+dedicated hardware. There are surveys [1], [2] that elaborate
+on the assembly process and the importance of solder joint
+inspection in the manufacturing industry.
+With the advancement in deep learning, CNN, a powerful
+algorithm for feature extraction, is used for the inspection
+of solder joints. On the other hand, despite achieving high
+accuracy, supervised CNN based approaches require a lot of
+labelled defective (abnormal) samples for training, but there
+is a lack of abnormal samples although plenty of error-free
+F. Ulger, S.E. Yuksel and A. Yilmaz are all with the Department of Electrical and Electronics Engineering, Hacettepe University, Ankara, 06800, Turkey.
+e-mail: furkan.ulger@stu.ee.hacettepe.edu.tr, eyuksel@ee.hacettepe.edu.tr,
+ayilmaz@ee.hacettepe.edu.tr
+(normal) samples are available in many datasets used for solder
+joint inspection. Moreover, abnormalities may occur due to
+various reasons, and take on various shapes and sizes which
+might be hard to capture in a data collection. Yet, to our
+knowledge, there is no open dataset that has enough abnormal
+samples, possibly due to conﬁdential reasons.
+Therefore, in this paper, we propose to treat the solder
+joint defect detection as an anomaly detection problem, and
+resort to deep generative models, speciﬁcally to β-VAE [3],
+which enable learning solely from normal samples. β-VAE is
+a variation of VAE [4], [5] that maximizes the probability
+of generating real data while balancing the likelihood and
+Kullback–Leibler (KL) divergence terms with an adjustable
+hyperparameter β. The β term puts an emphasis on learning
+statistically independent latent factors which lead to disentangled representations where one single latent unit is sensitive
+to changes in a single generative factor. This disentanglement
+property of the β-VAE leads to more successful and more
+interpretable representations [6].
+Once the model describing the normal data is estimated via
+β-VAE, we generate an anomaly score for each test sample
+and apply a decision rule to detect anomalies. For generating
+the anomaly scores, we employ gradient-based representations
+as well as activation-based representations such as the reconstruction error. Finally, the model speciﬁcally learned to
+describe normal data is expected to yield a low anomaly score
+for normal data, and a high anomaly score for abnormal data.
+Hence, we detect these anomalies by comparing the resultant
+score against a threshold. With better-disentangled representations obtained using β-VAE, we show that anomalies on
+solder joints can be detected with high accuracy via a model
+trained directly on normal samples. Further, we compare this
+algorithm to two state-of-the-art approaches, namely the VAE
+and the Convolutional Autoencoder (CAE), and show the
+increase in detection rates.
+The main contributions of this study are the following:
+(i) We attempt to solve a unique solder joint inspection
+problem in unrestricted domains, as such, it does not require specialized lighting, feature engineering, abnormal
+samples in training nor an error-free reference board.
+(ii) We design a β-VAE architecture tailored for this problem,
+analyze it with different anomaly scoring techniques, and
+investigate the effect of β for solder joint inspection. Further, we show the beneﬁts of using β-VAE and show how
+the latent space representations of normal and abnormal
+solders become visibly separated.
+(iii) Our model can inspect both Integrated Circuit (IC) and
+non-IC component solder joints with a single architecture.
+To the best of our knowledge, there is no such study
+within the scope of anomaly detection.
+arXiv:2104.11927v2  [cs.CV]  16 Dec 2021
+
+===== Page 2 =====
+
+2
+In the rest of this paper, we describe the related work in
+Sec. II, present our proposed method in Sec. III, discuss our
+data set, parameter settings and experiments in Sec. IV and
+provide the results in Sec. V.
+II. RELATED WORK
+The literature for solder joint inspection can be divided
+into two main groups, namely, the methods based on feature
+extraction and the methods based on deep learning. Feature
+extraction based methods can mostly either detect IC or
+non-IC solder joint errors since there are no discriminative
+features presented for both types of components. Besides, their
+successful applications mostly rely on a circular or hemispherical tiered RGB illumination for inspection of both non-IC
+component solder joints [7]–[12] and IC component solder
+joints [13], [14]. On the other hand, there are some studies that
+do not require an RGB illuminator, but mostly an error-free
+reference image to inspect solder joints [15]–[18]. The tiered
+illumination is used to generate colour contours on the solder
+paste, making use of the specular surface characteristics of the
+solder defects [19]. These color contours are then analyzed via
+handcrafted features based on both color and shape to classify
+solder-joint errors. The most prominent color features are
+the average intensity and the percentage of highlight of each
+binarized RGB channel [8], [9]. Geometric (shape) features
+in frequent use can be listed as solder and polarity areas
+[10], barycenter and distribution features [11] as well as the
+template matching feature obtained by normalized cross correlation (NCC) [15]. Other proposed features include Wavelet
+coefﬁcients [16] and Gabor features [18]. Additionally, feature
+selection mechanisms are employed to reduce the number of
+features and to improve the classiﬁcation performance [12],
+[15]. The classiﬁers employed in the more traditional literature
+include the Bayes classiﬁer [7], [9], multi-layer perceptron
+(MLP) [14], [16], learning vector quantization (LVQ) [11],
+[14] and Support Vector Machines (SVM) [9], [12], [20]; followed by the multi-stage classiﬁers [7], [9] to further improve
+accuracy. In practice, obtaining such reﬂections on a solder
+joint to extract these features is difﬁcult; it requires special
+lighting and prior or manual input to parse the solder regions
+as shown in Fig. 1. Additionally, traditional feature extraction
+based methods require determining distinctive features for
+each type of solder-joint errors.
+In recent years, there have been a few studies that employ
+deep learning based methods to inspect solder joints [20]–[22].
+Dai et al. [20] employed the YOLO detector for solder localization and used semi-supervised learning for classiﬁcation
+with SVM. Cai et al. [21] used cascaded CNNs: one learns
+the region of interest where solder defect is probable and the
+others are used to classify the solder joint of IC component.
+These studies employed both anomalous and normal data,
+and still used the tiered RGB illumination. Since anomalous
+data is rare, it is difﬁcult to gather a representative training set
+for a supervised CNN to learn to identify all types of solder
+joint errors. Additionally, commonly inspected PCB defects
+in the literature are good solder, insufﬁcient solder, excessive
+solder, pseudo solder, missing solder, missing component and
+tombstone; however there are more different types of possible
+PCB defects such as shifted and misplaced component, solder
+balling, solder ﬂags, pin holes, solder discoloration, billboarding, dewetting and the like. Therefore, an alternative way to
+handle solder error detection would be the anomaly detection
+perspective.
+For anomaly detection, Autoencoder [23] is a widely employed network that can learn to model complex data distributions. Autoencoders are trained directly on normal (errorfree) data to minimize the reconstruction error such that,
+an encoding network, which strongly reduces the input to a
+compressed form, and a decoding network, which reconstructs
+its output to resemble the original input, are simultaneously
+trained. In the context of solder joint inspection, Mujeeb et
+al. [22] used a linear autoencoder on RGB illuminated solder
+joints and proposed using the L2 distance between the features
+of a reference image and a defective image as a similarity
+measure. However, the method requires a reference image that
+is a good (error-free) sample of the defective sample and tiered
+RGB illumination.
+Although Variational Autoencoders (VAE) are already being
+used for anomaly detection in different contexts such as
+dermatology [24] and medical imaging [25]; to the best of our
+knowledge, we are the ﬁrst to use it for solder error detection
+and to offer a customized architecture for this problem. Also,
+our problem is unique, in that, we consider both IC and nonIC solder joints, we do not require any special lighting and
+neither do we require an error-free reference image. In doing
+so, we want to develop a more general solder-defect classiﬁer
+that is not restricted to laboratory environments.
+III. METHODS
+We brieﬂy give an introduction to VAE and its variation,
+β-VAE. Latterly, scoring techniques that assign an anomaly
+score to each test data are presented.
+A. VAE and β-VAE
+VAE is a generative model that maximizes the marginal
+likelihood pθ(X) where X is a data point (image) in a high
+dimensional space. It consists of a probabilistic encoder and a
+decoder where φ and θ are the encoder and decoder parameters
+respectively that include weights and biases, as shown in Fig.
+2. The encoder approximates the true posterior distribution
+pφ(z|X) whose distribution is assumed to be a Gaussian,
+where z is the latent (unobserved) vector of variables. The
+mean and standard deviation of the approximate posterior
+qφ(z|X) are the output of the encoder.
+We also let the prior distribution have a standard Gaussian
+distribution p(z) = N(0, I). Then, z is sampled from the
+posterior distribution as z∼qφ(z|X) = N(µ, σ). The decoder
+is a generator that reconstructs ˜X from z. However, we
+can not backpropagate the loss function to train the model
+since sampling operation is not differentiable. Therefore, a
+reparametrization trick is introduced. This trick uses a random
+variable ϵ that is sampled from N(0, I) and it is transformed
+to random variable z shifted by the mean and scaled by the
+standard deviation i.e. z = µ + σ ⊙ϵ that becomes a sample
+
+===== Page 3 =====
+
+3
+(a)
+(b)
+Fig. 1: Surface Mount Device (SMD) parcellation: (a) non-IC component image and its solder pad and component body, (b)
+IC component image and its body, lead and solder pad regions.
+from the distribution z∼N(µ, σ). The illustration of VAE
+architecture is given in Fig. 2.
+To train VAE, the objective is ﬁnding the parameters θ
+and φ that maximize the evidence lower bound (ELBO) L
+of the marginal likelihood of a data point pθ(X). The ﬁrst
+term on the right-hand side of Eq. 1 is maximizing the
+probability of reconstructing the input X which corresponds
+to reconstruction loss. The second term is minimizing the
+KL divergence, which is a distance measure for probability
+distributions, between approximated posterior (encoder’s distribution) and ﬁxed Gaussian distribution with zero mean and
+unit variance. This leads to the lower bound on the probability
+density function of our data as is shown in Eq. 1. We want
+to ﬁnd the parameters (weights, biases) that maximize his
+objective function. Note that in the original VAE, β = 1.
+β-VAE introduces a weighting factor β that balances reconstruction accuracy and latent channel capacity in Eq. 1. With
+β > 1 stronger pressure for the posterior qφ(z|X) to be close
+to the standard Gaussian prior p(z) is introduced. This limits
+the capacity of latent z to learn a better disentanglement. βVAE with β = 1 corresponds to the original VAE. Higgins
+et al. [3] demonstrated that β-VAE with the hyperparameter
+β > 1 outperforms VAE on various datasets since it forces
+learning a more efﬁcient latent representation of the data. This
+provides increased disentangling performance. However, there
+is a trade-off between reconstruction accuracy and learnt disentanglement quality within the learnt latent representations.
+A high β value can lead to poorer reconstruction due to
+the loss of information while passing through the restricted
+latent channel. Therefore, it is important to ﬁnd a balance that
+ensures a disentangled representation while still being able
+to reconstruct X. On the other hand, β-VAE requires only
+tuning β hyperparameter that can be estimated heuristically
+and does not suffer from the training instability of GAN-based
+approaches.
+B. Anomaly Score
+In testing, samples X at the test set are inputted to the
+encoder of the trained VAE. The encoder outputs a vector of
+means and standard deviations of each image. Reparametrization trick is applied to get the latent vector z which is sampled
+from Gaussian distribution with the mean and standard deviation computed by the encoder. Then the decoder reconstructs
+the input image from this distribution. The ﬁrst term in Eq.
+1 forms the reconstruction loss (A(X)Recon). It is computed
+as the anomaly score by calculating the mean squared error
+between the input image and reconstructed image for each
+test sample, as given in Eq. 2 where N is the mini-batch size.
+VAE trained on only normal samples is expected to be able
+to reconstruct normal samples with low reconstruction error
+and yield low anomaly score, whereas abnormal samples are
+reconstructed with high reconstruction error and yield high
+anomaly score.
+A(X)Recon = logp(X|z) = 1
+N
+N
+X
+n=1
+( ˜Xn −Xn)2
+(2)
+The objective is probability of occurrence of X, hence
+anomaly score can also be calculated by A(X)ELBO
+=
+−logp(X). Since the data is continuous and encoder’s distribution is assumed to have a Gaussian distribution, KL divergence
+can be computed in closed form as the ﬁrst term of the right
+hand-side of Eq. 3 as derived by Kingma and Welling [4]:
+Kwon et al. [26] proposed training autoencoders with
+gradient constraint to model normal data distributions and
+using gradient-based representations for anomaly detection,
+motivated to capture information unavailable in the activationbased network representation. Anomalies require more model
+parameter updates to be represented compared to normal data,
+hence backpropagated gradients are used to characterize how
+much model update is required by input to detect anomalies.
+The gradients of each decoder layer with respect to model
+parameters,
+∂L
+∂θi are calculated by backpropagating the reconstruction loss. The algorithm combines reconstruction and
+gradient loss as an anomaly score is given by,
+A(X)GradCon = A(X)Recons + γLgrad
+where γ is a scalar and Lgrad is cosine similarity i.e. the cosine
+of the angle between average training gradients and gradient
+loss of current (kth) iteration as given in Eq. 4.
+where J is the loss function that is calculated during training
+and deﬁned as,
+J = L + αLgrad
+where L is ELBO and α is a weight for the gradient loss.
+This anomaly detection algorithm using gradient constraint
+for training autoencoders and using a combination of reconstruction error and gradient loss as an anomaly score is called
+GradCon.
+
+===== Page 4 =====
+
+4
+Fig. 2: Variational Autoencoder Architecture with isotropic Gaussian prior distribution over latent vector.
+logpθ(X) ≥maxφ,θ
+1
+N
+N
+X
+n=1
+logpθ(Xn|z) −βKL(qφ(z|X)||N(z; 0, I))
+(1)
+A(X)ELBO = 1
+2
+J
+X
+j=1
+(1 + log(σ2
+j ) −µ2
+j −σ2
+j ) −1
+N
+N
+X
+n=1
+( ˜
+Xn −Xn)2
+(3)
+Lgrad = −Ei
+"
+cosSIM(∂Jk−1
+∂θiavg
+, ∂Lk
+∂θi
+)
+#
+,
+∂Jk−1
+∂θiavg
+=
+1
+k −1
+k−1
+X
+t=1
+∂Jt
+∂θi
+(4)
+C. Decision Rule
+After calculating the anomaly score, a decision rule is used
+to determine whether the sample is an anomaly or normal
+by comparing against a threshold [27]. Anomaly score is
+expected to be low for the samples that the model is trained
+on i.e. the normal samples, whereas the model is not able
+to model the never seen abnormal samples which yield a
+high anomaly score. The samples with higher anomaly score
+than the threshold are evaluated as an anomaly and the
+ones below the threshold are normal samples. The threshold
+for the decision rule is considered as a hyperparameter and
+determined on the validation set. It is set to a value close to
+the anomaly score obtained on the validation set.
+IV. EXPERIMENT
+In this section, we describe our dataset and the preprocessing methods we employ. Then, we provide comparisons
+between VAE, β-VAE, and the CAE. The CAE is an unsupervised model that learns a low-dimensional representation
+of the input [28], selected due to its characteristic to separate
+normal from abnormal data.
+A. Dataset and Preprocessing
+Our dataset has 2513 normal training, 567 normal validation
+and 150 test samples (66 abnormal and 84 normal). Some
+abnormal samples are obtained from the open dataset [29].
+The abnormal (defective solder joints) samples in the test
+set include solder bridge, insufﬁcient solder, excessive solder,
+solder ﬂags, solder dewetting, pin holes, ﬂux residues, missing
+and shifted components. Ground truth labels of these samples
+are only provided during testing to evaluate anomaly detection
+performance. The dataset is obtained by segmenting both IC
+and non-IC solder joints from solder pad regions of several
+PCBs as shown in red in Fig. 1. For data preprocessing, our
+data is cropped from the short side to preserve the integrity
+of solder joint images and resized to 64x64. Then, the data
+is normalized to zero mean, unit variance to have the range
+from −1 to 1, and horizontal ﬂipping is applied as a random
+transformation to avoid overﬁtting but without increasing the
+dataset size.
+B. Architecture and Hyperparameters
+Both VAE and β-VAE share the same architecture since
+the only difference is the added β term in the objective
+function. These architectures were shown in Fig. 2 and in more
+detail with all the parameter sizes in Fig. 3. For comparison,
+the CAE has the same encoder-decoder structure except that
+there is a single convolutional layer at the bottleneck to
+compress the input. The encoder, which approximates the
+mean and standard deviation, has 5 convolutional layers with
+an increasing number of ﬁlters from 3 to 256 and two separate
+convolutional layers at the bottleneck have 10 ﬁlters. The
+decoder has transposed convolutional layers as a counterpart
+of the encoder. The convolutional layers have a ﬁlter size
+of 3x3 and stride 1. Convolutional layers are followed by
+batch normalization layers that normalize the feature map to
+zero mean and unit variance [30]. Leaky ReLU is applied for
+non-linearity to all the layers except for the output layer of
+the decoder, which uses Tanh. Max pooling layers are used
+to reduce the spatial dimension of feature maps by downsampling, while the upsampling layers increase the spatial
+
+===== Page 5 =====
+
+5
+size of the image by using bicubic interpolation. The VAE
+architecture is given in Fig. 3 with all the hyperparameters. As
+a convention, Conva,b,c and Tconva,b,c are the convolutional
+and the transposed convolutional layers, respectively, where a
+is the number of channels in the input image, b is the number
+of channels produced by the convolution, and c is the size
+of the c × c convolution kernel. Max pooling2,2 shows the
+max pooling ﬁlter size and stride, while upsample2 provides
+bicubic interpolation sampling with a scale factor of 2. The
+latent vector is reshaped to the channel size 10 × 8 × 8 to
+generate the input image from latent vector z.
+The model is trained with the ADAM optimizer [31] for 100
+epochs with an initial learning rate of 1e −2 that is decayed
+as the validation loss stops decreasing. To prevent overﬁtting
+to the training dataset, we resorted to L2 regularization that
+penalizes the high weights on features. The selected batch size
+is 64. β (KL weight) is selected as greater than one to learn
+better disentanglement of data, the effect of which will be
+more deeply analyzed in the next section. Lastly, the latent z
+dimension with the size of 640 is selected since too small z can
+not model the marginal likelihood of a data point and too big z
+degrades the overall accuracy since learnt latent representation
+becomes indistinguishable for abnormal and normal samples.
+These hyperparameters given in Table I are determined on the
+validation set.
+TABLE I: Hyperparameter Settings for β-VAE
+Hyperparameters
+Value
+Initial learning rate
+1e −2
+Learning rate decay when loss plateous
+γ = 0.1
+Number of Epochs
+100
+Optimizer
+Adam
+Weight decay
+λ = 1e −4
+Batch Size (N)
+64
+β (KL weight)
+3
+Latent space dimension
+640
+V. RESULTS
+Original versus reconstructed normal and abnormal samples
+are given in Fig. 4. Normal samples yield a low anomaly
+score, whereas abnormal samples yield a high anomaly score.
+Precision, recall and F1-score are used as evaluation metrics.
+Recall rate shows what proportion of actual anomalies are
+detected correctly and precision is the rate for the correctness
+of these estimations. F1-score is calculated to show the overall
+accuracy of the model from these metrics. All the results are
+at least an average of 50 runs.
+The generative models, VAE and β-VAE, are compared
+based on the evaluation metrics given in Table II; namely the
+reconstruction loss (Recon), ELBO and the GradCon anomaly
+score (the combination of reconstruction and gradient loss).
+The CAE model was also evaluated with reconstruction loss
+and GradCon as an anomaly score. The highest accuracy is
+obtained for β-VAE for β = 3 with a score of 0.809 with
+GradCon anomaly, outperforming CAE and VAE. The ELBO
+loss resulted in lower accuracy than reconstruction loss for
+VAE and β-VAE. GradCon made improvement over all the
+models with activation-based representations.
+Disentangled representations emerge when the right balance
+is found between the reconstruction accuracy and latent capacity restriction [3], hence the effect of different β term is
+investigated on β-VAE that is trained with gradient constraint
+as shown in Table III. β = 3 is selected for β-VAE, which
+yields the highest F1-score. Using larger or smaller β values
+also led to lower accuracy while larger beta values resulted in
+poorer reconstruction accuracy.
+In order to see the effect of different β values on the latent
+space representations, t-SNE [32], which is a nonlinear dimensionality reduction algorithm that is useful for visualizing
+high dimensional data, is employed. Test images are encoded
+in the beta-VAE that is trained with gradient constraint (GradCon) and ELBO objective function for different β values,
+then the resultant mean vector of the approximated posterior
+distribution is passed to t-SNE with the perplexity of 5 since
+the dataset is small. Then t-SNE maps 640-dimensional latent
+space into 2-dimensional space. The embeddings are scaled
+to bring all the values to [0, 1]. Latent space visualization
+of β-VAE that is trained with gradient constraint and ELBO
+objective is given in Fig. 5 and 6 respectively. t-SNE is run
+100 times and the embeddings with the lowest KL divergence
+is selected for each model. As shown in Fig. 5 and 6, samples
+from the same class are closer to each other and appear in
+clusters. For β-VAE that is trained with gradient constraint,
+clusters of the classes are entangled i.e. not easily separable
+for the β values of 1 and 10 as shown in Fig. 5 (b) and (d).
+This behaviour is observed for the β values of 0.1 and 10 for
+β-VAE trained with ELBO objective as given in Fig. 6 (a) and
+(d). However, we can see that the classes are more separable
+for β = 3 although they are split into parts as given in Fig. 5
+and Fig. 6 (c) for both models. For the real-world complex
+samples, it is difﬁcult to achieve clear disentanglement or
+visualize it in two dimensions, but we can deduce that a betterdisentangled representation is learnt for β = 3.
+VI. CONCLUSIONS
+In this study, solder joint defect detection in PCBs is
+considered as an anomaly detection problem. We propose
+using β-VAE, which is a generative model for disentangled
+representation learning, for anomaly detection to detect errors
+in both IC and non-IC component solder joints. beta-VAE
+disentangles factors of variation in data with that disentangled
+representations understanding and classifying data become
+easier. We compared different anomaly scoring techniques
+based on activation and gradient-based representations and the
+effect of different parameter beta on accuracy is investigated.
+The highest accuracy is achieved for the combination of reconstruction and gradient loss as an anomaly score to anomaly
+detection of solder joints. Despite the challenging environment
+of the problem due to the varying shape and small size of
+solder joints, we show that high accuracy can be achieved
+without using special lighting, hand-crafted features or labelled
+data for supervised learning. In the context of solder joint
+
+===== Page 6 =====
+
+6
+Fig. 3: Sequence of blocks in the ﬁrst row denote the encoder with 5 convolutional (conv), 3 max pooling layers and a
+convolutional bottleneck to obtain the parameters for the sampling of the latent vector z. Blocks in the second row form the
+decoder that uses 6 transposed convolution (Tconv) and 3 upsampling layers to reconstruct the input image from z. The terms
+bn and LRELU stand for batch normalization and leaky RELU, respectively.
+TABLE II: Comparison of reconstruction-based and generative models for different anomaly scores in terms of precision, recall
+and F1-score (average of 50 runs).
+Evaluation
+Method
+CAE
+VAE
+β-VAE
+Recon
+GradCon
+Recon
+ELBO
+GradCon
+Recon
+ELBO
+GradCon
+Precision
+0.728 ± 0.01
+0.708
+0.779 ± 0.05
+0.805 ± 0.03
+0.760 ± 0.03
+0.783 ± 0.04
+0.825 ± 0.03
+0.804 ± 0.04
+Recall
+0.573 ± 0.01
+0.780 ± 0.02
+0.802 ± 0.03
+0.773 ± 0.04
+0.836 ± 0.04
+0.827 ± 0.03
+0.777 ± 0.04
+0.816 ± 0.05
+F1-score
+0.641
+0.742 ± 0.01
+0.789 ± 0.03
+0.787 ± 0.03
+0.796 ± 0.03
+0.803 ± 0.03
+0.799 ± 0.03
+0.809 ± 0.04
+TABLE III: The effect of hyperparameter β on accuracy for β-VAE trained with gradient constraint.
+Evaluation
+Beta (β)
+0.01
+0.1
+1 (VAE)
+3
+10
+Precision
+0.704 ± 0.01
+0.734 ± 0.01
+0.760 ± 0.03
+0.804 ± 0.04
+0.720 ± 0.05
+Recall
+0.786 ± 0.03
+0.824 ± 0.02
+0.836 ± 0.04
+0.816 ± 0.05
+0.754 ± 0.05
+F1-score
+0.743 ± 0.02
+0.776 ± 0.01
+0.796 ± 0.03
+0.809 ± 0.04
+0.735 ± 0.04
+inspection where normal samples are in abundance and there
+are few abnormal samples, we show that the designed betaVAE architecture is effective and leads to disentangled latent
+space representations.
+REFERENCES
+[1] M. Moganti, F. Ercal, C. H. Dagli, and S. Tsunekawa, “Automatic pcb
+inspection algorithms: a survey,” Computer vision and image understanding, vol. 63, no. 2, pp. 287–313, 1996.
+[2] M. Jan´oczki, ´A. Becker, and L. e. a. Jakab, “Automatic optical inspection
+of soldering,” Materials Science-Advanced Topics, 2013.
+[3] I. Higgins, L. Matthey, A. Pal, C. Burgess, X. Glorot, M. Botvinick,
+S. Mohamed, and A. Lerchner, “beta-vae: Learning basic visual concepts
+with a constrained variational framework,” in ICLR, 2017.
+[4] D. P. Kingma and M. Welling, “Auto-encoding variational bayes,” arXiv
+preprint arXiv:1312.6114, 2013.
+[5] D. J. Rezende, S. Mohamed, and D. Wierstra, “Stochastic backpropagation and approximate inference in deep generative models,” in
+International conference on machine learning, 2014, pp. 1278–1286.
+[6] Y. Bengio, A. Courville, and P. Vincent, “Representation learning: A
+review and new perspectives,” IEEE Trans. on Pattern Analysis and
+Machine Intelligence, vol. 35, no. 8, pp. 1798–1828, 2013.
+[7] T.-H. Kim, T.-H. Cho, Y. S. Moon, and S. H. Park, “Visual inspection
+system for the classiﬁcation of solder joints,” Pattern Recognition,
+vol. 32, no. 4, pp. 565–575, 1999.
+[8] X. Hongwei, Z. Xianmin, K. Yongcong, and O. Gaofei, “Solder joint
+inspection method for chip component using improved adaboost and decision tree,” IEEE Trans. on components, packaging and manufacturing
+technology, vol. 1, no. 12, pp. 2018–2027, 2011.
+[9] H. Wu, X. Zhang, H. Xie, Y. Kuang, and G. Ouyang, “Classiﬁcation of
+
+===== Page 7 =====
+
+7
+Fig. 4: Reconstructed normal and abnormal samples. The ﬁrst row shows original input images with corresponding ground-truth
+labels and the bottom row shows the reconstructions along with predicted labels and anomaly scores.
+(a)
+(b)
+(c)
+(d)
+Fig. 5: 2-dimensional latent space representation of β-VAE that is trained with gradient constraint for (a) β = 0.1, (b) β = 1,
+(c) β = 3 and (d) β = 10 after applying t-SNE. Blue circles represent normal test data and the red circles represent abnormal
+test data.
+(a)
+(b)
+(c)
+(d)
+Fig. 6: 2-dimensional latent space representation of β-VAE that is trained with ELBO objective function for (a) β = 0.1, (b)
+β = 1, (c) β = 3 and (d) β = 10 after applying t-SNE. Blue circles represent normal test data and the red circles represent
+abnormal test data.
+solder joint using feature selection based on bayes and support vector
+machine,” IEEE Trans. on Components, Packaging and Manufacturing
+Technology, vol. 3, no. 3, pp. 516–522, 2013.
+[10] F. Wu, X. Zhang, Y. Kuan, and Z. He, “An aoi algorithm for pcb based
+on feature extraction,” in 7th World Congress on Intelligent Control and
+Automation.
+IEEE, 2008, pp. 240–247.
+[11] F. Wu and X. Zhang, “An inspection and classiﬁcation method for
+chip solder joints using color grads and boolean rules,” Robotics and
+Computer-Integrated Manufac., vol. 30, no. 5, pp. 517–526, 2014.
+[12] J.-D. Song, Y.-G. Kim, and T.-H. Park, “Smt defect classiﬁcation by
+feature extraction region optimization and machine learning,” The Int.
+Jour. of Adv. Manufacturing Tech., vol. 101, no. 5, pp. 1303–1313, 2019.
+[13] F. Wu and X. Zhang, “Feature-extraction-based inspection algorithm
+for ic solder joints,” IEEE Trans. on components, packaging and
+manufacturing technology, vol. 1, no. 5, pp. 689–694, 2011.
+[14] K. W. Ko and H. S. Cho, “Solder joints inspection using a neural network
+and fuzzy rule-based classiﬁcation method,” IEEE Trans. on Electronics
+Packaging Manufacturing, vol. 23, no. 2, pp. 93–103, 2000.
+[15] A. Crispin and V. Rankov, “Automated inspection of pcb components
+using a genetic algorithm template-matching approach,” The Int. Jour.
+of Advanced Manufacturing Tech., vol. 35, no. 3, pp. 293–300, 2007.
+[16] G. Acciani, G. Brunetti, and G. Fornarelli, “Application of neural
+networks in optical inspection and classiﬁcation of solder joints in
+surface mount technology,” IEEE Trans. on industrial informatics, vol. 2,
+no. 3, pp. 200–209, 2006.
+[17] F. Ulger and S. E. Yuksel, “A standalone open-source system for
+optical inspection of printed circuit boards,” in Signal Proc.: Algorithms,
+Architectures, Arrangements, and Appl.
+IEEE, 2019, pp. 105–110.
+[18] N. S. S. Mar, P. Yarlagadda, and C. Fookes, “Design and development
+of automatic visual inspection system for pcb manufacturing,” Robotics
+and computer-integrated manufact., vol. 27, no. 5, pp. 949–962, 2011.
+[19] D. W. Capson and S.-K. Eng, “A tiered-color illumination approach for
+machine inspection of solder joints,” IEEE Trans. on Pattern Analysis
+and Machine Intelligence, vol. 10, no. 3, pp. 387–393, 1988.
+[20] W. Dai, A. Mujeeb, M. Erdt, and A. Sourin, “Soldering defect detection
+in automatic optical inspection,” Advanced Engineering Informatics,
+vol. 43, p. 101004, 2020.
+[21] N. Cai, G. Cen, J. Wu, F. Li, H. Wang, and X. Chen, “Smt solder
+joint inspection via a novel cascaded convolutional neural network,”
+IEEE Trans. on Components, Packaging and Manufacturing Technology,
+vol. 8, no. 4, pp. 670–677, 2018.
+[22] A. Mujeeb, W. Dai, M. Erdt, and A. Sourin, “One class based feature
+learning approach for defect detection using deep autoencoders,” Advanced Engineering Informatics, vol. 42, p. 100933, 2019.
+[23] B. Zong, Q. Song, M. R. Min, W. Cheng, C. Lumezanu, D. Cho, and
+H. Chen, “Deep autoencoding gaussian mixture model for unsupervised
+anomaly detection,” in ICLR, 2018.
+[24] Y. Lu and P. Xu, “Anomaly detection for skin disease images using
+
+===== Page 8 =====
+
+8
+variational autoencoder,” arXiv preprint arXiv:1807.01349, 2018.
+[25] D. Zimmerer, F. Isensee, J. Petersen, S. Kohl, and K. Maier-Hein,
+“Unsupervised anomaly localization using variational auto-encoders,” in
+MICCAI, 2019, pp. 289–297.
+[26] G. Kwon, M. Prabhushankar, D. Temel, and G. AlRegib, “Backpropagated gradient representations for anomaly detection,” in ECCV, 2020,
+pp. 206–226.
+[27] G. Boracchi and D. Carrera, “Tutorial: Anomaly detection in images,”
+IEEE ICIP, 2020.
+[28] G. E. Hinton and R. R. Salakhutdinov, “Reducing the dimensionality of
+data with neural networks,” Science, vol. 313, no. 5786, pp. 504–507,
+2006.
+[29] H. Lu, D. Mehta, O. P. Paradis, N. Asadizanjani, M. Tehranipoor, and
+D. L. Woodard, “FICS-PCB: A multi-modal image dataset for automated
+printed circuit board visual inspection.” IACR Cryptol. ePrint Arch., vol.
+2020, p. 366, 2020.
+[30] S. Ioffe and C. Szegedy, “Batch normalization: Accelerating deep
+network training by reducing internal covariate shift,” in International
+conference on machine learning.
+PMLR, 2015, pp. 448–456.
+[31] D. P. Kingma and J. Ba, “Adam: A method for stochastic optimization,”
+2017.
+[32] L. Van der Maaten and G. Hinton, “Visualizing data using t-sne.” Journal
+of machine learning research, vol. 9, no. 11, 2008.

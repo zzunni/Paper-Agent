@@ -1,0 +1,3974 @@
+
+
+===== Page 1 =====
+
+arXiv:2506.10713v1  [cs.CV]  12 Jun 2025
+Deep Learning-based Multi Project InP Wafer
+Simulation for Unsupervised Surface Defect Detection
+Emílio Dolgener Cantúa, Rolf Klemens Wittmannb, Oliver Abdeenb, Patrick
+Wagnerb, Wojciech Sameka,c,d, Moritz Baierb, Sebastian Lapuschkina,e,∗
+aDepartment of Artificial Intelligence, Fraunhofer Heinrich Hertz Institute, Einsteinufer
+37, Berlin, 10587, Germany
+bDepartment of Photonic Components, Fraunhofer Heinrich Hertz Institute, Einsteinufer
+37, Berlin, 10587, Germany
+cDepartment of Electrical Engineering and Computer Science, Technische Universität
+Berlin, Straße des 17. Juni 135, Berlin, 10623, Germany
+dBerlin Institute for the Foundations of Learning and Data, Ernst-Reuter Platz
+7, Berlin, 10587, Germany
+eCentre of eXplainable Artificial Intelligence, Technological University Dublin, Park
+House Grangegorman, 191 North Circular Road, Dublin, D07 H6K8, Ireland
+Abstract
+Quality management in semiconductor manufacturing often relies on template matching with known golden standards. For Indium-Phosphide (InP)
+multi-project wafer manufacturing, low production scale and high design
+variability lead to such golden standards being typically unavailable. Defect
+detection, in turn, is manual and labor-intensive. This work addresses this
+challenge by proposing a methodology to generate a synthetic golden standard using Deep Neural Networks, trained to simulate photo-realistic InP
+wafer images from CAD data. We evaluate various training objectives and
+assess the quality of the simulated images on both synthetic data and InP
+wafer photographs. Our deep-learning-based method outperforms a baseline
+decision-tree-based approach, enabling the use of a ’simulated golden die’
+from CAD plans in any user-defined region of a wafer for more efficient defect detection. We apply our method to a template matching procedure, to
+demonstrate its practical utility in surface defect detection.
+∗Corresponding author.
+Email address: sebastian.lapuschkin@hhi.fraunhofer.de (Sebastian
+Lapuschkin)
+
+===== Page 2 =====
+
+Keywords:
+visual inspection, defect detection, machine learning, neural
+networks, golden standard simulation, InP, photonics, MPW
+1. Introduction
+Photonic wafers are manufactured through a complex combination of epitaxial crystal growth [31], etching, deposition and lithography processes, either on silicon (Si) or indium-phosphide (InP) substrates.
+InP photonic
+integration is desirable because it allows for the integration of lasers and
+optical amplifiers, smaller scales and operation in higher frequency (to the
+THz range) [34]. InP wafer manufacturing follows the developments already
+achieved in silicon-based integration [29], being however still more expensive
+and prone to manufacturing defects [48]. The advent of multi-project wafer
+(MPW) runs enables the integration of multiple distinct designs on a single wafer, with each design consisting of standardized, modular components.
+This approach makes small-scale experimental production increasingly viable
+by reducing per-stakeholder costs through effective cost distribution [47, 46].
+The number of identical finished dies is much lower than in traditional industrial manufacturing, as it is common for a given prototypical MPW design to
+be produced only once. This setting implies a very low error tolerance, due
+to the high cost and small production scale. These factors make traditional
+automated visual inspection techniques that rely on a “golden sample” approach obsolete. Automation remains desirable, as fully manual inspection
+ties up qualified, expensive personnel for extended periods of time and is
+prone to performance degradation due to operator fatigue [23].
+The main challenge for an automated visual inspection approach for the
+MPW is the lack of ground truth labels for die inspection. To tackle this
+issue, we propose a method to generate a synthetic, defect-free golden sample
+of a wafer from CAD manufacturing plans by training a fully convolutional
+neural network. The simulation can be used for unsupervised defect detection
+comparing the generated image to the image of the real wafer. An overview
+diagram of the proposed system is presented at Figure 1.
+We evaluate various possible implementations for the simulation module
+and assess the potential for a defect detection module. Our first approach
+predicts the wafer’s visual representation in terms of “material type” as quantized color values via a segmentation model. Our second approach uses a regression model to directly predict RGB values in pixel space. We discuss and
+2
+
+===== Page 3 =====
+
+evaluate the methodological differences and practical implications of both approaches. Both simulation outputs can then be compared algorithmically to
+real wafer photographs, using similarity scores from common computer vision
+metrics to detect and localize manufacturing defects.
+The wafer layouts used in this work are small-scale prototypes, typically
+containing 20 to 30 unique designs, with no more than five identical wafers
+produced per run. These die designs include third-party intellectual property,
+and labeled ground truth defect segmentation maps are generally unavailable
+for most wafers.
+To ensure reproducibility, we publish a set of synthetic
+data mimicking real photonic wafers, complete with pixel-perfect labels and
+artificial CAD manufacturing instructions.
+We evaluate our approach on
+both the synthetic data — which closely matches real-world scenarios —
+and a series of real MPWs, demonstrating the practical applicability of our
+method.
+This section first reviews literature related to various aspects of our work.
+The rest of the paper is organized as follows: Section 2 covers the origin and
+processing of the data used in this project. Section 3 details the simulation
+procedure and presents the results.
+In Section 4 outlines a pathway for
+template matching-based defect detection using our simulations. In Section 5
+we discuss and contextualize the results. Finally, Section 6 summarizes our
+contributions, highlights the strengths and limitations of our approach, and
+explores potential future research.
+1.1. Related Work
+Image-based approaches for surface inspection are commonly in use in
+semiconductor manufacturing [4] due to their low cost, non-invasiveness [58]
+and flexibly, as well as their potential for integration into human-operated
+review stations. In traditional industrial-scale silicon-based semiconductor
+manufacturing, automatic visual inspection is easily handled by selecting a
+defect-free golden standard die via functional testing. This golden sample is
+then used as a reference for template matching [18, 23]. Die-to-die inspection
+can also be performed to identify pairwise discrepancies between dies [14, 52,
+36, 2], a method referred to as “differential scanning” [13]. These approaches
+work when there is a large enough sample size, which is typically not the case
+in MPW runs. In conventional MPW inspection, human experts manually
+examine the photonic integrated circuit (PIC) with a microscope [6, 54].
+This process is time-consuming, costly, and prone to errors due to operator
+fatigue, resulting in expected defect detection rates of only 60-80% [15].
+3
+
+===== Page 4 =====
+
+(1) Dataset
+(CAD files
+and photo)
+(2) Preprocessing
+(alignment, augmentation)
+(3) Simulation
+(U-Net)
+(4) Comparison
+and post-processing
+(5) Defect
+detection
+(6) Evaluation
+Photo and CAD
+CAD
+Simulated
+patch
+Score map
+Defect
+instances
+Labeled
+defects
+Photo
+(only in training)
+Figure 1: An overview of our proposed “golden die” simulation methodology. (1) A dataset
+consists of wafer image tiles with corresponding CAD segments. (2) After performing preprocessing steps, (3) a fully convolutional neural network is trained during the system’s
+optimization phase. In production, the system then only ingests CAD segments to simulate
+defect-free wafer images. (4) Via a comparison of the simulated “golden die“ for the CAD
+segment to an image of the actually produced wafer, per-pixel differences can be recorded,
+leading to (5) automated defect detection and scoring capabilties in experimental InP
+MPW. Prior to deployment, the defect detection performance can be evaluated against
+ground-truth labels (6).
+4
+
+===== Page 5 =====
+
+Before 2012, when deep learning-based approaches were still not dominant, state-of-the-art saliency detection methods were mostly hand-crafted
+[63, 37]. Today, it is common to combine learned and hand-crafted methods
+in the same pipeline [5]. Modern approaches based on convolutional neural
+networks (CNNs) typically focus on supervised defect classification [9, 49, 10,
+7, 11, 28, 24, 12, 56]. This approach requires extensive ground-truth labeled
+data from defective and non-defective patterns. A key challenge in object
+detection-based tasks, however, is the sparsity of positive samples [45, 35, 60],
+which is even more pronounced in the specific applications of defect- or
+anomaly detection [5].
+Since labeling datasets is time-consuming, unsupervised and self- or semi-supervised approaches are desirable [8], offering
+significant opportunities for future research [22]. Examples of unsupervised
+surface defect detection methods include [40], which uses root mean-squared
+error (RMSE) in feature space to evaluate similarities between steel sheets,
+and [53], which applies a similar method for printed circuit boards (PCBs)
+using a pre-trained CNN with a manually set separation threshold. Both
+methods provide patch-wise scores, and divide the target image into a grid,
+producing a coarse defect score map.
+Automated surface defect inspection is sought in several application domains, and is often performed by template matching. Such methods produce
+a defect score map from the similarity measured between samples, such as
+shown in Figure 2.
+Figure 2: Visualizations of the “score maps” generated by different defect detection methods in the literature. On the right of each panel, the score map for the corresponding
+patch in the left is shown. (a) Defect on MVA TFT-LCD panel, from [38]. (b) Die crack
+on electronic wafer, from [61].
+(c) Crack on a DC-motor commutator, from [50].
+(d)
+Particles on a TFT-LCD panel, from [38]. (e) Broken ends in patterned fabric, from [20].
+(f) Knots in patterned fabric, from [20]. (g) Fingerprints on solar wafer, from [32]. Notice
+that in some domains, such as (c) and (f), patches are very uniform and lack structure.
+In contrast, the semiconductor setting typically features more intricate structures across
+the surface, increasing the complexity of the problem.
+Our system uses a U-Net, a fully convolutional neural network, as its
+5
+
+===== Page 6 =====
+
+backbone to generate an artificial golden standard for a given wafer. The
+U-Net, developed by Ronneberger et al. [43] for semantic segmentation on
+grayscale histological images, has an encoder-decoder architecture with skip
+connections that align input and output structures [26]. The architecture has
+been modified for various applications across multiple fields [51, 21, 33, 27].
+Some methods applied to natural images and cityscapes generate realistic images from semantic segmentation labels [26, 55, 42]. The works of
+[55] and [26] use a cGAN to perform image-to-image translation, generating
+new versions of images with altered appearance by selective manipulation of
+classes in the labeled segmentation maps. Results in both works are evaluated quantitatively with similarity metrics, but also qualitatively by human
+assessment.
+To the best of our knowledge, no prior work has applied CNNs to generate
+a photonic wafer’s golden standard in a similarly constrained setting. While
+there is relevant research in textile defect detection, motivated by similar
+challenges as in semiconductors manufacturing, the key difference lies in the
+translation invariance of textures in textiles. Methods in this domain isolate
+recurring patterns and use a similarity metric over a golden sample [39, 41].
+In particular, [20] generates a golden standard from defective data using a
+generative adversarial network. Unsupervised generative methods for template matching are also widely used in anomaly detection for hyperspectral
+aerial imagery [3, 1] and medical imagery [44].
+Evaluating results in an unsupervised setting remains a challenge, as the
+lack of training data (with ground truth annotations) also means that there
+usually is not enough evaluation data (with ground truth annotations). Consequently, evaluating models without ground truth post-deployment requires
+extensive manual labor [15]. This issue of evaluation without ground-truth
+in deployment is a known open problem [30, 62, 59].
+2. Data
+We base our work on real wafer data but also generate a synthetic dataset
+to mimic its characteristics for replicability, due to third party intellectual
+property constraints. The photonic wafers in this study are manufactured
+through a sequence of steps, including epitaxial crystal growth, etching, deposition and lithography.
+Wafer designs are stored in the GDSII format,
+the standard for exchanging of CAD plans for semiconductor manufacturing.
+From the GDSII plans, we obtain binary bitmaps corresponding to the areas
+6
+
+===== Page 7 =====
+
+affected by each manufacturing step. The wafers analyzed here undergo 24
+manufacturing steps, as encoded by 24 CAD bitmap layers. To use a semantic segmentation model, the CAD plans need to be aligned with the wafer
+photos (described below). This alignment process and the conversion from
+GDSII to matrix form is detailed in [57]. We represent the binary states of
+the individual rasterized CAD layers with values in {−1, 1}H×W×1.
+The wafers are typically circular (3-inch diameter), and photographed at
+a resolution of 3.7µm/pixel. The optical image P is obtained by stitching
+several microscope photographs, with the final stitched image typically presenting a resolution in the order of 20k × 20k pixels. The stitching process
+is handled by the microscope’s firmware1 and thus is not a further part of
+this study. The resulting image has 3 color channels (RGB), with 8 bits
+per pixel, but is re-scaled and saved in our datasets as P ∈[0, 1]H×W×3 in
+double precision floating point, where H and W represent the image’s height
+and width in pixels. Dimensions may vary due to manual positioning on the
+microscope tray.
+In the process described so far, both the automatic stitching from the
+microscope and the homographic transformation applied to align the CAD
+layers over the photos are sources for potential misalignment, which must be
+addressed downstream.
+Next to simulations targeting the complete range of the full color RGB
+color space, we also generate and evaluate simulations in a reduced, quantized
+color-space. To this end, each wafer image is represented as a single-channel
+64-color quantized image Pq ∈Z ∩[0..63]H×W, where the pixel value corresponds to the index of a color in the wafer’s color palette inferred from
+quantization. The quantization process, described in [17], reduces the 2563
+RGB colors to 64 centroids obtained through k-means clustering of a sample
+of the pixels from the wafer. See Figure 3 for example color palettes obtained
+from a real wafer photograph and synthetically generated wafer images.
+The CAD building plans and corresponding wafer images serve as inputs
+and training targets for the simulator network, respectively.
+Finally, the
+dataset contains a small amount of manually labeled defects. Their utility
+for training is limited, though, as only one of the designs in one of the wafers
+has been completely labeled. Due to the high cost and time consumption of
+the labeling task, the available labels are very sparse, and provide relatively
+1Microscope make and model: Keyence VHX-6000 with VH-ZST Zoom
+7
+
+===== Page 8 =====
+
+(a) Real wafer.
+(b) Synthetic wafers.
+Figure 3: Quantized palette samples from a real wafer (3(a)) and the synthetic wafer
+dataset (3(b)). The palette was ordered by solving a traveling salesman problem minimizing the euclidean distance of a path passing through the 64 RGB coordinates. The
+approximate cyclic ordering of the colors allows for evaluation of off-by-one misclassifications. Image best seen in color.
+coarse masks — i.e. bounding boxes covering an area larger than the actual
+defect’s footprint in the image.
+The labels are gathered using a custom
+designed software annotation tool, with which a user draws the contours for
+a certain defect and assigns a defect class to the marked area. Defect class
+information can be of further use in defect classification tasks and is present
+where possible in the dataset. For this work, labels are processed as binary
+masks, as we focus on defect localization only. The detailed description of
+the data used is presented in previous work [17], and a sample patch in our
+datasets contains the layers shown in Figure 4.
+The results shown in this work originate mostly from a set of generated
+synthetic datasets, for two reasons: the data pertaining to real wafers contains third party intellectual property, which the authors have no permission
+to reproduce. The artificial data further allows us to parametrize defect density for a few classes of defects. Our artificial data is analog to the real data,
+with the files following the same structure, with the difference that it has
+only 5 layers in the GDS data. The models trained with one set of data are
+thus not directly usable for the other type of data. The artificial dataset will
+be publicly available for reproducibility upon acceptance of this work. In the
+following experiments, we present results for both variants of data.
+As reference synthetic data for training we generated five datasets of
+8
+
+===== Page 9 =====
+
+(a) Wafer photo.
+(b) Label mask.
+(c) CAD layers.
+Figure 4: Visual representation of various data types associated with a wafer. Defect labels
+(see (b)), stored as a binary map in {−1, 1}, are overlaid on the photograph (a) for clarity.
+Defects (see red arrow in (a)) are typically smaller than the corresponding labels (yellow in
+(b)), which also encompass non-defective regions. The final image colorizes stacked CAD
+layers, each assigned a unique color. These layers inform about InP wafer manufacturing
+steps, are stored as binary images, and may overlap due to multiple processing steps
+affecting the same wafer area.
+Figure 5: A sample pair of a single CAD layer and corresponding image in our synthetic
+dataset. The remaining 4 CAD layers are empty. The borders of the component have a
+distinct color in the region between substrates. The local context is not explicit in the
+binary CAD mask, making such samples a suitable training pair.
+square images of 10k × 10k pixels in size.
+In CAD layers corresponding
+to textual information expressed on the wafers, approximately 20% of the
+characters contain defects. The remaining classes of defects – point defects,
+residual resists and nitride liftoff – are present at an approximate rate of 8
+defects/MPx, for each type. Such defect densities are perceptually similar
+to what is typically observed in the real data. All defects are accompanied
+with pixel perfect ground truth localization.
+9
+
+===== Page 10 =====
+
+Figure 6: The 4 defect classes implemented in the toy data: (a) dust particles, at 10,000
+defects/MPx; (b) nitride liftoff, at 100 defects/MPx; (c) residual resists or strange particles, at 100 defects/MPx; (d) burned platinum affecting 50% of the letters. The samples
+shown here were generated with a disproportionally high defect density when compared
+to real data, for increased visibility.
+3. Simulation of an Artificial Golden Standard
+Our primary objective is to determine whether it is possible to simulate
+a perceptually photorealistic wafer without defects, even when the training
+data contains imperfections. The location of the manufacturing defects is apriori unknown. Due to the sparsity of these defects in the wafer photographs
+and the clear correspondence from the structures in the CAD layers to the
+desired features in the photograph, it is expected that the simulations will
+not systematically replicate those defects and anomalies.
+We train a model U, a U-Net which approximates
+ˆp(R) = U(g(R))
+from the appearance of a sample patch p(R) ∈P, the photographed wafer,
+based on the g(R) CAD layouts in the corresponding rectangular region
+R = {(x, y) | xi ≤x ≤xi+w, yj ≤y ≤yj+h}.
+We adapt the original U-Net structure described by [43] as needed. The
+network’s input is the CAD layers g ∈Rkin×h×w, for kin CAD layers, where
+h and w are height and width of the simulated patch, respectively.
+For
+synthetic data, kin = 5, and for real wafers it varies according to the specific
+number of steps in the foundry’s process. The convolutions are zero-padded,
+eliminating cropping and providing outputs with the same resolution as the
+layer’s input. We use batch normalization [25] after each convolutional layer,
+which is also adopted in a subsequent presentation of the original U-Net [16].
+The upsampling is implemented through bilinear interpolation, which does
+10
+
+===== Page 11 =====
+
+not contain trainable parameters. The output of the last convolution layer
+is ˆx ∈Rkout×h×w, where kout denotes the number of output channels.
+The training objective is to minimize the dissimilarity S(ˆp, p) between the
+predicted and the actual wafer photographs. We train models for regression
+of the exact pixel values and per pixel classification models in quantized color
+space. The loss function S is chosen according to the learning task.
+For the regression in RGB space, we have kout = 3, for the red, green
+and blue (RGB) channels. The logits ˆx are scaled by the elementwise scaled
+hyperbolic tangent transformation
+ˆpRGB = tanh(ˆx)
+2
++ 0.5,
+(1)
+which constraints the output ˆpRGB ∈[0, 1]3×h×w.
+For the classification models, which use kout = 64 and a discretized color
+palette q ∈[0, 1]3×kout. From the vector ˆxhw ∈Rkout of class scores for a
+certain pixel we map the RGB representation of a simulated pixel ˆpbhw ∈
+ˆpRGB with
+ˆpbhw = qk, where k = arg max
+[1,kout]
+ˆxbhw.
+(2)
+We train unique models for each different wafer, as each wafer run might
+present very distinct visual characteristics from one another, as well as different orderings in the color palettes. Therefore, each model can be used solely
+with data from the same wafer run that originated the training data.
+3.1. Training details
+In the regression case, we train a model on each dataset to minimize the
+learned perceptual image patch similarity (LPIPS) [62] and another series of
+models minimizing the mean squared error (MSE) as target function. For
+the classification tasks, the objectives used are the categorical cross entropy,
+which is widely used for semantic segmentation and classification problems,
+and the focal loss, which is an expansion of cross entropy with reportedly
+good results on unbalanced datasets [35]. For each of the 4 objective functions
+used, we train a model on each of the 9 real wafers available and for each of 5
+sets of synthetic data. Additionally, we train a decision tree for benchmarking
+on each of the 14 datasets. We present numerical evaluation results for all
+models, yet our presentation of visual samples is limited due to third-party
+content on the wafers and copyright considerations.
+11
+
+===== Page 12 =====
+
+For training, we use patches 64 × 64 pixels in size, and batches have
+at most 128 patches. A considerable amount of patches in the wafer depict mostly uniform regions with no functional components — and even
+component-dense patches show a considerable portion of background. To
+balance the exposure of the model during training to the different kinds of
+visual features, we disconsider samples which do not reach a certain variance threshold in the quantized target sample. It is interesting to note that
+the eventual smaller batch sizes potentially accelerates the training process.
+However, a comprehensive investigation into these effects falls beyond the
+scope of the present work and will not be analyzed. In our experimental
+setup, we trained models across a variety of thresholds, specifically ranging
+from 0 to 50. See Appendix B for details on which thresholds were used in
+each model. An initial learning rate of 5 × 10−3 was adopted for all trained
+models. A decay implemented as a multiplicative factor of 0.6 is applied
+after epochs 1, 3, 5 and 8. Following the 8th epoch, learning rate is kept at a
+constant value of 6.48 × 10−4. We use stochastic gradient descent as weight
+update rule.
+All models were trained on a 70% partition of the corresponding dataset.
+No input transformations or augmentations are applied to the training samples. The validation of models trained on real wafers was performed on the
+unseen remaining 30% subset of the respective wafer. Each model trained on
+synthetic data is cross-validated on the the remaining datasets not employed
+in its own training.
+3.2. Evaluation methodology
+Our simulations are assessed based on their similarity to the original
+image and their ability to reject defects. The quality of simulations is quantitatively evaluated, with reported similarity metrics comparing simulated
+patches to original wafer images. Regarding defect rejection, it is acknowledged that simulation targets possess inherent unlabeled imperfections, and
+purely quantitative metrics may not adequately capture perceptual similarity
+or the nuances of failure modes. Consequently, a qualitative analysis of the
+results is also presented.
+We present results for the models generated after the 10-th training epoch
+and for the best performing intermediate checkpoints. We select a set of best
+models according to the MSE similarity to the ground truth and a set of
+checkpoints based on their LPIPS performance. This is approach is beneficial
+given that both metrics might not necessarily be correlated.
+12
+
+===== Page 13 =====
+
+To provide a reference performance benchmark we also train decision trees
+in the quantized space on a random sample of 5 × 106 pixels for each of the
+available datasets. The training samples are randomly ordered pixels paired
+with the corresponding CAD layer values, {phw, ghw}. Due to the pixelwise
+approach, the trees do not learn contextual information – in contrast to the
+patchwise input adopted for the neural networks, which integrates neighboring pixel information into the final prediction via convolutional filters.
+We evaluated the simulation outcomes by comparing the performance of
+trained models across different wafers and reported patchwise averages and
+standard deviations for a few similarity metrics on the unseen validation
+data. Inference is performed with batches of 20 square samples of 256 × 256
+pixels. With the addition of the decision tree baseline models, we provide
+evaluation results for 167 models.
+A global metric for an entire wafer can be derived by gathering the results
+from all simulated patches or even approximated by measures from a subset
+of the sample space. We compute for all models metrics in RGB space, either
+directly from the RGB images or from the reconstructed quantized RGB images for classification models. In addition, the classification models were also
+evaluated with semantic segmentation metrics (cross entropy, k-off accuracy
+and focal loss), comparing the categorical index of the quantized color in the
+target photo with the model’s prediction confidence across classes. For pixelwise metrics, the aggregated average for each patch is reported. Remaining
+metrics – SSIM, LPIPS, HaarPSI and PSNR – yield patchwise results, and
+therefore reported results consist of mean values across all patchwise results
+and standard deviation across patches. We present the most significant metrics in the section below, and the complete tables of results can be seen on
+Appendix A.
+3.3. Results
+The violin plots in Figures 7 and 8 illustrate the performance of models
+trained on synthetic data, grouped by objective function used in training.
+Points in both plots show the same models, however Figure 7 ranks these
+models according to the L2 distance between predictions and ground truth
+target, while Figure 8 evaluates simulations based on the LPIPS metric. It
+is evident that all models overperform the baseline offered by the decision
+trees, and that results demonstrate a notable consistency among the classification models. While regression models also exhibit considerable capability,
+13
+
+===== Page 14 =====
+
+it is necessary to care for selection of a high-performing intermediate checkpoint. It also is noteworthy that the best performing models in terms of
+the L2 distance do not necessarily rank highly in the LPIPS sense (and vice
+versa), indicating the importance of careful selection of training targets and
+evaluation metrics. All observed models yield realistic simulations.
+Classification models
+Regression models
+Dec. Tree
+Cross
+Entropy
+Focal
+L2
+LPIPS
+0.0040
+0.0045
+0.0050
+0.0055
+0.0060
+0.0065
+0.0070
+L2
+Dec. Tree
+10-th epoch
+Best epoch
+Figure 7: L2-norm validation loss for the models trained on synthetic data, grouped
+by which objective function was used for training.
+Lower is better.
+The training of
+classification models is more stable than of regression models. Even then, the quantitative
+performance of most models surpasses the tree’s performance.
+The results shown on Figures 7 and 8, however, are inconclusive on indicating which target function is generally more appropriate, as models tend
+to perform better when evaluated on the same function used as a training
+objective.
+We present in Figure 9 and Figure 10 predictions generated by a model
+trained on the regression task, its decision tree-based counterpart and the
+target patch they are simulating. These samples show that the scores presented by the models are in a range that is well suited for the problem at
+hand. Figure 9(c) depicts how the decision tree fails to capture the contextual information present on the transition from the traces to the substrate
+background, as expected. The CAD layers for this component show only a
+binary value where the trace runs, and the manufacturing process introduces
+14
+
+===== Page 15 =====
+
+Classification models
+Regression models
+Dec. Tree
+Cross
+Entropy
+Focal
+L2
+LPIPS
+0.43
+0.44
+0.45
+0.46
+0.47
+0.48
+0.49
+0.50
+LPIPS
+Dec. Tree
+10-th epoch
+Best epoch
+Figure 8: LPIPS validation loss for the models trained on synthetic data, grouped by which
+objective function was used for training. Lower is better. LPIPS provides scores with a
+higher variance and ranks models differently than L2, but confirms the same performance
+trends. The best epochs were also selected due to their L2 measure, and we can see that
+the best L2-scored models are not necessarily also optimized for LPIPS. The quantitative
+performance of most models surpasses the tree’s performance.
+the darker areas on the edges of the trace, which are reproduced adequately
+on Figure 9(b).
+The patch on Figure 10 covers a region that shows only the wafers substrate background. Both the prediction from the tree and the one from the
+neural network are perceptually similar, and the decision tree-based simulation scores better in L2 similarity. The neural network prediction from
+Figure 10(b) shows the network’s capability of learning noise-based features
+contained in the photo, such as the random noise, and scores better with
+LPIPS than the decision tree-generated sample.
+Figures 11 and 12 present the performance of models trained on real MPW
+wafers. The real wafer datasets exhibit substantially greater visual variability
+compared to the synthetic datasets, characterized by diverse color palettes,
+design layouts, and structural features. As illustrated in Figure 11, the benchmark decision tree models yield more heterogeneous results, with L2-norm
+values approximately an order of magnitude higher than those observed for
+15
+
+===== Page 16 =====
+
+(a) Target sample.
+(b) U-Net simulation.
+(c) Decision tree.
+Figure 9: Samples of a simulation on synthetic data. The simulator is a regression model
+trained with LPIPS as objective function. For the patch pictured, the U-Net scored L2
+0.0032 and LPIPS 0.02, while scoring L2 0.005 and LPIPS 0.446 for the whole wafer. The
+tree scored L2 0.0147 and LPIPS 0.08 on this patch, and L2 0.007 and LPIPS 0.486 on
+the whole wafer. The U-Net was trained on LPIPS loss.
+(a) Target sample.
+(b) U-Net simulation.
+(c) Decision tree.
+Figure 10: Samples of the prediction on mock data, purely background. On this patch,
+the U-Net scores L2 0.0031 and LPIPS 0.13. For the whole wafer, it scores L2 0.005 and
+LPIPS 0.446. The decision tree shows L2 0.007 and LPIPS 0.486 for this patch, and L2
+0.0023 and LPIPS 0.42 for the whole wafer. The U-Net was trained on LPIPS loss.
+models trained on synthetic data. Consistent with observations from the synthetic data analysis, results from regression models tend to exhibit greater
+variability across runs compared to classification models. Nonetheless, after
+filtering for high-performing intermediate checkpoints, regression models are
+capable of achieving competitive performance.
+When evaluated on LPIPS performance, which is constrained in the interval [0, 1], models trained on real data again show more variability than
+the ones trained on synthetic data, with slightly worse average performance,
+as shown by the plot in Figure 12. The perceptual results depicted in Figures 13 and 14 confirm qualitatively that the range of scores presented by the
+simulations relates to realistic outputs. The dichotomy between perceptual
+quality and measured similarity shows also in Figure 14, where the tree-based
+16
+
+===== Page 17 =====
+
+Classification models
+Regression models
+Dec. Tree
+Cross
+Entropy
+Focal
+L2
+LPIPS
+0.00
+0.01
+0.02
+0.03
+0.04
+0.05
+0.06
+L2
+Dec. Tree
+10-th epoch
+Best epoch
+Figure 11: L2-norm validation loss for the models trained on real data. They are grouped
+by their type of data and training objective used. Lower is better. For a better visualization, there are three datapoints omitted from the plot, in the set of 10-th epoch regression
+models. The mean performance obtained is still correctly plotted. It is harder to achieve
+consistent models training on real data than on synthetic data, both for the U-Net and
+for decision trees. Cross-entropy loss on a classification setting showed better overall consistency in the experiments carried on this work.
+simulation scores better than its neural net-based counterpart, despite the
+latter exhibiting greater level of detail. Furthermore, no significant differences were detected between cross-entropy loss and focal loss in terms of
+training duration or the performance achieved.
+Even though the proposed method is demonstrated to be robust in obtaining a faithful simulator with a relatively short training run, it remains
+susceptible to failure modes, which we report here.
+In certain cases, the
+learned models produce hallucinations and artifacts within the simulation.
+Examples of this effect are illustrated in Figures 15. The averaged patch-wise
+validation loss for the depicted models scored satisfactorily across the whole
+wafer, indicating that simulation success is not always clearly reflected by
+the validation loss and that averaged patch-wise performance metrics may
+be insufficient for reliably detecting such anomalies at a wafer level.
+A noteworthy effect is observed in models trained specifically using LPIPS
+as a loss function. Namely, the simulations generated by these models exhibit
+17
+
+===== Page 18 =====
+
+Classification models
+Regression models
+Dec. Tree
+Cross
+Entropy
+Focal
+L2
+LPIPS
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+LPIPS
+Dec. Tree
+10-th epoch
+Best epoch
+Figure 12: LPIPS validation loss for all of the models trained on real MPW wafers. They
+are grouped by their type of data and training objective used. Lower is better. It is harder
+to achieve consistent models training on real data, both for the U-Net and for decision
+trees. Cross-entropy loss on a classification setting showed better overall consistency in
+the experiments carried on this work.
+artifacts resembling waves or ripples along the periphery of the simulated
+patches when the input sample size exceeds that used during training. Such
+effect can be observed in Figures 10(b), 9(b) and 15(f). Figure 16 highlights
+this phenomenon in two simulated examples: one generated from a 64×64pixel CAD input (Figure 16(a)) and another from a 128×128-pixel input
+(Figure 16(b)).
+We hypothesize that the emergence of this undulating structure is a result
+of the three successive downsampling operations in the U-Net’s convolutional
+architecture. In Figure 16(b) the superposition of variations in the horizontal
+and vertical directions near the corners of the patch clearly manifests as
+structured noise in the simulation. A simulated patch of the same size as
+the training patches (64 × 64) is shown in Figure 16(a). The patch shows a
+noisy texture covering its whole area, which is originated from the complete
+superposition of the ripples in the x- and y-axis. The generated noise pattern
+is similar to the noise observed in the target photographs.
+For further analysis of such effect, we compare the noise profiles of the
+18
+
+===== Page 19 =====
+
+(a) Target sample.
+(b) U-Net simulation.
+(c) Decision tree.
+Figure 13: Samples of the prediction on real data. The U-Net based simulation scored
+L2 of 0.009 and LPIPS of 0.52 in the whole wafer; and L2 of 0.0132, LPIPS of 0.04 for
+the depicted patch. The decision tree for this wafer scored L2 0.055 and LPIPS 0.61,
+while scoring L2 0.0147 and LPIPS 0.06 for this specific patch. The U-Net was trained on
+cross-entropy loss.
+(a) Target sample.
+(b) U-Net simulation.
+(c) Decision tree.
+Figure 14: Samples of the prediction on real data. Whole wafer: L2 0.009, LPIPS 0.52
+patch: L2: 0.0311, LPIPS: 0.03 for neural net. Whole wafer: L2 0.055, LPIPS 0.61 patch
+L2: 0.0272, LPIPS: 0.04 for tree. Notice that for this patch LPIPS is better for the neural
+net-based simulation, while the L2 score is better for the decision tree model. The U-Net
+was trained on cross-entropy loss.
+original simulation targets with those produced by our best-performing models trained with L2-norm, cross-entropy, and LPIPS. For brevity, we omit the
+model trained with focal loss, as the results for this training objective are,
+for all practical purposes, indistinguishable from those of the cross-entropybased models. This comparison is conducted on a dataset from a real wafer.
+We simulate 128 × 128-pixel patches and analyze the noise profile along
+the image’s center column. The simulations presented in Figure 17 are used
+without loss of generality with other datasets. To simplify the comparison,
+RGB values are averaged into a single scalar per pixel. The resulting profiles
+are shown in Figures 18 and 19.
+The color profiles shown in Figure 18 suggest that training with LPIPS
+19
+
+===== Page 20 =====
+
+(a) LPIPS.
+(b) LPIPS.
+(c) L2.
+(d) Cross
+entropy.
+(e) LPIPS.
+(f) LPIPS.
+Figure 15: Simulations from models trained on the indicated target function. Some models
+learn to hallucinate artifacts. Those artifacts are not similar to any structures contained
+in the wafer, and are usually covering background areas or uniformly colored areas. Most
+of the hallucinations present themselves as a saturation in one or more of the channels.
+The caption in each of the samples indicates the target function used in training.
+(a) 64 × 64
+(b) 128 × 128
+Figure 16: Appearance of the ripples observed. We show a background patch for ease
+of visualization. The model which generated the depicted samples was trained on 64×64
+pixel samples, using LPIPS as a loss function.
+as a loss function improves the simulation of noise. This effect may be attributed to the LPIPS objective encouraging the neural network to leverage
+its downsampling and upsampling pathways, resulting in more structured
+and realistic noise characteristics.
+Overall, our results demonstrate that both decision trees and neural networks are generally effective at simulating defect-free wafers from defective
+source images, despite some susceptibility to training instability.
+Semantic segmentation models applied to quantized images outperform regression
+models operating in RGB space. Decision trees, used as a naïve benchmark,
+are also a potentially viable method but perform less favorably. The ripple artifacts discussed earlier highlight the nuanced behavior of these models
+under different training conditions and loss functions.
+20
+
+===== Page 21 =====
+
+(a) Target photo
+(b) Cross-entropy
+(c) L2
+(d) LPIPS
+Figure 17: A target patch and simulation samples, all 128×128-pixels in size. The original
+photo contains noise, which is generally absent from the semantic segmentation-based
+simulation (in 17(b), with reconstruction L2 = 0.034) and from the L2-based simulation
+(in 17(c), with L2 = 0.023). The LPIPS based simulation in 17(d) has high computed
+similarity to the target photo (L2 = 0.030), while also presenting visible artifacts around
+its periphery.
+The highlighted columns in the center of each patch correspond to the
+respective path used to plot the color profiles in Figures 18 and 19.
+4. Towards defect detection
+According to [57], the manual inspection of an entire wafer requires approximately 20 hours of work by qualified personnel—representing nearly the
+half of a workweek that could otherwise be allocated to higher-value tasks.
+In this context, the proposed simulation method holds practical relevance
+if used as a means of enhancing productivity within any specific stages of
+the foundry workflow. In this section, we demonstrate an automated surface defect detection methodology based on the golden die simulation as one
+potential way to offer tangible benefits in MPW manufacturing.
+Firstly, to apply the simulation method presented above to surface defect
+detection via template matching, it is crucial to assess that the simulated
+wafer effectively represents a golden die, generating perceptually realistic
+images that do not contain the defects present in the training images. Finally,
+it would be beneficial that the score maps generated for defect detection are
+properly evaluated, in order to assert the generality of our method.
+Measuring the pixelwise dissimilarity between a simulation and the corresponding photographic sample on the wafer, we can obtain a dissimilarity
+score map. In Figure 20 we can observe an example of a defect detector
+generated by obtaining a score map with pixelwise mean squared error —
+the L2-norm — as a similarity metric.
+Since we have access to perfect pixel-level annotations for defects on the
+synthetic wafers, we are able to quantitatively evaluate the performance of
+this detector. Notably the dataset in this setting is heavily unbalanced, since
+21
+
+===== Page 22 =====
+
+0
+20
+40
+60
+80
+100
+120
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+Photo
+Cross-entropy
+L2
+LPIPS
+Figure 18: Color profile along a vertical path through the centerline of simulated patches
+from Figure17. The patches are square and 128-pixel wide, with coordinates increasing in
+the y-axis from top to bottom. Values on the RGB channel were averaged, to obtain a
+single scalar per pixel in the column. Notice that both the models trained on cross-entropy
+and on L2-norm as loss functions show a smooth color profile on the background areas. The
+model trained on focal loss is omitted for brevity, but exhibits the same averaging effect.
+The model trained on LPIPS, however, shows a rugged profile which, although differing
+in mean-value, better mimics the original photo’s noise profile. It is also noteworthy to
+mention the misalignment effect between ground-truth and CAD layers, as the original
+photo (•) shows peaks in different locations
+the predicted negative samples – i.e. non-defects – outnumber the predicted
+positive samples by several orders of magnitude. To address this characteristic we choose to evaluate the score map by producing its average precision,
+also called area under the precision-recall curve, which does not account for
+the true negatives in the predicted sample. The automated defect detection
+by template matching in synthetic data is virtually perfect when the simulation is good enough. Average precision is computed with a variable threshold
+on the pixelwise L2 scores. For ease of visualization, we show a binarized
+version of the score map in Figure 20(c), using a constant threshold value
+of 0.1 for detection. As demonstrated in Section 3, this threshold exceeds
+the typical L2-norm values observed in successful simulations of perceptually
+similar samples.
+Since this method assumes a perfectly simulated, defect-free sample, it
+fails when a simulation contains hallucinations. In Figure 21 we can note that
+the defect detection fails when the dissimilarity stems from the simulation
+process rather than the manufacturing process. All defects in the sample
+22
+
+===== Page 23 =====
+
+Figure 19: Detailed view of the same plot as in Figure 18, focusing on the area containing
+the undulating artifact in the top section of the simulated sample.
+It is evident that
+the model trained on LPIPS simulates noise better than the remaining portrayed models,
+showing a similar characteristic to the profile on the original photo. From the 32-nd row
+onward, the effect diminishes, as also seen in Figure 16(b).
+(a) Target sample.
+(b) Simulation.
+(c) Binarized defect map.
+Figure 20: The defect detection works considerably well on the synthetic datasets, as we
+have complete control of the procedural generation of defects. The average precision for
+this patch is 0.98. It shows the results of a regression model trained with L2 loss.
+from Figure 21(a) were adequately detected. However, the hallucinations
+from Figure 21(b) logically reflect on the score map and are picked as false
+positives in Figure 21(c). As a result, the computed average precision in this
+case is unreliable, as it is affected by artifacts not corresponding to actual
+defects.
+On Figure 22 we show the application of the same detection and evaluation method presented above, but this time applied to a real wafer. On
+real data we face two main challenges for the application of the proposed
+method. Firstly, we do not have access to such detailed labels as in the synthetic dataset, as many defects were labeled as a rectangular bounding box
+exceeding the dimensions of the defect itself. The red regions in Figure 22(c)
+23
+
+===== Page 24 =====
+
+(a) Target sample.
+(b) Simulation.
+(c) Binarized defect map.
+Figure 21: The defect detection fails completely when there is an anomaly in the simulated
+patch. Average precision on this patch is 0.44. Regression model trained with LPIPS loss
+on synthetic data.
+show the available annotations. The pixelwise evaluation presented is then
+inaccurate, since the labels effectively mark true negative predictions as false
+negatives, skewing the computation of recall. Secondly, misalignment stemming from the stitching process of the photos and the homographic transformations to align the CAD layers generate simulations that, while well aligned
+to the CAD layouts, might be offset when superimposed to the wafer photos.
+As a result, thin and elongated mismatched edges produce high dissimilarity
+scores, being detected as defects in the score map if directly compared.
+(a) Target sample.
+(b) Simulation.
+(c) Binarized defect map.
+Figure 22: Regression model trained with LPIPS loss on a real wafer. Due to the stitching
+process in the microscope, the photo might be not properly aligned with the CAD layers.
+This causes thin structures to show in the score map as dissimilarities. Post simulation
+realignment might be necessary to accurately catch defects. The labeled areas, in red,
+are also bigger than the defect instances.
+Those factors turn the pixelwise evaluation
+inaccurate.
+In Figure 23 we see a predicted sample from a model trained on a wafer
+affected by unusually high defect density.
+The simulation clearly depicts
+a defect-free version of the same wafer, and the dissimilarity score map is
+24
+
+===== Page 25 =====
+
+markedly effective in localizing the defects on the target sample. Unfortunately, we are unable to quantify these claims with the computation of the
+average precision due to the lack of labeled data for the wafer in question.
+(a) Target sample.
+(b) Simulation.
+(c) Score map.
+Figure 23: Classification model trained with focal loss, on a wafer with very high defect
+density. It is evident that the learned model successfully simulates a defect-free sample,
+and that the pixelwise similarity metric reveals the position of most of the defects with
+significant performance.
+The choice of similarity metric for generating a score map largely depends on the data format. In principle, any similarity or distance function
+may be employed, though some may be more appropriate than others depending on the task. Pixelwise metrics are typically faster to compute in
+modern GPU accelerated hardware. They can, however, be sensitive to noise
+and misalignment, potentially leading to unreliable detections. Alternatively,
+metrics that yield patchwise scalar values can be adapted to provide a single value for each pixel by averaging over a sliding window which applies
+the desired metric successively over overlapping patches. This process incurs in additional computational cost, but local deviations get averaged for
+a smoother result. Perceptual metrics such as LPIPS, for example, can be
+applied in this manner to provide spatially resolved dissimilarity maps. In
+addition, classification models may be evaluated in higher dimensional logit
+space, where semantic segmentation metrics can incorporate class confidence
+scores, rather than relying solely on the lower dimensional final predicted
+labels.
+5. Discussion
+In the proposed method, defect detection and training of simulation models are closely linked, since the functions used as training targets can be simultaneously used as similarity metrics to evaluate simulation quality and
+25
+
+===== Page 26 =====
+
+to generate a defect score map. Considering that CAD layers and the photographic representation of the wafers are intrinsic to the manufacturing
+process, we define our method with the term unsupervised in the sense that
+we do not use labeled defect data to achieve defect-free simulations.
+The
+quantitative evaluation of unsupervised methods without any ground-truth
+data to compare against is only possible to a very limited extent. In the
+simulation setting, defective data is present in the dataset but a priori not
+labeled, so at first view indistinguishable from good samples. Therefore, even
+though similarity metrics can be applied to measure simulation quality, reported scores will not be absolute, as the evaluation target contains defects
+which shouldn’t be learned at all.
+Not only our simulation target contains defects, it also contains noise. Our
+experiments show that models trained on different objective functions learn
+differently how to deal with noise, and such differences are not accurately
+reflected in patch-averaged metrics. While some models adopt an averaging
+approach, effectively removing noise from simulations, others simulate realistic looking noise in the final simulation, without noticeable effects in the
+computed similarity metrics. The desired appearance of a simulation might
+depend on the application context. For employment in defect detection, for
+example, there is a greater interest in the actual detection performance than
+necessarily in perceptual acuity.
+Following the simulation step, a score map for defect detection can be
+generated using the same similarity metrics. The major advantage of the
+proposed method is that it does not need any labeling for training and generation, realizing the goal of minimizing human labor. The evaluation of
+this score map poses additional challenges, however, as its focus is not on
+enhancing average quality at the patch level, but rather on achieving precise pixel-wise detections. Such an evaluation would require properly labeled
+defect data. While we do have sections of the wafer which were completely
+labeled by qualified personell, poor label quality also limits the evaluation’s
+accuracy.
+For the reasons mentioned above, a fully automated unsupervised defect
+detection pipeline remains mostly as an open challenge, even with a reliable golden standard simulator. It is not hard to envisage that derivations
+of this work could also serve as a stepping stone toward human-in-the-loop
+applications.
+The dissimilarity maps can be used, for example, to guide
+the annotation process, isolating probable defects within highly unbalanced
+datasets, cornering the needle-in-a-haystack aspect of this problem. A small
+26
+
+===== Page 27 =====
+
+number of correctly labeled detections can be used to further train defect
+classification networks.
+In semiconductor production, MPW runs are both time-consuming and
+costly, with multiple runs often being simultaneously processed at different
+stages of fabrication. Since the CAD layers used represent steps of the process, this simulation method could also be used in intermediate steps, for
+early defect detection in production. Each MPW run takes several months
+from beginning to finish, whereas the models showed in this work can be
+trained on modern hardware within a span of hours. The difference in process time-scale between neural network training and actual manufacturing
+suggests that the proposed pipeline shows potential to deployment in less
+powerful, more energy-efficient computers, as well as a possible pathway for
+integration in embedded hardware in the foundry.
+6. Conclusion
+In this study, we have demonstrated the feasibility and effectiveness of
+simulating realistic images of photonic wafers at the chip-level using a convolutional neural network, formulating the problem both as a semantic segmentation problem and a regression task. Notably, even when utilizing defective
+wafers as simulation targets, the trained models yield defect-free simulations,
+and a small portion of the wafer proving sufficient for generalization across
+the entire wafer. The generated images can in turn be used as golden standard
+wafers for template matching-based defect detection.
+Besides the aforementioned general simulation method, our contribution
+also encompasses a benchmarking for evaluation of such simulations, the
+notion that a learned perceptual similarity metric is suitable as a loss function
+for training — although different training objectives can be used for their
+own characteristic behaviors — and a clear pathway to automated chip-level
+defect detection on low-scale multi-project photonic InP wafers. Additionally,
+we present tools for generating synthetic wafer datasets that can facilitate
+further advancement of the described techniques.
+In general, the scarcity of datasets in this domain limits the evaluation of
+our simulation results and the quality of the trained models. Furthermore,
+the evaluation of defect detection performance is restricted by the absence of
+well segmented defect labels. Future efforts aimed at creating open and comprehensive datasets would highly benefit the field. Additional work should
+also focus on data pre-processing, as the high sensitivity of the detectors may
+27
+
+===== Page 28 =====
+
+lead to misclassification of noise as false positives or ignore small defects as
+false negatives. Employing higher-resolution, low-noise images would be an
+approachable way to mitigate this classic trade-off. The methods would also
+benefit from improved alignment between the CAD layers and the photographic images, and post-inference greater alignment between simulatioons
+and wafer photographs.
+Other future avenues of research could focus on
+optimizing different components within the pipeline, including the selection
+of hyperparameters, target functions and pre- and post-processing heuristics.
+Despite these limitations, our work illustrates the substantial potential of applying semantic segmentation-based simulation for surface defect detection
+applications in the MPW InP production line.
+References
+[1] Arisoy, S., Nasrabadi, N.M., Kayabol, K., 2021. Unsupervised pixel-wise
+hyperspectral anomaly detection via autoencoding adversarial networks.
+IEEE Geoscience and Remote Sensing Letters 19, 1–5.
+[2] Barone, M., 2020.
+Robust Image Wafer Inspection, in: 2020 Tenth
+International Conference on Image Processing Theory, Tools and Applications (IPTA), IEEE. pp. 1–6.
+[3] Bati, E., Çalışkan, A., Koz, A., Alatan, A.A., 2015.
+Hyperspectral
+anomaly detection method based on auto-encoder, in: Image and Signal
+Processing for Remote Sensing XXI, Spie. pp. 220–226.
+[4] Bennett, M.H., Tobin Jr, K.W., Gleason, S.S., 1995. Automatic defect
+classification: status and industry trends, in: Integrated Circuit Metrology, Inspection, and Process Control IX, SPIE. pp. 210–220.
+[5] Bhatt, P.M., Malhan, R.K., Rajendran, P., Shah, B.C., Thakar, S.,
+Yoon, Y.J., Gupta, S.K., 2021. Image-based surface defect detection
+using deep learning: A review. Journal of Computing and Information
+Science in Engineering 21.
+[6] Chang, C.Y., Li, C.H., Chang, Y.C., Jeng, M., 2011.
+Wafer Defect
+Inspection by Neural Analysis of Region Features. Journal of Intelligent
+Manufacturing 22, 953–964.
+28
+
+===== Page 29 =====
+
+[7] Chang, C.Y., Li, C.H., Lin, S.Y., Jeng, M., 2009. Application of two
+Hopfield Neural Networks for Automatic four-element LED Inspection.
+IEEE Transactions on Systems, Man, and Cybernetics, Part C (Applications and Reviews) 39, 352–365.
+[8] Chapelle, O., Scholkopf, B., Zien, A., 2006. Semi-supervised learning.
+2006. Cambridge, Massachusettes: The MIT Press View Article 2.
+[9] Chen, F.L., Liu, S.F., 2000. A Neural-Network Approach to Recognize
+Defect Spatial Pattern in Semiconductor Fabrication. IEEE transactions
+on semiconductor manufacturing 13, 366–373.
+[10] Chen, W.C., Hsu, S.W., 2007. A Neural-Network Approach for an Automatic LED Inspection System. Expert Systems with Applications 33,
+531–537.
+[11] Chen, X., Chen, J., Han, X., Zhao, C., Zhang, D., Zhu, K., Su, Y., 2020.
+A light-weighted cnn model for wafer structural defect detection. IEEE
+access 8, 24006–24018.
+[12] Cheon, S., Lee, H., Kim, C.O., Lee, S.H., 2019.
+Convolutional neural network for wafer surface defect classification and the detection of
+unknown defect class. IEEE Transactions on Semiconductor Manufacturing 32, 163–170.
+[13] Chin, R.T., Harlow, C.A., 1982. Automated visual inspection: A survey.
+IEEE transactions on pattern analysis and machine intelligence , 557–
+573.
+[14] Cho, W.I., Park, J.H., Chung, D.H., Cha, B.C., Choi, S.W., Han, W.S.,
+Park, K.H., Kim, N.W., Hess, C., Ma, W., et al., 2005. Implementation
+of Reflected Light Die-to-Die Inspection and ReviewSmart to Improve
+65nm DRAM Mask Fabrication, in: 25th Annual BACUS Symposium
+on Photomask Technology, SPIE. pp. 58–68.
+[15] Chou, P.B., Rao, A.R., Sturzenbecker, M.C., Wu, F.Y., Brecher, V.H.,
+1997. Automatic defect classification for semiconductor manufacturing.
+Machine vision and applications 9, 201–214.
+[16] Çiçek, Ö., Abdulkadir, A., Lienkamp, S.S., Brox, T., Ronneberger, O.,
+2016.
+3d u-net: learning dense volumetric segmentation from sparse
+29
+
+===== Page 30 =====
+
+annotation, in:
+Medical Image Computing and Computer-Assisted
+Intervention–MICCAI 2016:
+19th International Conference, Athens,
+Greece, October 17-21, 2016, Proceedings, Part II 19, Springer. pp. 424–
+432.
+[17] Dolgener Cantú, E., 2023.
+An image-based pipeline for defect localization in photonic InP multi-project wafers.
+Master’s thesis. Technische Universität Berlin. URL: https://doi.org/10.5281/zenodo.
+15230127, doi:10.5281/zenodo.15230127.
+[18] Dom, B.E., Brecher, V., 1995. Recent advances in the automatic inspection of integrated circuits for pattern defects. Machine Vision and
+Applications 8, 5–19.
+[19] Eidinger, E., Enbar, R., Hassner, T., 2014. Age and gender estimation
+of unfiltered faces.
+IEEE Transactions on information forensics and
+security 9, 2170–2179.
+[20] Hu, G., Huang, J., Wang, Q., Li, J., Xu, Z., Huang, X., 2020. Unsupervised fabric defect detection based on a deep convolutional generative
+adversarial network. Textile Research Journal 90, 247–270.
+[21] Hu, X., Naiel, M.A., Wong, A., Lamm, M., Fieguth, P., 2019. Runet:
+A robust unet architecture for image super-resolution, in: Proceedings
+of the IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops, pp. 0–0.
+[22] Huang, G., Laradji, I., Vazquez, D., Lacoste-Julien, S., Rodriguez, P.,
+2021. A survey of self-supervised and few-shot object detection. arXiv
+preprint arXiv:2110.14711 .
+[23] Huang, S.H., Pan, Y.C., 2015. Automated visual inspection in the semiconductor industry: A survey. Computers in industry 66, 1–10.
+[24] Imoto, K., Nakai, T., Ike, T., Haruki, K., Sato, Y., 2018. A cnn-based
+transfer learning method for defect classification in semiconductor manufacturing, in: 2018 international symposium on semiconductor manufacturing (ISSM), IEEE. pp. 1–3.
+30
+
+===== Page 31 =====
+
+[25] Ioffe, S., Szegedy, C., 2015.
+Batch normalization: Accelerating deep
+network training by reducing internal covariate shift, in: International
+conference on machine learning, pmlr. pp. 448–456.
+[26] Isola, P., Zhu, J.Y., Zhou, T., Efros, A.A., 2017. Image-to-image translation with conditional adversarial networks, in: Proceedings of the IEEE
+conference on computer vision and pattern recognition, pp. 1125–1134.
+[27] Kim, H.K., Yoo, K.Y., Jung, H.Y., 2020. Color image generation from
+lidar reflection data by using selected connection unet. Sensors 20, 3387.
+[28] Kim, T.S., Lee, J.W., Lee, W.K., Sohn, S.Y., 2022. Novel method for
+detection of mixed-type defect patterns in wafer maps based on a single
+shot detector algorithm. Journal of Intelligent Manufacturing 33, 1715–
+1724.
+[29] Kish, F., Lal, V., Evans, P., Corzine, S.W., Ziari, M., Butrie, T., Reffle,
+M., Tsai, H.S., Dentai, A., Pleumeekers, J., et al., 2017. System-onchip photonic integrated circuits. IEEE Journal of Selected Topics in
+Quantum Electronics 24, 1–20.
+[30] Kohlberger, T., Singh, V., Alvino, C., Bahlmann, C., Grady, L., 2012.
+Evaluating segmentation error without ground truth, in: Medical Image
+Computing and Computer-Assisted Intervention–MICCAI 2012: 15th
+International Conference, Nice, France, October 1-5, 2012, Proceedings,
+Part I 15, Springer. pp. 528–536.
+[31] Kum, H., Lee, D., Kong, W., Kim, H., Park, Y., Kim, Y., Baek, Y.,
+Bae, S.H., Lee, K., Kim, J., 2019. Epitaxial growth and layer-transfer
+techniques for heterogeneous integration of materials for electronic and
+photonic devices. Nature Electronics 2, 439–450.
+[32] Li, W.C., Tsai, D.M., 2012. Wavelet-based defect detection in solar wafer
+images with inhomogeneous texture. Pattern Recognition 45, 742–756.
+[33] Liang, D., Pan, J., Yu, Y., Zhou, H., 2019. Concealed object segmentation in terahertz imaging via adversarial learning. Optik 185, 1104–1114.
+[34] Liehr, M., Baier, M., Hoefler, G., Fahrenkopf, N.M., Bowers, J., Gladhill, R., O’Brien, P., Timurdogan, E., Su, Z., Kish, F., 2020. Foundry
+31
+
+===== Page 32 =====
+
+capabilities for photonic integrated circuits, in: Optical Fiber Telecommunications VII. Elsevier, pp. 143–193.
+[35] Lin, T.Y., Goyal, P., Girshick, R., He, K., Dollár, P., 2017. Focal loss
+for dense object detection, in: Proceedings of the IEEE international
+conference on computer vision, pp. 2980–2988.
+[36] Liu, H., Zhou, W., Kuang, Q., Cao, L., Gao, B., 2010. Defect detection of ic wafer based on spectral subtraction. IEEE transactions on
+semiconductor manufacturing 23, 141–147.
+[37] Liu, L., Ouyang, W., Wang, X., Fieguth, P., Chen, J., Liu, X., Pietikäinen, M., 2020. Deep learning for generic object detection: A survey.
+International journal of computer vision 128, 261–318.
+[38] Lu, C.J., Tsai, D.M., 2008. Independent component analysis-based defect detection in patterned liquid crystal display surfaces. Image and
+Vision Computing 26, 955–970.
+[39] Mahajan, P., Kolhe, S., Patil, P., 2009. A review of automatic fabric
+defect detection techniques.
+Advances in Computational Research 1,
+18–29.
+[40] Mujeeb, A., Dai, W., Erdt, M., Sourin, A., 2018. Unsupervised surface
+defect detection using deep autoencoders and data augmentation, in:
+2018 International Conference on Cyberworlds (CW), IEEE. pp. 391–
+398.
+[41] Oni, D., Ojo, J., Alabi, B., Adebayo, A., Amoran, A., 2018. Patterned
+fabric defect detection and classification (fddc) techniques: a review.
+International Journal of Scientific & Engineering Research 9, 1156–1165.
+[42] Pan, J., Wang, C., Jia, X., Shao, J., Sheng, L., Yan, J., Wang, X., 2019.
+Video generation from single semantic label map, in: Proceedings of the
+IEEE/CVF Conference on Computer Vision and Pattern Recognition,
+pp. 3733–3742.
+[43] Ronneberger, O., Fischer, P., Brox, T., 2015.
+U-net: Convolutional
+networks for biomedical image segmentation. arXiv:1505.04597.
+32
+
+===== Page 33 =====
+
+[44] Schlegl, T., Seeböck, P., Waldstein, S.M., Schmidt-Erfurth, U., Langs,
+G., 2017. Unsupervised anomaly detection with generative adversarial networks to guide marker discovery, in: International conference on
+information processing in medical imaging, Springer. pp. 146–157.
+[45] Shrivastava, A., Gupta, A., Girshick, R., 2016. Training region-based
+object detectors with online hard example mining, in: Proceedings of
+the IEEE conference on computer vision and pattern recognition, pp.
+761–769.
+[46] Smit, M., Leijtens, X., Ambrosius, H., Bente, E., Van der Tol, J., Smalbrugge, B., De Vries, T., Geluk, E.J., Bolk, J., Van Veldhoven, R., et al.,
+2014. An introduction to inp-based generic integration technology. Semiconductor Science and Technology 29, 083001.
+[47] Smit, M., Williams, K., Van Der Tol, J., 2019. Past, present, and future
+of inp-based photonic integration. APL Photonics 4, 050901.
+[48] Soares, F.M., Baier, M., Gaertner, T., Grote, N., Moehrle, M., Beckerwerth, T., Runge, P., Schell, M., . InP-based foundry PICs for optical
+interconnects. Applied Sciences 9, 1588. URL: https://www.mdpi.com/
+2076-3417/9/8/1588, doi:10.3390/app9081588.
+[49] Su, C.T., Yang, T., Ke, C.M., 2002. A Neural-Network Approach for
+Semiconductor Wafer Post-sawing Inspection. IEEE Transactions on
+Semiconductor Manufacturing 15, 260–266.
+[50] Tabernik, D., Šela, S., Skvarč, J., Skočaj, D., 2020.
+Segmentationbased deep-learning approach for surface-defect detection. Journal of
+Intelligent Manufacturing 31, 759–776.
+[51] Tao, Y., Palasek, P., Ling, Z., Patras, I., 2017. Background modelling
+based on generative unet, in: 2017 14th IEEE International Conference
+on Advanced Video and Signal Based Surveillance (AVSS), IEEE. pp.
+1–6.
+[52] Tsai, D.M., Yang, R.H., 2005. An eigenvalue-based similarity measure
+and its application in defect detection. Image and Vision Computing
+23, 1094–1101.
+33
+
+===== Page 34 =====
+
+[53] Volkau, I., Mujeeb, A., Wenting, D., Marius, E., Alexei, S., 2019. Detection defect in printed circuit boards using unsupervised feature extraction upon transfer learning, in: 2019 International Conference on
+Cyberworlds (CW), IEEE. pp. 101–108.
+[54] Wang, C.H., Kuo, W., Bensmail, H., 2006. Detection and classification
+of defect patterns on semiconductor wafers. IIE transactions 38, 1059–
+1068.
+[55] Wang, T.C., Liu, M.Y., Zhu, J.Y., Tao, A., Kautz, J., Catanzaro, B.,
+2018. High-resolution image synthesis and semantic manipulation with
+conditional gans, in: Proceedings of the IEEE conference on computer
+vision and pattern recognition, pp. 8798–8807.
+[56] Wang, X., Jia, X., Jiang, C., Jiang, S., 2022. A wafer surface defect
+detection method built on generic object detection network.
+Digital
+Signal Processing , 103718.
+[57] Wittmann, R.K., 2022. Photorealistic Simulation of Photonic-Integrated
+Circuit Designs using Digital Image Processing Techniques and Neural
+Networks. Master’s thesis. Technische Universität Berlin.
+[58] Xie, X., 2008. A review of recent advances in surface defect detection using texture analysis techniques. ELCVIA: electronic letters on computer
+vision and image analysis , 1–22.
+[59] Yang, F., Du, M., Hu, X., 2019. Evaluating explanation without ground
+truth in interpretable machine learning. arXiv preprint arXiv:1907.06831
+.
+[60] Zhang, D., Han, J., Cheng, G., Yang, M.H., 2021. Weakly supervised
+object localization and detection: A survey. IEEE transactions on pattern analysis and machine intelligence 44, 5866–5885.
+[61] Zhang, J.M., Lin, R.M., Wang, M.J.J., 1999. The development of an
+automatic post-sawing inspection system using computer vision techniques. Computers in Industry 40, 51–60.
+[62] Zhang, R., Isola, P., Efros, A.A., Shechtman, E., Wang, O., 2018. The
+unreasonable effectiveness of deep features as a perceptual metric, in:
+34
+
+===== Page 35 =====
+
+Proceedings of the IEEE conference on computer vision and pattern
+recognition, pp. 586–595.
+[63] Zou, Z., Shi, Z., Guo, Y., Ye, J., 2019. Object detection in 20 years: A
+survey. arXiv preprint arXiv:1905.05055 .
+35
+
+===== Page 36 =====
+
+Appendix A. Evaluation metrics and complete quantitative similarity results
+We perform quantitative evaluation of simulation quality by computation
+of a few selected similarity metrics between simulation target (photograph of
+the wafer) and the simulated patch. Besides metrics commonly found in the
+literature, we extend the 1-off accuracy [19] to k-off accuracy, by considering
+a prediction correct if the target color is situated in one of the k adjacent bins
+to the predicted bin in the adopted palette. Here we report k-off for k = 2.
+L2, LPIPS and PSNR were applied to the RGB images. Cross-entropy and
+k-off accuracy were applied to the quantized photographs and the prediction
+logits, and thus are not available for models trained on the regression task.
+A few datasets (R6 and R7) do not contain RGB images, and were therefore
+only trained on the semantic segmentation/classification task.
+PSNR, LPIPS and k-off accuracy implementations return a scalar value
+for a whole patch. L2 returns the averaged value of a pixelwise computation,
+as does cross-entropy. The patch-wise results for all patches in the validation
+split were averaged, and we report mean value and standard deviation among
+patches in the tables that follow. Table A.1 shows the computed metrics for
+models trained on real data and Table A.2 shows the same set of metrics
+applied for models trained on synthethic data. On Table A.3 we report the
+obtained similarity metrics for the decision trained to simulate both real
+wafer datasets and synthetic datasets. We report the 10-th epoch result for
+all models, and the best performing model in regards to both LPIPS and
+L2. Some specific checkpoints were the best-performing of a run for both
+metrics simultaneously, and in a few cases the model at the 10-th epoch was
+also the best-performing checkpoint. In particular, we can also observer how
+k-off accuracy is low for models from Table A.2, even though the models
+overall performance has been shown to be acceptable. This effect originates
+from the sub-optimal ordering of colors in the synthetic pallette, as shown in
+Figure 3(b). The k-off accuracy was therefore omitted from the main text of
+this report.
+36
+
+===== Page 37 =====
+
+Table A.1: Quantitative results for synthetic wafers. Result shown in italic when evaluation metric is the same as the training
+target.
+Dataset
+Training
+Epoch
+L2 ↓
+LPIPS ↓
+PSNR ↑
+Cross entropy ↓
+k-off ↑
+objective
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+R1
+Focal
+10
+0.006
+(0.009)
+0.541
+(0.152)
+25.715
+(5.308)
+2.559
+(0.491)
+0.558
+(0.169)
+R1
+Focal
+9
+0.006
+(0.009)
+0.546
+(0.154)
+25.757
+(5.455)
+2.554
+(0.474)
+0.602
+(0.150)
+R1
+LPIPS
+10
+0.009
+(0.010)
+0.544
+(0.144)
+23.135
+(5.487)
+–
+–
+–
+–
+R1
+LPIPS
+2
+0.007
+(0.010)
+0.518
+(0.156)
+24.703
+(4.761)
+–
+–
+–
+–
+R1
+L2
+10
+0.005
+(0.007)
+0.579
+(0.140)
+24.385
+(3.708)
+–
+–
+–
+–
+R1
+L2
+7
+0.005
+(0.008)
+0.562
+(0.137)
+25.908
+(4.904)
+–
+–
+–
+–
+R1
+L2
+1
+0.006
+(0.008)
+0.571
+(0.138)
+24.660
+(4.387)
+–
+–
+–
+–
+R1
+Cr. entropy
+10
+0.005
+(0.008)
+0.543
+(0.149)
+26.388
+(5.556)
+2.352
+(0.447)
+0.673
+(0.146)
+R1
+Cr. entropy
+9
+0.005
+(0.008)
+0.543
+(0.149)
+26.001
+(5.368)
+2.332
+(0.397)
+0.664
+(0.131)
+R2
+Focal
+10
+0.006
+(0.009)
+0.544
+(0.177)
+24.907
+(5.057)
+2.703
+(0.862)
+0.593
+(0.121)
+R2
+Focal
+4
+0.008
+(0.012)
+0.548
+(0.165)
+24.315
+(5.554)
+2.998
+(0.876)
+0.590
+(0.121)
+R2
+LPIPS
+10
+0.011
+(0.015)
+0.529
+(0.147)
+23.138
+(5.520)
+–
+–
+–
+–
+R2
+LPIPS
+1
+0.007
+(0.014)
+0.521
+(0.156)
+24.644
+(5.166)
+–
+–
+–
+–
+R2
+LPIPS
+4
+0.006
+(0.009)
+0.518
+(0.162)
+25.056
+(5.183)
+–
+–
+–
+–
+R2
+L2
+10
+0.006
+(0.007)
+0.568
+(0.158)
+24.513
+(4.213)
+–
+–
+–
+–
+R2
+L2
+8
+0.006
+(0.009)
+0.552
+(0.160)
+25.018
+(5.220)
+–
+–
+–
+–
+R2
+L2
+4
+0.006
+(0.008)
+0.560
+(0.149)
+25.632
+(5.247)
+–
+–
+–
+–
+R2
+Cr. entropy
+10
+0.008
+(0.012)
+0.553
+(0.175)
+23.868
+(5.613)
+2.778
+(1.142)
+0.537
+(0.179)
+R2
+Cr. entropy
+4
+0.008
+(0.011)
+0.548
+(0.170)
+24.444
+(5.474)
+3.913
+(3.173)
+0.591
+(0.121)
+R2
+Cr. entropy
+3
+0.009
+(0.022)
+0.550
+(0.171)
+25.221
+(6.321)
+2.716
+(1.522)
+0.647
+(0.175)
+Continued on next page
+37
+
+===== Page 38 =====
+
+Table A.1: Quantitative results for synthetic wafers. Result shown in italic when evaluation metric is the same as the training
+target.
+Dataset
+Training
+Epoch
+L2 ↓
+LPIPS ↓
+PSNR ↑
+Cross entropy ↓
+k-off ↑
+objective
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+R3
+Focal
+10
+0.007
+(0.012)
+0.498
+(0.137)
+26.957
+(7.177)
+2.367
+(0.715)
+0.559
+(0.172)
+R3
+Focal
+6
+0.007
+(0.012)
+0.495
+(0.141)
+27.120
+(7.167)
+2.369
+(0.817)
+0.560
+(0.173)
+R3
+LPIPS
+10
+0.006
+(0.009)
+0.477
+(0.139)
+26.265
+(5.659)
+–
+–
+–
+–
+R3
+LPIPS
+20
+0.007
+(0.009)
+0.483
+(0.136)
+25.780
+(6.235)
+–
+–
+–
+–
+R3
+LPIPS
+6
+0.007
+(0.009)
+0.480
+(0.132)
+25.876
+(6.589)
+–
+–
+–
+–
+R3
+LPIPS
+9
+0.006
+(0.009)
+0.470
+(0.136)
+26.550
+(5.987)
+–
+–
+–
+–
+R3
+L2
+10
+0.006
+(0.009)
+0.509
+(0.132)
+26.955
+(6.540)
+–
+–
+–
+–
+R3
+L2
+9
+0.006
+(0.009)
+0.507
+(0.131)
+27.182
+(6.684)
+–
+–
+–
+–
+R3
+L2
+2
+0.006
+(0.008)
+0.519
+(0.122)
+26.895
+(6.539)
+–
+–
+–
+–
+R3
+Cr. entropy
+10
+0.007
+(0.011)
+0.496
+(0.141)
+26.629
+(6.736)
+2.419
+(0.857)
+0.454
+(0.190)
+R3
+Cr. entropy
+5
+0.007
+(0.011)
+0.500
+(0.137)
+26.032
+(6.462)
+2.668
+(1.682)
+0.453
+(0.192)
+R4
+Focal
+10
+0.007
+(0.013)
+0.533
+(0.173)
+25.836
+(6.211)
+2.517
+(0.864)
+0.615
+(0.153)
+R4
+Focal
+9
+0.006
+(0.013)
+0.526
+(0.173)
+26.196
+(5.956)
+2.469
+(0.779)
+0.603
+(0.151)
+R4
+Focal
+4
+0.007
+(0.013)
+0.532
+(0.171)
+25.755
+(6.229)
+2.519
+(0.876)
+0.597
+(0.156)
+R4
+LPIPS
+10
+0.006
+(0.010)
+0.527
+(0.162)
+24.536
+(4.165)
+–
+–
+–
+–
+R4
+LPIPS
+8
+0.006
+(0.013)
+0.485
+(0.162)
+25.704
+(5.186)
+–
+–
+–
+–
+R4
+LPIPS
+7
+0.005
+(0.012)
+0.481
+(0.155)
+25.632
+(4.800)
+–
+–
+–
+–
+R4
+L2
+10
+0.010
+(0.017)
+0.565
+(0.166)
+24.647
+(6.519)
+–
+–
+–
+–
+R4
+L2
+78
+0.005
+(0.011)
+0.539
+(0.166)
+26.443
+(5.203)
+–
+–
+–
+–
+R4
+L2
+40
+0.006
+(0.013)
+0.532
+(0.166)
+26.125
+(5.391)
+–
+–
+–
+–
+Continued on next page
+38
+
+===== Page 39 =====
+
+Table A.1: Quantitative results for synthetic wafers. Result shown in italic when evaluation metric is the same as the training
+target.
+Dataset
+Training
+Epoch
+L2 ↓
+LPIPS ↓
+PSNR ↑
+Cross entropy ↓
+k-off ↑
+objective
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+R4
+Cr. entropy
+10
+0.007
+(0.014)
+0.533
+(0.179)
+26.038
+(5.835)
+2.567
+(1.200)
+0.590
+(0.146)
+R4
+Cr. entropy
+65
+0.006
+(0.013)
+0.529
+(0.184)
+26.595
+(5.953)
+2.542
+(1.102)
+0.599
+(0.155)
+R4
+Cr. entropy
+6
+0.006
+(0.013)
+0.535
+(0.181)
+26.020
+(5.908)
+2.669
+(1.723)
+0.595
+(0.146)
+R5
+Focal
+10
+0.009
+(0.021)
+0.521
+(0.180)
+25.541
+(6.158)
+2.580
+(1.526)
+0.653
+(0.126)
+R5
+Focal
+4
+0.010
+(0.021)
+0.525
+(0.178)
+25.454
+(6.289)
+2.708
+(1.549)
+0.674
+(0.127)
+R5
+Focal
+6
+0.010
+(0.021)
+0.521
+(0.179)
+25.493
+(6.386)
+2.527
+(1.074)
+0.664
+(0.132)
+R5
+LPIPS
+10
+0.012
+(0.014)
+0.526
+(0.169)
+21.670
+(4.365)
+–
+–
+–
+–
+R5
+LPIPS
+18
+0.008
+(0.016)
+0.495
+(0.173)
+25.088
+(5.651)
+–
+–
+–
+–
+R5
+LPIPS
+4
+0.007
+(0.013)
+0.483
+(0.174)
+24.610
+(4.515)
+–
+–
+–
+–
+R5
+L2
+10
+0.008
+(0.019)
+0.530
+(0.175)
+25.182
+(5.146)
+–
+–
+–
+–
+R5
+L2
+4
+0.006
+(0.011)
+0.526
+(0.171)
+26.091
+(5.202)
+–
+–
+–
+–
+R5
+L2
+3
+0.008
+(0.017)
+0.529
+(0.171)
+26.016
+(5.776)
+–
+–
+–
+–
+R5
+Cr. entropy
+10
+0.010
+(0.022)
+0.523
+(0.181)
+25.524
+(6.219)
+2.470
+(0.715)
+0.669
+(0.116)
+R5
+Cr. entropy
+1
+0.010
+(0.020)
+0.524
+(0.176)
+25.134
+(6.410)
+2.689
+(1.064)
+0.674
+(0.135)
+R6
+Focal
+10
+0.003
+(0.003)
+0.397
+(0.159)
+27.462
+(4.124)
+5.447
+(1.886)
+0.626
+(0.289)
+R6
+Focal
+5
+0.002
+(0.003)
+0.363
+(0.165)
+30.575
+(6.389)
+11.805
+(5.695)
+0.629
+(0.290)
+R6
+Cr. entropy
+10
+0.011
+(0.003)
+0.494
+(0.131)
+19.582
+(0.945)
+12.064
+(4.342)
+0.616
+(0.285)
+R6
+Cr. entropy
+1
+0.002
+(0.003)
+0.363
+(0.164)
+30.353
+(6.179)
+41.346
+(12.008)
+0.628
+(0.290)
+R7
+Focal
+10
+0.002
+(0.002)
+0.336
+(0.114)
+28.721
+(2.684)
+3.811
+(1.561)
+0.786
+(0.209)
+R7
+Focal
+2
+0.001
+(0.002)
+0.294
+(0.119)
+33.803
+(5.492)
+24.054
+(9.240)
+0.793
+(0.210)
+Continued on next page
+39
+
+===== Page 40 =====
+
+Table A.1: Quantitative results for synthetic wafers. Result shown in italic when evaluation metric is the same as the training
+target.
+Dataset
+Training
+Epoch
+L2 ↓
+LPIPS ↓
+PSNR ↑
+Cross entropy ↓
+k-off ↑
+objective
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+R7
+Cr. entropy
+10
+0.001
+(0.002)
+0.294
+(0.119)
+33.803
+(5.492)
+46.933
+(24.520)
+0.793
+(0.210)
+R7
+Cr. entropy
+4
+0.001
+(0.002)
+0.294
+(0.119)
+33.702
+(5.400)
+23.606
+(12.730)
+0.793
+(0.210)
+R8
+Focal
+10
+0.006
+(0.009)
+0.533
+(0.194)
+25.678
+(5.496)
+2.423
+(0.537)
+0.599
+(0.144)
+R8
+Focal
+9
+0.006
+(0.008)
+0.530
+(0.194)
+25.846
+(5.616)
+2.349
+(0.482)
+0.598
+(0.146)
+R8
+LPIPS
+10
+0.007
+(0.010)
+0.531
+(0.179)
+24.554
+(5.111)
+–
+–
+–
+–
+R8
+LPIPS
+6
+0.006
+(0.007)
+0.527
+(0.187)
+24.659
+(4.411)
+–
+–
+–
+–
+R8
+LPIPS
+7
+0.007
+(0.010)
+0.527
+(0.175)
+24.507
+(4.985)
+–
+–
+–
+–
+R8
+L2
+10
+0.006
+(0.008)
+0.566
+(0.171)
+24.373
+(4.709)
+–
+–
+–
+–
+R8
+L2
+3
+0.006
+(0.008)
+0.566
+(0.165)
+25.185
+(4.985)
+–
+–
+–
+–
+R8
+Cr. entropy
+10
+0.006
+(0.008)
+0.538
+(0.198)
+24.652
+(4.555)
+2.386
+(0.462)
+0.472
+(0.136)
+R8
+Cr. entropy
+4
+0.006
+(0.009)
+0.537
+(0.191)
+25.572
+(5.536)
+2.341
+(0.374)
+0.599
+(0.141)
+R8
+Cr. entropy
+7
+0.006
+(0.008)
+0.534
+(0.192)
+25.484
+(5.571)
+2.448
+(0.441)
+0.593
+(0.147)
+R9
+Focal
+10
+0.006
+(0.011)
+0.535
+(0.187)
+25.608
+(5.660)
+2.492
+(0.527)
+0.597
+(0.162)
+R9
+Focal
+9
+0.007
+(0.011)
+0.533
+(0.188)
+25.572
+(5.694)
+2.497
+(0.538)
+0.587
+(0.154)
+R9
+LPIPS
+10
+0.007
+(0.010)
+0.500
+(0.181)
+24.550
+(4.643)
+–
+–
+–
+–
+R9
+LPIPS
+1
+0.008
+(0.011)
+0.547
+(0.169)
+24.120
+(5.632)
+–
+–
+–
+–
+R9
+LPIPS
+4
+0.007
+(0.011)
+0.505
+(0.172)
+24.867
+(5.134)
+–
+–
+–
+–
+R9
+L2
+10
+0.006
+(0.008)
+0.562
+(0.168)
+25.045
+(5.539)
+–
+–
+–
+–
+R9
+L2
+9
+0.006
+(0.010)
+0.555
+(0.171)
+25.648
+(5.505)
+–
+–
+–
+–
+R9
+Cr. entropy
+10
+0.009
+(0.017)
+0.544
+(0.176)
+25.050
+(6.342)
+2.486
+(0.636)
+0.593
+(0.171)
+Continued on next page
+40
+
+===== Page 41 =====
+
+Table A.1: Quantitative results for synthetic wafers. Result shown in italic when evaluation metric is the same as the training
+target.
+Dataset
+Training
+Epoch
+L2 ↓
+LPIPS ↓
+PSNR ↑
+Cross entropy ↓
+k-off ↑
+objective
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+R9
+Cr. entropy
+8
+0.007
+(0.012)
+0.534
+(0.186)
+25.447
+(5.841)
+2.462
+(0.528)
+0.601
+(0.161)
+Table A.2: Quantitative results for synthetic wafers. Result shown in italic when evaluation metric is the same as the training
+target.
+Dataset
+Training
+Epoch
+L2 ↓
+LPIPS ↓
+PSNR ↑
+Cross entropy ↓
+k-off ↑
+objective
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+S1
+Focal
+10
+0.004
+(0.002)
+0.459
+(0.105)
+24.056
+(1.712)
+3.476
+(0.114)
+0.213
+(0.029)
+S1
+Focal
+3
+0.004
+(0.002)
+0.459
+(0.105)
+24.042
+(1.709)
+3.475
+(0.113)
+0.213
+(0.029)
+S1
+LPIPS
+10
+0.005
+(0.002)
+0.446
+(0.118)
+23.368
+(1.599)
+–
+–
+–
+–
+S1
+LPIPS
+17
+0.005
+(0.002)
+0.446
+(0.117)
+23.325
+(1.584)
+–
+–
+–
+–
+S1
+LPIPS
+8
+0.005
+(0.002)
+0.446
+(0.118)
+23.198
+(1.703)
+–
+–
+–
+–
+S1
+L2
+10
+0.004
+(0.002)
+0.457
+(0.109)
+24.268
+(1.734)
+–
+–
+–
+–
+S1
+L2
+22
+0.004
+(0.002)
+0.457
+(0.109)
+24.271
+(1.740)
+–
+–
+–
+–
+S1
+L2
+2
+0.004
+(0.002)
+0.458
+(0.108)
+24.246
+(1.724)
+–
+–
+–
+–
+S1
+Cr. entropy
+10
+0.004
+(0.002)
+0.459
+(0.105)
+24.038
+(1.710)
+3.471
+(0.110)
+0.213
+(0.029)
+S1
+Cr. entropy
+5
+0.004
+(0.002)
+0.459
+(0.105)
+24.047
+(1.710)
+3.469
+(0.113)
+0.213
+(0.029)
+S1
+Cr. entropy
+8
+0.004
+(0.002)
+0.459
+(0.105)
+24.046
+(1.710)
+3.469
+(0.113)
+0.213
+(0.029)
+S2
+Focal
+10
+0.004
+(0.002)
+0.460
+(0.106)
+24.041
+(1.712)
+3.475
+(0.113)
+0.213
+(0.029)
+Continued on next page
+41
+
+===== Page 42 =====
+
+Table A.2: Quantitative results for synthetic wafers. Result shown in italic when evaluation metric is the same as the training
+target.
+Dataset
+Training
+Epoch
+L2 ↓
+LPIPS ↓
+PSNR ↑
+Cross entropy ↓
+k-off ↑
+objective
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+S2
+Focal
+8
+0.004
+(0.002)
+0.460
+(0.106)
+24.040
+(1.712)
+3.475
+(0.113)
+0.213
+(0.029)
+S2
+Focal
+9
+0.004
+(0.002)
+0.460
+(0.106)
+24.039
+(1.711)
+3.475
+(0.112)
+0.213
+(0.029)
+S2
+LPIPS
+10
+0.005
+(0.002)
+0.439
+(0.111)
+23.089
+(1.531)
+–
+–
+–
+–
+S2
+LPIPS
+3
+0.005
+(0.002)
+0.442
+(0.112)
+22.941
+(1.510)
+–
+–
+–
+–
+S2
+LPIPS
+28
+0.005
+(0.002)
+0.441
+(0.112)
+23.011
+(1.511)
+–
+–
+–
+–
+S2
+L2
+10
+0.004
+(0.002)
+0.462
+(0.109)
+24.153
+(1.713)
+–
+–
+–
+–
+S2
+L2
+5
+0.004
+(0.002)
+0.459
+(0.110)
+24.234
+(1.728)
+–
+–
+–
+–
+S2
+L2
+4
+0.004
+(0.002)
+0.459
+(0.110)
+24.231
+(1.727)
+–
+–
+–
+–
+S2
+Cr. entropy
+10
+0.004
+(0.002)
+0.459
+(0.106)
+24.042
+(1.712)
+3.469
+(0.112)
+0.213
+(0.029)
+S2
+Cr. entropy
+2
+0.004
+(0.002)
+0.461
+(0.106)
+24.017
+(1.713)
+3.470
+(0.112)
+0.213
+(0.029)
+S2
+Cr. entropy
+4
+0.004
+(0.002)
+0.460
+(0.106)
+24.032
+(1.711)
+3.469
+(0.111)
+0.213
+(0.029)
+S3
+Focal
+10
+0.004
+(0.002)
+0.458
+(0.106)
+24.037
+(1.711)
+3.474
+(0.113)
+0.213
+(0.029)
+S3
+Focal
+9
+0.004
+(0.002)
+0.458
+(0.106)
+24.034
+(1.710)
+3.475
+(0.114)
+0.213
+(0.029)
+S3
+Focal
+8
+0.004
+(0.002)
+0.458
+(0.106)
+24.033
+(1.710)
+3.474
+(0.113)
+0.213
+(0.029)
+S3
+LPIPS
+10
+0.005
+(0.002)
+0.444
+(0.115)
+23.644
+(1.640)
+–
+–
+–
+–
+S3
+LPIPS
+8
+0.005
+(0.002)
+0.446
+(0.116)
+23.644
+(1.640)
+–
+–
+–
+–
+S3
+LPIPS
+1
+0.005
+(0.002)
+0.439
+(0.117)
+23.329
+(1.606)
+–
+–
+–
+–
+S3
+L2
+10
+0.004
+(0.002)
+0.460
+(0.108)
+24.234
+(1.728)
+–
+–
+–
+–
+S3
+L2
+9
+0.004
+(0.002)
+0.459
+(0.109)
+24.198
+(1.736)
+–
+–
+–
+–
+S3
+L2
+7
+0.004
+(0.002)
+0.463
+(0.108)
+24.008
+(1.767)
+–
+–
+–
+–
+Continued on next page
+42
+
+===== Page 43 =====
+
+Table A.2: Quantitative results for synthetic wafers. Result shown in italic when evaluation metric is the same as the training
+target.
+Dataset
+Training
+Epoch
+L2 ↓
+LPIPS ↓
+PSNR ↑
+Cross entropy ↓
+k-off ↑
+objective
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+S3
+Cr. entropy
+10
+0.004
+(0.002)
+0.458
+(0.106)
+24.037
+(1.711)
+3.467
+(0.112)
+0.213
+(0.029)
+S3
+Cr. entropy
+4
+0.004
+(0.002)
+0.458
+(0.106)
+24.024
+(1.710)
+3.469
+(0.113)
+0.213
+(0.029)
+S3
+Cr. entropy
+5
+0.004
+(0.002)
+0.458
+(0.106)
+24.018
+(1.708)
+3.469
+(0.113)
+0.213
+(0.029)
+S4
+Focal
+10
+0.004
+(0.002)
+0.459
+(0.106)
+24.028
+(1.718)
+3.475
+(0.111)
+0.213
+(0.029)
+S4
+Focal
+5
+0.004
+(0.002)
+0.459
+(0.106)
+24.026
+(1.722)
+3.475
+(0.110)
+0.213
+(0.029)
+S4
+LPIPS
+10
+0.005
+(0.002)
+0.441
+(0.113)
+23.335
+(1.589)
+–
+–
+–
+–
+S4
+LPIPS
+4
+0.005
+(0.002)
+0.454
+(0.119)
+23.566
+(1.619)
+–
+–
+–
+–
+S4
+LPIPS
+7
+0.005
+(0.002)
+0.443
+(0.117)
+23.061
+(1.542)
+–
+–
+–
+–
+S4
+L2
+10
+0.005
+(0.002)
+0.475
+(0.102)
+23.502
+(1.803)
+–
+–
+–
+–
+S4
+L2
+20
+0.004
+(0.002)
+0.459
+(0.109)
+24.212
+(1.736)
+–
+–
+–
+–
+S4
+L2
+7
+0.005
+(0.002)
+0.471
+(0.106)
+23.660
+(1.853)
+–
+–
+–
+–
+S4
+L2
+1
+0.005
+(0.003)
+0.466
+(0.107)
+23.505
+(1.956)
+–
+–
+–
+–
+S4
+Cr. entropy
+10
+0.004
+(0.002)
+0.459
+(0.106)
+24.032
+(1.722)
+3.469
+(0.110)
+0.213
+(0.029)
+S4
+Cr. entropy
+9
+0.004
+(0.002)
+0.459
+(0.106)
+24.027
+(1.722)
+3.469
+(0.110)
+0.213
+(0.029)
+S5
+Focal
+10
+0.004
+(0.002)
+0.460
+(0.106)
+24.032
+(1.720)
+3.477
+(0.110)
+0.213
+(0.029)
+S5
+Focal
+5
+0.004
+(0.002)
+0.460
+(0.106)
+24.025
+(1.720)
+3.473
+(0.111)
+0.213
+(0.029)
+S5
+LPIPS
+10
+0.005
+(0.002)
+0.453
+(0.118)
+22.996
+(1.533)
+–
+–
+–
+–
+S5
+LPIPS
+7
+0.005
+(0.002)
+0.453
+(0.118)
+23.011
+(1.570)
+–
+–
+–
+–
+S5
+LPIPS
+9
+0.005
+(0.002)
+0.452
+(0.118)
+23.018
+(1.553)
+–
+–
+–
+–
+S5
+L2
+10
+0.004
+(0.002)
+0.459
+(0.110)
+24.231
+(1.741)
+–
+–
+–
+–
+Continued on next page
+43
+
+===== Page 44 =====
+
+Table A.2: Quantitative results for synthetic wafers. Result shown in italic when evaluation metric is the same as the training
+target.
+Dataset
+Training
+Epoch
+L2 ↓
+LPIPS ↓
+PSNR ↑
+Cross entropy ↓
+k-off ↑
+objective
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+S5
+L2
+6
+0.004
+(0.002)
+0.459
+(0.109)
+24.231
+(1.736)
+–
+–
+–
+–
+S5
+L2
+3
+0.004
+(0.002)
+0.462
+(0.109)
+24.129
+(1.708)
+–
+–
+–
+–
+S5
+Cr. entropy
+10
+0.004
+(0.002)
+0.460
+(0.106)
+24.032
+(1.721)
+3.468
+(0.110)
+0.213
+(0.029)
+S5
+Cr. entropy
+8
+0.004
+(0.002)
+0.461
+(0.105)
+24.025
+(1.721)
+3.476
+(0.109)
+0.213
+(0.029)
+Table A.3: Quantitative results for decision-tree based models. Quantitative results for synthetic wafers. Result shown in
+italic when evaluation metric is the same as the training target.
+Dataset
+L2 ↓
+LPIPS ↓
+PSNR ↑
+Cross entropy ↓
+k-off ↑
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+R1
+0.030
+(0.058)
+0.596
+(0.169)
+22.167
+(8.308)
+4.084
+(0.039)
+0.543
+(0.216)
+R2
+0.007
+(0.011)
+0.566
+(0.141)
+25.132
+(6.118)
+4.039
+(0.068)
+0.666
+(0.158)
+R3
+0.028
+(0.048)
+0.569
+(0.161)
+22.437
+(8.746)
+4.080
+(0.039)
+0.322
+(0.137)
+R4
+0.027
+(0.044)
+0.583
+(0.173)
+22.171
+(8.310)
+4.089
+(0.032)
+0.462
+(0.182)
+R5
+0.055
+(0.116)
+0.608
+(0.197)
+21.361
+(8.995)
+4.084
+(0.037)
+0.524
+(0.221)
+R6
+0.002
+(0.002)
+0.373
+(0.161)
+34.346
+(7.696)
+3.990
+(0.071)
+0.819
+(0.282)
+R7
+0.001
+(0.001)
+0.305
+(0.118)
+36.669
+(5.887)
+3.992
+(0.037)
+0.918
+(0.167)
+R8
+0.010
+(0.013)
+0.567
+(0.172)
+23.937
+(6.151)
+4.090
+(0.041)
+0.568
+(0.163)
+R9
+0.017
+(0.019)
+0.604
+(0.196)
+21.648
+(6.980)
+4.099
+(0.029)
+0.443
+(0.180)
+Continued on next page
+44
+
+===== Page 45 =====
+
+Table A.3: Quantitative results for synthetic wafers. Result shown in italic when evaluation metric is the same as the training
+target.
+Dataset
+L2 ↓
+LPIPS ↓
+PSNR ↑
+Cross entropy ↓
+k-off ↑
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+mean
+(SD)
+S1
+0.007
+(0.003)
+0.487
+(0.097)
+22.089
+(2.022)
+4.134
+(0.007)
+0.191
+(0.018)
+S2
+0.007
+(0.003)
+0.489
+(0.098)
+22.069
+(1.997)
+4.134
+(0.007)
+0.191
+(0.018)
+S3
+0.007
+(0.003)
+0.487
+(0.098)
+22.064
+(2.011)
+4.134
+(0.007)
+0.191
+(0.019)
+S4
+0.007
+(0.003)
+0.488
+(0.098)
+22.087
+(2.009)
+4.134
+(0.007)
+0.191
+(0.018)
+S5
+0.007
+(0.003)
+0.489
+(0.098)
+22.069
+(2.015)
+4.134
+(0.007)
+0.191
+(0.019)
+45
+
+===== Page 46 =====
+
+To better contextualize the results, we also provide in tables A.4, A.5,
+A.6 and A.7 the agreement between measures of different similarity metrics
+applied to the models listed above. The values above the main diagonal of
+the tables show the Pearson correlation coefficient, while the elements below
+the main diagonal show the Spearman’s rank correlation. In general, when
+analyzing Table A.4, the correlations follow the expected direction of alignment, but show considerable disagreement in several cases, highlighting the
+importance of careful consideration in the choice of evaluation metric for this
+particular setting. More specifically, when computing the correlation coefficients separately for decision trees (Table A.5, models trained on synthetic
+data (Table A.6) and models trained on real wafers (Table A.7) we observe
+a substantial disagreement among a few metrics — such as the seemingly
+uncorrelated nature of categorical cross entropy and focal loss to L1- and
+L2-norms for models which used synthetic datasets.
+Table A.4: Correlation coefficients between analyzed metrics, all models. Values above
+the main diagonal are the Pearson correlation coefficient, while the values below the main
+diagonal correspond to the Spearman’s rank correlation.
+L1 ↓
+L2 ↓
+PSNR ↑
+SSIM ↑
+LPIPS ↓
+HaarPSI ↑
+k-off ↑
+Dice ↑
+Cr. entr. ↓
+Focal ↓
+L1 ↓
+–
+0.821
+-0.720
+-0.169
+0.457
+-0.296
+-0.345
+-0.087
+-0.266
+-0.247
+L2 ↓
+0.255
+–
+-0.341
+0.241
+0.517
+-0.140
+0.073
+-0.349
+-0.146
+-0.137
+PSNR ↑
+-0.872
+0.017
+–
+0.455
+-0.436
+0.512
+0.644
+-0.351
+0.508
+0.491
+SSIM ↑
+-0.587
+0.446
+0.789
+–
+0.513
+0.615
+0.850
+-0.411
+-0.078
+-0.100
+LPIPS ↓
+0.033
+0.737
+0.212
+0.561
+–
+0.120
+0.049
+0.047
+-0.584
+-0.582
+HaarPSI ↑
+-0.364
+0.262
+0.650
+0.660
+0.273
+–
+0.548
+0.019
+0.072
+0.047
+k-off ↓
+-0.677
+0.146
+0.734
+0.714
+0.225
+0.663
+–
+-0.639
+0.248
+0.228
+Dice ↑
+0.149
+-0.377
+-0.225
+-0.340
+-0.323
+-0.158
+-0.551
+–
+-0.410
+-0.413
+Cr. entr. ↓
+0.347
+-0.286
+-0.409
+-0.595
+-0.425
+-0.571
+-0.272
+-0.293
+–
+0.999
+Focal ↓
+0.356
+-0.287
+-0.417
+-0.603
+-0.417
+-0.570
+-0.278
+-0.301
+0.998
+–
+Appendix B. Supplementary training details
+Models were implemented in PyTorch, and trained on compute nodes
+containing the NVIDIA A100 GPU. The optimizer used was Adam, with
+a learning rate lr = 1e−4, β1 = 0.9, β2 = 0.999. Stochastic gradient descent
+also shows satisfactory results. Different batch sizes were tried in preliminary
+training runs, from 32 to 256 patches per batch. Perceptually better results
+were observed with 32 samples per batch, which was therefore chosen for
+training.
+After empirically fine-tuning, some models were trained with different
+variance thresholds v and for more epochs. Those are R2 on LPIPS (v = 20);
+46
+
+===== Page 47 =====
+
+Table A.5: Correlation coefficients between analyzed metrics, trees. Values above the main
+diagonal are the Pearson correlation coefficient, while the values below the main diagonal
+correspond to the Spearman’s rank correlation.
+L1 ↓
+L2 ↓
+PSNR ↑
+SSIM ↑
+LPIPS ↓
+HaarPSI ↑
+k-off ↑
+Dice ↑
+Cr. entr. ↓
+Focal ↓
+L1 ↓
+–
+0.944
+-0.695
+0.011
+0.818
+-0.429
+-0.289
+-0.036
+0.368
+0.369
+L2 ↓
+0.846
+–
+-0.454
+0.236
+0.689
+-0.158
+-0.011
+-0.281
+0.092
+0.092
+PSNR ↑
+-0.631
+-0.345
+–
+0.585
+-0.818
+0.918
+0.795
+-0.587
+-0.867
+-0.867
+SSIM ↑
+-0.248
+0.037
+0.789
+–
+-0.039
+0.829
+0.884
+-0.990
+-0.871
+-0.871
+LPIPS ↓
+0.780
+0.934
+-0.420
+-0.020
+–
+-0.544
+-0.317
+0.030
+0.440
+0.440
+HaarPSI ↑
+-0.367
+0.007
+0.732
+0.873
+-0.011
+–
+0.956
+-0.837
+-0.956
+-0.956
+k-off ↓
+-0.314
+0.059
+0.666
+0.846
+0.007
+0.969
+–
+-0.912
+-0.954
+-0.954
+Dice ↑
+0.138
+-0.125
+-0.582
+-0.855
+-0.125
+-0.811
+-0.833
+–
+0.883
+0.883
+Cr. entr. ↓
+0.174
+-0.112
+-0.631
+-0.916
+-0.033
+-0.829
+-0.864
+0.912
+–
+1.000
+Focal ↓
+0.174
+-0.112
+-0.631
+-0.916
+-0.033
+-0.829
+-0.864
+0.912
+1.000
+–
+Table A.6: Correlation coefficients between analyzed metrics, synthethic datasets. Values
+above the main diagonal are the Pearson correlation coefficient, while the values below the
+main diagonal correspond to the Spearman’s rank correlation.
+L1 ↓
+L2 ↓
+PSNR ↑
+SSIM ↑
+LPIPS ↓
+HaarPSI ↑
+k-off ↑
+Dice ↑
+Cr. entr. ↓
+Focal ↓
+L1 ↓
+–
+0.967
+-0.976
+-0.946
+-0.770
+0.854
+-0.293
+-0.397
+-0.092
+0.016
+L2 ↓
+0.954
+–
+-0.998
+-0.914
+-0.638
+0.779
+-0.298
+-0.514
+-0.173
+-0.064
+PSNR ↑
+-0.954
+-0.998
+–
+0.930
+0.664
+-0.793
+0.253
+0.421
+0.216
+0.132
+SSIM ↑
+-0.884
+-0.868
+0.868
+–
+0.774
+-0.874
+0.522
+0.565
+-0.128
+-0.299
+LPIPS ↓
+-0.417
+-0.348
+0.365
+0.356
+–
+-0.874
+-0.373
+-0.719
+0.113
+0.411
+HaarPSI ↑
+0.341
+0.272
+-0.278
+-0.279
+-0.759
+–
+-0.091
+0.242
+-0.088
+-0.188
+k-off ↓
+-0.332
+-0.303
+0.285
+0.619
+-0.443
+-0.017
+–
+0.477
+-0.080
+-0.237
+Dice ↑
+-0.469
+-0.495
+0.462
+0.547
+-0.702
+0.443
+0.554
+–
+0.259
+-0.123
+Cr. entr. ↓
+-0.134
+-0.204
+0.252
+-0.132
+0.126
+-0.087
+-0.096
+0.226
+–
+0.914
+Focal ↓
+-0.012
+-0.092
+0.155
+-0.232
+0.226
+-0.066
+-0.289
+0.023
+0.954
+–
+R3, R5 and R8 on LPIPS (v = 0, 30 epochs); R4 on L2 and cross entropy
+(v = 10, 100 epochs); and all models for synthetic data on regression tasks
+(v = 0, 30 epochs).
+Appendix C. Similarity measures of color quantized wafers through
+k-means clustering
+The quantized color palette was obtained by k-means clustering of pixel
+colors of a random subsample of the original photographs. The amount of
+centroids k = 64 was chosen empirically and shows significant similarity to
+the original image. It can be observed in Figure C.24 how reconstructions
+for different k appear.
+47
+
+===== Page 48 =====
+
+Figure C.24: RGB reconstructions of quantized images for several amounts of colors —
+i.e. different k centroids in the k-means clustering method. The improvement in quality
+for k = 64 is clear.
+48
+
+===== Page 49 =====
+
+Table A.7: Correlation coefficients between analyzed metrics, real datasets. Values above
+the main diagonal are the Pearson correlation coefficient, while the values below the main
+diagonal correspond to the Spearman’s rank correlation.
+L1 ↓
+L2 ↓
+PSNR ↑
+SSIM ↑
+LPIPS ↓
+HaarPSI ↑
+k-off ↑
+Dice ↑
+Cr. entr. ↓
+Focal ↓
+L1 ↓
+–
+0.728
+-0.856
+0.098
+0.659
+0.003
+-0.603
+0.509
+-0.602
+-0.587
+L2 ↓
+0.605
+–
+-0.774
+0.260
+0.614
+-0.196
+-0.398
+0.510
+-0.584
+-0.577
+PSNR ↑
+-0.950
+-0.568
+–
+-0.189
+-0.796
+0.257
+0.546
+-0.524
+0.716
+0.703
+SSIM ↑
+-0.373
+-0.025
+0.428
+–
+0.488
+0.505
+-0.428
+0.879
+-0.599
+-0.614
+LPIPS ↓
+0.416
+0.081
+-0.464
+-0.149
+–
+0.088
+-0.586
+0.832
+-0.788
+-0.781
+HaarPSI ↑
+-0.021
+-0.278
+0.082
+0.154
+-0.211
+–
+-0.052
+0.459
+0.003
+-0.010
+k-off ↓
+-0.354
+-0.238
+0.215
+-0.314
+-0.342
+0.013
+–
+-0.573
+0.492
+0.478
+Dice ↑
+0.064
+0.099
+0.025
+0.542
+0.191
+0.439
+-0.439
+–
+-0.721
+-0.725
+Cr. entr. ↓
+0.007
+-0.039
+0.016
+-0.532
+-0.223
+-0.297
+0.237
+-0.737
+–
+0.999
+Focal ↓
+0.033
+-0.062
+-0.016
+-0.568
+-0.190
+-0.296
+0.236
+-0.747
+0.994
+–
+Appendix D. Dataset photograph samples
+We show a sample of a synthetic dataset (see Figure D.25) and of a real
+wafer (in Figure D.26).
+49
+
+===== Page 50 =====
+
+Figure D.25: A 2000×2667 pixel sample of S1, a synthetic dataset used in this work.
+50
+
+===== Page 51 =====
+
+Figure D.26: A 1141×1521 pixel sample of R5, a stitched photograph of a real wafer.
+51

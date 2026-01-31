@@ -1,0 +1,523 @@
+
+
+===== Page 1 =====
+
+Phosphorus oxide gate dielectric for black phosphorus ﬁeld
+eﬀect transistors
+W. Dickerson,1, a) V. Tayari,1 I. Fakih,1 A. Korinek,2 M. Caporali,3 M. Serrano-Ruiz,3
+M. Peruzzini,3 S. Heun,4 G. A. Botton,2 and T. Szkopek1, b)
+1)Department of Electrical and Computer Engineering, McGill University, Montreal,
+Quebec, H3A 0E9, Canada
+2)Department of Materials Science and Engineering, McMaster University, Hamilton,
+Ontario, L9H 4L7, Canada
+3)Istituto Chimica dei Composti OrganoMetallici-CNR, Sesto Fiorentino,
+Italy
+4)NEST, Istituto Nanoscienze-CNR and Scuola Normale Superiore, Pisa,
+Italy
+(Dated: 11 April 2018)
+The environmental stability of the layered semiconductor black phosphorus (bP)
+remains a challenge. Passivation of the bP surface with phosphorus oxide, POx,
+grown by a reactive ion etch with oxygen plasma is known to improve photoluminescence eﬃciency of exfoliated bP ﬂakes. We apply phosphorus oxide passivation
+in the fabrication of bP ﬁeld eﬀect transistors using a gate stack consisting of a POx
+layer grown by reactive ion etching followed by atomic layer deposition of Al2O3.
+We observe room temperature top-gate mobilities of 115 cm2V−1s−1 in ambient
+conditions, which we attribute to the low defect density of the bP/POx interface.
+Black phosphorus (bP) is a direct band gap (Eg = 0.3 eV) semiconductor with a puckered honeycomb layer structure characterized by van der Waals interlayer bonding1,2. The
+most thermodynamically stable allotrope of phosphorus, bP exhibits ambipolar conduction,
+anisotropic conductivity, and can be exfoliated down to the atomic monolayer limit3–6. Exfoliation of bP in a nitrogen environment followed by encapsulation with hexagonal boron
+nitride in a vacuum environment has led to the observation of ∼45, 000 cm2V−1s−1 hole
+mobility at cryogenic temperatures7. Importantly, bP is subject to degradation by photooxidation with a reaction rate that increases as bP thickness decreases9.
+A number of
+passivation techniques have been developed with varying degrees of success, including encapsulation with Al2O310–13, hexagonal boron nitride (h-BN)7,14,15,17, polymer layers6,8
+and functionalization with nickel nanoparticles16. More recently, it has been demonstrated
+that the formation of a dense phosphorus oxide, POx, layer by oxygen plasma dry etching
+followed by Al2O3 deposition results in stable encapsulation of bP without compromising
+photoluminescence (PL) eﬃciency18. The preservation of PL eﬃciency indicates that the
+interface between bP and POx does not measurably increase non-radiative recombination
+rates and is thus an eﬀective surface passivation strategy.
+In this work, we apply the POx passivation approach of Pei et al.18 to fabricate top-gated
+bP ﬁeld eﬀect transistors (FETs). The use of a native oxide for passivation and gate stack
+formation in bP FETs is appealing as a direct analogue to the use of silicon oxide in silicon
+FET technology. Various phases of POx are known, including a rhombohedral crystal of
+molecular P4O1019, and the most thermodynamically stable form of P2O5 which is itself a
+layered material composed of a hexagonal network of edge connected (PO)3−
+4
+tetrahedra20.
+The POx layer passivates the bP surface, and acts as a seeding layer for subsequent atomic
+layer deposition of high-quality gate dielectrics such as Al2O3. We have fabricated dual-gate
+bP FETs, a bottom gate formed by a heavily doped, oxidized silicon substrate, and a top
+gate structure with a POx/Al2O3 dielectric stack. Room temperature top gate ﬁeld eﬀect
+mobilities of up to 115 cm2V−1s−1 are achieved.
+In our experiments, we used bP crystals prepared according to the procedure developed
+by Nilges et al.27, wherein high-purity red phosphorus (> 99.99%), tin (> 99.999%), and
+a)Electronic mail: william.dickerson@mail.mcgill.ca
+b)Electronic mail: thomas.szkopek@mcgill.ca
+arXiv:1804.03639v1  [cond-mat.mes-hall]  10 Apr 2018
+
+===== Page 2 =====
+
+2
+(a)
+(b)
+(c)
+Si
+SiO2
+Ti/Au
+Ti/Au
+O2 plasma
+20 µm
+5 nm
+(d)
+(e)
+1.6
+1.2
+0.8
+0.4
+s
+/
+s
+t
+n
+u
+o
+C
+k
+140
+130
+Binding Energy (eV)
+135
+125
+500
+400
+300
+200
+100
+0
+)
+m
+n
+( t
+h
+g
+i
+e
+h
+80
+40
+0
+length (µm)
+20
+60
+P2p3/2
+P2p1/2
+P2p3/2
+P
+POx
++P2p1/2
+bP
+POx
+FIG. 1. Oxidation of bP and characterization of the native oxide. (a) A schematic depiction of
+the oxidation process. (b) A freshly exfoliated bP ﬂake before (top) and after (bottom) oxidation.
+White lines indicate proﬁlometer traces taken before and after oxidation at approximately the same
+position to measure the etch rate. (c) Proﬁlometer traces of the ﬂake taken before (red) and after
+(blue) oxidation. The diﬀerence in bP width is an artifact arising from limited lateral alignment
+accuracy of the proﬁlometer traces. (d) XPS P 2p core level spectrum of an oxidized bP surface
+indicating the presence of POx. (e) HAADF image of the top interface of an oxidized bP ﬂake with
+POx layer produced by RIE.
+gold (> 99.99%) are heated in a muﬄe oven with a SnI4 catalyst. The solid product was
+placed in a quartz tube, subjected to several evacuation-purge cycles with N2 gas, and then
+sealed under vacuum. The evacuated quartz tube was heated to 406◦C at 4.2◦C/min, where
+it remained for 2 hours. The tube was then heated to 650◦C at 2.2◦C/min and held at this
+temperature for 3 days. The tube was then cooled at 0.1◦C/min. The ﬁnal product is
+crystalline bP with a typical crystal size ranging from 0.3 mm × 3 mm to 3 mm × 10 mm.
+The bP crystals were mechanically exfoliated in a nitrogen glove box with H2O and O2
+levels maintained at < 1 ppm to minimize photo-oxidation during sample processing. The
+bP ﬂakes were exfoliated onto either single crystal quartz substrates, or 5 mΩcm As-doped,
+(001) Si substrates with 300 nm of dry thermal SiO2. The SiO2 surface was treated with a
+hexamethyldisilazane (HMDS) layer to suppress charge transfer doping21.
+Amorphous POx was grown on both bulk bP crystals and exfoliated bP ﬂakes by reactive
+ion etching (RIE) in a custom built chamber with 10 sccm of O2 ﬂow at a chamber pressure
+of 200 mTorr with 300 W of RF bias power. Prior to oxidizing the bP samples, the RIE
+chamber was cleaned for 15 min with 10 sccm of O2, 200 mTorr pressure and 300 W RF
+power. As discussed further below, the RIE process simultaneously oxidizes and etches the
+bP. We calibrated the RIE process by etching thick exfoliated ﬂakes as shown in Fig. 1 a)-c).
+Stylus proﬁlometer traces were taken before and after RIE processing, with the results of a
+17 min etch shown in Fig. 1 b) and c). The estimated etch rate for our process is 0.98 ˚A/s,
+which corresponds to an etch rate of 0.18 layers/s taking into account the 5.23 ˚A thickness
+per layer1. By comparison, Pei et al. report a comparable etch rate of 0.1 layers/s18. In our
+work, typical RIE processing times for thin (< 1 µm) exfoliated bP ﬂakes are 1-3 minutes,
+allowing for the growth of POx with minimal etching.
+To conﬁrm the formation of POx, a freshly cleaved bP crystal was treated by RIE and
+analyzed by X-ray photoemission spectroscopy (XPS) with an Al Kα source. The resulting
+XPS spectrum of the P 2p core level is shown in Fig.1(d), showing contributions from both
+bP and POx.
+The P 2p3/2 peak at a binding energy of 130 eV and spin-orbit split P
+2p1/2 peak are in good agreement with previous observations of bP XPS spectra18,24. The
+overlapping P 2p1/2 and P 2p3/2 peaks at a binding energy of ∼134.5 eV are in remarkably
+good agreement with previous reports for P2O518,24,25. However, it remains a challenge to
+distinguish between the various phases of POx26.
+The oxidation process is best understood by the model described by Pei et al.18. In the
+RIE process, O2 plasma oxidizes the top layers of the bP, producing a dense POx layer.
+
+===== Page 3 =====
+
+3
+(a)
+(b)
+(c)
+Quartz
+Ti/Au
+Ti/Au
+POx
+Ti/Au
+20 µm
+0.78
+0.76
+0.74
+0.72
+CG
+m
+c
+/
+F
+µ
+( 
+2)
+-40
+0
+40
+VG (mV)
+FIG. 2. Capacitance measurement. (a) A schematic depiction of a bP FET on a quartz substrate
+used for measuring capacitance. (b) An optical micrograph taken before the ﬁnal metalization step
+of the device used for capacitance measurement. The device used for the capacitance measurement
+had a ∼5 nm thick POx capping layer grown by 3 minutes of RIE. (c) Capacitance versus top-gate
+voltage with an AC excitation of 1 mV peak-to-peak at a frequency of 1 MHz.
+Once this layer is established, subsequent etching by O2 plasma penetrates the underlying
+bP, leading to further oxidation and POx formation, while simultaneously sputtering away
+POx. A dynamic equilibrium is established between the sputtering of POx and oxidation
+of the underlying bP, such that the POx layer reaches a steady-state thickness.
+Pei et
+al.18 estimates a steady state thickness of approximately 10 nm after 40 s of oxidation,
+approximately twice the 5 nm thickness observed in our experiments (see below).
+Notably, POx is a strong hygroscopic desiccant and reacts violently with water. In order
+to suppress the reaction of POx with water, we encapsulated the bP/POx ﬂakes with a
+3 nm thick layer of Al2O3 by atomic layer deposition, exposing them to trimethylaluminum
+(TMA) for 148 seconds before proceeding with 25 ALD deposition cycles. By increasing
+exposure to hygroscopic TMA, the bP/POx surface is in a dehydrated state before the
+introduction of H2O into the ALD chamber to initiate oxidation of adsorbed TMA.
+Transmission electron microscopy (TEM), was used to characterize the bP/POx/Al2O3
+and bP/SiO2 interfaces. An exfoliated bP sample was capped with a POx layer grown for
+3 min by RIE followed by a 3 nm layer of Al2O3 grown by ALD. A tungsten layer was
+deposited atop the ﬂake for protection during the milling and polishing process. Electron
+energy loss spectroscopy (EELS) conﬁrmed the presence of P, Al, and O. Fig. 1(e) displays a
+high-angle annular dark-ﬁeld (HAADF) image of the surface of the bP ﬂake. The puckered
+honeycomb layers of P atoms in the bP crystal are clearly seen, as well as an amorphous
+layer of POx. We speculate that the POx is an amorphous layer of molecular P4O10, but
+further work is required for unambiguous determination of the POx phase. The POx layer
+thickness is approximately t ∼5 nm.
+We measured the capacitance of the POx layer alone as a gate dielectric with bP ﬂakes
+fabricated on an insulating quartz substrate. A schematic of the bP device is displayed
+in Fig. 2(a). The bP ﬂakes were ﬁrst exfoliated on a quartz substrate and contacted with
+Ti/Au (5 nm / 80 nm) electrodes using an electron beam lithography process. The POx was
+then deposited by 3 min of RIE. Finally, a second electron beam lithography process was
+used to deposit Ti/Au (5 nm / 80 nm) gate electrodes. An optical micrograph of a device
+before top-gate metallization is shown in Fig. 2(b). The top-gate capacitance per unit area
+CG versus top-gate dc bias voltage VG was measured with an AC excitation of Vac = 1 mV
+peak-to-peak at a frequency of 1.00 MHz, and is displayed in Fig. 2(c). At VG = 0 V, the
+capacitance per unit area is CG = 0.74 µF/cm2. The gate capacitance is a series combination
+of: the capacitance CP Ox of the POx layer; and the gate voltage dependent quantum
+capacitance CQ of the hole accumulation layer at the bP surface. The latter capacitance
+contribution is approximated from a non-degenerate thermodynamic density of states as
+CQ = e2∂p/∂EF ∼e2p/kBT = 6.2 µF/cm2 for an estimated carrier density p = 1012/cm2
+at T = 300 K. Consequently, we ﬁnd the POx layer contribution CP Ox = (C−1
+G −C−1
+Q )−1 =
+0.84 µF/cm2. For an estimated POx layer thickness of t = 5 nm determined from TEM
+images, the inferred dielectric constant of our POx layer is ϵ = 19ϵ0.
+We fabricated devices for ﬁeld eﬀect measurements in a dual gate conﬁguration, similar
+to that ﬁrst proposed by Sakaki for velocity modulated transistors23, and recently used to
+compare top-gate and back-gate operation in bP FETs22. A schematic of the fabrication
+
+===== Page 4 =====
+
+4
+(a)
+Si
+SiO2
+Ti/Au
+Ti/Au
+POx
+(b)
+(c)
+(d)
+Si
+SiO2
+Ti/Au
+Ti/Au
+O2 plasma
+Si
+SiO2
+Ti/Au
+Ti/Au
+POx
+Al2O3
+Ti/Au
+20 µm
+FIG. 3. Dual-gate device preparation. (a) Schematic depiction of the oxidation and Al2O3 encapsulation process. (b) An optical micrograph of a freshly exfoliated bP ﬂake. The scale bar is 20
+µm. (c) Optical micrograph of the same ﬂake after deﬁnition of the source and drain electrodes, 1
+minute of RIE, and deposition of a 3 nm Al2O3 capping layer. (d) Top gate electrode deﬁnition.
+process is shown in Fig. 3(a). A freshly exfoliated bP ﬂake on an SiO2/Si substrate is
+displayed in Fig. 3(b). A standard electron beam lithography process was used to deﬁne
+Ti/Au (5 nm / 80 nm) source-drain electrodes (Fig. 3(c)). The POx and Al2O3 layers were
+then deposited by 3 min of RIE and 25 cycles of ALD. Finally, a second electron beam
+lithography process was used to deﬁne Ti/Au (5 nm / 80 nm) top gate electrodes (Fig.
+3(d)).
+For further protection, bP FETs were encapsulated with polymethylmethacrylic
+(PMMA) layers.
+Taking into account the capacitance CAl2O3 = ϵ/t = 9.34ϵ0/3 nm =
+2.7 µF/cm2 of the 3 nm layer of Al2O3, the top-gate capacitance is estimated to be CT G =
+(C−1
+G
++ C−1
+Al2O3)−1 = 0.58 µF/cm2. The back-gate capacitance is a signiﬁcantly smaller
+CBG = ϵ/t = 3.9ϵ0/300 nm = 11.5 nF/cm2.
+All electrical measurements were carried out in a vacuum probe station, P < 10−4 Torr using quasi-dc excitation with a semiconductor parameter analyzer. Leakage currents through
+the top and bottom oxide layers were measured through-out all measurements, and never
+exceeded 5% of the measured source-drain current for all results shown here. Fig. 4 a) and
+b) display the I −V characteristics of our highest-mobility POx/Al2O3-passivated device.
+The source-drain current IDS versus bottom-gate voltage VBG with ﬁxed top-gate voltage
+VT G = 0 V at a source-drain bias voltage VDS = 50 mV at a temperature of 300 K is
+plotted in Fig. 4(a). Similarly, IDS versus top-gate voltage VT G with ﬁxed bottom-gate
+voltage VBG = 0 V at a source-drain bias voltage VDS = 50 mV is shown in Fig. 4(b). In
+both cases, hole conduction is observed, with an on/oﬀcurrent ratio for the bottom-gate
+and top-gate modulation of Ion/Ioff ∼30 and Ion/Ioff ∼300, respectively. Noting that
+the capacitance ratio CT G/CBG ∼50, the top-gate voltage range −1 V < VT G < +1 V
+and bottom-gate voltage range −50 V < VBG < +50 V extend over an induced charge
+displacement of approximately ∆D/e = C∆V/e = 7.2 × 1012cm−2.
+The ﬁeld eﬀect mobility is determined from the channel conductance GDS = IDS/VDS
+by µX = (L/W)(∂GDS/∂(CXVX)), where L is the channel length, W is the channel width
+and X refers to either top-gate (TG) or bottom-gate (BG). The room temperature ﬁeld
+eﬀect mobilities are plotted in Fig. 4(c) and Fig. 4(d). The peak top-gate mobility of
+µT G = 90 cm2V−1s−1 exceeds the peak back-gate mobility of µBG = 60 cm2V−1s−1 in the
+same bP FET. The POx/Al2O3 top-gate is thus seen to give 10-fold improvement in on/oﬀ
+current ratio and a 50% improvement in peak ﬁeld eﬀect mobility over the SiO2 back-gate.
+In the case of both top-gate and back-gate modulation seen in Fig. 4(c) and (d), the ﬁeld
+eﬀect mobility falls to a negligible value at positive bias due to the depletion of hole density
+and subsequent loss of conductance modulation. At negative bias, channel conductance
+saturates due to the parasitic eﬀects of access resistance and contact resistance, suppressing
+transconductance and leading to an under-estimation of ﬁeld eﬀect mobility. The saturation
+of conduction at negative bias is more prevalent with top-gate modulation than bottom-gate
+modulation because the top gate modulates a smaller area of the channel than the bottom
+gate, and thus the top-gate conﬁguration suﬀers from higher access resistance.
+Despite
+
+===== Page 5 =====
+
+5
+(a)
+(b)
+(d)
+(c)
+80
+60
+40
+20
+0
+µ  (cm
+2V
+-1s
+-1)
+-1.0
+0.0
+1.0
+VTG (V)
+60
+50
+40
+30
+20
+µ
+ (cm
+2V
+-1s
+-1)
+-40
+0
+40
+VBG (V)
+0.1
+1
+IDS (uA)
+-40
+0
+40
+VBG (V)
+0.01
+0.1
+IDS (uA)
+-1.0
+0.0
+1.0
+VTG (V)
+10
+0
+1
+BG
+TG
+FIG. 4. Dual-gate transistor characteristics. (a) Bottom gate sweep (VDS = 50 mV and VT G = 0
+V). (b) Top gate sweep (VDS = 50 mV and VBG = 0 V). (c) Bottom gate mobility (VDS = 50 mV
+and VT G = 0 V). (d) Top gate mobility (VDS = 50 mV and VBG = 0 V).
+(a)
+(b)
+0.001
+0.01
+0.1
+1
+IDS (uA)
+-1.0
+0.0
+1.0
+VTG (V)
+0.001
+0.01
+0.1
+1
+IDS (uA)
+60
+-60
+VBG (V)
+0.5
+-0.5
+VBG =+60V
+VBG =–60V
+40
+20
+0.0
+-40 -20
+VTG =+1V
+VTG =–1V
+FIG. 5. Dependence of bP FET conduction on both top- and bottom-gate voltages. (a) Top-gate
+sweeps taken at various bottom-gate biases. The bottom-gate bias was stepped in increments of
+10 V. (b) Bottom-gate sweeps taken at various top-gate biases. The top-gate bias was stepped in
+increments of 0.2 V.
+the diﬀerence in access resistance, the ﬁeld eﬀect mobility extracted from raw conductance
+modulation data is superior in the top-gate conﬁguration.
+There are a number of physical mechanisms that may lead to an improvement in transfer characteristics in a top-gated hole accumulation layer: a reduced density of charged
+impurities at the top bP/POx interface as compared to the bP/SiO2 interface, stronger
+screening of charged impurities due to the shorter electrical length of the top-gate versus
+the bottom-gate, and a reduced contact and access resistance to the top accumulation layer
+where the source-drain electrodes are deposited as compared with the bottom accumulation
+layer. More subtle mechanisms, such as the role of phonon scattering at the respective
+bP/dielectric interfaces could also play a role.
+Lastly, we investigated bp FET channel modulation in a dual-gate mode, akin to the
+velocity modulated transistor proposed by Sakaki23. The source-drain current IDS versus
+top-gate voltage VT G at a variety of bottom-gate voltages VBG is plotted in Fig.
+5(a).
+Similarly, IDS versus bottom-gate voltage VBG at a variety of top-gate voltages VT G is
+plotted in Fig. 5(b). Several eﬀects in the dual-gate mode are evident. Both the threshold
+voltage and on-current for hole accumulation induced by one gate voltage is modulated
+by the voltage applied to the other gate. The former eﬀect is a consequence of both gate
+electrodes modulating the potential through-out the exfoliated bP ﬂake. The latter eﬀect
+is a consequence of gate modulation of both contact resistance and channel mobility, as has
+been previously observed in bP22. Notably, the peak top-gate ﬁeld eﬀect mobility can be
+increased to µT G = 115 cm2V−1s−1 at a bottom-gate voltage VBG = −50 V.
+The improvement in mobility of a hole accumulation layer at the bP/POx interface in
+this work as compared to the bP/Al2O3 interface of previous work22 can be attributed to
+
+===== Page 6 =====
+
+6
+the combined action of etching away the bP surface damaged by oxidation under ambient
+conditions and the low defect density of the bP/POx interface formed by RIE18. The RIE
+process etches away the bP surface exposed to ambient water and oxygen9, allowing a clean
+bP/POx interface to be formed. The POx layer formed by RIE is itself an ideal seeding
+layer for subsequent ALD steps to enable gate dielectric engineering. In contrast, ALD of
+a top-gate dielectric such as Al2O3 directly atop bP is subject to the low quality of an
+ambient exposed bP surface.
+In summary, we have shown that the POx/Al2O3 layers produced by RIE and ALD
+treatment of bP can be used as an eﬀective gate dielectric stack in bP FETs with on/oﬀ
+current ratios > 300 and ﬁeld eﬀect mobilities of 115 cm2V−1s−1 at room temperature,
+exceeding the performance on the SiO2 bottom-gate in the same bP FET channel. The
+simple POx/Al2O3 process enables the fabrication of dual-gated FETs, which have seen
+great interest in the context of the Stark eﬀect, where band structure is modulated by
+applied electric ﬁeld28,29.
+Acknowledgements W.D., V.T., I.F. and T.S. acknowledge support from the Canadian
+Natural Sciences and Engineering Research Council, Fonds Qu´ebecois de Recherche - Nature
+et Technologies.
+The TEM work (HAADF imaging and EELS) was carried out at the
+Canadian Centre for Electron Microscopy, a facility supported by the Canada Foundation
+for Innovation under the MSI program, NSERC and McMaster University. M.C., M.S.-R.,
+S.H. and M.P. express thanks to the European Research Council for funding the project
+PHOSFUN Phosphorene functionalization: a new platform for advanced multifunctional
+materials (Grant Agreement No. 670173) through an ERC Advanced Grant to MP. S.H.
+acknowledges support from Scuola Normale Superiore, project SNS16 B HEUN-004155.
+1A. Morita, Semiconducting black phosphorus, Applied Physics A: Solids and Surfaces, 39, 227 (1986).
+2R. W. Keyes, The electrical properties of black phosphorus, Physical Review, 92, 3 (1953).
+3L. Li, Y. Yu, G. J. Ye, Q. Ge, X. Ou, H. Wu, D. Feng, X. H. Chen, and Y. Zhang, Black phosphorus
+ﬁeld-eﬀect transistors, Nature Nanotechnology, 9, 5 (2014).
+4F. Xia, H. Wang, and Y. Jia, Rediscovering black phosphorus as an anisotropic layered material for
+optoelectronics and electronics, Nature Communications, 5, 4458 (2014).
+5H. Liu, A. T. Neal, Z. Zhu, X. Xu, D. Tomanek, P. D. Ye, and Z. Luo, Phosphorene: an unexplored 2D
+semiconductor with a high hole mobility, ACS Nano, 8, 4 (2014).
+6V. Tayari, N. Hemsworth, I. Fakih, A. Favron, E. Gaufr`es, G. Gervais, R. Martel, and T. Szkopek, Twodimensional magnetotransport in a black phosphorus naked quantum well, Nature Communications, 6,
+7702 (2015).
+7G. Long, D. Maryenko, J. Shen, S. Xu, J. Hou, Z. Wu, W. K. Wong, T. Han, J. Lin, Y. Cai, R. Lortz,
+and N. Wang, Achieving Ultrahigh Carrier Mobility in Two-Dimensional Hole Gas of Black Phosphorus,
+Nano Lett. 16, 7768 (2016).
+8E. Passaglia, F. Cicogna, G. Lorenzetti, S. Legnaioli, M. Caporali, M. Serrano-Ruiz, A. Ienco, and M.
+Peruzzini, Novel polystyrene-based nanocomposites by phosphorene dispersion, RSC Advances 6, 53777
+(2016).
+9A. Favron, E. Gaufr`es, F. Fossard, A.-L. Phaneuf-LHeureux, N. Y. Tang, P. L. L´evesque, A. Loiseau,
+R. Leonelli, S. Francoeur, and R. Martel, Photooxidation and quantum conﬁnement eﬀects in exfoliated
+black phosphorus, Nature Materials, 14, 8 (2015).
+10J. Na, Y. T. Lee, J. A. Lim, D. K. Hwang, G.-T. Kim, W. K. Choi, and Y.-W. Song, Few-layer black
+phosphorus ﬁeld-eﬀect transistors with reduced current ﬂuctuation, ACS Nano, 8, 11 (2014).
+11S. Wells, J. Wood, D. Jariwala, K.-S. Chen, E. Cho, V. Sangwan, X. Liu, L. Lauhon, T. Marks, and
+M. Hersam, Passivation of exfoliated black phosphorus transistors against ambient degradation, in APS
+March Meeting Abstracts, 1, (2015).
+12J.-S. Kim, Y. Liu, W. Zhu, S. Kim, D. Wu, L. Tao, A. Dodabalapur, K. Lai, and D. Akinwande, Toward
+air-stable multilayer phosphorene thin-ﬁlms and transistors, Scientiﬁc Reports, 5, (2015).
+13S. Das, M. Demarteau, and A. Roelofs, Ambipolar phosphorene ﬁeld eﬀect transistor, ACS Nano, 8, 11
+(2014).
+14X. Chen, Y. Wu, Z. Wu, Y. Han, S. Xu, L. Wang, W. Ye, T. Han, Y. He, Y. Cai, et al., High-quality
+sandwiched black phosphorus heterostructure and its quantum oscillations, Nature Communications, 6,
+7315 (2015).
+15Y. Cao, A. Mishchenko, G. Yu, E. Khestanova, A. Rooney, E. Prestat, A. Kretinin, P. Blake, M. Shalom,
+C. Woods, et al., Quality heterostructures from two-dimensional crystals unstable in air by their assembly
+in inert atmosphere, Nano Letters, 15, 8 (2015).
+16M. Caporali, M. Serrano-Ruiz, F. Telesio, S. Heun, G. Nicotra, C. Spinella and M. Peruzzini, Decoration
+of exfoliated black phosphorus with nickel nanoparticles and its application in catalysis, Chem. Comm.
+53, 10946 (2017).
+
+===== Page 7 =====
+
+7
+17A. Avsar, I. J. Vera-Marun, J. Y. Tan, K. Watanabe, T. Taniguchi, A. H. Castro Neto, and B. Ozyilmaz,
+Air-stable transport in graphene-contacted, fully encapsulated ultrathin black phosphorus-based ﬁeldeﬀect transistors, ACS Nano, 9, 4 (2015).
+18J. Pei, X. Gai, J. Yang, X. Wang, Z. Yu, D.-Y. Choi, B. Luther-Davies, and Y. Lu, Producing air-stable
+monolayers of phosphorene and their defect engineering, Nature Communications, 7, 10450 (2016).
+19D. W. J. Cruickshank, Reﬁnements of Structures Containing, Bonds between Si, P, S or Cl and O or N.
+V. P4010, Acta Cryst. 17, 677, (1964).
+20D. Stachel, I. Svoboda and H. Fuess, Phosphorus Pentoxide at 233 K, Acta Cryst. C51, 1049 (1995).
+21M. Lafkioti, B. Krauss, T. Lohmann, U. Zschieschang, H. Klauk, K. v. Klitzing and J. H. Smet, Graphene
+on a Hydrophobic Substrate: Doping Reduction and Hysteresis Suppression under Ambient Conditions,
+Nano Lett. 10, 1149 (2010).
+22V. Tayari, N. Hemsworth, O. Cyr-Choini`ere, W. Dickerson, G. Gervais, and T. Szkopek, Dual-gate
+velocity-modulated transistor based on black phosphorus, Phys. Rev. App. 5, 6, (2016).
+23H. Sakaki, Velocity-modulation transistor (VMT)-a new ﬁeld-eﬀect transistor concept, Jap. J. Appl. Phys.
+21, 6A (1982).
+24M. Edmonds, A. Tadich, A. Carvalho, A. Ziletti, K. ODonnell, S. Koenig, D. Coker, B. Ozyilmaz, A. C.
+Neto, and M. Fuhrer, Creating a stable oxide at the surface of black phosphorus, ACS Appl. Mat. & Int.
+7, 27 (2015).
+25Y. Wang and P. M. A. Sherwood, Phosphorus Pentoxide (P2O5) by XPS, J. Vac. Sci. & Tech. A 22, 4
+(2004).
+26K. J. Gaskell, M. M. Smith and P. M. A. Sherwood, Valence band x-ray photoelectron spectroscopic
+studies of phosphorus oxides and phosphates, J. Vac. Sci. Technol. A 22, 1331 (2004).
+27T. Nilges, M. Kersting, and T. Pfeifer, A fast low-pressure transport route to large black phosphorus
+single crystals, J. Sol. State Chem. 181, 8 (2008).
+28B. Deng, V. Tran, Y. Xie, H. Jiang, C. Li, Q. Guo, X. Wang, H. Tian, S. J. Koester, H. Wang, J. J. Cha,
+Q. Xia, L. Yang and F. Xia, Eﬃcient electrical control of thin-ﬁlm black phosphorus bandgap, Nature
+Communications 8, 14474 (2017).
+29S.-H. Yan, Z.-J. Xie, J.-H. Chen, T. Taniguchi and K. Watanabe, Electrically Tunable Energy Bandgap
+in Dual-Gated Ultra-Thin Black Phosphorus Field Eﬀect Transistors, Chinese Phys. Lett. 34, 047304
+(2017).

@@ -1,0 +1,1134 @@
+
+
+===== Page 1 =====
+
+FabGPT: An Efficient Large Multimodal Model for Complex
+Wafer Defect Knowledge Queries
+Yuqi Jiang
+Zhejiang University
+Hangzhou, China
+Xudong Lu
+Zhejiang University
+Hangzhou, China
+Qian Jin
+Zhejiang University
+Hangzhou, China
+Qi Sun#
+Zhejiang University
+Hangzhou, China
+qisunchn@zju.edu.cn
+Hanming Wu
+Zhejiang University
+Hangzhou, China
+Cheng Zhuo#
+Zhejiang University
+Hangzhou, China
+czhuo@zju.edu.cn
+ABSTRACT
+Intelligence is key to advancing integrated circuit (IC) fabrication.
+Recent breakthroughs in Large Multimodal Models (LMMs) have
+unlocked extraditionary abilities in understanding images and text,
+fostering intelligent fabrication. Leveraging the power of LMMs,
+we introduce FabGPT, a customized IC fabrication large multimodal
+model for wafer defect knowledge query. FabGPT manifests expertise in conducting defect detection in Scanning Electron Microscope
+(SEM) images, performing root cause analysis, and providing expert Q&A on fabrication processes. FabGPT matches enhanced
+multimodal features to automatically detect minute defects under
+complex wafer backgrounds and reduce the subjectivity of manual
+threshold settings. Besides, the proposed modulation module and
+interactive corpus training strategy embed wafer defect knowledge into the pre-trained model, effectively balancing Q&A queries
+related to defect knowledge and original knowledge and mitigating the modality bias issues. Experiments on in-house fab data
+show that FabGPT achieves significant performance improvement
+in wafer defect detection and knowledge querying.
+1
+INTRODUCTION
+The intersection of visual and language models [1–3] has significantly propelled the revolutionary advancement of artificial intelligence (AI), which makes models understand and interpret the world
+similarly to humans. Since Large Multimodal Models (LMMs) [4–6]
+possess the capability to reason about visual images, they have
+attracted considerable attention in defect detection tasks. However,
+current LMMs are primarily applied to visual tasks [7–9] in basic
+scenarios and lack sensitivity to the knowledge of specialized domains. This limits their efficiency in wafer defect knowledge query
+in the field of integrated circuits (IC) fabrication.
+# Corresponding authors.
+Permission to make digital or hard copies of all or part of this work for personal or
+classroom use is granted without fee provided that copies are not made or distributed
+for profit or commercial advantage and that copies bear this notice and the full citation
+on the first page. Copyrights for components of this work owned by others than the
+author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or
+republish, to post on servers or to redistribute to lists, requires prior specific permission
+and/or a fee. Request permissions from permissions@acm.org.
+ICCAD ’24, October 27–31, 2024, New York, NY, USA
+© 2024 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+ACM ISBN 979-8-4007-1077-3/24/10...$15.00
+https://doi.org/10.1145/3676536.3676750
+Q: Describe the defect.
+Analysis
+Detection & Localization
+Modality Assessment
+GPT-4:
+Craterlike,
+center, one.
+FabGPT:
+Particle,
+center, one.
+Q: Describe the defects.
+AnoGPT:
+Particle, 
+bottom, two.
+FabGPT:
+Scratch, bottom right, 2.
+Q: What causes this defect?
+GPT-4:
+Process 
+variation.
+FabGPT:
+Wafer 
+breakage.
+Q: How are the defects 
+generated?
+AnoGPT:
+Scratch.
+FabGPT:
+Slurry settling.
+Q: What are the wafers
+made of ?
+GPT-4:
+Silicon.
+FabGPT:
+Crystal 
+silicon.
+Q: What are the advantages
+of SEM shooting wafers?
+AnoGPT:
+Hole.
+FabGPT:
+High 
+resolution.
+Figure 1: Comparisons between our FabGPT and GPT-4 [1],
+AnomalyGPT [14], which are fine-tuned on our dataset, for
+detecting, locating, and analyzing microscopic defects in complex backgrounds and addressing modality bias issues. Previous arts perform badly while encountering “detection”,
+“analysis”, and “modality bias”.
+In the semiconductor industry, the manufacturing process is intricate, with each step potentially introducing random defects. These
+defects impact the reliability of electronic devices [10–13], making
+it essential to detect defects on the wafer surface and perform thorough question-and-answer (Q&A) analysis to deepen engineers’
+understanding of these defects and IC questions.
+Recent years have witnessed advancements in methods for querying defect knowledge, encompassing both detection and Q&A analysis. Convolutional Neural Networks (CNNs)-based approaches
+[15–19] leverage extensive training data to recognize patterns and
+features in images, thereby enhancing the accuracy and efficiency
+of defect detection. However, these methods are heavily dependent
+on large-scale annotated data and fall short of conducting in-depth
+Q&A analysis, which limits their ability to understand complex image content. Moreover, some methods [14, 20] employ large models,
+fine-tuning pre-trained models with specific data sets to achieve
+superior detection performance, even with limited data availability.
+These approaches also demonstrate strong visual understanding
+capabilities, enabling them to deduce relevant visual knowledge.
+arXiv:2407.10810v2  [cs.CV]  15 Feb 2025
+
+===== Page 2 =====
+
+Consequently, integrating wafer defect knowledge from the IC domain into large models is promising to support comprehensive
+defect knowledge queries.
+However, existing methods based on fine-tuning large models
+often face two issues: 1) difficulty in precisely detecting defects
+within complex backgrounds; and 2) a loss of the ability to perform
+comprehensive Q&A tasks. Despite the vast amount of knowledge
+stored in large models, the complex and microscopic structure of
+wafer surfaces still prevents them from accurately capturing information such as the number and location of minute defects. As
+shown in Figure 1, GPT-4 [1] struggles with queries specific to
+wafer defects, and even the fine-tuned AnomalyGPT [14] inaccurately identifies the locations of minute defects. Additionally, as
+demonstrated by the dialogue in Figure 1 with AnomalyGPT [14],
+the fine-tuned model tends to produce text outputs that are still
+biased towards visual content when user queries are not closely
+related to the visual input. This is termed as “modality bias”, indicating that the model loses its ability to judge and understand the
+textual content of the questions.
+To address the issues mentioned above, we propose an efficient
+LMM, FabGPT, that employs a three-stage strategy: modal enhancement, detection, and Q&A stage. This strategy allows us to build
+on the inherent capabilities of pre-trained models by embedding
+high-quality prompt instructions, enabling it to detect wafer defects
+in the IC domain and query the related knowledge. Additionally, to
+further alleviate “modality bias”, we introduce an interactive corpus
+training strategy. Our contributions are summarized as follows:
+• We propose a knowledge query LMM, FabGPT, based on prompt
+learning, which effectively detects minute defects in complex
+wafer backgrounds and conducts Q&A analysis on relevant
+defect knowledge.
+• We design a modal enhancement stage that constrains and
+supplements the semantic information in multimodal features,
+significantly optimizing the quality of the prompt features.
+• A detection head is developed, matching multimodal features
+to automatically detect pixel-level defects. This device eliminates the drawbacks of subjective threshold selection while
+enhancing defect detection capabilities.
+• We propose a Q&A stage and a corpus training strategy that
+supervises real-time updating of instruction coefficients and the
+interaction of new and old knowledge, addressing the modality
+bias in dialogues.
+• We conduct comprehensive experiments on our SEM-WaD
+dataset, our FabGPT achieves the supervised detection accuracy of 91.81% image-level, 95.61% pixel-level, 88.17% PRO, and
+85.80% AP. For Q&A dialogue, it achieves 96.86% accuracy, outperforming the baselines significantly.
+2
+PRELIMINARIES
+2.1
+IC Wafer Defect Analysis
+Wafers are the fundamental material for manufacturing IC, and the
+quality of their surface directly impacts the reliability of the chips.
+By identifying and understanding the various defects on the wafer
+surfaces detected by Scanning Electron Microscopes (SEM) [10, 11,
+13], engineers can learn about the attributes such as type, location,
+and cause of the defects, which is crucial for optimizing processes
+Hole
+Good
+Particle
+Scratch
+Pattern
+Deformation
+Figure 2: The four types of defects and defect-free (good)
+images in the SEM-WaD dataset.
+and quality control. Traditional and CNN-based analysis methods
+utilize large datasets for feature learning to detect defect regions. For
+example, Zontak et al. [21] utilized the periodicity of wafer patterns
+to manually construct defect features, thus detecting defects. Gomez
+et al. [22] proposed a detection method based on Support Vector
+Machines (SVM), which separates data points of different classes
+in high-dimensional space using defined hyperplanes. Cheon et al.
+[16] proposed a CNN model that can extract effective features for
+defect classification. These models achieve significant progress in
+classifying and segmenting wafer defects. However, they perform
+poorly when faced with scarce data and have not yet developed
+a model that integrates classification, segmentation, and analysis.
+There is an urgent need for an automated tool capable of detecting
+and inferring wafer defects with minimal data.
+We use an in-house dataset, SEM-WaD, which comprises 1,226
+defect-free images and 1,182 images with four common types of
+defects (holes, particles, pattern deformities, and scratches). The
+wafer images contain diverse and complex backgrounds, with each
+defect type exhibiting unique morphologies and features. Some
+examples are shown in Figure 2.
+2.2
+Large Multimodal Models
+LMMs [4–6] are the large and complex models capable of processing various types of data (images, spectra, sound, etc.) and utilize
+large-scale datasets during training to understand and generate
+descriptions of visual content. Their powerful comprehension and
+transfer abilities make them excel in various tasks such as image
+description generation and visual question answering. For example,
+[4] utilized a linear layer for aligning the frozen video encoder
+of the BLIP-2 [23] and the LLM Vicuna [24] to enable image-text
+Q&A. [5] adopted a contrastive learning approach to embed the
+semantic information of images and text into the same space to
+achieve zero-shot transfer. DALL-E [6] generated images related
+to text descriptions by encoding text with Transformer and using
+a Generative Adversarial Network (GAN). These models have a
+strong ability to understand complex image-text data, however,
+they face challenges in robustness when adapting to new domains.
+2.3
+Fine-Tuning Methods
+Fine-tuning methods primarily include full [25, 26] and partial
+fine-tuning [14, 20, 27]. In full fine-tuning, all pre-trained model
+layer weights are trainable, enabling flexible adaptation to new
+data features by adjusting all parameters. For example, BERT [25] is
+trained on large corpora adjusting all parameters in its bidirectional
+2
+
+===== Page 3 =====
+
+Text 
+Encoder
+Image 
+Encoder
+Label
+Set
+Prediction
+Module (PM)
+Pn
+Pn
+Pre-trained
+Textual Expert
+Textual  Adapter
+Concat
+Pre-trained
+Visual Expert
+Visual  Adapter
+Concat
+Image 
+Decoder
+S
+Detection Head
+Projection
+1Modulation 
+Module
+User: Is there any 
+anomaly in the image? 
+LLM
+Yes, there is
+an
+anomaly
+at the center
+of the image.
+Textual Enhancement 
+Branch
+Detection Stage
+Q&A Stage
+Visual Enhancement
+Branch
+Modal Enhancement Stage
+Trained Modules
+Frozen Modules
+Matrix Multiplication
+Softmax
+S
+Query Image 
+OCR
+Step ID:
+SPACER_
+AEI ......
+Text Mark
+Guided Generation
+Text 
+Encoder
+𝑽 𝒊𝒎𝒈
+𝒄𝒍𝒊𝒑
+𝑽 𝒊𝒎𝒈
+𝒄𝒍𝒊𝒑
+𝑽𝒊𝒎𝒈
+𝑽 𝒕𝒙𝒕
+𝒄𝒍𝒊𝒑
+𝑽𝒕𝒙𝒕
+𝑽 𝒍𝒂𝒃
+𝒄𝒍𝒊𝒑
+𝑻𝒕𝒙𝒕
+𝑻𝒊𝒎𝒈
+𝑻𝒎𝒂𝒔
+𝒂𝑻𝒗𝒊𝒔
+𝑻𝒎𝒂𝒔
+𝑻𝒒𝒖𝒆
+Figure 3: The architecture of FabGPT. The images and the characters extracted from them serve as the primary multimodal input
+into a three-stage model, with the label set entering as auxiliary textual input. The first stage enhances semantic information
+of multimodal features. Based on the first stage, the detection stage performs pixel-level automated detection, and the Q&A
+stage achieves complete Q&A integrating both old and new knowledge.
+Transformer structure to optimize tasks such as sentiment analysis question answering and text summarization. Full fine-tuning
+improves task adaptation but increases overfitting risk and costs,
+limiting its use.
+In partial fine-tuning [14, 20, 27], it adjusts only partial parameters in pre-trained models and keeps the rest fixed. Recent popular
+partial fine-tuning strategies include Adapters, Prompt Learning,
+and LoRA. For example, Lai et al. [20] applied the LoRA method to
+consistently update the bottom embeddings and top linear head of
+the pre-trained model, while randomly updating a few intermediate
+self-attention layers to understand input text for precise segmentation. Gu et al. proposed AnomalyGPT [14], which fine-tunes an
+LLM using embedded prompt instructions to identify types and
+locations of defects.
+Despite their advancements, new models often lose their normal
+Q&A capabilities after fine-tuning. This occurs because the model
+becomes excessively focused on image inputs while neglecting user
+queries, whether or not these queries are related to the images. This
+phenomenon is termed “modality bias”. Our model effectively
+integrates complex wafer defect knowledge and is designed to
+alleviate the modality bias.
+3
+PROPOSED METHOD
+3.1
+Network Architecture
+As shown in Figure 3, our FabGPT is a conversational LMM designed for querying wafer defect knowledge, and it consists of
+a foundational stage for modal enhancement and two functional
+stages for detection and Q&A.
+Given a query image 𝑥∈R𝐻×𝑊×3, text marks are extracted
+from 𝑥using Optical Character Recognition (OCR) technology [28].
+The image 𝑥, its text marks, and the label set are encoded into
+initial vectors 𝑉𝑐𝑙𝑖𝑝
+𝑖𝑚𝑔, 𝑉𝑐𝑙𝑖𝑝
+𝑡𝑥𝑡, and 𝑉𝑐𝑙𝑖𝑝
+𝑙𝑎𝑏
+through pre-trained image
+and text encoders [29]. 𝑉𝑐𝑙𝑖𝑝
+𝑖𝑚𝑔and 𝑉𝑐𝑙𝑖𝑝
+𝑙𝑎𝑏are fed into the Prediction
+Module (PM) to predict the defect category 𝑃𝑛. Then, 𝑃𝑛is used
+to multiply with 𝑉𝑐𝑙𝑖𝑝
+𝑖𝑚𝑔and 𝑉𝑐𝑙𝑖𝑝
+𝑡𝑥𝑡, generating the vectors 𝑉𝑖𝑚𝑔and
+𝑉𝑡𝑥𝑡. Visual and textual adapters further process these vectors into
+the information-rich image token 𝑇𝑖𝑚𝑔and text token 𝑇𝑡𝑥𝑡. In the
+detection stage, 𝑇𝑖𝑚𝑔and 𝑇𝑡𝑥𝑡are fed into the detection head to obtain supervised detection masks. In the Q&A stage, the Modulation
+Module aligns𝑇𝑖𝑚𝑔,𝑇𝑡𝑥𝑡, mask-projected token𝑇𝑚𝑎𝑠, and the user’s
+question token 𝑇𝑞𝑢𝑒into a unified visual token 𝑎𝑇𝑣𝑖𝑠. Finally, it is
+concatenated with 𝑇𝑚𝑎𝑠and 𝑇𝑞𝑢𝑒to serve as prompt instructions
+for fine-tuning PandaGPT [2].
+3.2
+Modal Enhancement Stage
+When analyzing the minor defects on the wafer surface, distinguishing between complex background and foreground features is
+challenging, which hinders queries on defect-related knowledge. To
+address this, we develop the modal enhancement stage, consisting
+of the PM and two enhancement branches, designed to highlight
+relevant defect features and minimize the impact of irrelevant features.
+Prediction Module (PM):
+The pre-trained encoder captures pixel-level detail features in the
+latent space, but its repeated down-sampling operations result in
+the loss of semantic features. As shown in Figure 4 (a), we design the
+PM to predict defect categories in the image and enhance semantic
+features by embedding the expected result 𝑝𝑛into the initial vectors.
+Specifically, we count a label set containing all defect categories
+found in wafer images to support automated classification tasks.
+First, the linear layer and the activation function are applied to
+3
+
+===== Page 4 =====
+
+Pn
+Cosine 
+Similarity
+Linear
+ReLU
+Softmax
+max
+Truth Label:
+Pi
+Cross-Entropy 
+Loss
+𝑽 𝒍𝒂𝒃
+𝒄𝒍𝒊𝒑
+𝑽 𝒊𝒎𝒈
+𝒄𝒍𝒊𝒑
+Q-Former
+Learnable 
+Corrector
+Cosine Similarity
+𝑻𝒎𝒂𝒔
+𝑻𝒊𝒎𝒈
+𝑻𝒕𝒙𝒕
+𝑇!"#
+𝑎𝑇!"#
+Cross Attention
+Self Attention
+Feed Forward
+𝑻𝒒𝒖𝒆
+a
+Updating 
+factor
+(a)
+(b)
+Figure 4: (a) The Prediction Module (PM), (b) The Modulation
+Module.
+reshape the dimensions of 𝑉𝑐𝑙𝑖𝑝
+𝑖𝑚𝑔and 𝑉𝑐𝑙𝑖𝑝
+𝑙𝑎𝑏, formulated as:
+𝑓𝑖𝑚𝑔= 𝜎(𝑊𝑇
+𝑖𝑉𝑐𝑙𝑖𝑝
+𝑖𝑚𝑔+ 𝑏𝑖),
+𝑓𝑙𝑎𝑏= 𝜎(𝑊𝑇
+𝑖𝑉𝑐𝑙𝑖𝑝
+𝑙𝑎𝑏+ 𝑏𝑖),
+(1)
+where𝑊𝑖represents the weight matrix,𝑏𝑖represents the bias vector,
+and 𝜎represents the ReLU function. Then, the cosine of the angle
+between each category 𝑓𝑖
+𝑙𝑎𝑏and 𝑓𝑖𝑚𝑔is computed to assess their
+similarity, and the cross-entropy loss function is used to constrain
+the selection of the corresponding category 𝑝𝑛. This process is
+formulated as:
+𝑝𝑖= Cosine(𝑓𝑖𝑚𝑔, 𝑓𝑙𝑎𝑏),
+𝑃𝑛= 𝑚𝑎𝑥(𝑆𝑜𝑓𝑡𝑚𝑎𝑥(𝑝𝑖)),
+= 𝑚𝑎𝑥(
+𝑒𝑥𝑝(𝑝𝑖)
+Í𝑁
+𝑗=1 𝑒𝑥𝑝(𝑝𝑗)
+),
+(2)
+where Cosine represents the cosine similarity calculation. 𝑝𝑛is
+matrix-multiplied with 𝑉𝑐𝑙𝑖𝑝
+𝑖𝑚𝑔and 𝑉𝑐𝑙𝑖𝑝
+𝑙𝑎𝑏, resulting in vectors 𝑉𝑖𝑚𝑔
+and 𝑉𝑡𝑥𝑡, which are enriched with semantic features.
+Two Enhancement Branches:
+Although semantic features related to defect attributes are enhanced, the detailed representation of defect features remains essential. In the visual and textual enhancement branches, adapters
+based on prompt learning are deployed, utilizing the extra prompts
+of pre-trained experts for adaptive feature optimization. The experts are initialized under the guidance of 𝑉𝑐𝑙𝑖𝑝
+𝑖𝑚𝑔and 𝑉𝑐𝑙𝑖𝑝
+𝑡𝑥𝑡, which
+enable them to acquire knowledge from image and text modals.
+During training, they adaptively update parameters and interact
+with 𝑉𝑖𝑚𝑔and 𝑉𝑡𝑥𝑡after each update, effectively controlling the
+direction and quality of the feature flow. The final outputs𝑇𝑖𝑚𝑔and
+𝑇𝑡𝑥𝑡are generated, with 𝑇𝑖𝑚𝑔being represented by the following
+formula (the same applies to 𝑇𝑡𝑥𝑡):
+∇𝑓𝑒= (𝑉𝑐𝑙𝑖𝑝
+𝑖𝑚𝑔)𝑖→𝑧𝑖,
+𝑇𝑖𝑚𝑔= 𝐶𝑜𝑛𝑐𝑎𝑡(∇𝑓𝑒, 𝑉𝑖𝑚𝑔),
+(3)
+where →represents the feature-guiding operation, 𝑧𝑖and (𝑉𝑐𝑙𝑖𝑝
+𝑖𝑚𝑔)𝑖
+are the 𝑖-th elements of the random vector 𝑧and 𝑉𝑐𝑙𝑖𝑝
+𝑖𝑚𝑔respectively,
+and ∇𝑓𝑒is the prompt feature of the pre-trained expert.
+3.3
+Detection Stage
+Manually setting segmentation thresholds is not necessarily optimal while continuous adjustments should be made for specific tasks.
+We design the detection head that autonomously learns the specific
+thresholds for each pixel at feature positions to generate pixel-level
+masks Mask ∈R𝐻×𝑊. It first fuses complementary information
+from 𝑇𝑖𝑚𝑔and 𝑇𝑡𝑥𝑡through matrix multiplication, then maps them
+back to high-dimensional features through four up-sampling operations of the trainable decoder, and normalizes the output into
+the mask image through the softmax function. The detection head
+matches multimodal information and supervises detail features,
+enabling precise defect detection in complex wafer backgrounds.
+This process is formulated as:
+Mask =𝑆𝑜𝑓𝑡𝑚𝑎𝑥((𝑇𝑖𝑚𝑔⊗𝑇𝑡𝑥𝑡) ↑4
+𝑠),
+(4)
+where (·) ↑4𝑠represents performing four times up-sampling.
+3.4
+Q&A Stage
+In fine-tuning the large models based on prompt instructions, the
+commonly used embedded instruction format is:
+INS = 𝐶𝑜𝑛𝑐𝑎𝑡(𝑥, 𝑇img, 𝑇que).
+(5)
+However, this embedding format may lead to modality bias,
+where the model is dominated by image inputs and fails to respond
+to questions appropriately. For example, the latest defect Q&A
+model AnomalyGPT [14] embeds industrial defect knowledge into
+its pre-trained model based on Equation (5), it can only answer
+questions related to defects, such as:
+• “Is there a defect in the image?”
+• “Where is the defect located in the image?”
+However, it fails to answer general questions not closely related to
+the images, such as:
+• “What impact does this defect have on the production line?”
+• “What are the core process steps in IC manufacturing?”
+This phenomenon indicates that while the model gains new information, it loses the understanding of its original knowledge, thereby
+diminishing its ability to analyze general knowledge effectively.
+We suggest that this phenomenon occurs because the model fails
+to judge the correlation between the query image and the user’s
+question adequately. The keys to resolving this issue and ensuring
+accurate model responses are: 1) Improving the quality of visual instructions; 2) Enhancing the ability to assess the relevance between
+visual prompt instructions and user query ones; 3) Optimizing the
+training strategies of the corpus.
+Modulation Module:
+The quality of prompts impacts the model’s understanding and
+responses, so aligning multimodal features is needed to capture
+comprehensive information and reduce the fine-tuning burden. Inspired by Q-Former [23], a bidirectional self-attention in Figure 4 (b)
+allows𝑇𝑖𝑚𝑔to absorb semantic and detailed information from𝑇𝑚𝑎𝑠
+to obtain 𝑓𝑖∼𝑚, facilitating interaction within the same modality,
+4
+
+===== Page 5 =====
+
+formulated as:
+M𝑖𝑚𝑔= 𝑆𝑜𝑓𝑡𝑚𝑎𝑥(((𝑇𝑖𝑚𝑔∗𝑘1)(𝑇𝑖𝑚𝑔∗𝑘2)𝑇)/
+√︁
+𝑑𝑘),
+M𝑚𝑎𝑘= 𝑆𝑜𝑓𝑡𝑚𝑎𝑥(((𝑇𝑚𝑎𝑠∗𝑘1)(𝑇𝑚𝑎𝑠∗𝑘2)𝑇)/
+√︁
+𝑑𝑘),
+𝑓𝑖∼𝑚= (S𝑖+ S𝑚)
+2
+𝑇𝑖𝑚𝑔,
+(6)
+where ∗represents convolution operations, 𝑘𝑖represents different
+kernels, and 𝑑𝑘represents the dimension of the feature vector. Next,
+aligning the fine-grained information between visual features 𝑓𝑖∼𝑚
+and textual tokens 𝑇𝑡𝑥𝑡through cross-attention [30] allows for the
+sharing of complementary knowledge across multimodalities, the
+result 𝑓𝑖∼𝑚∼𝑡can be formulated as:
+M𝑖∼𝑚∼𝑡= 𝑆𝑜𝑓𝑡𝑚𝑎𝑥(((𝑓𝑖∼𝑚∗𝑘1)(𝑇𝑡𝑥𝑡∗𝑘2)𝑇)/
+√︁
+𝑑𝑘),
+𝑓𝑖∼𝑚∼𝑡= M𝑖∼𝑚∼𝑡𝑇𝑡𝑥𝑡.
+(7)
+Finally, to maintain semantic consistency between the LLM and
+outputs of the modal enhancement stage, the feed-forward network
+maps the unified features 𝑓𝑖∼𝑚∼𝑡to a high-dimensional space and
+outputs high-quality prompt instructions 𝑇𝑣𝑖𝑠through the activation of nonlinear layers.
+Since the content of user queries involves knowledge of different
+tasks, we must assess the relationship between query and visual
+instructions before fine-tuning the LLM. We set a scaling factor
+𝑎, dynamically adjusting its value through learning the association between instructions (the higher the value, the stronger the
+association). A learnable corrector that is generated under the guidance of 𝑇𝑣𝑖𝑠is introduced, and its similarity score with the query is
+calculated to simulate the value of 𝑎. It can be formulated as:
+𝑎=
+∇𝑓𝑐· 𝑇𝑞𝑢𝑒
+||∇𝑓𝑐|| · ||𝑇𝑞𝑢𝑒||,
+(8)
+where · represents the dot product and ∇𝑓𝑐represents the prompt
+features of the learnable corrector. We assign 𝑎as the coefficient
+to 𝑇𝑣𝑖𝑠. The updated 𝑎𝑇𝑣𝑖𝑠along with 𝑇𝑚𝑎𝑠and 𝑇𝑞𝑢𝑒serve as our
+input instructions, formatted as follows:
+g
+INS = 𝐶𝑜𝑛𝑐𝑎𝑡(𝑎𝑇𝑣𝑖𝑠, 𝑇𝑚𝑎𝑠, 𝑇𝑞𝑢𝑒).
+(9)
+Corpus Training Strategy:
+During the corpus training process, the alternating training strategy balances learning new and old knowledge. We establish two
+corpora: Corpus-A, which includes 15 Q&A pairs for each category
+related to defect type, quantity, location, description, and analysis
+(e.g., Q: What type of defect is in the image? A: The defect in the
+image is object.), and Corpus-B, which contains 100 Q&A pairs unrelated to defect knowledge (e.g., Q: What is the capital of China?
+A: The capital of China is Beijing.). Our model trains alternately on
+these corpora at a 2:1 ratio to prevent it from favoring the retrieval
+of new knowledge when understanding questions.
+3.5
+Loss Functions
+We employ three loss functions to constrain detection and dialogue
+processes. Focal Loss [31] and Dice Loss [32] are used to improve the
+model’s segmentation and localization abilities, and Cross-Entropy
+Loss is used to improve the model’s classification and Q&A ones.
+Focal Loss:
+Focal Loss [31] aims to address the issue of class imbalance.
+It introduces a modulation factor 𝛾to reduce the relative loss of
+correctly classified pixels and focus on hard-to-classify and misclassified pixels. It is realized as Equation (10):
+𝐿focal = −
+1
+H × W
+H×W
+∑︁
+𝑖=1
+(1 −𝑝𝑖)𝛾log(𝑝𝑖),
+(10)
+where 𝑝𝑖represents the probability of the pixel belonging to the
+correct category, and based on [14], we set the 𝛾to 2.
+Dice Loss:
+Dice Loss [32] aims to maximize the overlap between outputs
+and actual labels, encouraging the model to learn to produce results
+closer to the ideal segmentation. It is realized as Equation (11):
+𝐿dice = −
+ÍH×W
+𝑖=1
+𝑦𝑖ˆ𝑦𝑖
+ÍH×W
+𝑖=1
+𝑦2
+𝑖+ ÍH×W
+𝑖=1
+ˆ𝑦2
+𝑖
+,
+(11)
+where 𝑦𝑖is the output of the decoder, and ˆ𝑦𝑖is the truth labels.
+Cross-Entropy Loss:
+Cross-entropy loss measures the difference between predicted
+and actual categories in the PM and between output texts of the
+language model and target texts in the Q&A task. It is realized as
+Equation (12):
+𝐿ce = −
+𝑐∑︁
+𝑖=1
+𝑦𝑖log(𝑝𝑖),
+(12)
+where𝑐represents the number of categories and tokens in classification and Q&A tasks, 𝑦𝑖represents the truth label and 𝑝𝑖represents
+the predicted label.
+The overall loss function is:
+𝐿= 𝛼𝐿𝑓𝑜𝑐𝑎𝑙+ 𝛽𝐿𝑑𝑖𝑐𝑒+ 𝛿𝐿1
+𝑐𝑒+ 𝜖𝐿2
+𝑐𝑒.
+(13)
+We set the coefficients 𝛼, 𝛽, 𝛿and 𝜖to 1, by default.
+4
+EXPERIMENTS
+4.1
+Experimental Setups
+Datasets:
+Our experiment is conducted on the in-house SEM-WaD dataset.
+The dataset comprises images with a resolution of 480 × 480, each
+accompanied by a corresponding mask image and related textual
+descriptions and analyses. We divide the data into training and test
+sets in a 7:3 ratio, both containing good and defective images.
+Implementation Details:
+Our model uses PandaGPT [2] as the foundational LMM, composed of the Vicuna-7B [24] as the language model and ImageBind
+Huge [29] as the frozen encoder. During training, we employ the
+AdamW optimizer (𝛽1 = 0.9, 𝛽2 = 0.999) [33] with an initial learning
+rate of 1𝑒−4, gradually reducing to 1𝑒−6, using the cosine annealing
+[34] strategy. The model is trained on three 4090Ti GPUs, with a
+batch size of 24 and an epoch of 50.
+Evaluations:
+In the detection task, we evaluate model performance using
+four metrics: Image-AUC (the Area Under the Receiver Operating Characteristic Curve), Pixel-AUC, Per-Region Overlap (PRO),
+and Average Precision (AP). Image-AUC and Pixel-AUC assess the
+model’s ability to judge the presence of defects in images, while
+PRO and AP measure the precision of the model in identifying
+and locating defects. In the Q&A task, we conduct 15 questions for
+5
+
+===== Page 6 =====
+
+Table 1: The fully-supervised experimental results. The best and second-best methods are highlighted in red and blue.
+Methods
+Image-AUC / Pixel-AUC
+PRO / AP
+Hole
+Particle
+Scratch
+Pattern
+Average
+Hole
+Particle
+Scratch
+Pattern
+Average
+Deformation
+Deformation
+DevNet [15]
+63.92 / 80.10
+62.20 / 86.30
+19.84 / 76.74
+65.02 / 48.78
+52.74 / 72.98
+-
+/ 86.98
+-
+/ 92.38
+-
+/ 50.55
+-
+/ 82.07
+-
+/ 77.80
+DRA [17]
+81.44 / 85.75
+96.71 / 96.86
+89.94 / 75.28
+85.52 / 90.71
+88.14 / 87.15
+57.81 /
+-
+66.67 /
+-
+25.83 /
+-
+60.71 /
+-
+52.76 /
+-
+BGAD [19]
+35.78 / 87.10
+81.87 / 92.75
+65.27 / 88.98
+72.37 / 81.90
+63.82 / 87.68
+80.81 / 51.33
+89.58 / 51.33
+75.33 / 52.28
+81.08 / 54.75
+81.70 / 52.66
+PRN [18]
+79.26 / 84.30
+80.41 / 87.60
+76.93 / 77.02
+75.87 / 76.53
+78.12 / 81.36
+80.90 / 76.48
+88.84 / 84.79
+67.82 / 51.70
+74.63 / 70.57
+78.05 / 70.89
+Lisa [20]
+87.37 / 84.31
+93.34 / 91.73
+84.45 / 85.28
+85.51 / 87.72
+87.67 / 87.26
+88.66 / 79.18
+83.57 / 72.87
+57.77 / 35.73
+77.75 / 69.01
+76.94 / 64.20
+AnomalyGPT [14]
+91.37 / 93.68
+92.64 / 94.39
+89.58 / 92.58
+86.23 / 89.66
+89.96 / 92.58
+86.39 / 83.47
+89.74 / 86.02
+80.32 / 60.32
+84.35 / 80.73
+85.20 / 77.64
+FabGPT (ours)
+94.28 / 97.03
+94.43 / 97.30
+90.32 / 95.70
+88.19 / 92.40
+91.81 / 95.61
+90.01 / 85.69
+92.28 / 91.58
+83.00 / 79.19
+87.40 / 86.72
+88.17 / 85.80
+each of the four defect types, including inquiries about the presence, category, location, quantity, appearance description, and root
+cause analysis of defects. Additionally, we pose 50 questions that
+are unrelated to defects and not included in the corpus (IC-related
+or IC-unrelated general questions) to validate the modality bias
+issue. We use the percentage of correct answers as a relevant metric
+to evaluate the Q&A capability of the model. To demonstrate the
+outstanding performance of our FabGPT, we compare it with many
+representative previous arts:
+• DevNet [15]: Learns anomaly representations by labeled anomalies and prior probabilities.
+• DRA [17]: A CNN-based learning model for detecting anomalies
+in a composite feature space.
+• BGAD [19]: An anomaly scoring model that utilizes explicit
+boundary generation and boundary-guided optimization.
+• PRN [18]: A residual detection model that outputs anomalies
+by learning different block features.
+• Lisa [20]: An anomaly segmentation LMM utilizing LoRA finetuning method.
+• AnomalyGPT [14]: An anomaly detection LMM utilizing prompting learning fine-tuning method.
+These baselines are also tuned on our SEM-WaD dataset, following their publicly available implementations and models. Among
+these baselines, Lisa [20] and AnomalyGPT [14] are LMMs that
+support Q&A while the others do not.
+4.2
+Quantitative Results
+Defect Detection Task:
+Table 1 report the Image-AUC, Pixel-AUC, PRO, and AP values for different methods across 4 categories within the SEM-WaD
+dataset. It can be observed that our model outperforms all other
+methods in four evaluation metrics for most defect categories.
+For example, compared to AnomalyGPT [14], which also employs
+prompt learning for fine-tuning, our model achieves a higher ImageAUC by 1.85% and a higher Pixel-AUC by 3.03%. Compared to the
+traditional detection model PRN [18], our model surpasses it by
+10.12% in PRO and 14.91% in AP.
+Q&A Task:
+Table 2 reports the accuracy of different language models in
+answering defect-related and -unrelated questions where our model
+achieves state-of-the-art results. For example, compared to the
+powerful capabilities of GPT-4, our model achieves a comparable
+performance in the general questions and a 7.50% higher accuracy
+in defect analysis answers. Compared to Lisa [20], which embeds
+Table 2: The accuracies (%) of the models’ responses to various
+questions. “-” denotes the question is unsupported.
+Questions
+Lisa [20]
+AnomalyGPT [14]
+GPT-4 [1]
+FabGPT
+Presence
+95.00
+95.00
+100.00
+100.00
+Category
+92.50
+75.00
+37.50
+97.50
+Location
+-
+72.50
+87.50
+95.00
+Quantity
+-
+77.50
+80.00
+95.00
+Description
+72.50
+82.50
+85.00
+95.00
+Analysis
+-
+-
+90.00
+97.50
+Unrelated
+20.00
+12.00
+98.00
+98.00
+All
+70.00
+69.08
+82.57
+96.86
+new tasks to pre-trained models, our model achieves a 78.00% higher
+accuracy in answering questions unrelated to the new task.
+4.3
+Qualitative Results
+Defect Detection Task:
+Comparing heatmaps in Figure 5, we observe that our model
+focuses more on defect regions than others, while avoiding concentrating too much on normal regions. Moreover, comparing mask
+images in Figure 6, FabGPT provides more accurate edge segmentation details compared to both Lisa [20] and AnomalyGPT [14].
+Q&A Task:
+According to Figure 7, FabGPT provides detailed defect knowledge, offering engineers valuable insights. Notably, the questions
+shown are not part of the training corpus. FabGPT identifies and
+localizes defects in SEM images, analyzing properties like "hole." It
+identifies root causes and suggests process solutions to optimize the
+production line. Additionally, FabGPT accurately answers general
+IC questions unrelated to the images, confirming the effectiveness
+of our modulation module in addressing modality bias.
+4.4
+Ablation Studies
+In this section, we conduct ablation studies to demonstrate the
+importance of each component introduced at every stage and the
+operations within them.
+Stage Components:
+We study the proposed components in each stage as shown in
+Table 3. It confirms the importance of each individual component
+and the best way to structure the sub-stage. It can be seen that
+the prediction of the PM and pre-trained experts significantly improved defect detection in the modal enhancement stage, and the
+operations in the modulator played a crucial role in addressing bias
+issues in the Q&A stage.
+6
+
+===== Page 7 =====
+
+Hole
+Ground Truth
+DRA
+PRN
+FabGPT(ours)
+Particle
+DRA
+PRN
+Scratch
+PRN
+Pattern
+Deformation
+DRA
+PRN
+DRA
+Ground Truth
+Ground Truth
+Ground Truth
+FabGPT(ours)
+FabGPT(ours)
+FabGPT(ours)
+DevNet
+DevNet
+DevNet
+DevNet
+BGAD
+BGAD
+BGAD
+BGAD
+Figure 5: Comparisons with non-LMM baselines.
+Hole
+Ground Truth
+Lisa
+AnomalyGPT
+FabGPT(ours)
+Particle
+Lisa
+AnomalyGPT
+Scrath
+AnomalyGPT
+Pattern
+Deformation
+Lisa
+AnomalyGPT
+Lisa
+Ground Truth
+Ground Truth
+Ground Truth
+FabGPT(ours)
+FabGPT(ours)
+FabGPT(ours)
+Figure 6: Comparisons with LMM-based baselines.
+Are there any defects in the image?
+This is a Scanning Electron Microscope (SEM) image of a 
+wafer from the Integrated Circuits (IC) field.
+What is this?
+Yes, there are unintended holes located in the 
+middle and upper right area of the wafer surface.
+Query Input
+Mask Output
+The hole defects are likely caused by particles that were 
+dislodged during previous processing steps and removed 
+in the current stage, resulting in the formation of holes.
+Can you tell me what caused this defect?
+The core process steps include lithography, etching, ion 
+implantation, film deposition, chemical mechanical 
+polishing, and packaging.
+What are the core process steps in IC manufacturing? ✱
+✱
+Figure 7: Dialogue example of FabGPT for “hole” type defects. Questions with “∗” are general IC questions that are
+not closely related to the input images.
+Table 3: The ablation results of important components in
+each stage are recorded using the Pixel-AUC and the Q&A accuracy (%) of defect-related. The best results are highlighted.
+Components
+Stage
+Task
+Pixel-AUC
+Defect-Related
+Alleviate
+Bias
++ Text Mark
+Text Input
+88.61
+83.33
+×
++ PM
+Enhancement
+92.57 (+3.96%)
+86.67 (+3.34%)
+×
++ Pre-trained Experts
+Enhancement
+95.61 (+3.04%)
+93.33 (+6.66%)
+×
++ Q-Former
+Q&A
+95.61 (+0.00%)
+96.67 (+3.34%)
+×
++ Corrector
+Q&A
+95.61 (+0.00%)
+96.67 (+0.00%)
+✓
+Design for PM Operation:
+Table 4 shows the advantages of our PM strategy. Cosine similarity outperforms matrix multiplication, and combining it with
+Linear and ReLU improves computation.
+Embedding Scheme of Prompt Instructions:
+Table 5 shows that our prompt embedding scheme effectively
+mitigates modality bias. By updating the corresponding coefficient
+Table 4: Ablation studies comparing different methods in the
+PM, with the AUC metric used to evaluate detection accuracy.
+Strategy
+Image-AUC
+Pixel-AUC
+-
+BiLinear
+Similarity
+85.77
+89.33
+-
+Matrix
+Multiplication
+88.25
+92.59
+-
+Cosine
+Similarity
+91.03
+94.61
+Linear + ReLU
+Cosine
+Similarity
+91.81
+95.61
+Table 5: Ablation experiments on the embedding schemes of
+visual prompt instructions to validate the Q&A functionality.
+Visual Instruction
+Defect-Related
+Unrelated
+𝑇𝑖𝑚𝑔
+82.50
+10.00
+𝑇𝑖𝑚𝑔+𝑇𝑡𝑥𝑡
+85.00
+10.00
+𝑇𝑖𝑚𝑔+𝑇𝑡𝑥𝑡+𝑇𝑚𝑎𝑠
+95.00
+10.00
+𝑇𝑣𝑖𝑠+𝑇𝑚𝑎𝑠
+96.67
+12.00
+𝑎𝑇𝑣𝑖𝑠+𝑇𝑚𝑎𝑠
+96.67
+98.00
+“𝑎” for visual tokens, our model effectively discerns the relationship
+between user queries and visual inputs and mitigates the modality
+bias issues.
+5
+CONCLUSIONS
+In this paper, we introduce a novel large multimodal language
+model, FabGPT, for defect knowledge querying in the IC field, including defection, analysis, Q&A, etc. It employs three stages to
+gradually achieve the functionality of defect detection and highquality dialogue. We validate the effectiveness of FabGPT on the
+SEM-WaD dataset and 100 questions. Our work provides great convenience for the semiconductor industry and also offers insights
+for further LMM research.
+ACKNOWLEDGMENTS
+This work is sponsored by The National Natural Science Foundation
+of China (Grant No. 62034007).
+7
+
+===== Page 8 =====
+
+REFERENCES
+[1] J. Achiam, S. Adler, S. Agarwal, L. Ahmad, I. Akkaya, F. L. Aleman, D. Almeida,
+J. Altenschmidt, S. Altman, S. Anadkat et al., “Gpt-4 technical report,” arXiv
+preprint arXiv:2303.08774, 2023.
+[2] Y. Su, T. Lan, H. Li, J. Xu, Y. Wang, and D. Cai, “Pandagpt: One model to instructionfollow them all,” arXiv preprint arXiv:2305.16355, 2023.
+[3] H. Touvron, T. Lavril, G. Izacard, X. Martinet, M.-A. Lachaux, T. Lacroix, B. Rozière,
+N. Goyal, E. Hambro, F. Azhar et al., “Llama: Open and efficient foundation
+language models,” arXiv preprint arXiv:2302.13971, 2023.
+[4] D. Zhu, J. Chen, X. Shen, X. Li, and M. Elhoseiny, “Minigpt-4: Enhancing visionlanguage understanding with advanced large language models,” arXiv preprint
+arXiv:2304.10592, 2023.
+[5] A. Radford, J. W. Kim, C. Hallacy, A. Ramesh, G. Goh, S. Agarwal, G. Sastry,
+A. Askell, P. Mishkin, J. Clark et al., “Learning transferable visual models from
+natural language supervision,” in International conference on machine learning.
+PMLR, 2021, pp. 8748–8763.
+[6] M. D. M. Reddy, M. S. M. Basha, M. M. C. Hari, and M. N. Penchalaiah, “Dall-e:
+Creating images from text,” UGC Care Group I Journal, vol. 8, no. 14, pp. 71–75,
+2021.
+[7] Y. Gu, L. Dong, F. Wei, and M. Huang, “Pre-training to learn in context,” arXiv
+preprint arXiv:2305.09137, 2023.
+[8] M. Chen, J. Du, R. Pasunuru, T. Mihaylov, S. Iyer, V. Stoyanov, and Z. Kozareva, “Improving in-context few-shot learning via self-supervised training,” arXiv preprint
+arXiv:2205.01703, 2022.
+[9] J. Wei, L. Hou, A. Lampinen, X. Chen, D. Huang, Y. Tay, X. Chen, Y. Lu, D. Zhou,
+T. Ma et al., “Symbol tuning improves in-context learning in language models,”
+arXiv preprint arXiv:2305.08298, 2023.
+[10] M. Quirk and J. Serda, Semiconductor manufacturing technology.
+Prentice Hall
+Upper Saddle River, NJ, 2001, vol. 1.
+[11] S.-K. S. Fan, D.-M. Tsai, F. He, J.-Y. Huang, and C.-H. Jen, “Key parameter identification and defective wafer detection of semiconductor manufacturing processes
+using image processing techniques,” IEEE Transactions on Semiconductor Manufacturing, vol. 32, no. 4, pp. 544–552, 2019.
+[12] T. Lechien, E. Dehaerne, B. Dey, V. Blanco, S. De Gendt, and W. Meert, “Automated
+semiconductor defect inspection in scanning electron microscope images: a
+systematic review,” arXiv preprint arXiv:2308.08376, 2023.
+[13] E. G. Seebauer and K. W. Noh, “Trends in semiconductor defect engineering at
+the nanoscale,” Materials Science and Engineering: R: Reports, vol. 70, no. 3-6, pp.
+151–168, 2010.
+[14] Z. Gu, B. Zhu, G. Zhu, Y. Chen, M. Tang, and J. Wang, “Anomalygpt: Detecting industrial anomalies using large vision-language models,” arXiv preprint
+arXiv:2308.15366, 2023.
+[15] G. Pang, C. Ding, C. Shen, and A. v. d. Hengel, “Explainable deep few-shot
+anomaly detection with deviation networks,” arXiv preprint arXiv:2108.00462,
+2021.
+[16] S. Cheon, H. Lee, C. O. Kim, and S. H. Lee, “Convolutional neural network for
+wafer surface defect classification and the detection of unknown defect class,”
+IEEE Transactions on Semiconductor Manufacturing, vol. 32, no. 2, pp. 163–170,
+2019.
+[17] C. Ding, G. Pang, and C. Shen, “Catching both gray and black swans: Openset supervised anomaly detection,” in Proceedings of the IEEE/CVF conference on
+computer vision and pattern recognition, 2022, pp. 7388–7398.
+[18] H. Zhang, Z. Wu, Z. Wang, Z. Chen, and Y.-G. Jiang, “Prototypical residual
+networks for anomaly detection and localization,” in Proceedings of the IEEE/CVF
+Conference on Computer Vision and Pattern Recognition, 2023, pp. 16 281–16 291.
+[19] X. Yao, R. Li, J. Zhang, J. Sun, and C. Zhang, “Explicit boundary guided semipush-pull contrastive learning for supervised anomaly detection,” in Proceedings
+of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 2023, pp.
+24 490–24 499.
+[20] X. Lai, Z. Tian, Y. Chen, Y. Li, Y. Yuan, S. Liu, and J. Jia, “Lisa: Reasoning segmentation via large language model,” arXiv preprint arXiv:2308.00692, 2023.
+[21] M. Zontak and I. Cohen, “Kernel-based detection of defects on semiconductor wafers,” in 2009 IEEE international workshop on machine learning for signal
+processing.
+IEEE, 2009, pp. 1–6.
+[22] J. L. Gómez-Sirvent, F. L. de la Rosa, R. Sánchez-Reolid, A. Fernández-Caballero,
+and R. Morales, “Optimal feature selection for defect classification in semiconductor wafers,” IEEE Transactions on Semiconductor Manufacturing, vol. 35, no. 2,
+pp. 324–331, 2022.
+[23] J. Li, D. Li, S. Savarese, and S. Hoi, “Blip-2: Bootstrapping language-image pretraining with frozen image encoders and large language models,” in International
+conference on machine learning.
+PMLR, 2023, pp. 19 730–19 742.
+[24] W.-L. Chiang, Z. Li, Z. Lin, Y. Sheng, Z. Wu, H. Zhang, L. Zheng, S. Zhuang,
+Y. Zhuang, J. E. Gonzalez et al., “Vicuna: An open-source chatbot impressing
+gpt-4 with 90%* chatgpt quality,” See https://vicuna. lmsys. org (accessed 14 April
+2023), vol. 2, no. 3, p. 6, 2023.
+[25] S. Alaparthi and M. Mishra, “Bidirectional encoder representations from transformers (bert): A sentiment analysis odyssey,” arXiv preprint arXiv:2007.01127,
+2020.
+[26] L. Yuan, Y. Chen, T. Wang, W. Yu, Y. Shi, Z.-H. Jiang, F. E. Tay, J. Feng, and S. Yan,
+“Tokens-to-token vit: Training vision transformers from scratch on imagenet,” in
+Proceedings of the IEEE/CVF international conference on computer vision, 2021, pp.
+558–567.
+[27] S.-A. Rebuffi, H. Bilen, and A. Vedaldi, “Learning multiple visual domains with
+residual adapters,” Advances in neural information processing systems, vol. 30,
+2017.
+[28] C. Li, W. Liu, R. Guo, X. Yin, K. Jiang, Y. Du, Y. Du, L. Zhu, B. Lai, X. Hu et al.,
+“Pp-ocrv3: More attempts for the improvement of ultra lightweight ocr system,”
+arXiv preprint arXiv:2206.03001, 2022.
+[29] R. Girdhar, A. El-Nouby, Z. Liu, M. Singh, K. V. Alwala, A. Joulin, and I. Misra,
+“Imagebind: One embedding space to bind them all,” in Proceedings of the IEEE/CVF
+Conference on Computer Vision and Pattern Recognition, 2023, pp. 15 180–15 190.
+[30] Z. Huang, X. Wang, L. Huang, C. Huang, Y. Wei, and W. Liu, “Ccnet: Criss-cross
+attention for semantic segmentation,” in Proceedings of the IEEE/CVF international
+conference on computer vision, 2019, pp. 603–612.
+[31] T.-Y. Lin, P. Goyal, R. Girshick, K. He, and P. Dollár, “Focal loss for dense object
+detection,” in Proceedings of the IEEE international conference on computer vision,
+2017, pp. 2980–2988.
+[32] F. Milletari, N. Navab, and S.-A. Ahmadi, “V-net: Fully convolutional neural
+networks for volumetric medical image segmentation,” in 2016 fourth international
+conference on 3D vision (3DV).
+Ieee, 2016, pp. 565–571.
+[33] I. Loshchilov and F. Hutter, “Decoupled weight decay regularization,” arXiv
+preprint arXiv:1711.05101, 2017.
+[34] ——, “Sgdr: Stochastic gradient descent with warm restarts,” arXiv preprint
+arXiv:1608.03983, 2016.
+8

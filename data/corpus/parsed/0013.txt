@@ -1,0 +1,1042 @@
+
+
+===== Page 1 =====
+
+Wafer Map Defect Classification Using
+Autoencoder-Based Data Augmentation and
+Convolutional Neural Network
+Yin-Yin Bao, Er-Chao Li∗, Hong-Qiang Yang, Bin-Bin Jia
+College of Electrical Engineering and Information Engineering, Lanzhou
+University of Technology, Lanzhou, 730050, Gansu, China.
+*Corresponding author(s). E-mail(s): lecstarr@163.com;
+Contributing authors: bao17640667213@163.com;
+19894476449@163.com; jiabinbin@lut.edu.cn;
+Abstract
+In semiconductor manufacturing, wafer defect maps (WDMs) reveal critical
+defect patterns essential for diagnosing issues and improving process yields. However, accurate categorization of WDM defects faces significant challenges due to
+noisy data, unbalanced defect classes, and the complexity of failure modes. To
+address these challenges, this study proposes a novel method that combines selfencoder-based data enhancement with a convolutional neural network (CNN).
+By introducing noise in the latent space to reconstruct the WDM, the selfencoder not only enhances data diversity but also mitigates the problem of class
+imbalance, thereby improving the model’s generalization ability. The augmented
+dataset is then utilized to train the CNN, enabling it to extract hierarchical features and achieve precise classification of both common and rare defect patterns.
+Experiments conducted on the WM-811K dataset demonstrate that the proposed
+method achieves a classification accuracy of 98.56%, outperforming Random Forest, SVM, and Logistic Regression by 19%, 21%, and 27%, respectively. These
+results highlight the effectiveness of the proposed approach, offering a robust and
+accurate solution for wafer defect detection and classification.
+Keywords: Convolutional Neural Network, Denoising Autoencoder, Data
+Augmentation,Wafer Map Defect
+1
+arXiv:2411.11029v1  [cs.CV]  17 Nov 2024
+
+===== Page 2 =====
+
+1 Introduction
+Semiconductor manufacturing is a highly intricate process that involves numerous stages of wafer fabrication, where even minor defects can lead to significant
+yield losses [1–3]. As the size of semiconductor components continues to shrink due
+to advances in manufacturing technology, ensuring the reliability and quality of
+the wafers has become increasingly essential [4]. Yield analysis techniques, such as
+wafer map failure pattern recognition, play a central role in diagnosing and preventing manufacturing-related defects before they propagate through the production
+pipeline [5, 6]. The ultimate goal of failure pattern recognition is to accurately classify
+different failure modes observed in wafer maps, which aids in quickly identifying root
+causes and making necessary corrections to the manufacturing process [7–9].
+Wafer maps are visual representations of the functional or non-functional dies
+(individual semiconductor components) on a semiconductor wafer [10, 11]. They display spatial patterns where defects develop, often revealing systematic issues related
+to equipment malfunction, process variation, or material inconsistencies [12]. Recognizing these patterns is critical for improving overall yield and reducing production
+downtime. However, automated recognition of these failure patterns is a challenging
+task due to the complex and noisy nature of the wafer maps [13]. Noise in wafer map
+data can originate from various factors, including measurement inaccuracies, environmental effects, or random variability in the manufacturing process, all of which can
+obscure the true failure patterns [14, 15].
+Traditional techniques for wafer map failure pattern recognition have mainly
+relied on rule-based methods, statistical analysis, and conventional machine learning
+approaches. Early efforts included manual inspection or heuristic algorithms that relied
+on handcrafted features and predefined rules to detect specific failure patterns (e.g.,
+center, edge, or ring patterns) [16, 17]. Unfortunately, these methods tend to be limited
+in their generalization ability because they struggle to adequately capture the diversity
+of failure patterns present in real-world manufacturing data. Moreover, they often rely
+on domain-specific knowledge and require extensive fine-tuning of parameters [18, 19].
+As an alternative to rule-based approaches, machine learning techniques, such as
+Support Vector Machines (SVM) [20], K-Nearest Neighbors (KNN) [21], and decision
+trees [22], have been applied to improve the classification of wafer map failure patterns. These methods focus on learning features directly from the data, rather than
+depending on predefined heuristics. For example, SVMs have been popular for pattern
+recognition due to their ability to handle high-dimensional feature spaces. However,
+despite offering improvements over traditional methods, machine learning classifiers
+are highly sensitive to noisy data, which can severely affect their performance [18, 19].
+Additionally, they rely on feature engineering, which requires significant human effort
+and domain expertise, and may not be effective in dealing with complex, nuanced
+failure patterns [23].
+In more recent years, deep learning, particularly Convolutional Neural Networks
+(CNNs), has brought substantial advances in the field of image recognition and has
+been successfully applied to wafer map pattern classification tasks [24]. CNNs automatically learn hierarchical representations of data and have achieved excellent results
+in various computer vision domains [25]. For wafer maps, CNNs have been used to
+2
+
+===== Page 3 =====
+
+classify failure patterns more efficiently than previous machine learning methods due
+to their robustness in learning spatial features. For instance, several researchers have
+shown that CNNs outperform conventional techniques in wafer map classification by
+extracting both low-level and high-level features through their layered structure [26].
+However, a major limitation remains: CNNs are still susceptible to noise in the data.
+Wafer maps, in particular, often contain noisy artifacts, such as random defects that
+can mislead the CNN model toward inaccurate classification [27].
+To address this issue, recent efforts have explored the use of denoising methodologies in the context of deep learning. Denoising Convolutional Neural Networks
+(DCNNs), for example, have been developed to remove noise from input data, thereby
+allowing the network to focus on the relevant and informative features [28]. Autoencoders, generative models, and denoising filters have also seen applications in various
+image processing tasks, where reducing noise significantly boosts overall performance [29]. These techniques have demonstrated their advantages in denoising classic
+image problems such as denoising grayscale or color images, text recovery, and image
+inpainting [30].
+Some studies in wafer map failure analysis have started experimenting with
+noise-reduction approaches integrated into CNNs [31]. For instance, autoencoder architectures have been used to preprocess wafer map images by cleaning up noisy pixels
+before feeding them to a classification network. Noise-aware models have been shown
+to improve classification accuracy when working with noisy datasets by learning to
+distinguish useful patterns from irrelevant noise [32]. These studies show that noise
+reduction methods can be useful, but more research is still needed to fully use denoising in the field of wafer map failure pattern recognition. Moreover, a significant issue
+lies in the insufficiency of training data of wafer maps with well-annotated. The lack
+of well-annotated public datasets hampers the performance of the model and restricts
+the development of related algorithms [7, 9, 33].
+Building on the advancements in deep learning, we propose a novel architecture for wafer map failure pattern recognition based on data augmentation through
+autoencoder models and Convolutional Neural Networks. Our approach leverages the
+data augmentation capabilities of autoencoder models alongside convolutional neural
+networks, significantly enhancing the model’s capacity to detect and classify failure
+patterns even in the presence of substantial noise. Unlike traditional methods constrained by limited sample sizes, our integrated architecture is capable of learning from
+larger datasets, combined with the power of convolutional neural networks, leading to
+more robust and accurate wafer map pattern recognition.Our key contributions are as
+follows:
+1. Preparation of the wafer map dataset. We primarily focuses on classifying eight
+types of defective wafer maps (Center, Donut, Edge-loc, Edge-ring, Local, Nearfull, Random, and Scratch) from the actual database making a total of 8 wafer map
+categories. To enhance the model’s performance, data augmentation was employed
+to balance the imbalanced data classes.
+2. Data augmentation is used to imporve size of the dataset. Data augmentation is
+implemented through the use of an autoencoder model for for dimensionality reduction into the latent space, where noise is introduced, and the wafet map data is
+3
+
+===== Page 4 =====
+
+reconstructed, ultimately increasing the sample size and improving the model’s
+performance.
+3. We propose a deep convolutional neural network (CNN) that is trained on an augmented dataset, leveraging data augmentation techniques to enhance the diversity
+and robustness of the training data. This augmented dataset allows the network to
+generalize better to unseen examples, improving its overall performance. In addition to designing and training the CNN,as shown in Fig 1. we will compare its
+performance with traditional tools and algorithms that are commonly used for the
+same task. This comparison will be based on several key metrics, such as accuracy,
+precision, recall, and computational efficiency, to provide a comprehensive evaluation of the advantages and limitations of our deep learning approach relative to
+established methods.
+4. We conducted extensive experiments to demonstrate that the proposed method
+achieves optimal performance across various benchmarks. These experiments were
+designed to thoroughly evaluate the robustness, accuracy, and scalability of our
+approach under different conditions. In addition, we performed ablation studies to
+systematically validate the effectiveness of each component of our model. By selectively removing or altering specific elements of the architecture, we were able to
+identify the contributions of each part to the overall performance, further confirming
+the superiority of the current method.
+In summary, this paper presents a novel and effective approach for wafer map
+failure pattern recognition by combining the strengths of autoencoder-based data
+augmentation and deep convolutional neural networks. Our method addresses the
+challenges posed by imbalanced datasets and noise, enabling the model to learn more
+robustly from a broader and more diverse set of samples. We demonstrate through
+comprehensive experiments, including ablation studies, that our architecture significantly outperforms traditional methods, offering improved accuracy, precision, and
+generalization capabilities. The proposed solution holds promise for advancing the
+state of the art in wafer map classification, providing a reliable and scalable tool for
+defect detection in semiconductor manufacturing.
+2 Dataset and Evaluation Protocol
+2.1 Dataset
+To demonstrate the effectiveness of the proposed model algorithm, we utilized the
+WM811K semiconductor dataset for our experiments [33]. This comprehensive wafer
+dataset contains 811,457 wafer images along with supplementary information such as
+wafer core dimensions, batch numbers, and wafer indices. The dataset was collected
+from 47,543 physical lots from a FAB, with each lot consisting of 25 wafers. However,
+although 47,543 lots would yield 1,557,325 wafers, the dataset contains only 811,457
+wafer images.
+The manually labeled portion of the dataset comprises 172,950 images with 8
+distinct labels (0-7), as shown in Fig 2A. We observed that not all lots contain 25 wafer
+4
+
+===== Page 5 =====
+
+Fig. 1 The architecture of the proposed network model consists of two main modules: the pattern
+module and the CNN module. The pattern module extracts initial spatial features from the input,
+which are further processed by the CNN module consisting of two convolutional layers with 5x5
+kernels and same padding, followed by max-pooling layers (2x2). Gaussian noise sampled from N(0,1)
+is introduced to enhance robustness. The processed features are then flattened and passed through
+fully connected neural network layers with ReLU activation, followed by a final fully connected layer
+with softmax activation to produce the final class predictions (n3 units). The entire architecture is
+designed to capture and reconstruct key patterns from the input data.
+images, which may be due to sensor failures or other unknown issues. As a result,
+172,950 wafers were labeled, while the remaining 78.7% of the wafers were unlabeled.
+As shown in Fig 2B and Fig 2C,among the labeled wafers, 25,519 wafers (3.1%)
+were defective, while the remaining 147,431 wafers were intact. This highlights the
+scarcity of defective samples available for training the model. As shown in Fig 2D.The
+distribution of defects is as follows: Center: 4294, Donut: 555, Edge-Loc: 5189, EdgeRing: 9680, Loc: 3593, Random: 866, Scratch: 1193, Near-full: 149. Label 8 corresponds
+to defect-free, normal wafers, which account for 18.2% of the dataset, while labels 0-7
+represent various defective wafer patterns.
+2.2 Evaluation Metrics
+In this paper, we evaluate the experimental results using four widely recognized metrics: Precision [34], Recall, F1 score, and Accuracy. These metrics are especially useful
+for assessing recognition performance in the context of imbalanced datasets. The
+calculation formulas for these metrics are as follows:
+Precision =
+TP
+TP + FP ,
+(1)
+Recall =
+TP
+TP + FN ,
+(2)
+F1-score = 2 · Precision · Recall
+Precision + Recall ,
+(3)
+Accuracy =
+TP + TN
+TP + FN + TN + FP ,
+(4)
+5
+
+===== Page 6 =====
+
+Fig. 2 Visual Analysis of Wafer Defect Data. (A) Distribution of wafer indices, indicating the
+frequency of wafers across different index ranges. (B) Sample images of different wafer failure types,
+including Center, Donut, Edge-Loc, Edge-Ring, Loc (Localized), Random, Scratch, and Near-Full.
+(C) Distribution of wafer labels, categorizing wafers as ”No Label,” ”Labeled - Non-Pattern,” and
+”Labeled - Pattern” with respective proportions. (D) The frequency of different failure types as a
+percentage of all pattern-labeled wafers, highlighting the prevalence of various defects.
+Where TP, FN, TN, and FP denote true positives, false negatives, true negatives, and
+false positives, respectively.
+For multi-class classification tasks, we also use two additional metrics: Mean Area
+Under the Curve (Mean AUC) and Mean Average Precision (Mean AP). These metrics
+evaluate model performance across all classes by averaging the results obtained for
+each class. The corresponding formulas are as follows:
+Mean AUC =
+1
+nclasses
+nclasses
+X
+i=1
+AUCi,
+(5)
+Mean AP =
+1
+nclasses
+nclasses
+X
+i=1
+APi,
+(6)
+Where AUCi and APi represent the Area Under the ROC Curve and Average Precision
+for the ith class, respectively. nclasses denotes the total number of classes. After training,
+the model is also evaluated using accuracy and AUC (Area Under the Curve) for
+classification. The AUC is particularly useful for measuring performance in imbalanced
+datasets.
+The ROC-AUC score is computed by:
+AUC =
+Z 1
+0
+TPR(FPR) d(FPR)
+(7)
+6
+
+===== Page 7 =====
+
+Where: TPR (True Positive Rate) and FPR (False Positive Rate) are functions of
+the decision threshold for classification.
+2.3 Implementation Details
+The experiments outlined in this study were performed on a system running the
+Ubuntu operating system, specifically using Python version 3.8 [35] as the primary
+programming language. The machine learning models were implemented and trained
+using the TensorFlow 2.4 framework
+[36]and Pytorch 1.9 [37], which provided the
+necessary tools for building and optimizing deep learning architectures. In terms of
+hardware, the system was equipped with the NVIDIA V100 GPU, a high-performance
+graphics card designed for accelerating deep learning computations, particularly useful
+for large-scale neural network training. Additionally, the used system was powered
+by an Intel Xeon CPU, known for its robust multi-core processing capabilities, which
+assisted in efficiently handling data preprocessing.This combination of software and
+hardware ensured that the experiments could be conducted both efficiently and at
+scale.
+3 Proposed methods
+3.1 Autoencoder for Reconstruction and Latent Space
+Representation
+The autoencoder’s role in our model is to learn a compressed representation of the
+wafer maps in the latent space and then reconstruct the original wafer maps from this
+compressed space. This can be expressed in two stages: encoding and decoding.
+• Encoding: Let X
+∈
+R26×26×3 represent the input wafer map. The encoder
+compresses this input into a lower-dimensional latent representation Z ∈R13×13×64.
+The encoding process is represented mathematically as:
+Z = fencoder(X) = σ(We ∗X + be).
+(8)
+Where: We and be are the weights and biases of the encoder’s convolutional layers.
+∗denotes the convolution operation. σ is the ReLU activation function.
+• Decoding: The decoder reconstructs the wafer map from the latent space Z back to
+its original form ˆX ∈R26×26×3. The decoding process can be written as:
+ˆX = fdecoder(Z) = σ(Wd ∗Z + bd).
+(9)
+Where: Wd and bd are the weights and biases of the decoder’s transposed convolution
+layers.
+The autoencoder is trained by minimizing the reconstruction loss: the mean
+squared error (MSE) between the original wafer map X and the reconstructed wafer
+7
+
+===== Page 8 =====
+
+map ˆX:
+LMSE = 1
+n
+n
+X
+i=1
+(Xi −ˆXi)2.
+(10)
+3.2 Adding Noise for Data Augmentation
+After training the autoencoder, we add Gaussian noise to the latent space to create
+new wafer maps. The purpose of this is to generate synthetic data that can be used
+to train the CNN and improve generalization.
+Let the latent representation Z of the wafer map be:
+Z = fencoder(X).
+(11)
+To augment the data, we add noise sampled from a normal distribution with mean
+0 and standard deviation σ:
+Znoisy = Z + ϵ.
+(12)
+Where ϵ ∼N(0, σ2).
+The noised latent representation Znoisy is then decoded back into the image space:
+ˆXnoisy = fdecoder(Znoisy).
+(13)
+This produces a new wafer map ˆXnoisy that is similar to the original but slightly
+different due to the added noise.
+3.3 Data Augmentation for All Faulty Classes
+The augmented data is generated for each faulty class by repeating the process of
+adding noise to the latent space of the corresponding wafer maps. This augmentation
+increases the number of samples for each class, ensuring that the model has enough
+training data for all defect types.
+For each faulty class c ∈{0, 1, . . . , 7}, which is ‘Center’, ‘Donut’, ‘Edge-Loc’, ‘EdgeRing’, ‘Loc’, ‘Near-full’, ‘Random’, and ‘Scratch’, respectively. We generate additional
+wafer maps ˆXc using the following steps:
+Zc = fencoder(Xc)
+(for all samples of class c),
+(14)
+Zc,noisy = Zc + ϵ,
+(15)
+ˆXc,noisy = fdecoder(Zc,noisy).
+(16)
+8
+
+===== Page 9 =====
+
+The newly generated wafer maps ˆXc,noisy are then added to the dataset along with
+their corresponding labels.
+3.4 CNN Classification
+Once the dataset has been augmented, we use a Convolutional Neural Network
+(CNN) to classify the wafer maps into different defect types. The CNN takes an input
+wafer map ˆXc,noisy ∈R26×26×3 and processes it through multiple convolutional layers
+to extract spatial features.
+The input to the CNN is a wafer map ˆXc,noisy ∈R26×26×3, which represents a
+26x26 image with 3 color channels.
+ˆXc,noisy = {Xijk | i, j = 1 . . . 26, k = 1 . . . 3}.
+(17)
+The first convolutional layer applies 16 filters (or kernels) of size 3×3 with padding
+set to ‘same’, which ensures the output size remains 26 × 26.
+The convolution operation can be written as:
+H(1)
+ijk = σ
+X
+W (1)
+pqkmX(i+p)(j+q)m + b(1)
+k
+
+.
+(18)
+Where: W (1)
+pqkm are the weights (filters) of the convolutional layer. b(1)
+k
+is the bias for
+filter k. X is the input image. σ(x) = ReLU(x) = max(0, x) is the activation function
+(ReLU).
+Since padding is set to ‘same’, the size of the output feature map remains 26 × 26
+and the final output from this convolutional layer is:
+H(f) ∈R26×26×128
+(19)
+The next step is to flatten the output of the last convolutional layer into a 1D
+vector so that it can be passed into fully connected layers. The flattening operation
+transforms the 3D tensor H(3) of shape 26 × 26 × 128 into a 1D vector of size 86,528.
+F = Flatten(H(3))
+where F ∈R86528.
+(20)
+After flattening, the network uses fully connected layers, where each neuron is
+connected to all neurons in the previous layer. The first dense layer has 512 neurons,
+and each neuron applies a weighted sum followed by the ReLU activation function:
+D1 = σ(W (1)
+d F + b(1)
+d ).
+(21)
+Where: W (1)
+d
+∈R512×86528 are the weights of the first dense layer. b(1)
+d
+∈R512 is the
+bias term. D1 ∈R512 is the output of the first dense layer. The final output layer
+consists of 8 neurons (corresponding to the 8 classes), and each neuron outputs the
+probability that the input belongs to a specific class. The softmax activation is applied
+9
+
+===== Page 10 =====
+
+to convert the raw outputs into probabilities:
+P(y = k|X) =
+ezk
+P8
+j=1 ezj .
+(22)
+Where: zk = W (3)
+d D2 + b(3)
+d
+is the raw score for class k (logit). W (3)
+d
+∈R8×128 are the
+weights of the output layer. b(3)
+d
+∈R8 is the bias term. P(y = k|X) is the predicted
+probability for class k. The output of this layer is a probability vector:
+ˆy = [P(y = 1|X), P(y = 2|X), . . . , P(y = 8|X)].
+(23)
+The network is trained to minimize the categorical cross-entropy loss, which measures the difference between the true label distribution and the predicted probabilities:
+Lcross-entropy = −
+n
+X
+i=1
+8
+X
+k=1
+yi,k log P(yi = k|Xi).
+(24)
+Where: yi,k is a binary indicator (0 or 1) if class k is the correct label for sample i.
+P(yi = k|Xi) is the predicted probability for class k.
+4 Results and Discussions
+4.1 Data Augmentation Using Interpolation and Autoencoder
+Techniques
+We designed five models for comparison, including CNN, VotingClassifier, Logistic
+Regression, SVM, and Random Forest. The latter four models use feature extraction
+methods, while the CNN model employs data augmentation based on an autoencoder.
+The Voting Classifier model, which combines Logistic Regression, SVM, and Random Forest using a soft voting approach, employs a comprehensive set of 59 features
+derived from three main approaches: density-based, transformation-based, and sizebased features. The density-based features consist of 13 specific attributes extracted
+from distinct regions of the wafer map. These regions are strategically divided into
+9 central areas and 4 peripheral (or edge) areas, allowing the model to capture the
+density variations both at the core and along the edges of the wafer. This segmentation helps in identifying localized patterns and edge-specific anomalies that might be
+characteristic of certain types of defects.
+As shown in Fig 3A, the transformation-based features are formed by analyzing the
+wafer maps using Radon transformation across a range of angles from 0 to 180 degrees.
+The Radon transform essentially projects the wafer images at each angle, capturing
+the directional variations of defect patterns. After generating these projections, we
+utilize cubic interpolation to standardize the length of these features to 20 points each
+for both the mean and standard deviation of each transformed line. This results in a
+total of 40 transformation-based features, providing a fixed-length representation of
+the structural properties of defects, regardless of the original image size.
+10
+
+===== Page 11 =====
+
+Fig. 3 Visual Analysis of Wafer Defect Data. (A) Radon transform results of eight different wafer
+defect types, showing the transformed projections for each type, including Center, Donut, Edge-Loc,
+Edge-Ring, Loc (Localized), Random, Scratch, and Near-Full. The Radon transform captures the
+structural characteristics of defects in different directions. (B) Binary mask representations of the
+same eight defect types, highlighting the most prominent connected defect regions in each wafer map.
+The yellow regions indicate the detected defect areas after noise filtering, providing a clear view of
+each defect’s geometric characteristics.
+As shown in Fig 3B, the size-based features are derived by examining the geometric
+properties of the largest defect region detected in each wafer image. A total of 6
+geometric attributes are extracted, including the area, perimeter, lengths of the major
+and minor axes, eccentricity (a measure of the region’s elongation), and solidity (which
+indicates the compactness of the region). These attributes help in quantifying the
+physical dimensions and shape characteristics of the detected defects.
+Combining all these, the model leverages 59 features that collectively capture
+the density distribution, directional projections, and geometric properties of defects,
+enabling a robust analysis and classification of wafer anomalies.
+11
+
+===== Page 12 =====
+
+Fig. 4 Comparison of original and reconstructed images using a noised latent vector. (A) The
+original image. (B) The reconstructed image after adding noise to the latent representation. The
+visual differences highlight the autoencoder’s ability to maintain features despite perturbations.
+As shown in Fig 1,we developed an autoencoder-based approach to explore wafer
+map image reconstruction and evaluate the impact of noise on encoded representations.
+The autoencoder model was specifically designed to compress image data into a lowerdimensional latent space and then reconstruct the original image from this compressed
+representation. To achieve this, we employed a convolutional neural network (CNN)
+architecture for both the encoder and decoder components of the autoencoder.
+The encoder extracts key spatial features from the input image by applying convolutional operations and dimensionality reduction techniques. This process yields a
+compressed latent representation that captures essential information about the image
+while discarding less relevant details. To test the resilience of this representation, we
+introduced Gaussian noise into the latent space and analyzed how this perturbation
+influenced the reconstructed output. The addition of noise allows us to assess the
+robustness of the autoencoder in retaining critical visual features despite distortions.
+The decoder reconstructs the image from the noised latent representation by applying a series of inverse operations, including transposed convolutions and upsampling.
+This inverse process aims to restore the original spatial dimensions and reconstruct
+the image as accurately as possible. The use of transposed convolutions enables the
+model to learn how to fill in missing details and enhance the output quality.
+To visualize the effectiveness of our approach, we generated and compared two
+sets of images: one representing the original input image and the other showing the
+reconstructed image generated from the noised latent vector. Fig 4 illustrates these
+results, where Subfigure (A) depicts the original image and Subfigure (B) displays the
+reconstructed version. By comparing these two images, we can observe the model’s
+ability to preserve structural details and visual consistency, when subjected to noise
+in the encoded representation.
+This experimental setup highlights the potential of using autoencoders not only for
+image compression and reconstruction but also for assessing the resilience of learned
+representations under varying conditions. Our findings suggest that the autoencoder
+12
+
+===== Page 13 =====
+
+Table 1 Comparison of target distribution, training statistics, and testing
+statistics for each class.
+Class
+Dataset Distribution
+Training set
+Testing set
+0
+4.294
+3.238
+1.056
+1
+555
+404
+151
+2
+5.189
+3.860
+1.329
+3
+9.680
+7.299
+2.381
+4
+3.593
+2.677
+916
+5
+866
+640
+226
+6
+1.193
+905
+288
+7
+149
+116
+33
+Table 2 Data distribution of each
+class after augmentation to reach
+10,000 samples per class.
+Label
+Class Name
+Count
+0
+Center
+10.000
+1
+Donut
+10.000
+2
+Edge-Loc
+10.000
+3
+Edge-Ring
+10.000
+4
+Loc
+10.000
+5
+Near-full
+10.000
+6
+Random
+10.000
+7
+Scratch
+10.000
+architecture can effectively maintain essential features despite perturbations, offering promising applications in scenarios where data integrity may be compromised or
+altered.
+As shown in Fig 4, Fig 5 and Tabel 2, the graph illustrates the training progression of an autoencoder model by depicting the reduction in reconstruction loss over
+30 epochs. As the training continues, the decreasing loss indicates that the model is
+progressively learning to encode and reconstruct the input data more accurately. This
+trend demonstrates the autoencoder’s ability to capture critical features and minimize
+discrepancies between the original and reconstructed outputs, thereby refining its performance with each epoch. Table 1 presents the original dataset’s distribution across
+eight classes, highlighting significant class imbalance. The dataset contains a total of
+24,519 samples, unevenly distributed across classes. For instance, Class 3 (Edge-Ring)
+comprises 9,680 samples, while Class 7 (Scratch) has only 149 samples. This disparity
+is further reflected in the breakdown between training and testing sets, where classes
+with fewer samples have proportionally limited data for model training and evaluation. To mitigate the impact of class imbalance, an augmentation process was applied
+using an autoencoder, as summarized in Table 2. This augmentation increased each
+class to 10,000 samples, ensuring equal representation for all classes in the dataset. The
+augmentation process aimed to standardize the data distribution, thereby enhancing
+model robustness and minimizing potential biases toward classes with initially higher
+sample counts. This approach provides a more balanced training dataset, contributing
+to improved model performance and fairness in classification tasks.
+13
+
+===== Page 14 =====
+
+Fig. 5 Training progress of the autoencoder model based on reconstruction loss. The plot depicts
+the reduction in reconstruction loss over 30 epochs, indicating improved model performance in reconstructing input images. The gradual decrease in loss reflects the model’s increasing capability to
+capture and encode essential features from the input data.
+4.2 Evaluating the Impact of Data Augmentation on Model
+Performance
+The CNN-AUG model is a convolutional neural network architecture designed for classifying wafer defect patterns, enhanced with data augmentation techniques to improve
+its generalization capabilities. The architecture consists of multiple convolutional layers followed by fully connected layers, structured to effectively capture spatial features
+in wafer images.
+The model begins with an input layer accepting images of size 26x26 with three
+channels. This is followed by a series of three convolutional layers, with 16, 64, and
+128 filters, respectively, and a kernel size of 3x3. Each convolutional layer employs
+ReLU activation and padding to preserve the spatial dimensions of the input. These
+layers progressively learn higher-level features, enabling the network to detect complex
+patterns indicative of various defect types. After the convolutional layers, a flattening
+layer is applied to transform the 3D feature maps into a 1D vector, preparing the data
+for the subsequent dense layers.
+The fully connected section of the CNN-AUG model comprises two dense layers
+with 512 and 128 units, respectively, each employing ReLU activation to introduce
+non-linearity and enhance feature learning. The final output layer consists of 8 units
+with a softmax activation function, producing probability distributions across the 8
+classes of wafer defects. This architecture is optimized using the Adam optimizer and
+categorical cross-entropy loss function to achieve accurate multi-class classification.
+In our experiments, we aimed to address class imbalance using an autoencoderbased data augmentation technique. As shown in Table 2, we augmented the dataset
+such that each class contained 10,000 samples, ensuring balanced representation across
+14
+
+===== Page 15 =====
+
+Table 3 Architecture of the CNN Model
+Layer Type
+Output Shape
+Parameters
+Input
+(26, 26, 3)
+-
+Conv2D (3x3, 16 filters)
+(26, 26, 16)
+448
+Conv2D (3x3, 64 filters)
+(26, 26, 64)
+9,280
+Conv2D (3x3, 128 filters)
+(26, 26, 128)
+73,856
+Flatten
+86,528
+-
+Dense (512 units, ReLU)
+512
+44,354,560
+Dense (128 units, ReLU)
+128
+65,664
+Dense (8 units, Softmax)
+8
+1,032
+Total Parameters
+-
+44,504,840
+all classes. This augmentation was crucial to overcoming the inherent skew in the
+original dataset distribution (Table
+1), where some classes were heavily underrepresented. To maintain consistency with our evaluation protocol, we first divided the
+dataset into training and testing sets using a 4:1 ratio before data augmentation.
+This split allowed for sufficient samples in both sets, supporting robust training and
+comprehensive evaluation. Training and Validation Loss and Accuracy
+We proceeded to train our model on the original, unbalanced dataset for 30 epochs,
+recording its performance metrics throughout. As illustrated in Fig 6, the training
+loss decreased steadily over time, nearly approaching zero. However, we observed that
+the validation loss initially declined but began to rise after approximately 20 epochs.
+This divergence indicated a classic case of overfitting, where the model continued to
+memorize the training data while failing to generalize to new, unseen data effectively.
+This observation was further reinforced by the accuracy curves, which revealed that
+while the training accuracy consistently improved, reaching nearly 99%, the validation
+accuracy plateaued around 85%. Such a discrepancy suggests that the model struggled
+to maintain its performance on the validation set, likely due to the imbalance in class
+distributions within the original dataset.
+To mitigate this overfitting and class imbalance issue, we applied an autoencoderbased data augmentation strategy to balance the dataset. Following this augmentation,
+we retrained the model under the same conditions and observed significant changes in
+performance, as depicted in Fig 7. Notably, the validation loss demonstrated a more
+consistent decline throughout the training process, stabilizing at a value comparable
+to the training loss. This indicated that the model was no longer overly specialized
+to the training data and had improved its capacity to generalize. Additionally, the
+validation accuracy saw a substantial increase, reaching around 98%, indicating a
+more robust and generalized learning process. The observed reduction in overfitting
+and the substantial improvement in validation accuracy emphasize the effectiveness of
+our data augmentation approach in enhancing model generalization and performance.
+Confusion Matrix Analysis To gain further insights into the impact of data augmentation on classification performance, we evaluated the model using confusion matrices,
+which offer a detailed perspective on how well the model distinguishes between different classes. Fig 8 shows the confusion matrices before and after data augmentation.
+Before applying data augmentation, the model displayed relatively high accuracy for
+well-represented classes such as Center (96%), Edge-Ring (97%), and Near-full (85%).
+15
+
+===== Page 16 =====
+
+Fig. 6
+Model Training and Validation Performance Before Data Augmentation The plots depict the
+training and validation loss (left) and accuracy (right) of the model over 30 epochs before applying
+data augmentation. The model shows a noticeable gap between training and validation loss after the
+initial epochs, indicating potential overfitting. Similarly, the validation accuracy plateaus around 85%
+while the training accuracy continues to increase, suggesting that the model struggles to generalize
+to the validation set due to class imbalances in the original dataset.
+However, the model’s performance was significantly lower for underrepresented classes
+such as Loc (80%) and Random (39%). The poor performance in these classes underscores the limitations of training on a dataset with pronounced class imbalances, as
+the model struggles to learn adequate distinguishing features for infrequent classes.
+After implementing data augmentation, we observed substantial improvements in the
+confusion matrix, as shown in Fig 8. The model achieved nearly perfect classification
+accuracy across all classes, with notable improvements in several key areas. For example, the model’s accuracy in recognizing Center reached 99%, while Donut achieved
+100%, and Edge-Loc improved to 95%. More importantly, the previously underperforming classes showed marked gains: the accuracy for Loc increased from 80% to
+97%, and the accuracy for Random rose significantly from 39% to 100%. This considerable enhancement in performance for these classes demonstrates the effectiveness
+of our autoencoder-based data augmentation technique in creating a more balanced
+and representative training dataset. In summary, our experiments demonstrated that
+addressing class imbalance through an autoencoder-based data augmentation strategy
+can significantly improve model performance. By augmenting each class to contain
+10,000 samples, we achieved a balanced dataset that provided uniform representation
+for all classes. This approach not only reduced the model’s tendency to overfit but also
+resulted in a substantial increase in validation accuracy, from 85% to approximately
+98%. Furthermore, the confusion matrix analysis revealed that the model’s classification accuracy improved considerably across all classes, particularly for those that were
+initially underrepresented, such as Loc and Random. These improvements underscore
+the importance of balanced datasets in training deep learning models and validate
+the efficacy of our data augmentation approach in enabling the model to learn more
+generalized and distinguishing features across all classes.
+16
+
+===== Page 17 =====
+
+Fig. 7 Model Training and Validation Performance After Data Augmentation The plots show the
+training and validation loss (left) and accuracy (right) of the model over 30 epochs after applying data
+augmentation using the autoencoder. The training and validation losses exhibit a more consistent
+trend with reduced divergence, highlighting the impact of balanced class representation. Additionally,
+the validation accuracy is significantly improved, reaching approximately 98%, which indicates that
+the model achieves better generalization and overall stability after augmentation.
+Fig. 8 The confusion matrix on the left illustrates the classification performance of the model
+without and data augmentation. Diagonal values represent the model’s accuracy for each class, while
+off-diagonal values indicate misclassifications. The results show that while the model performs well in
+recognizing certain classes such as Class 3 (Edge-Ring) and Class 0 (Center), it struggles with others,
+such as Class 4 (Loc) and Class 6 (Random). The overall lower accuracy for these classes reflects
+the class imbalance and insufficient representation in the original dataset.The confusion matrix on
+the right displays the model’s performance after applying data augmentation. A clear improvement
+is evident, with higher diagonal values indicating better classification accuracy across all classes.
+The model achieves near-perfect classification for most classes, notably improving its performance
+on previously underrepresented classes such as Class 4 (Loc) and Class 6 (Random). The uniformity
+in predictions after augmentation highlights the effectiveness of using the autoencoder to achieve
+balanced class distributions and improved generalization.
+17
+
+===== Page 18 =====
+
+4.3 A Comparative Study of Augmentation Tools for Wafer
+Defect Detection
+We conducted a comprehensive evaluation of various classification models, including
+Logistic Regression, Support Vector Machine (SVM), Random Forest, and a Voting
+Classifier, alongside our custom-designed Convolutional Neural Network with data
+augmentation (CNN-AUG). To assess the effectiveness of these models, we focused on
+key performance metrics such as accuracy, precision, recall, F1-score, Area Under the
+Curve (AUC), and average precision (AP). Given that our dataset involves an 8-class
+classification task, it was essential to employ a One-vs-Rest (OvR) strategy to evaluate each class individually against the remaining classes. This approach allowed us
+to obtain performance metrics that reflect the model’s discriminative power in distinguishing each class from all others. We conducted an extensive evaluation of various
+classification models, including Logistic Regression, Support Vector Machine (SVM),
+Random Forest, and a Voting Classifier. These traditional machine learning models
+were benchmarked against our custom-designed Convolutional Neural Network with
+data augmentation (CNN-AUG) to assess their effectiveness across key performance
+metrics: accuracy, precision, recall, F1-score, AUC, and average precision (AP). The
+results are summarized in Table 4.
+The Logistic Regression model, known for its simplicity and interpretability,
+demonstrated relatively modest performance metrics. It achieved an accuracy of
+0.7176, a precision of 0.5172, and a recall of 0.5147, indicating moderate ability in correctly identifying positive instances across all classes. Despite an AUC value of 0.9345
+suggesting reasonable discriminative power between classes, the low AP score of 0.5653
+highlighted the model’s difficulty in maintaining precision, especially in a multi-class
+classification setting. This outcome reflects the limitations of logistic regression in handling complex patterns and class imbalances in the dataset.The SVM model showed
+a marked improvement over logistic regression. With an accuracy of 0.7770 and a
+precision of 0.7627, it demonstrated better precision in correctly classifying positive
+instances. The recall score of 0.7244 suggested the model’s ability to capture a larger
+proportion of true positives.
+Additionally, the AUC score of 0.9638 indicated that the SVM could distinguish
+between classes with high confidence. An AP score of 0.8141 further demonstrated the
+model’s enhanced performance in achieving a balanced trade-off between precision and
+recall, which is crucial for multi-class scenarios.The Random Forest model excelled
+further, capitalizing on its ensemble-based approach. It achieved an accuracy of 0.8125
+and a notably higher precision of 0.8482. This indicates that the model consistently
+classified positive instances with minimal false positives. The recall score of 0.7090,
+combined with an AUC of 0.9759, demonstrated its strong overall discriminative capability. Moreover, the AP score of 0.8476 indicated a high level of confidence in its
+predictions across multiple classes. These metrics underscore Random Forest’s ability
+to capture complex patterns through its decision-tree-based structure, which aggregates multiple weak learners to yield a strong classifier. The Voting Classifier,which
+combine above all models, exhibited robust performance across the board. With an
+accuracy of 0.7951, precision of 0.8050, and recall of 0.7322, it achieved a balanced
+outcome by integrating the predictions of Logistic Regression, SVM, and Random
+18
+
+===== Page 19 =====
+
+Fig. 9
+ROC Curve Comparison. The ROC curve compares the performance of various models,
+including CNN-AUG, SVC, and Random Forest, on the test dataset. The curves show the trade-off
+between the True Positive Rate (TPR) and the False Positive Rate (FPR) for each model. The Area
+Under the Curve (AUC) values are provided in the legend, indicating that the CNN-AUG model has
+the highest AUC, demonstrating superior classification performance in distinguishing between the
+classes.
+Forest. This balanced approach was further reflected in its AUC of 0.9709 and AP
+score of 0.8397, demonstrating that ensembling diverse models can lead to reliable
+classification results, particularly in scenarios involving multi-class data.
+Our CNN-based model with data augmentation (CNN-AUG) stood out significantly in terms of performance. It achieved an outstanding accuracy of 0.9856, with
+precision, recall, and F1-scores all reaching 0.9877. These near-perfect scores reflect
+the model’s ability to correctly identify and classify instances across all classes with
+minimal errors. Additionally, the CNN-AUG model achieved an AUC of 1.00, indicating flawless discriminative capability between classes. Similarly, the AP score of
+1.00 emphasized the model’s exceptional precision across varying thresholds, underscoring its effectiveness in capturing distinguishing features and nuances within the
+dataset. The implementation of data augmentation techniques played a crucial role in
+enhancing the CNN’s capacity to generalize well on unseen data, effectively addressing
+class imbalances and overfitting issues commonly encountered in deep learning models.
+In conclusion, our comparative analysis highlights the superiority of the CNN-AUG
+model over traditional machine learning approaches. While traditional models such as
+Random Forest and the Voting Classifier demonstrated commendable performance,
+particularly in achieving high precision and robust AUC scores, the CNN-AUG model
+outperformed them across all evaluation metrics. The integration of convolutional neural network architecture with data augmentation techniques allowed the CNN-AUG
+model to learn complex patterns and relationships within the data effectively, resulting
+in near-perfect accuracy and reliability in multi-class classification.
+19
+
+===== Page 20 =====
+
+Fig. 10 Precision-Recall Curve Comparison. The Precision-Recall curve evaluates the precision
+against recall for different models on the test dataset. The graph highlights the trade-offs between
+achieving high precision and high recall for each model, with Average Precision (AP) values provided
+in the legend. The CNN-AUG model achieves a higher AP, indicating its better ability to maintain
+high precision while achieving higher recall compared to other models like SVC and Random Forest.
+Table 4 Model Performance Comparison
+Model
+Acc.
+Prec.
+Recall
+F1
+AUC
+AP
+Logistic Regression
+0.7176
+0.5172
+0.5147
+0.5137
+0.9345
+0.5653
+SVM
+0.7770
+0.7627
+0.7244
+0.7283
+0.9638
+0.8141
+Random Forest
+0.8125
+0.8482
+0.7090
+0.7318
+0.9759
+0.8476
+Voting Classifier
+0.7951
+0.8050
+0.7322
+0.7519
+0.9709
+0.8397
+CNN-AUG
+0.9856 0.9877 0.9878 0.9877 1.0000 1.0000
+4.4 Ablation Analysis to Assess Component Contributions
+We developed a series of Convolutional Neural Network (CNN) models to investigate
+the contribution of different layers to classification performance. The baseline model
+(CNN-AUG) consists of three convolutional layers. The first convolutional layer applies
+16 filters of size 3×33×3 with the ReLU activation function and same padding. The
+second and third convolutional layers utilize 64 and 128 filters, respectively, with similar configurations. The output from the third convolutional layer is flattened and fed
+into two fully-connected layers with 512 and 128 units, both using ReLU activations.
+The final output layer has 8 units with a softmax activation function for multi-class
+classification. To understand the effect of different architectural components, we created two ablation models. The first ablation model, named No Conv3, excludes the
+third convolutional layer, keeping the rest of the architecture unchanged. The second
+ablation model, named No Dense1, excludes the first fully-connected (Dense) layer,
+retaining only the second fully-connected layer. Each model was trained using the
+Adam optimizer with a categorical cross-entropy loss function. Results We evaluated
+20
+
+===== Page 21 =====
+
+Table 5 Ablation Study Results
+Model
+Acc
+Prec
+Rec
+F1
+CNN-AUG
+0.9856
+0.9855
+0.9856
+0.9855
+No Conv3
+0.9796
+0.9795
+0.9795
+0.9794
+No Dense1
+0.9784
+0.9785
+0.9785
+0.9784
+the models on the test dataset and compared their performance using accuracy, precision, recall, and F1 score. The results, as shown in Table 5, indicate that the baseline
+model (CNN-AUG) achieved the highest performance across all metrics, with a test
+accuracy of 0.9856, precision of 0.9855, recall of 0.9856, and an F1 score of 0.9855.
+This confirms the model’s effectiveness in accurately classifying the eight classes in
+the dataset.
+The No Conv3 model, which excludes the third convolutional layer, showed a slight
+drop in performance. It achieved a test accuracy of 0.9796, precision of 0.9795, recall
+of 0.9795, and an F1 score of 0.9794. These results suggest that the third convolutional layer contributes to deeper feature extraction, enhancing the model’s overall
+performance.
+Similarly, the No Dense1 model, which removes the first fully-connected (dense)
+layer, also exhibited a decline in all metrics. It achieved a test accuracy of 0.9784,
+precision of 0.9785, recall of 0.9785, and an F1 score of 0.9784. This indicates that
+having multiple dense layers is crucial for effective classification, as it allows the model
+to better capture and learn the complex relationships between features.
+These results collectively highlight the importance of both the third convolutional
+layer and the first fully-connected layer in achieving optimal classification performance.
+4.5 Interpretable Exploration through Regional Occlusion
+Analysis
+In this experiment, we performed an occlusion sensitivity analysis to explain the performance of our deep learning model in a wafer defect classification task. The main
+goal is to identify spatial regions in the wafer image that are critical for the model’s
+decision-making process. By systematically occluding image regions using a sliding
+window of 10x10 pixels with a spacing of 5 pixels, we evaluated the impact of occlusion
+on the model’s classification performance, with a particular focus on the F1 score as a
+balanced indicator of precision and recall. The analysis generates a heatmap as shown
+in Fig 11, where the center regions of the wafer images often contain prominent defective features, and masking these regions leads to a significant decrease in the F1 score.
+This finding highlights the dependence of the model on the center region for accurate classification. These results have practical implications for both model design and
+wafer detection strategies. The analysis highlights the importance of central regions
+in feature extraction, providing insight into how deep learning models prioritize spatial information. Understanding these critical regions allows for refinement of model
+architectures, such as designing mechanisms that more effectively focus on relevant
+image regions. In addition, the improved interpretability obtained through occlusion
+21
+
+===== Page 22 =====
+
+sensitivity analysis enhances the trust in deep learning models and provides a way to
+optimize the performance and robustness of the models in real-world applications.
+Fig. 11 Occlusion Sensitivity Heatmap illustrating the change in F1 score due to masking different
+regions of the wafer image. The color bar represents the magnitude of change in the F1 score, indicating the importance of different regions for model prediction.
+5 Conclusions
+In this paper, we proposed a novel approach combining self-encoder-based data
+enhancement with convolutional neural networks (CNNs) to improve the classification
+accuracy of wafer defect maps (WDMs). By introducing noise in the latent space of the
+self-encoder, we augmented the diversity of training data and mitigated class imbalance, enabling the CNN to extract hierarchical features for precise defect classification.
+Experiments conducted on the WM-811K dataset demonstrated the superiority of the
+proposed method, achieving a classification accuracy of 98.56%, significantly outperforming traditional machine learning methods. These results validate the effectiveness
+of our approach in addressing the challenges of noisy data, unbalanced defect classes,
+and complex failure patterns.
+22
+
+===== Page 23 =====
+
+Looking forward, two key areas of improvement need to be addressed. First, the current method requires resizing wafer maps to a uniform shape, which may distort certain
+defect patterns and impact classification accuracy for wafer maps with extreme aspect
+ratios. Future work will explore techniques to handle arbitrarily-shaped wafer maps
+without resizing. Second, while the overall classification performance improved, certain minority defect categories, such as Scratch and Near-Full, still suffered from lower
+accuracy. To address this, future efforts will focus on adaptive and class-specific data
+augmentation strategies and cost-sensitive learning methods to enhance classification
+performance for these critical but underrepresented categories.
+Acknowledgment: This work was supported by National Natural Science Foundation of China, “Research on Multiplicity Object Classification for Heterogeneous
+Marker Space”(Grant No. 62306131).
+Conflict of Interest: The authors declare that there is no conflict of interests
+regarding the publication of this article.
+Data availability: Data will be made available on reasonable request.
+References
+[1] Wei, Q., Zhao, W., Zheng, X., Zeng, Z.: Wafer map defect patterns semisupervised classification using latent vector representation. In: 2023 IEEE International Conference on Cybernetics and Intelligent Systems (CIS) and IEEE
+Conference on Robotics, Automation and Mechatronics (RAM), pp. 192–197
+(2023). IEEE
+[2] De Ridder, V., Dey, B., Dehaerne, E., Halder, S., De Gendt, S., Van Waeyenberge,
+B.: Semi-centernet: a machine learning facilitated approach for semiconductor
+defect inspection. In: 38th European Mask and Lithography Conference (EMLC
+2023), vol. 12802, pp. 220–228 (2023). SPIE
+[3] Yin, H., Shi, X., He, C., Martinez-Canales, M., Li, J., Pickard, C.J., Tang, C.,
+Ouyang, T., Zhang, C., Zhong, J.: Stone-wales graphene: A two-dimensional
+carbon semimetal with magic stability. Physical Review B 99(4), 041405 (2019)
+[4] Mills, A., Le Hunte, S.: An overview of semiconductor photocatalysis. Journal of
+photochemistry and photobiology A: Chemistry 108(1), 1–35 (1997)
+[5] Yoon, S., Kang, S.: Semi-automatic wafer map pattern classification with convolutional neural networks. Computers & Industrial Engineering 166, 107977
+(2022)
+[6] Ishida, T., Nitta, I., Fukuda, D., Kanazawa, Y.: Deep learning-based wafermap failure pattern recognition framework. In: 20th International Symposium on
+Quality Electronic Design (ISQED), pp. 291–297 (2019). IEEE
+[7] Ferris-Prabhu, A.V.: Defects, faults and semiconductor device yield. In: Koren, I.
+23
+
+===== Page 24 =====
+
+(ed.) Defect and Fault Tolerance in VLSI Systems: Volume 1, pp. 33–46. Springer,
+Boston, MA (1989)
+[8] Poehls, L.B., Fieback, M., Hoffmann-Eifert, S., Copetti, T., Brum, E., Menzel, S.,
+Hamdioui, S., Gemmeke, T.: Review of manufacturing process defects and their
+effects on memristive devices. Journal of electronic testing 37, 427–437 (2021)
+[9] Kim, J., Nam, Y., Kang, M.-C., Kim, K., Hong, J., Lee, S., Kim, D.-N.: Adversarial defect detection in semiconductor manufacturing process. IEEE Transactions
+on Semiconductor Manufacturing 34(3), 365–371 (2021)
+[10] Maksim, K., Kirill, B., Eduard, Z., Nikita, G., Aleksandr, B., Arina, L., Vladislav,
+S., Daniil, M., Nikolay, K.: Classification of wafer maps defect based on deep
+learning methods with small amount of data. In: 2019 International Conference
+on Engineering and Telecommunication (EnT), pp. 1–5 (2019). IEEE
+[11] Shim, J., Kang, S.: Learning from single-defect wafer maps to classify mixeddefect wafer maps. Expert Systems with Applications 233, 120923 (2023)
+[12] Hansen, C., Thyregod, P.: Use of wafer maps in integrated circuit manufacturing.
+Microelectronics Reliability 38(6-8), 1155–1164 (1998)
+[13] Kang, S., Cho, S., An, D., Rim, J.: Using wafer map features to better predict dielevel failures in final test. IEEE Transactions on Semiconductor Manufacturing
+28(3), 431–437 (2015)
+[14] Taha, K., Salah, K., Yoo, P.D.: Clustering the dominant defective patterns in
+semiconductor wafer maps. IEEE Transactions on Semiconductor Manufacturing
+31(1), 156–165 (2017)
+[15] Alawieh, M.B., Wang, F., Li, X.: Identifying wafer-level systematic failure patterns via unsupervised learning. IEEE transactions on computer-aided design of
+integrated circuits and systems 37(4), 832–844 (2017)
+[16] Geng, H., Sun, Q., Chen, T., Xu, Q., Ho, T.-Y., Yu, B.: Mixed-type wafer failure
+pattern recognition. In: Proceedings of the 28th Asia and South Pacific Design
+Automation Conference, pp. 727–732 (2023)
+[17] Nakazawa, T., Kulkarni, D.V.: Wafer map defect pattern classification and image
+retrieval using convolutional neural network. IEEE Transactions on Semiconductor Manufacturing 31(2), 309–314 (2018)
+[18] Piao, M., Jin, C.H.: Cnn and ensemble learning based wafer map failure pattern recognition based on local property based features. Journal of Intelligent
+Manufacturing 34(8), 3599–3621 (2023)
+24
+
+===== Page 25 =====
+
+[19] Sumikawa, N., Wang, L.-C., Abadir, M.S.: A pattern mining framework for interwafer abnormality analysis. In: 2013 IEEE International Test Conference (ITC),
+pp. 1–10 (2013). IEEE
+[20] Hearst, M.A., Dumais, S.T., Osuna, E., Platt, J., Scholkopf, B.: Support vector
+machines. IEEE Intelligent Systems and their applications 13(4), 18–28 (1998)
+[21] Peterson, L.E.: K-nearest neighbor. Scholarpedia 4(2), 1883 (2009)
+[22] De Ville, B.: Decision trees. Wiley Interdisciplinary Reviews: Computational
+Statistics 5(6), 448–455 (2013)
+[23] Wu, M.-J., Jang, J.-S.R., Chen, J.-L.: Wafer map failure pattern recognition and
+similarity ranking for large-scale data sets. IEEE Transactions on Semiconductor
+Manufacturing 28(1), 1–12 (2014)
+[24] Yin, H., Gu, Z., Wang, F., Abuduhaibaier, Y., Zhu, Y., Tu, X., Hua, X.-S., Luo,
+X., Sun, Y.: An evaluation of large language models in bioinformatics research.
+arXiv preprint arXiv:2402.13714 (2024)
+[25] Yin, H., Wu, S., Tan, J., Guo, Q., Li, M., Guo, J., Wang, Y., Jiang, X., Zhu,
+H.: Ipev: identification of prokaryotic and eukaryotic virus-derived sequences in
+virome using deep learning. GigaScience 13, 018 (2024)
+[26] Wang, R., Chen, N.: Defect pattern recognition on wafers using convolutional
+neural networks. Quality and Reliability Engineering International 36(4), 1245–
+1257 (2020)
+[27] Phua, C., Theng, L.B.: Semiconductor wafer surface: Automatic defect classification with deep cnn. In: 2020 IEEE Region 10 Conference (TENCON), pp. 714–719
+(2020). IEEE
+[28] Yu, J., Zheng, X., Liu, J.: Stacked convolutional sparse denoising auto-encoder
+for identification of defect patterns in semiconductor wafer map. Computers in
+Industry 109, 121–133 (2019)
+[29] Liou, C.-Y., Cheng, W.-C., Liou, J.-W., Liou, D.-R.: Autoencoder for words.
+Neurocomputing 139, 84–96 (2014)
+[30] Zhai, J., Zhang, S., Chen, J., He, Q.: Autoencoder and its various variants. In:
+2018 IEEE International Conference on Systems, Man, and Cybernetics (SMC),
+pp. 415–419 (2018). IEEE
+[31] Cheon, S., Lee, H., Kim, C.O., Lee, S.H.: Convolutional neural network for wafer
+surface defect classification and the detection of unknown defect class. IEEE
+Transactions on Semiconductor Manufacturing 32(2), 163–170 (2019)
+[32] Kim, S., Kim, H.: Mixed-type defect pattern recognition in noisy labeled wafer
+25
+
+===== Page 26 =====
+
+bin maps. Quality Engineering, 1–15 (2023)
+[33] Bhatnagar, P., Arora, T., Chaujar, R.: Semiconductor wafer map defect classification using transfer learning. In: 2022 IEEE Delhi Section Conference (DELCON),
+pp. 1–4 (2022). IEEE
+[34] Kane, M.: The precision of measurements. Applied measurement in education
+9(4), 355–379 (1996)
+[35] Van Rossum, G., Drake Jr, F.L.: Python Tutorial vol. 620, 1st edn. Centrum voor
+Wiskunde en Informatica, Amsterdam, The Netherlands (1995)
+[36] Pang, B., Nijkamp, E., Wu, Y.N.: Deep learning with tensorflow: A review.
+Journal of Educational and Behavioral Statistics 45(2), 227–248 (2020)
+[37] Imambi, S., Prakash, K.B., Kanagachidambaresan, G.: Pytorch. Programming
+with TensorFlow: solution for edge computing applications, 87–104 (2021)
+26

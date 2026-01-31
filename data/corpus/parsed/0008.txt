@@ -1,0 +1,970 @@
+
+
+===== Page 1 =====
+
+IEEE TRANSACTIONS ON SEMICONDUCTOR MANUFACTURING
+1
+Detecting Defective Wafers Via Modular Networks
+Yifeng Zhang, Bryan Baker, Shi Chen, Chao Zhang, Yu Huang, Qi Zhao∗, Sthitie Bom∗
+Abstract—The growing availability of sensors within semiconductor manufacturing processes makes it feasible to detect defective wafers with data-driven models. Without directly
+measuring the quality of semiconductor devices, they capture
+the modalities between diverse sensor readings and can be
+used to predict key quality indicators (KQI, e.g., roughness,
+resistance) to detect faulty products, significantly reducing the
+capital and human cost in maintaining physical metrology steps.
+Nevertheless, existing models pay little attention to the correlations among different processes for diverse wafer products
+and commonly struggle with generalizability issues. To enable
+generic fault detection, in this work, we propose a modular
+network (MN) trained using time series stage-wise datasets
+that embodies the structure of the manufacturing process. It
+decomposes KQI prediction as a combination of stage modules to simulate compositional semiconductor manufacturing,
+universally enhancing faulty wafer detection among different
+wafer types and manufacturing processes. Extensive experiments
+demonstrate the usefulness of our approach, and shed light on
+how the compositional design provides an interpretable interface
+for more practical applications.
+Index Terms—Soft Sensing, Machine Learning, Wafer Manufacturing, Neural Module Networks, Model Interpretability and
+Generalizability
+I. INTRODUCTION
+I
+N the Industry 4.0 [1] era, there is a remarkable increase in
+the number of smart sensors deployed in the semiconductor
+industry [2], [3]. They continuously produce valuable data
+that has the potential to be utilized for tracking and optimizing the manufacturing process [4] as in reflecting the
+products’ key quality indicators (KQIs) for detecting faulty
+wafers. Substantial cost savings in terms of capital and human
+resources can be gained by modeling hard-to-measure KQIs
+(e.g., resistance, flatness, etc.) from easy-to-measure sensor
+readings (e.g., temperature, pressure, etc.) [5].
+Wafer products are processed using multiple manufacturing
+stages. Each stage performs functions which can be reused
+depending on the product as well as the fabricated feature
+within a product. For example, different wafer products (e.g.,
+PROD01 and PROD02 in Figure 1) are produced as a combination of sharable manufacturing stages (e.g., Stage 01).
+To achieve high precision and recall for the KQI prediction, existing approaches focus on improving the structure
+of computational models and optimizing them with a variety
+of data splits. They prepare sensor data [3], [6], [7] in
+transaction-like format and train variants of state-of-the-art
+deep networks (e.g., autoencoders [8], [9], transformers [10],
+etc.) to model the complexity in sensing modalities, e.g., multilabel stability [11], sensor imbalance [12], and heterogeneous
+sensor dependency [13]. However, the black-boxed design
+of deep learning methods fails to reflect the complexity of
+∗denotes equal authorship.
+Deposition
+A Pool of Processing Stages for Deposition
+Stage Sequence Examples
+Substrate
+Wafer Product
+...
+...
+Stage_01
+Stage_02
+Stage_03
+Stage_XX
+Stage_01
+Stage_01
+PROD01
+Stage_03
+Stage_02
+Stage_01
+PROD02
+Wafer Manufacturing Process
+Lithography
+Deposition
+Etching
+Lift-Off
+Polishing
+Fig. 1. Illustration of the wafer manufacturing process.
+semiconductor manufacturing resulting in inconsistent KQI
+prediction performances at multiple stages of diverse product
+lines. Furthermore, the existing training data format using
+transaction-like data often omits crucial information about
+the manufacturing process (e.g. the ordering of manufacturing
+stages). Together, these limitations hinder the explicit modeling of intermediate procedures, creating substantial obstacles
+in identifying dependencies among different manufacturing
+processes and in cross-product generalization.
+With an overarching goal to facilitate smart-sensing models
+with enhanced generalizability, we propose a modular network
+(MN) using state-wise sequence-like datasets to detect faulty
+semiconductor wafers. The modular network centers around
+two major components, i.e., a list of functional prototypes
+which reflect base operations performed in the manufacturing pipeline, and a collection of stage modules that select
+relevant prototypes in the corresponding wafer manufacturing
+stage. This disentangles the diverse processing functions from
+different stages to naturally factor the entire manufacturing
+procedure for KQI predictions. To further facilitate the training
+of our proposed network, we also generate corresponding
+datasets rich in quantity and annotations which explicitly illustrate the intermediate manufacturing procedures. In contrast to
+transaction-like soft sensing data [3], our datasets encapsulate
+the entire manufacturing stages of each product as well as the
+compositionality between stages.
+In summary, our major contributions are as follows:
+arXiv:2501.03368v1  [cs.LG]  6 Jan 2025
+
+===== Page 2 =====
+
+IEEE TRANSACTIONS ON SEMICONDUCTOR MANUFACTURING
+2
+1) We are the first to propose a module-based method
+for key variable prediction tasks in the semiconductor
+wafer industry. It addresses the compositionality of manufacturing procedures and generalizes the model across
+wafer products and environment settings.
+2) We propose a stage-wise sequence-like dataset that
+emphasizes compositonality of KQI predictions and is
+crucial for the learning of the modular network.
+3) We conduct extensive experiments over real-world manufacturing datasets with diverse settings to exhibit the
+usefulness of our proposed method.
+II. PRELIMINARIES
+The KQI prediction is core to the detection of faulty
+semiconductors, where a large body of studies focus on leveraging deep neural networks to capture the complex modalities
+between sensor data and KQIs [14]. This section introduces
+the formulation of KQI prediction tasks and neural module
+networks use for this study.
+A. Key Quality Indicator Predictions
+To maintain product quality throughout the manufacturing
+process, smart sensors are installed in production tools to monitor wafers and to diagnos faulty stages. The measurements
+at each processing stage, provide additional information for
+predicting/estimating hard-to-measure KQIs. Engineers also
+manually inspect sensor readings providing ground truth values (i.e., labels of KQIs) for training and evaluation. With
+high-dimensional sensor readings as the input and multiple
+KQI labels as the output, the key variable prediction can be
+formulated as a sequential classification task.
+Recent emphasis [3], [15] on detecting defective semiconductors has been placed on applying deep models over
+multiple tasks, such as with key variable indicator predictions [12], [13], parameter control [16], fault detection and diagnosis [17], along with other applications [11], [18]. They are
+commonly categorized into two main methods: transformerbased and graph-based. Transformer-based methods [11], [12],
+[19] leverage an encoder-decoder framework [9] with a multihead attention mechanism [10] to correlate sensor readings
+with wafer measurements, while graph-based methods [13]
+learn to represent the latent correlation among sensors with
+both graph and graph attention propagation methods (e.g.
+GAT [20], GCN [21], GNN [22]).
+B. Neural Module Networks
+In contrast to conventional black-box deep learning models [23], [24], Neural Module Networks [25]–[31] were first
+introduced in the field of visual reasoning, which require
+answering questions based on visual input. They dynamically
+assemble modules into a network that is used to produce
+an answer in response to an input question. These modules
+play different roles within the network: querying the relevant
+knowledge by allocating or re-allocating attention to input
+features, recognizing the attended features, and performing
+numeric or logical operations. We adapt NMNs [29] traditionally used for vision tasks into our modular network to
+enable wafer manufacturing tasks with greater interpretability
+and generalizability. In doing so, designing modules that
+are closely linked to real-world stage procedures in wafer
+manufacturing tasks. These new modular networks differ from
+previous NMNs both conceptually and technically.
+Our method differs from existing deep models for faulty
+semiconductor detection in two major aspects. First, unlike
+approaches leveraging holistic black-box models directly correlating sensor readings to final measures, our modularized
+network provides a set of stage modules that align with the
+physical stage enabling the analysis of intermediate manufacturing procedures resulting in greater interpretability. Second,
+the stage modules are dynamically composed and better reflect
+the manufacturing processes of diverse products and environment settings resulting in significantly enhancing model
+generalizability.
+III. METHODOLOGY
+Our proposed network addresses the complexity of processing stages by using a modular network (MN) outlined in Figure 2. This network decomposes KQI predictions using three
+major thoughts: (A) a set of trained prototypes factorizing
+multiple base functions from their manufacturing procedures,
+(B) stage modules that predict measurements from sequential
+sensor readings within each stage, and (C) a joint objective
+function to supervise the learning of both the prototype and
+stage modules. Our proposed method is further refined in mimicking the manufacturing process by conducting a sequence of
+classification tasks.
+Let X
+= {X1, X2, ..., XT } ∈RT ×D represent Ddimensional sensor readings for T consecutive stages and L =
+{L1, L2, ..., LT } ∈RT ×K represent the set of corresponding
+binary labels for K KQIs (e.g., resistance, flatness, etc.). The
+objective is to train a sequential model f (i.e., LSTM [32])
+that is able to progressively predict KQIs, Lt, at stage t based
+on the set of corresponding sensor readings Xt and through
+hidden embeddings ht−1 obtained in previous stages.
+Lt = f(Xt, ht−1)
+(1)
+In this section, we present details about the prototypes, stage
+modules, and the joint learning paradigm.
+A. Implicit Prototypes
+The key to compositionality, which enhances the generalizability and interpretability of KQI prediction/estimation, is the
+disentanglement of diverse base functions performed throughout the manufacturing process, e.g., heating a specific portion
+of airflow that can be shared among different processing
+stages. Due to the complexity of those fine-grained functions,
+it is impossible to model every physical function with a specific structure design. Hence, we propose to implicitly model
+them with a set of parameterized neural networks trained
+using multiple cross-measurement loss metrics (Discussed in
+Section III-C).
+To facilitate a tight connection between prototypes and
+physical base operations, we design the structure according
+
+===== Page 3 =====
+
+IEEE TRANSACTIONS ON SEMICONDUCTOR MANUFACTURING
+3
+......
+...
+...
+...
+......
+...
+...
+...
+...
+Sensor Data at Different Processing Stages
+Ground Truth Measurements at Different Processing Stages
+Measurement Predictions 
+from Hidden States
+Sets of Implicit 
+Prototypes
+Prototype Weights
+Dynamically 
+Connected Modules
+......
+...
+...
+...
+Fig. 2. Overview of stage combinations in modeling wafer manufacturing. Our module-based network is composed of two major components, a collection
+of implicit prototypes which mimic base functions, and a set of stage modules which compose the manufacturing process. A weighted combination of
+implicit prototypes in each stage module is selected and recursively updated to mimic the physical functions performed within the manufacturing tools in the
+corresponding stage.
+...
+Summation
+(a)
+(b)
+(c)
+...
+...
+...
+...
+M02; M01; M02
+Fig. 3. Illustration of Stage Module. (a) Stage Module Overview. (b) Select inter-prototype weights with mod selector Sj. (c) Prototype Mappings at Different
+Mods.
+to insights about how base functions participate in the manufacturing process. Conceptually, each base function impacts a
+portion of the wafer or environmental conditions. For example,
+changing the temperature or chamber pressure at a specific
+position within the manufacturing process is expected to
+influence a subset of KQIs due to the resulting change in
+sensor readings. A desirable prototype should be able to focus
+on relevant sensor inputs and conduct mappings based on
+the prototype index i, sensor inputs Xt, and previous hidden
+states ht−1. Therefore, we simulate the set of prototypes using
+multiple-layer perceptrons and sensor masks. Specifically, each
+prototype Pi is parameterized by a trainable sensor mask
+M i and intra-prototype weight W i. Given the sensor input
+Xt at stage t and the previously hidden state embeddings
+ht−1, prototype i mimics the operation by projecting the
+concatenation of masked sensor inputs with the hidden states
+into an output embedding pti,
+Pi(Xt, ht−1) = tanh(W i(Xt ◦M i||ht−1)),
+(2)
+where || and ◦are the concatenation operation and the
+hadamard multiplication, respectively.
+B. Stage Module
+Aiming to enable KQI predictions with greater interpretability (e.g., fault diagnosis), we introduce a pool of stage modules
+that explicitly compose the manufacturing procedure. Ideally,
+a processing stage in a semiconductor wafer plant concurrently
+performs different combinations of functions [3] repeatedly
+under the control of pre-programmed routines or recipes. As
+illustrated in Figure 3(b), a stage goes through three repetitions
+of functions (i.e., named as mod with labels of MOD02,
+MOD04, MOD02) to produce the product. Assuming j is the
+index of the module type, we construct the j-th module as
+a sequence of mappings to prototypes P, whose weights at
+different mods are controlled by inter-prototype weights W ′j
+and mod selector mask Sj. Take Figure 3(a) for example,
+the inter-prototype weights W ′j is a I × M matrix, where
+I is the total number prototypes and M is pre-set number of
+mod types based on the manufacturing process. Each column
+in the matrix refers to the inter-prototype weights for the
+corresponding mod. To obtain the inter-prototype weights, we
+project the concatenation of sensor readings Xt at t-th stage
+and the hidden states ht−1
+W ′
+j = fj(Xt||ht−1),
+(3)
+where fj(·) is a MLP with trainable parameters for the j-th
+type of stage.
+After obtaining the inter-prototype weights for all possible
+mods, we generate the mod selector mask Sj by converting
+the information of mod sequences from the data using one-hot
+encoding. As shown in Figure 3(c), with each column of mod
+selector mask Sj specifying the mod type, the output hidden
+
+===== Page 4 =====
+
+IEEE TRANSACTIONS ON SEMICONDUCTOR MANUFACTURING
+4
+stages ht is computed by sequentially combining a weighted
+combination of prototypes for multiple mods,
+ht = tanh(W ′
+jSj ◦P (Xt, ht−1))
+(4)
+The hidden stage can further be fed into an MLP-based multilabel classifier fc to produce the binary KQI labels,
+Lt = fc(ht).
+(5)
+C. Learning Prototypes and Stages
+To learn the sensor masks M i, intra-prototype weights
+W i, and the inter-prototype weights W ′
+j for stage modules,
+we dynamically compose the modules with the process stage
+combinations and train the models and prototypes in an end-toend manner. The loss objectives consist of three major metrics,
+including (1) the measurement accuracy loss, (2) the prototype
+proximity loss, and (3) the prototype distinction regularization
+loss.
+The measurement accuracy loss, l1, estimates the crossentropy between the sequence of ground-truth KQI predictions
+Lt and our predicted measurements ˆLt,
+l1 =
+T
+X
+t=1
+K
+X
+i=1
+Lti log Lti + (1 −Lti) log(1 −ˆLti),
+(6)
+where ˆLti and Lti refer to the i-th predicted and ground truth
+KQI among a total of K KQIs at the t-th stage, respectively.
+The prototype proximity loss, l2, takes into account the
+closeness of diverse prototypes over different KQI combinations. By re-encoding all the possible KQI combinations as
+a list of K classes, our I prototypes are distributed into K
+classes equally. Prototypes within each class are expected to
+have close proximity in terms of margin-based or distancebased metrics. Therefore, we adopt from CPT [33] the marginbased classification loss lMCL and distance-based cross entropy loss lDCE as prototype proximity loss
+l2 = lDCE + lMCL.
+(7)
+The prototype distinction regularization loss, l3 limits the
+similarity among different prototypes and hence encourages
+prototypes to function on different portions of sensor readings. Given the intra-prototype weights W i and the sensor
+masks M i, the prototype distinction regularization is found
+by computing the average cosine similarity between any two
+prototypes,
+l3 = −
+X
+i
+X
+j
+[cos(W i, W j) + cos(M i, M j)].
+(8)
+IV. DATASET FORMATTING
+For a comprehensive evaluation of the proposed method, we
+generate multiple data splits that emphasize different product
+or environment settings. In this section we detail the data
+schema, its generation paradigm, and the handling of missing
+entries. The data are created using the Seagate IEEE BigData
+Cup 2021 [19] public data source.
+TABLE I
+THE SCHEMA OF RAW DATA TRANSACTIONS.
+Category
+Sample Variables
+Meta Information
+Process, Step, Stage, etc.
+Manufacturing Program
+Recipe, Tool, etc.
+Sensor Readings
+Temperature, Duration, Angle, etc.
+Measurements
+Thickness, Resistance, Flatness, etc.
+A. Schema Specifications.
+Each sensor data transaction consists of four major components: the meta information, the manufacturing program,
+the sensor readings, and the measurements. As can be seen
+from the example in Table I, the meta information records the
+specific procedure (i.e., the name of the process, step, stage,
+and mod) in which the data is collected. The manufacturing
+program records the controlled parameters, such as the product
+type, the corresponding recipes, and tools. The transactions
+also cover sensor readings and measurements, which document
+easy-to-measure environmental conditions, as well as the passfail status of certain semiconductor KQIs.
+B. Data Generation Paradigm.
+The transaction-like format of the sensor data enables vital
+information for the manufacturing procedures to be recorded.
+To model the temporal correlation among those transactions,
+raw data are grouped according to the identifier of the product
+and then ordered sequentially by transaction time. Specifically,
+for all the transactions belonging to a specific wafer, we first
+merge the measurements at the same procedure (i.e., with the
+same process/step/stage name), and then append them into a
+sequence ordered by ascending timestamp. For better training
+stability, we generate these sequences by moving a fixedlength window (i.e., window size w) over the initial sequence,
+alleviating the variability of raw data.
+C. Handling Missing Entries.
+In analyzing the data a number of missing entries are found
+in the sensor data, this is the result of: (1) environmental issues
+during manufacturing that randomly produce missing data,
+and (2) absence of sensors in different manufacturing tools
+that systematically provide missing data over a specific set of
+columns. We propose to handle these two types of missing data
+in different ways. For missing data due to environment issues,
+we adopt KNN methods [34] to find a set of nearest neighbors
+describing similar manufacturing conditions and then leverage
+these to impute the missing entries. For the second type of
+missing data, we choose to handle them using a masking
+mechanism to lower the significance of these missing readings
+since absent sensors cannot provide information about the
+missing attributes.
+V. EXPERIMENTAL RESULTS
+To fully evaluate the usefulness of our proposed approach,
+we conduct multiple experiments using variable settings for
+key prediction tasks. In the following sections we present
+
+===== Page 5 =====
+
+IEEE TRANSACTIONS ON SEMICONDUCTOR MANUFACTURING
+5
+the implementation details (Section V-A), quantitative results (Section V-B) and ablation analysis (Section V-C) to
+demonstrate the capability of our method. Discussions about
+interpretability are found in Section V-D.
+A. Implementation Details
+1) Experimental paradigm:
+We evaluate our proposed
+method on both standard and generalized settings aimed at
+comprehensively evaluating these models’ performance in diverse scenarios. For the standard setting, models are evaluated
+on 11 sub-tasks (i.e., S1-S11) of the P1 toolset using the
+transaction-format dataset (i.e., Seagate IEEE BigData Cup
+2021 [19]) that tests how the model responds to KQI predictions of a single manufacturing procedure. In contrast, for the
+generalized setting, we train and evaluate models using two
+data splits extracted from our proposed sequences. These training and evaluation splits contain sequences with nonidentical
+pools of a specific manufacturing program, e.g., product type,
+and product groups. We adopt industry practice in reporting
+the AUC [35] for both settings and in doing so track the overall
+performance of our approach. For more generalizability tests
+involving other variables from the manufacturing program,
+please refer to the supplementary materials.
+2) Compared Models.: To enable a comprehensive evaluation of our method, we compare our results with three
+state-of-the-art deep models applied to wafer fault detection.
+These include the conventional LSTM [32] as well as stateof-the-art transformer-based approaches (i.e., Transformer and
+Conformer models). All models are tested using both standard
+and generalized settings by adjusting the sequence length (i.e,
+1 for standard settings and w for generalized settings). For
+detailed hyperparameters used in the model, please refer to
+the supplementary materials.
+B. Quantitative Results
+To comprehensively evaluate the effectiveness of our proposed method, we compare our proposed network with the
+state-of-the-art methods in both standard and generalizing
+settings.
+TABLE II
+COMPARISON WITH STATE-OF-THE-ART USING STANDARD SETTINGS.
+Tasks
+LSTM
+Transformer
+Conformer
+Ours
+S1
+0.61±0.01
+0.70±0.12
+0.72±0.08
+0.75±0.07
+S2
+0.43±0.05
+0.60±0.18
+0.72±0.08
+0.63±0.12
+S3
+0.48±0.04
+0.86±0.01
+0.81±0.00
+0.83±0.02
+S4
+0.49±0.01
+0.91±0.01
+0.88±0.02
+0.91±0.04
+S5
+0.44±0.02
+0.55±0.03
+0.67±0.03
+0.67±0.01
+S6
+0.53±0.02
+0.53±0.05
+0.64±0.04
+0.64±0.04
+S7
+0.51±0.03
+0.64±0.02
+0.65±0.01
+0.65±0.03
+S8
+0.38±0.02
+0.82±0.03
+0.58±0.00
+0.80±0.04
+S9
+0.63±0.01
+0.71±0.09
+0.75±0.06
+0.76±0.04
+S10
+0.46±0.01
+0.92±0.03
+0.94±0.00
+0.87±0.09
+S11
+0.62±0.05
+0.89±0.01
+0.88±0.02
+0.87±0.04
+1) Standard Settings: Table II lists the results of KQI
+predictions for 11 tasks. Overall, our method achieves the
+TABLE III
+COMPARISON WITH STATE-OF-THE-ART USING GENERALZED SETTINGS.
+(PRODUCT TYPE).
+KQIs
+LSTM
+Transformer
+Conformer
+Ours
+M1
+0.64±0.10
+0.71±0.01
+0.77±0.08
+0.82±0.03
+M2
+0.55±0.03
+0.77±0.02
+0.74±0.04
+0.83±0.03
+M3
+0.51±0.03
+0.63±0.01
+0.78±0.02
+0.72±0.05
+M4
+0.82±0.08
+0.87±0.05
+0.90±0.01
+0.92±0.01
+M5
+0.76±0.03
+0.84±0.02
+0.81±0.01
+0.76±0.08
+M6
+0.64±0.05
+0.90±0.01
+0.82±0.02
+0.96±0.02
+M7
+0.52±0.03
+0.93±0.03
+0.86±0.00
+0.86±0.00
+M8
+0.56±0.02
+0.77±0.07
+0.87±0.04
+0.85±0.02
+M9
+0.63±0.04
+0.62±0.08
+0.73±0.04
+0.76±0.01
+M10
+0.69±0.11
+0.73±0.02
+0.84±0.02
+0.87±0.02
+highest AUC on 6 out of 11 tasks, demonstrating better stability against different scenarios. Compared with other stateof-the-art methods having low AUC on specific tasks, (e.g.,
+LSTM, Conformer on S8, and Transformer on S5), our method
+demonstrates an improvement in performance stability across
+diverse tasks. These results suggest that our method is capable
+of generalizing complex scenarios by addressing compositionality using latent prototypes. It indicates that our modular
+network is capable of helping engineers locate product quality
+issues for solutions promptly.
+2) Generalized Settings: To further evaluate the model’s
+generalizability to different manufacturing procedures, we
+create multiple data splits with non-identical pools of product
+types and product groups. Each product type denotes wafers
+that share the same or similar semiconductor structure and
+design. The product group denotes a collection of product
+types with similar physical semiconductor functionalities.
+In Table III we evaluate whether our method is capable
+of generalizing across diverse product types using the AUC
+metric. Our approach outperforms the state-of-the-art methods
+on 6 out of 10 measurements, suggesting enhanced generalizability to the manufacturing process across product types. It is
+also noteworthy that our methods achieve the lowest average
+variance. These results highlight the importance of taking a
+modular based model approach for KQI prediction tasks.
+TABLE IV
+COMPARISONS OF THE STATE-OF-THE-ART AND OUR METHOD USING
+GENERALZED SETTINGS (PRODUCT GROUP).
+KQIs
+LSTM
+Transformer
+Conformer
+Ours
+M1
+0.61±0.05
+0.68±0.04
+0.71±0.03
+0.79±0.03
+M2
+0.52±0.06
+0.72±0.02
+0.71±0.02
+0.78±0.01
+M3
+0.54±0.02
+0.66±0.03
+0.72±0.10
+0.74±0.02
+M4
+0.66±0.04
+0.77±0.05
+0.82±0.02
+0.86±0.02
+M5
+0.70±0.07
+0.77±0.02
+0.79±0.02
+0.80±0.03
+M6
+0.67±0.02
+0.73±0.01
+0.77±0.02
+0.79±0.02
+M7
+0.56±0.04
+0.80±0.02
+0.82±0.01
+0.82±0.01
+M8
+0.54±0.03
+0.72±0.03
+0.80±0.02
+0.81±0.01
+M9
+0.61±0.02
+0.64±0.05
+0.70±0.04
+0.68±0.06
+M10
+0.62±0.06
+0.71±0.02
+0.68±0.03
+0.68±0.04
+In manufacturing, different products (i,e., wafer) can have
+similar functions and therefore require similar procedures to
+produce. To extensively evaluate our model’s generalizability
+across different procedures we utilize product groups to denote
+
+===== Page 6 =====
+
+IEEE TRANSACTIONS ON SEMICONDUCTOR MANUFACTURING
+6
+a list of similar product types combined or used interchangeably in hardware (e.g., a hard disk). Table IV demonstrates
+the AUC results of our network trained and evaluated across
+product groups. Compared to Table III, all models demonstrate
+a drop in AUC performance for most of the KQIs. This
+indicates greater challenges for generalizing across product
+groups. Despite the elevated difficulty, our modular network
+still outperforms the state-of-the-art models (i.e., 8 out of 10),
+again stressing the essential role modular based modeling has
+in improving generalizability.
+TABLE V
+AVERAGE AUC OF DIFFERENT COMBINATIONS OF LOSSES.
+l1
+l2
+l3
+Product
+Product Group
+✓
+✓
+✓
+0.84±0.03
+0.78±0.03
+-
+✓
+✓
+0.80±0.03
+0.70±0.02
+✓
+-
+✓
+0.78±0.01
+0.72±0.02
+✓
+✓
+-
+0.81±0.02
+0.68±0.01
+✓
+-
+-
+0.76±0.03
+0.60±0.08
+-
+✓
+-
+0.72±0.02
+0.60±0.06
+-
+-
+✓
+0.73±0.06
+0.64±0.01
+C. Ablation Analysis
+In this section, we ablate the crucial components to demonstrate how they address compositionality and contribute to KQI
+prediction. For simplicity, we experiment with generalized
+settings and report the average AUC across 10 selected KQIs.
+1) Impacts of Losses: To evaluate how the three losses
+in our objective contribute to the model’s performance, we
+conduct experiments using different combinations of losses
+and record the AUC results in Table V. This suggests that the
+combination of all three losses achieves the top performance,
+highlighting the necessity in taking into account the overall classification accuracy, the cross-measurement closeness
+prototypes, along with the distinction across prototypes in
+enhancing model performance. The absence of certain losses
+results in larger performance drops suggesting their crucial
+role in enhancing the generalizability across scenarios.
+TABLE VI
+AVERAGE AUC OF DIFFERENT MODEL CONSTRUCTIONAL COMPONENTS.
+Prototypes
+Stage Modules
+Product
+Product Group
+✓
+✓
+0.84±0.03
+0.78±0.03
+✓
+-
+0.68±0.03
+0.66±0.04
+-
+✓
+0.72±0.02
+0.68±0.03
+-
+-
+0.66±0.06
+0.62±0.04
+2) Impacts of Constructional Components: Our method
+takes advantage of two constructional components: 1) prototypes and 2) stage modules, to predict KQIs by using
+the compositionality of their manufacturing procedures. We
+ablate their functionalities and report the results in Table VI.
+Overall, the introduction of each component achieves better performance compared to the baseline, suggesting their
+necessity in addressing model compositionality. They also
+demonstrate cooperative roles by proving the best performance
+when combined. These results highlight the importance of
+using our method for these KQI predictions.
+TABLE VII
+INTER GROUP WEIGHT CORRELATIONS. NUMBERS IN THE UPPER
+TRIANGLE ARE GROUND TRUTH INTER-GROUP PRODUCT SIMILARITY
+BASED ON GROUP OVERLAPPING, WHILE THOSE IN THE LOWER TRIANGLE
+ARE COSINE SIMILARITY OF CORRESPONDING STAGES’ INTER-PROTOTYPE
+WEIGHTS.
+PROD15
+PROD20
+PROD21
+PROD41
+PROD63
+PROD15
+1
+0.51
+0.37
+0.54
+0.39
+PROD20
+0.47
+1
+0.71
+0.58
+0.42
+PROD21
+0.32
+0.63
+1
+0.77
+0.47
+PROD41
+0.46
+0.54
+0.67
+1
+0.62
+PROD63
+0.38
+0.65
+0.43
+0.51
+1
+Pearson (statistic=0.71, pvalue=0.022)
+TABLE VIII
+INTRA GROUP WEIGHT CORRELATIONS. NOT ALL GROUPS ARE LISTED.
+PROD20
+PROD21
+PROD41
+PROD63
+Attention Similarity
+0.79
+0.72
+0.69
+0.74
+Product Similarity
+0.65
+0.61
+0.59
+0.6
+Pearson (statistic=0.75, pvalue=0.013)
+D. Interpretability Discussion
+Compared with other black-box deep models, our modular
+network provides a transparent interface to reveal the role
+different stages have in the manufacturing process. Here,
+we provide quantitative analysis to validate the relationships
+between inter/intra-group products and prototype weights of
+stage modules. Specifically, products within the same group
+(i.e., intra-group) are expected to share similar functionalities
+compared to inter-group products. We further discuss the
+possible industry applications.
+For each product group, we compute the average cosine
+similarities of prototype weight vectors for both inter-group
+and intra-group products. Similar products are found in similar
+groups. We also approximate the ground-truth similarity across
+product groups based on if their group members occur in
+other groups. Table VII and Table VIII demonstrate inter/intragroup attention similarity and product similarity across product
+groups, respectively. It should be noted that each group is
+selected to represent a main product category. Results using
+Pearson correlations show that, in both cases, the cosine
+similarity of attention vectors aligns with product similarity
+with high confidence, suggesting the potential to leverage
+learned stage modules in analyzing or diagnosing possible
+faults.
+With correlations between our designed stage modules and
+the physical manufacturing stages, our method enables several potential applications, including faulty factor reasoning
+and fast prototyping. For instance, By outputting the KQI
+predictions for every intermediate stage, our method provides
+extra clues about the production, illustrating when the current
+product under certain recipes is likely to be defective. Further,
+our method has the potential to support prototyping of new
+product KQIs using a combination of pretrained previous
+manufacturing processes. Both applications play a crucial role
+in accelerating the diagnosis and development of semiconductors.
+
+===== Page 7 =====
+
+IEEE TRANSACTIONS ON SEMICONDUCTOR MANUFACTURING
+7
+VI. CONCLUSION
+This paper proposes a novel module-based network for soft
+sensing tasks. It addresses the compositionality of key variable
+prediction tasks using a pool of prototypes that disentangle
+base functions performed on wafers, as well as a set of stage
+modules that dynamically compose the manufacturing process.
+Results on multiple splits validate that our proposed method
+is capable of generalizing to both conventional settings and
+generalizability settings with a variety of changing factors
+(e.g., product type, product group). Additional interpretability
+analysis also demonstrates the potential of our method to
+be applied as a transparent platform for several applications,
+including possible fault diagnosis. We hope our work will be
+useful for the future development of general and interpretable
+soft sensing models.
+REFERENCES
+[1] K. Zhou, T. Liu, and L. Zhou, “Industry 4.0: Towards future industrial
+opportunities and challenges,” in 2015 12th International conference
+on fuzzy systems and knowledge discovery (FSKD).
+IEEE, 2015, pp.
+2147–2152.
+[2] M. M. Botezatu, I. Giurgiu, J. Bogojeska, and D. Wiesmann, “Predicting
+disk replacement towards reliable data centers,” in Proceedings of the
+22nd ACM SIGKDD International Conference on Knowledge Discovery
+and Data Mining, 2016, pp. 39–48.
+[3] S. Petrov, C. Zhang, J. Yella, Y. Huang, X. Qian, and S. Bom, “Ieee
+bigdata 2021 cup: Soft sensing at scale,” in 2021 IEEE International
+Conference on Big Data (Big Data).
+IEEE, 2021, pp. 5780–5785.
+[4] S.-K. S. Fan, C.-Y. Hsu, C.-H. Jen, K.-L. Chen, and L.-T. Juan, “Defective wafer detection using a denoising autoencoder for semiconductor
+manufacturing processes,” Advanced Engineering Informatics, vol. 46,
+p. 101166, 2020.
+[5] Q. Sun and Z. Ge, “A survey on deep learning for data-driven soft
+sensors,” IEEE Transactions on Industrial Informatics, vol. 17, no. 9,
+pp. 5853–5866, 2021.
+[6] K. Imoto, T. Nakai, T. Ike, K. Haruki, and Y. Sato, “A cnn-based
+transfer learning method for defect classification in semiconductor
+manufacturing,” IEEE Transactions on Semiconductor Manufacturing,
+vol. 32, no. 4, pp. 455–459, 2019.
+[7] T. Nakazawa and D. V. Kulkarni, “Anomaly detection and segmentation
+for wafer defect patterns using deep convolutional encoder–decoder
+neural network architectures in semiconductor manufacturing,” IEEE
+Transactions on Semiconductor Manufacturing, vol. 32, no. 2, pp. 250–
+256, 2019.
+[8] D. P. Kingma and M. Welling, “Auto-encoding variational bayes,” arXiv
+preprint arXiv:1312.6114, 2013.
+[9] I. Sutskever, O. Vinyals, and Q. V. Le, “Sequence to sequence learning
+with neural networks,” Advances in neural information processing
+systems, vol. 27, 2014.
+[10] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez,
+Ł. Kaiser, and I. Polosukhin, “Attention is all you need,” Advances in
+neural information processing systems, vol. 30, 2017.
+[11] X. Qian, C. Zhang, J. Yella, Y. Huang, M.-C. Huang, and S. Bom,
+“Soft sensing model visualization: Fine-tuning neural network from what
+model learned,” in 2021 IEEE International Conference on Big Data
+(Big Data).
+IEEE, 2021, pp. 1900–1908.
+[12] C. Zhang, J. Yella, Y. Huang, X. Qian, S. Petrov, A. Rzhetsky, and
+S. Bom, “Soft sensing transformer: hundreds of sensors are worth a
+single word,” in 2021 IEEE International Conference on Big Data (Big
+Data).
+IEEE, 2021, pp. 1999–2008.
+[13] Y. Huang, C. Zhang, J. Yella, S. Petrov, X. Qian, Y. Tang, X. Zhu, and
+S. Bom, “Grassnet: Graph soft sensing neural networks,” in 2021 IEEE
+International Conference on Big Data (Big Data).
+IEEE, 2021, pp.
+746–756.
+[14] M. Quirk and J. Serda, Semiconductor manufacturing technology. Prentice Hall Upper Saddle River, NJ, 2001, vol. 1.
+[15] P. Kadlec, B. Gabrys, and S. Strandt, “Data-driven soft sensors in the
+process industry,” Computers & chemical engineering, vol. 33, no. 4,
+pp. 795–814, 2009.
+[16] S. Birle, M. Hussein, and T. Becker, “Fuzzy logic control and soft
+sensing applications in food and beverage processes,” Food Control,
+vol. 29, no. 1, pp. 254–269, 2013.
+[17] X. Jiang and Z. Ge, “Augmented multidimensional convolutional neural
+network for industrial soft sensing,” IEEE Transactions on Instrumentation and Measurement, vol. 70, pp. 1–10, 2021.
+[18] A. Abdin, “Applying self-normalizing neural networks to tackle datadriven soft sensing problems in manufacturing lines,” in 2021 IEEE
+International Conference on Big Data (Big Data).
+IEEE, 2021, pp.
+5770–5773.
+[19] J. Yella, C. Zhang, S. Petrov, Y. Huang, X. Qian, A. A. Minai,
+and S. Bom, “Soft-sensing conformer: A curriculum learning-based
+convolutional transformer,” in 2021 IEEE International Conference on
+Big Data (Big Data).
+IEEE, 2021, pp. 1990–1998.
+[20] P. Veliˇckovi´c, G. Cucurull, A. Casanova, A. Romero, P. Lio, and Y. Bengio, “Graph attention networks,” arXiv preprint arXiv:1710.10903, 2017.
+[21] M. Defferrard, X. Bresson, and P. Vandergheynst, “Convolutional neural
+networks on graphs with fast localized spectral filtering,” Advances in
+neural information processing systems, vol. 29, 2016.
+[22] F. Scarselli, M. Gori, A. C. Tsoi, M. Hagenbuchner, and G. Monfardini, “The graph neural network model,” IEEE transactions on neural
+networks, vol. 20, no. 1, pp. 61–80, 2008.
+[23] K. Han, A. Xiao, E. Wu, J. Guo, C. Xu, and Y. Wang, “Transformer
+in transformer,” Advances in Neural Information Processing Systems,
+vol. 34, pp. 15 908–15 919, 2021.
+[24] J. Lu, D. Batra, D. Parikh, and S. Lee, “Vilbert: Pretraining task-agnostic
+visiolinguistic representations for vision-and-language tasks,” Advances
+in neural information processing systems, vol. 32, 2019.
+[25] J. Andreas, M. Rohrbach, T. Darrell, and D. Klein, “Neural module
+networks,” in Proceedings of the IEEE conference on computer vision
+and pattern recognition, 2016, pp. 39–48.
+[26] W. Chen, Z. Gan, L. Li, Y. Cheng, W. Wang, and J. Liu, “Meta
+module network for compositional visual reasoning,” in Proceedings of
+the IEEE/CVF Winter Conference on Applications of Computer Vision,
+2021, pp. 655–664.
+[27] R. Hu, J. Andreas, T. Darrell, and K. Saenko, “Explainable neural
+computation via stack neural module networks,” in Proceedings of the
+European conference on computer vision (ECCV), 2018, pp. 53–69.
+[28] D. Hudson and C. D. Manning, “Learning by abstraction: The neural
+state machine,” Advances in Neural Information Processing Systems,
+vol. 32, 2019.
+[29] J. Shi, H. Zhang, and J. Li, “Explainable and explicit visual reasoning
+over scene graphs,” in Proceedings of the IEEE/CVF conference on
+computer vision and pattern recognition, 2019, pp. 8376–8384.
+[30] Y. Zhang, M. Jiang, and Q. Zhao, “Explicit knowledge incorporation
+for visual reasoning,” in Proceedings of the IEEE/CVF Conference on
+Computer Vision and Pattern Recognition, 2021, pp. 1356–1365.
+[31] ——, “Query and attention augmentation for knowledge-based explainable reasoning,” in Proceedings of the IEEE/CVF Conference on
+Computer Vision and Pattern Recognition, 2022, pp. 15 576–15 585.
+[32] S. Hochreiter and J. Schmidhuber, “Long short-term memory,” Neural
+computation, vol. 9, no. 8, pp. 1735–1780, 1997.
+[33] H.-M. Yang, X.-Y. Zhang, F. Yin, and C.-L. Liu, “Robust classification
+with convolutional prototype learning,” in Proceedings of the IEEE
+conference on computer vision and pattern recognition, 2018, pp. 3474–
+3482.
+[34] L. E. Peterson, “K-nearest neighbor,” Scholarpedia, vol. 4, no. 2, p.
+1883, 2009.
+[35] A. P. Bradley, “The use of the area under the roc curve in the evaluation
+of machine learning algorithms,” Pattern recognition, vol. 30, no. 7, pp.
+1145–1159, 1997.

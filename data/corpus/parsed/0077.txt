@@ -1,0 +1,2482 @@
+
+
+===== Page 1 =====
+
+Speedup Chip Yield Analysis by Improved Quantum Bayesian Inference
+Zi-Ming Li,1 Zeji Li,1 Tie-Fu Li,1, 2 and Yu-xi Liu1, 2, ∗
+1School of Integrated Circuits, Tsinghua University, Beijing 100084, China
+2Frontier Science Center for Quantum Information, Beijing, China
+(Dated: April 21, 2025)
+The semiconductor chip manufacturing process is complex and lengthy, and potential errors arise
+at every stage. Each wafer contains numerous chips, and wafer bin maps can be generated after chip
+testing. By analyzing the defect patterns on these wafer bin maps, the steps in the manufacturing
+process where errors occurred can be inferred. In this letter, we propose an improved quantum
+Bayesian inference to accelerate the identification of error patterns on wafer bin maps, thereby
+assisting in chip yield analysis.
+We outline the algorithm for error identification and detail the
+implementation of improved quantum Bayesian inference.
+Our results demonstrate the speed
+advantage of quantum computation over classical algorithms with a real-world problem, highlighting
+the practical significance of quantum computation.
+Introduction.—Semiconductor
+manufacturing
+processes are lengthy and intricate, often comprising
+hundreds of steps. Each of these steps has the potential
+for errors that can eventually result in defects in the
+chips produced on the wafer [1–4].
+The yield of chip
+production refers to the proportion of total chips that
+meet quality standards. Chip yield is a critical metric in
+the semiconductor industry, its improvement can lead to
+advanced production efficiency and reduced costs [5–7].
+To improve chip yield, it is essential to identify the
+steps in the manufacturing process that can contribute to
+chip defects and optimize those specific steps. Each wafer
+contains a substantial number of chips, and once the
+manufacturing process is complete, each chip undergoes
+testing.
+Qualified chips are recorded as zero, while
+defective chips are marked as one, resulting in a wafer
+bin map (WBM) [1–4].
+Errant chips on the wafer
+often do not occur independently; instead, they exhibit
+correlations with errors on other chips.
+These errors
+form specific collective error patterns on the wafer bin
+maps, which contain information about the steps in
+the manufacturing process where errors occurred.
+By
+analyzing the error patterns on the WBM, it is possible
+to infer the problematic steps in the process, helping
+engineers to refine the chip manufacturing process,
+ultimately increasing the chip production yield [8–11]
+In chips mass production, the manpower and costs
+associated with manually identifying error patterns on
+wafers are increasing, and the accuracy of such methods
+cannot be guaranteed.
+Therefore, there is a need for
+automatic recognition algorithms. Numerous algorithms
+based on machine learning and deep learning have been
+proposed to address this challenge, achieving automatic
+recognition of the pattern of errors [8, 12–15]. However,
+the speed or the accuracy of these methods is limited,
+and they struggle to handle cases with partially missing
+data effectively, which frequently occurs in real industrial
+situations. There is an urgent need for a classification
+∗yuxiliu@mail.tsinghua.edu.cn
+method that combines high speed and accuracy while
+effectively handling the partially missing data cases.
+With the introduction of the concept of quantum
+computation, many quantum algorithms have been proposed to achieve speedups over classical algorithms[16–
+25].
+Quantum Bayesian inference (QBI) algorithm
+on the quantum Bayesian network is one of them.
+The concept of a quantum Bayesian network is first
+proposed
+as
+a
+quantum
+analogue
+of
+the
+classical
+Bayesian network [26]. Subsequent work has proposed
+quantum circuit representations of classical Bayesian
+networks and quantum Bayesian inference [27–29]. The
+previous quantum Bayesian inference algorithm provides
+a quadratic speedup over its classical counterparts [27].
+But its speedup is limited and an end-to-end procedure
+has not been explicitly proposed for performing quantum
+Bayesian inference on general Bayesian networks.
+In this letter,
+we present an improved quantum
+Bayesian inference algorithm that achieves a quadratic
+speedup over both previous quantum and classical
+Bayesian inference algorithms. An end-to-end procedure
+is proposed for performing quantum Bayesian inference.
+We
+employ
+the
+proposed
+method
+to
+identify
+and
+classify specific error patterns on wafer bin maps. We
+demonstrate that the proposed algorithm effectively
+identifies wafer error patterns with nearly optimal
+accuracy, and is able to handle the partially missing data
+cases.
+Bayesian networks based on chip yield analysis.—
+There are many problems that can be dealt by Bayesian
+network theory. For concreteness of discussions and as
+an example, we here show how to construct Bayesian
+networks based on an open defect data set in wafer bin
+maps [12]. There are nine single-type defects in this open
+dataset: Normal, Center, Doughnut, Edge-Loc, EdgeRing, Loc, Near-Full, Scratch and Random.
+For each
+type of defect, the dataset includes 1000 wafer bin maps
+where the data is acquired from a wafer manufacturing
+facility.
+Some of the dataset examples are shown in
+Appendix. I.
+As shown in Fig. 1(a), we represent each wafer bin map
+with one type of defect as a 52-by-52 two-dimensional
+arXiv:2504.13613v1  [quant-ph]  18 Apr 2025
+
+===== Page 2 =====
+
+2
+Max 
+Likelihood 
+Estimation
+Input Image
+Encoding
+Compress & 
+Denoise
+Serialize
+ Array
+64
+Chow-Liu 
+tree algorithm
+{X1, X2, X3, X4, X5, …,
+…, X62, X63, X64}
+Fully connected graph
+Structural & Parameter Learning
+Bayesian networks for 9 types of defects
+{B1, B2, B3, B4, B5, B6, B7, B8, B9}
+Chow-Liu 
+tree algorithm
+Error Variable Representation
+Embedding each networks to quantum circuits
+{Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9}
+X0
+X1
+X2
+X3
+X4
+X8
+X9
+X60
+X16
+X55
+X5
+X6
+X57
+X32
+X48
+X58
+X7
+X59
+X15
+X31
+X47
+X63
+X10
+X11
+X12
+X13
+X14
+X23
+X17
+X18
+X19
+X20
+X21
+X22
+X24
+X25
+X26
+X27
+X28
+X29
+X30
+X61
+X33
+X34
+X35
+X36
+X37
+X38
+X39
+X40
+X41
+X42
+X43
+X44
+X45
+X46
+X49
+X50
+X51
+X52
+X53
+X54
+X62
+X56
+Quantum Circuit-based Inference
+ Matrix
+52 × 52
+ Matrix
+8 × 8
+Bayesian network
+Quantum circuit
+Qubit 
+index 
+0 
+1 
+2 
+3 
+4 
+5 
+6 
+7 
+8 
+9 
+10 
+11 
+12 
+13 
+14 
+Variable 
+!! 
+!" 
+!# 
+!$ 
+!!% 
+!!& 
+!'( 
+!'! !'# 
+!') !'$ 
+!'& 
+!"* !"% !"# 
+Qubit 
+index 
+15 
+16 
+17 
+18 
+19 
+20 
+21 
+22 
+23 
+24 
+25 
+26 
+27 
+28 
+29 
+Variable 
+!") 
+!"$ !*( !*' 
+!*" !** !*% 
+!*$ !%! 
+!%' !%" !%% 
+!%) !#' !#" 
+(a)
+(b)
+(c)
+(d)
+(e)
+(f)
+FIG. 1. (a)-(e) Constructing nine Bayesian networks {B1, · · · , B9} according to the data of nine types of defect. (f) Constructing
+nine quantum circuits {Q1, · · · , Q9} encoding the nine Bayesian networks {B1, · · · , B9}.
+array consisting only zero and one, where zero and one
+indicate a chip without and with defects, respectively.
+There are also wafer bin maps containing multi-type
+defects in this dataset, but in this study we only identify
+and classify the wafer bin maps with single-type defects.
+We compress each of the 52-by-52 wafer bin maps to an
+8-by-8 two-dimensional array as shown in Fig. 1(b), then
+flatten each of the 8-by-8 two-dimensional array to a onedimensional array with length 64 as shown in Fig. 1(c).
+This process filters out random noise, reduces the size of
+the input data, and emphasizes the key features of the
+error patterns. We find that the minimum size of the
+compressed data as in Fig. 1(b) is 8 × 8. If the data is
+compressed to a smaller size, the primary features of the
+error pattern will be lost, leading to a significant decline
+in classification accuracy.
+We detail the compression
+procedure and give some examples in Appendix. I.
+We denote the 64 elements of each one-dimensional
+array as 64 random variables X ≡{X1, · · · , X64} as
+shown in Fig. 1(d) with Xk = 0 or 1, ∀k = 1, · · · , 64.
+For ith type of defect with i = 1, · · · , 9, we find a
+Bayesian network Bi with 64 nodes N ≡{N1, · · · , N64}
+using the Chow-Liu tree structure learning algorithm [30]
+to express the correlations between the 64 random
+variables.
+The kth node is assigned to correspond
+random variable Xk.
+Thus, nine types of Bayesian
+networks B ≡{B1, · · · , B9} are constructed, and the
+structure of each Bayesian network is schematically
+shown in Fig 1(e). Each Bi is constructed with maximum
+indegree 1 to facilitate the subsequent construction of
+quantum circuits.
+The whole Chow-Liu procedure is
+explained in Appendix. B. We finally determine the
+conditional probability table for nodes of each Bayesian
+network based on the data in arrays as shown in
+Fig. 1(c) with the maximum likelihood estimation. Thus,
+the joint probability distributions P(X1, · · · , X64) of 64
+random variables and structures of Bayesian networks
+corresponding to nine types of defects are given.
+Quantum circuit representation of classical Bayesian
+networks.
+To implement quantum computation of
+classical Bayesian inference, we use 64 qubits to represent
+64 nodes of each constructed Bayesian network Bi, and
+two computational basis states |qk = 0⟩and |qk = 1⟩of
+the kth qubit denote two values of random variable Xk at
+the kth node. All of node probabilities P(X1, · · · , X64)
+in the conditional probability table of a Bayesian network
+Bi are encoded as amplitudes of the quantum state
+|ψi⟩=
+X
+q1,...,q64
+p
+P(X1 = q1, · · · , X64 = q64)|q1 · · · q64⟩.
+(1)
+in qubit computational basis states.
+The encoded
+quantum state |ψi⟩is realized via a quantum circuit Qi
+acting on the initial state |00 · · · 0⟩of the 64 qubits as
+schematically shown in Fig. 1(f). Thus, nine Bayesian
+networks {B1, · · · , B9} are represented by nine quantum
+states {|ψ1⟩, · · · , |ψ9⟩}.
+
+===== Page 3 =====
+
+3
+Encoding the probabilities P(X1, · · · , X64) to the
+quantum state |ψi⟩via quantum circuit Qi requires
+several steps.
+We need first extract a directed acyclic
+graph Gi = ⟨N, Ei⟩from Bi and perform the topological
+sorting algorithm [31], with the sets N and Ei of nodes
+and edges.
+That is, all nodes in the node set N
+are rearranged into a new node set T so that the
+nodes T1, · · · , T64 in T are sorted topologically from
+upstream to downstream.
+Each node Tk corresponds
+to a random variable Zk satisfying Zk ∈X and the
+indices of the parents of Tk is smaller than k, ∀k =
+1, 2, · · · , 64. Thus, each node or edge is visited once in the
+topological sorting, so the complexity is O(|N|, |Ei|) with
+the numbers |N| and |Ei| of the nodes and edges. The
+topological sorting algorithm is detailed in Appendix. C.
+Following the topological sorting, the 64-qubit quantum state |ψi⟩can be generated recursively. That is, we
+first generate a single-qubit state |ψi,1⟩, which encodes
+the variable Z1 at the node T1 for two values Z1 = 0
+and Z1 = 1 with their probabilities. This can be done by
+initializing a qubit representing Z1 in the state |0⟩and
+following up a rotation RY(θ) = exp(−iθσy/2) around
+the y-axix with θ = 2 arccos
+p
+P(Z1 = 0), such that
+|ψi,1⟩=
+p
+P(Z1 = 0)|0⟩+
+p
+P(Z1 = 1)|1⟩.
+(2)
+Suppose a quantum state |ψi,k⟩of k qubits has been
+generated from the initial state |0 · · · 0⟩. That is, we use
+probability amplitudes of the state
+|ψi,k⟩=
+X
+q1,...,qk
+p
+P(Z1 = q1, · · · , Zk = qk)|q1q2 · · · qk⟩
+(3)
+to represent distribution of 2k joint probabilities for k
+nodes characterized by k random variables {Z1, . . . , Zk},
+where the states of kth qubit represent the values of
+variable Zk. We aim to construct state |ψi,k+1⟩, which
+represents the joint probability distribution of k + 1
+nodes with variables {Z1, . . . , Zk+1}.
+Based on the
+topological sorting property, Tk+1 is a downstream node
+for {T1, T2, . . . , Tk}, thus the set pa(Tk+1) of parent nods
+for Tk+1 satisfies pa(Tk+1) ⊂{T1, T2, . . . , Tk}.
+The
+probabilities P(Z1, Z2, · · · , Zk+1) for k + 1 variables are
+P(Z1, Z2, · · · , Zk+1) = P(Zk+1|pa(Zk+1))P(Z1, · · · , Zk).
+(4)
+The (k + 1)th qubit is initialized in state |0⟩, then
+controlled-Y operation CRY(θ) are applied to the (k +
+1)th qubit such that the state |q1q2 · · · qk0⟩is turned into
+CRY(θ)|q1q2 · · · qk0⟩= |q1q2 · · · qk⟩
+
+cos θ
+2|0⟩+ sin θ
+2|1⟩
+
+,
+(5)
+∀q1, q2, · · · qk = 0, 1, with the parameter θ determined
+by P(Zk+1|pa(Zk+1)) in Eq. (4). The control qubits are
+the qubits which represent parent variables pa(Zk+1) and
+the controlled qubit is the (k + 1)th qubit. Suppose the
+number of parent nodes of Tk+1 is mk+1, a total number
+of 2mk+1 controlled-Y operations are needed to construct
+|ψi,k+1⟩. These controlled operations can be realized with
+the methods in Refs. [32, 33]. Thus O(2mk+1) quantum
+operations are used to construct |ψi,k+1⟩from |ψi,k⟩.
+Following this procedure, the target state |ψi⟩can be
+generated.
+Thus, the quantum circuit Qi in Fig. 1(f)
+corresponding to |ψi⟩is constructed by RY(θ) operation
+and controlled RY(θ) operations. Generally, if we denote
+N the variable number and m the maximum indegree of
+a Bayesian network, a total number of O(N2m) quantum
+operations are needed to construct a state encoding the
+Bayesian network from the initial state |00 . . . 0⟩.
+In
+our case, we have N = 64 and m = 1, thus only
+a constant number of quantum operations are needed
+to construct each |ψi⟩.
+With the above procedure,
+the main feature of each type of defects is encoded in
+the corresponding quantum state.
+We summarize the
+procedure in Appendix. C and prove it rigorously in
+Appendix. H.
+It
+is
+noted
+that
+the
+complexity
+of
+O(N2m)is
+exponential
+in
+parameter
+m,
+thus
+we
+provide
+an
+optimization method for reducing the maximum indegree
+in Appendix. D. Given a Bayesian network, we can
+perform the pre-process algorithm as in Appendix. D,
+thus maximizing the advantages of quantum algorithms
+and avoiding the high complexity the quantum state
+construction procedure.
+Below, we show how to classify wafer bin maps
+based on the constructed quantum state by performing
+quantum Bayesian inference.
+Improved quantum Bayesian inference.— Let us now
+propose an improved quantum Bayesian inference (QBI)
+algorithm for chip yield analysis. In contrast to perform
+quantum amplitude amplification algorithm and direct
+sampling as in [27], we employ the quantum amplitude
+estimation algorithm [19, 34–36] and improve it as
+follows.
+The quantum amplitude estimation algorithm with
+arbitrary success probability takes as input one copy
+of a quantum state |ψ⟩, a unitary transformation U =
+2|ψ⟩⟨ψ| −I, another unitary transformation V = I −2P
+for some projector P, an error rate ϵ, and probability
+of failure δ. The the algorithm output is ˜a, which is an
+estimate of a = ⟨ψ|P|ψ⟩. If |˜a −a|/|a| ≤ϵ with success
+probability at least 1 −δ, then O (ln(2/δ)/ϵ√a) times
+UV are required. If a = 0 or a = 1 then ˜a = a with
+certainty.
+We summarize our conclusion as a theorem
+in Appendix. C and give our proof in Appendix. G. The
+original quantum amplitude estimation algorithm [19] is
+detailed in Appendix. F.
+We now show how to use improved quantum amplitude
+estimation on the state |ψ⟩encoding a Bayesian network
+B to perform QBI for P(Y|X = x) when evidence variable
+set X = x and target variable set Y are given. Taking
+the projector P as
+P = I ⊗|X = x⟩⟨X = x|,
+(6)
+where the state |X = x⟩encodes the evidence variable
+X with X = x. Thus, the value of ⟨ψ|P|ψ⟩= P(X =
+
+===== Page 4 =====
+
+4
+x) can be estimated by quantum amplitude estimation.
+Similarly, for each possible value y of Y, the value of
+P(Y = y, X = x) with P ′ = I ⊗|X = x, Y = y⟩⟨Y =
+y, X = x| can be estimated. Thus, following the Bayesian
+formula
+P(Y = y|X = x) = P(Y = y, X = x)
+P(X = x)
+,
+(7)
+the conditional probability distribution P(Y|X = x) can
+be estimated with arbitrary precision and probability.
+In our algorithm, the input is the state |ψ⟩, the sets
+of X and Y, the value of evidence variables X = x, an
+error rate ϵ, and probability of failure δ. If the algorithm
+output P(Y|X = x), which is an estimate of P(Y|X = x),
+satisfies
+|P(Y = y|X = x) −P(Y = y|X = x)|
+P(Y = y|X = x)
+≤ϵ
+(8)
+with probability at least 1−δ for arbitrary possible value
+y of Y, then the complexity of quantum operations to
+realized this algorithm is
+O
+ 
+N2mP(X = x)−1
+2 (2
+√
+2)|Y|
+ϵ
+ln 2
+δ
+!
+,
+(9)
+in
+contrast
+to
+complexities
+of
+classical
+Bayesian
+inference
+O
+ Nm ln(2/δ)4|Y|/(ϵ2P(X = x))
+
+and
+the
+previous
+best
+quantum
+algorithm
+[27]
+O
+
+N2m ln(2/δ)4|Y|/(ϵ2p
+P(X = x))
+
+,
+where
+N
+is
+the variable number and m is the maximum indegree
+of the Bayesian network. The result is summarized in
+Appendix. C and proved in Appendix. G. The previously
+best QBI algorithm [27] is introduced in Appendix. E.
+It is clear that our result achieves a polynomial speedup
+on the parameter 1/ϵ and |Y|.
+Chip
+yield
+analysis
+based
+on
+improved
+QBI
+algorithm.—
+We
+now
+apply
+our
+algorithm
+to
+the
+error
+pattern
+classification
+for
+open
+data
+[12]
+by
+replacing the state |ψ⟩in the improved QBI algorithm
+with the states |ψi⟩given in Eq. (1).
+For a target
+variables characterized by specific data of variables X
+of a wafer map, the QBI algorithm is performed on the
+quantum states {|ψ1⟩, · · · , |ψ9⟩} to find which type of
+defect does X belongs to with the maximum probability.
+For each X with X ≡{X1 = x1, · · · , X64 = x64}, where
+xk = 0, 1 with k = 1, · · · , 64, we denote the probability
+that X belongs to defect type i as P (Ci|X).
+Then
+P (Ci|X) is calculated with Bayesian formula,
+P (Ci|X) = P (X|Ci) P (Ci)
+P(X)
+, i = 1, · · · , 9.
+(10)
+Each of the P (X|Ci) is encoded in the amplitude of each
+|ψi⟩as
+P (X|Ci) = ∥⟨x1 · · · x64|ψi⟩∥2, i = 1, · · · , 9.
+(11)
+Thus, each of the conditional probability P (X|Ci) can be
+calculated via performing the proposed QBI algorithm on
+each |ψi⟩. Therefore, we can classify the wafer map X to
+defect type i∗with
+i∗= arg max
+i
+P (Ci|X)
+= arg max
+i
+P (X|Ci) P (Ci) , i = 1, · · · , 9.
+(12)
+The prior distribution P (Ci) is chosen based on real data
+in industries. The task of error pattern classification on
+wafer bin maps is completed.
+We further show the result of the wafer error pattern
+classification for open defect data set [12] by employing
+our QBI algorithm. In our simulation, quantum states
+|ψi⟩are derived using the training set taken from 80%
+of total open data set. Subsequently, the QBI algorithm
+is executed to classify both the training and test sets
+with 20% of total open data set. As Bayesian networks
+favour unsupervised learning approaches, a validation
+set is unnecessary.
+The accuracy of the algorithm
+is determined by measuring the percentage of labels
+correctly predicted out of the total open data. We find
+that our QBI algorithm attains a classification accuracy
+of 97.0% and 93.6% in the training and test sets for open
+defect data set [12], respectively. We mention that the
+QBI algorithm is implemented and simulated with Qiskit
+noiseless quantum simulator [37].
+We compare our results with various classical machine
+learning methods on this problem, and summarize the
+results in Fig. 2. The QBI classifier demonstrates high
+accuracy comparable to traditional classifiers, indicating
+its potential effectiveness. Also, the dashed line shown in
+Fig. 2 corresponds to equal training and testing accuracy,
+which highlights the generalization performance of each
+classifier, with points closer to the dashed line suggesting
+minimal over-fitting.
+Thus it is shown that the QBI
+classifier exhibits minimal over-fitting, resulting in strong
+generalization performance.
+Discussions and Conclusion.— We propose an improved QBI algorithm based on the amplitude estimation. Compared to the previous best QBI algorithm [27]
+which has a quadratic speedup over classical one, our
+algorithm achieves a polynomial speedup.
+We use
+chip yield analysis in semiconductor manufacturing as
+a concrete example to validate our algorithm.
+That
+is, we convert wafer error pattern classification into the
+problem of QBI. Our algorithm achieves a classification
+accuracy of over 93% on an open dataset.
+The
+classification accuracy based on our QBI algorithm is
+nearly optimal for this dataset, comparable to the
+best classical algorithms, while the computational time
+required by the quantum algorithm is significantly lower
+than that of classical Bayesian inference running on
+classical computers. We also note that our discussions
+are limited to the situation that the variable at each
+node only takes two values for yield analysis. For the
+case that a variable has j values with j > 2, we just use
+⌈log2 j⌉qubits to represent one variable, while the state
+
+===== Page 5 =====
+
+5
+●
+■
+▲
+◆▼
+★
+0.80
+0.85
+0.90
+0.95
+1.00
+0.70
+0.75
+0.80
+0.85
+0.90
+0.95
+1.00
+Training Accuracy
+Testing Accuracy
+●
+Logistic Regression
+■
+SVC
+▲
+Decision Tree Classifier
+◆
+Random Forest Classifier
+▼
+MLP Classifier
+★QBI Classifier
+FIG. 2.
+Testing accuracy versus training accuracy for
+various classification algorithms applied to the dataset. Each
+point represents a classifier:
+Logistic Regression (circle),
+Support Vector Classifier (square), Decision Tree Classifier
+(upper triangle), Random Forest Classifier (dice), MultiLayer Perceptron Classifier (lower triangle), and our proposed
+Quantum Bayesian Inference (QBI) Classifier (star).
+construction and the QBI procedure are the same as the
+case that each variable has two values.
+We
+emphasize
+that
+our
+algorithm
+exhibits
+the
+capability of handling partially missing data, which is a
+significant challenge for classical algorithms. In practical
+chip manufacturing processes, for instance, some values
+in variables as previously defined may be missed. When
+the value for a variable is missed, we only need to
+trace out the qubit representing variable and perform
+the QBI algorithm on the remaining qubits. Thus, our
+QBI algorithm can handle the cases of partially missing
+data.
+Finally, we point out that our study can be
+applied to not only the chip yield analysis but also the
+other problems related to classical Bayesian networks,
+e.g., computational biology and bioinformatics [38], gene
+regulatory networks [39], protein structure [40], gene
+expression analysis [41], medical diagnosis [42], document
+classification [43], information retrieval [44], decision
+support systems [45], image processing [46] and artificial
+intelligence [47–49].
+ACKNOWLEDGMENTS
+This work was supported by Innovation Program
+for
+Quantum
+Science
+and
+Technology
+(Grant
+No.
+2021ZD0300201).
+[1] James D Plummer, Silicon VLSI technology: fundamentals, practice and modeling (Pearson Education India,
+2009).
+[2] Gary S May and Costas J Spanos, Fundamentals of
+semiconductor manufacturing and process control (John
+Wiley & Sons, 2006).
+[3] Michael Quirk and Julian Serda, Semiconductor manufacturing technology, Vol. 1 (Prentice Hall Upper Saddle
+River, NJ, 2001).
+[4] Sami Franssila, Introduction to microfabrication (John
+Wiley & Sons, 2010).
+[5] Charles H Stapper and Raymond J Rosner, “Integrated
+circuit yield management and yield analysis:
+Development and implementation,” IEEE Transactions on
+Semiconductor Manufacturing 8, 95–102 (1995).
+[6] N Kumar, K Kennedy, K Gildersleeve, R Abelson,
+CM Mastrangelo,
+and DC Montgomery, “A review of
+yield modelling techniques for semiconductor manufacturing,” International Journal of Production Research
+44, 5019–5036 (2006).
+[7] Sean P Cunningham, Costas J Spanos,
+and Katalik
+Voros, “Semiconductor yield improvement: results and
+best practices,” IEEE Transactions on Semiconductor
+Manufacturing 8, 103–109 (1995).
+[8] Chen-Fu Chien, Wen-Chih Wang, and Jen-Chieh Cheng,
+“Data mining for yield enhancement in semiconductor
+manufacturing and an empirical study,” Expert Systems
+with Applications 33, 192–198 (2007).
+[9] Shao-Chung Hsu and Chen-Fu Chien, “Hybrid data
+mining approach for pattern extraction from wafer bin
+map to improve yield in semiconductor manufacturing,”
+International Journal of Production Economics 107, 88–
+103 (2007).
+[10] LC Chao and LI Chao, “Constructing a wafer defect
+diagnostic system by integrating yield prediction and
+defect pattern recognition,” in The 11th Asia Pacific
+Industrial Engineering and Management Systems Conf.,
+the 14th Asia Pacific Regional Meeting of Int. Foundation
+for Production Research (2010).
+[11] Chung-Shou Liao, Tsung-Jung Hsieh, Yu-Syuan Huang,
+and Chen-Fu Chien, “Similarity searching for defective
+wafer bin maps in semiconductor manufacturing,” IEEE
+Transactions on Automation Science and Engineering 11,
+953–960 (2013).
+[12] Junliang Wang, Chuqiao Xu, Zhengliang Yang, Jie
+Zhang,
+and Xiaoou Li, “Deformable convolutional
+networks for efficient mixed-type wafer defect pattern
+recognition,”
+IEEE
+Transactions
+on
+Semiconductor
+Manufacturing 33, 587–596 (2020).
+[13] Rui Wang and Nan Chen, “Defect pattern recognition
+on wafers using convolutional neural networks,” Quality
+and Reliability Engineering International 36, 1245–1257
+(2020).
+[14] Tongwha Kim and Kamran Behdinan, “Advances in
+machine learning and deep learning applications towards
+wafer map defect recognition and classification:
+a
+review,” Journal of Intelligent Manufacturing 34, 3215–
+3247 (2023).
+[15] Tsutomu Ishida, Izumi Nitta, Daisuke Fukuda,
+and
+Yuzi Kanazawa, “Deep learning-based wafer-map failure
+
+===== Page 6 =====
+
+6
+pattern recognition framework,” in 20th International
+Symposium
+on
+Quality
+Electronic
+Design
+(ISQED)
+(IEEE, 2019) pp. 291–297.
+[16] Peter W Shor, “Algorithms for quantum computation:
+discrete logarithms and factoring,” in Proceedings 35th
+annual symposium on foundations of computer science
+(IEEE, 1994) pp. 124–134.
+[17] Peter W Shor, “Polynomial-time algorithms for prime
+factorization and discrete logarithms on a quantum
+computer,” SIAM review 41, 303–332 (1999).
+[18] Lov K Grover, “A fast quantum mechanical algorithm
+for database search,” in Proceedings of the twenty-eighth
+annual ACM symposium on Theory of computing (1996)
+pp. 212–219.
+[19] Gilles Brassard, Peter Hoyer, Michele Mosca,
+and
+Alain Tapp, “Quantum amplitude amplification and
+estimation,” Contemporary Mathematics 305, 53–74
+(2002).
+[20] Aram W Harrow, Avinatan Hassidim, and Seth Lloyd,
+“Quantum algorithm for linear systems of equations,”
+Physical Review Letters 103, 150502 (2009).
+[21] Andrew M Childs, Robin Kothari,
+and Rolando D
+Somma, “Quantum algorithm for systems of linear
+equations with exponentially improved dependence on
+precision,” SIAM Journal on Computing 46, 1920–1950
+(2017).
+[22] Patrick
+Rebentrost,
+Masoud
+Mohseni,
+and
+Seth
+Lloyd, “Quantum support vector machine for big data
+classification,” Physical Review Letters 113, 130503
+(2014).
+[23] Seth Lloyd, Masoud Mohseni,
+and Patrick Rebentrost, “Quantum principal component analysis,” Nature
+Physics 10, 631–633 (2014).
+[24] Mohammad H Amin, Evgeny Andriyash, Jason Rolfe,
+Bohdan Kulchytskyy,
+and Roger Melko, “Quantum
+boltzmann machine,” Physical Review X 8, 021050
+(2018).
+[25] Anupam Prakash, Quantum algorithms for linear algebra
+and machine learning (University of California, Berkeley,
+2014).
+[26] Robert
+R
+Tucci,
+“Quantum
+bayesian
+nets,”
+arXiv
+preprint quant-ph/9706039 (1997).
+[27] Guang Hao Low, Theodore J Yoder, and Isaac L Chuang,
+“Quantum inference on bayesian networks,” Physical
+Review A 89, 062315 (2014).
+[28] Sima E Borujeni, Saideep Nannapaneni, Nam H Nguyen,
+Elizabeth C Behrman,
+and James E Steck, “Quantum
+circuit representation of bayesian networks,” Expert
+Systems with Applications 176, 114768 (2021).
+[29] Walid Fathallah,
+Nahla Ben Amor,
+and Philippe
+Leray, “An optimized quantum circuit representation of
+bayesian networks,” in European Conference on Symbolic
+and Quantitative Approaches with Uncertainty (Springer,
+2023) pp. 160–171.
+[30] CKCN Chow and Cong Liu, “Approximating discrete
+probability distributions with dependence trees,” IEEE
+transactions on Information Theory 14, 462–467 (1968).
+[31] Arthur B Kahn, “Topological sorting of large networks,”
+Communications of the ACM 5, 558–562 (1962).
+[32] Ville Bergholm, Juha J Vartiainen, Mikko M¨ott¨onen,
+and
+Martti
+M
+Salomaa,
+“Quantum
+circuits
+with
+uniformly controlled one-qubit gates,” Physical Review
+A—Atomic, Molecular, and Optical Physics 71, 052330
+(2005).
+[33] Jonathan
+Allcock,
+Jinge
+Bao,
+Jo˜ao
+F
+Doriguello,
+Alessandro Luongo,
+and Miklos Santha, “Constantdepth circuits for uniformly controlled gates and boolean
+functions with application to quantum memory circuits,”
+arXiv preprint arXiv:2308.08539 (2023).
+[34] Ashley
+Montanaro,
+“Quantum
+speedup
+of
+monte
+carlo methods,” Proceedings of the Royal Society A:
+Mathematical, Physical and Engineering Sciences 471,
+20150301 (2015).
+[35] Tudor
+Giurgica-Tiron,
+Iordanis
+Kerenidis,
+Farrokh
+Labib, Anupam Prakash,
+and William Zeng, “Low
+depth algorithms for quantum amplitude estimation,”
+Quantum 6, 745 (2022).
+[36] Dmitry Grinko, Julien Gacon, Christa Zoufal, and Stefan Woerner, “Iterative quantum amplitude estimation,”
+npj Quantum Information 7, 52 (2021).
+[37] Qiskit Contributors, “Qiskit: An open-source framework
+for quantum computing,” (2021).
+[38] Chris J Needham, James R Bradford, Andrew J Bulpitt,
+and David R Westhead, “A primer on learning in
+bayesian networks for computational biology,” PLoS
+computational biology 3, e129 (2007).
+[39] Min Zou and Suzanne D Conzen, “A new dynamic
+bayesian network (dbn) approach for identifying gene
+regulatory networks from time course microarray data,”
+Bioinformatics 21, 71–79 (2005).
+[40] James R Bradford, Chris J Needham, Andrew J Bulpitt,
+and David R Westhead, “Insights into protein–protein
+interfaces using a bayesian network prediction method,”
+Journal of molecular biology 362, 365–386 (2006).
+[41] Kevin Murphy,
+Saira Mian,
+et al., Modelling gene
+expression data using dynamic Bayesian networks, Tech.
+Rep. (Technical report,
+Computer Science Division,
+University of California . . . , 1999).
+[42] Daniel Nikovski, “Constructing bayesian networks for
+medical diagnosis from incomplete and partially correct
+statistics,” IEEE Transactions on Knowledge and Data
+Engineering 12, 509–516 (2000).
+[43] Ludovic Denoyer and Patrick Gallinari, “Bayesian network model for semi-structured document classification,”
+Information processing & management 40, 807–827
+(2004).
+[44] Robert
+Fung
+and
+Brendan
+Del
+Favero,
+“Applying
+bayesian networks to information retrieval.” Communications of the ACM 38, 42–50 (1995).
+[45] Athena Stassopoulou, Maria Petrou, and Josef Kittler,
+“Application of a bayesian network in a gis based decision
+making system,” International Journal of Geographical
+Information Science 12, 23–46 (1998).
+[46] Jinn Ho and Wen-Liang Hwang, “Wavelet bayesian
+network image denoising,” IEEE Transactions on Image
+Processing 22, 1277–1290 (2012).
+[47] Kevin B Korb and Ann E Nicholson, Bayesian artificial
+intelligence (CRC press, 2010).
+[48] Daryle
+Niedermayer,
+“An
+introduction
+to
+bayesian
+networks and their contemporary applications,” in Innovations in Bayesian networks: Theory and applications
+(Springer, 2008) pp. 117–130.
+[49] Nir Friedman and Moises Goldszmidt, “Building classifiers using bayesian networks,” in Proceedings of the
+national conference on artificial intelligence (1996) pp.
+1277–1284.
+[50] Stuart J Russell and Peter Norvig, Artificial intelligence:
+a modern approach (Pearson, 2016).
+
+===== Page 7 =====
+
+7
+[51] Nicholas Metropolis, Arianna W Rosenbluth, Marshall N
+Rosenbluth, Augusta H Teller,
+and Edward Teller,
+“Equation
+of
+state
+calculations
+by
+fast
+computing
+machines,” The journal of chemical physics 21, 1087–
+1092 (1953).
+[52] Siddhartha Chib and Edward Greenberg, “Understanding the metropolis-hastings algorithm,” The american
+statistician 49, 327–335 (1995).
+[53] Oren Barkan, Avi Caciularu, Idan Rejwan, Ori Katz,
+Jonathan Weill, Itzik Malkiel,
+and Noam Koenigstein,
+“Representation learning via variational bayesian networks,” in Proceedings of the 30th ACM International
+Conference on Information & Knowledge Management
+(2021) pp. 78–88.
+[54] Paul Dagum and Michael Luby, “Approximating probabilistic inference in bayesian belief networks is np-hard,”
+Artificial intelligence 60, 141–153 (1993).
+[55] Joseph B. Kruskal, “On the shortest spanning subtree
+of
+a
+graph
+and
+the
+traveling
+salesman
+problem,”
+Proceedings of the American Mathematical Society 7,
+48–50 (1956).
+[56] Robert C. Prim, “Shortest connection networks and
+some generalizations,” Bell System Technical Journal 36,
+1389–1401 (1957).
+[57] David Maxwell Chickering, “Learning bayesian networks
+is np-complete,” Learning from data: Artificial intelligence and statistics V , 121–130 (1996).
+[58] Max Chickering, David Heckerman,
+and Chris Meek,
+“Large-sample learning of bayesian networks is np-hard,”
+Journal of Machine Learning Research 5, 1287–1330
+(2004).
+
+===== Page 8 =====
+
+8
+Appendix A: Classical Bayesian Network
+Events with multiple values can be described as
+random variables.
+Hereafter, both events and corresponding random variables are denoted by X without
+distinguishing them The probability distribution P(X)
+of a random variable X can be used to describe possible
+outcomes and probabilities of events. Multiple random
+variables {X1, X2, . . . , XN} have a joint probability
+distribution P(X1, X2, . . . , XN), which describes all the
+information of multiple events.
+The marginal distribution and conditional distribution can be calculated
+with the joint probability distribution.
+When there is
+a causal relationship between several random variables,
+the conditional probability distribution P(X|Y ) can be
+used to describe the relationship from the cause event Y
+to the effect event X.
+Bayesian network is a probabilistic graph model
+that describes the causal relationship and conditional
+probability distribution between a series of discrete type
+random variables.
+A Bayesian network is consisted
+of a directed acyclic graph and a series of conditional
+probability tables.
+Each node in the directed acyclic
+graph represents a random variable, and the directed
+edges denote the causal relationship between variables,
+where the parent nodes denote the cause events and
+the child nodes denote the effect events. For a general
+Bayesian network B consisting of N variables, we denote
+the set of variables X = {Xi}, i = 1, 2, . . . , N, where each
+Xi is a variable. The value of the variable Xi is denoted
+as lowercase xi. We denote the node set N and the edge
+set E = {Eij}, where Eij is an edge that begins at Xi and
+ends at Xj. The parent variable set and child variable
+set of a variable Xi is defined as
+pa(Xi) = {Xj|Eji ∈E},
+(A1)
+ch(Xi) = {Xj|Eij ∈E}.
+The conditional probability tables tell us the structure
+of the network and the conditional probability distribution P(Xi|pa(Xi)) for each Xi.
+The joint probability
+distribution can be calculated with Eq. (A3). Markovian
+property is an important property of Bayesian network,
+that is, the probability distribution of a variable in the
+network is only related to the value of its parent variables,
+but not to others. Thus,
+P(Xi|X\{Xi}) = P(Xi|pa(Xi))
+(A2)
+Based on the causal relationship between different variables, we can rewrite the joint probability distribution
+as a product of a series of conditional probability
+distributions,
+P(X1, X2, . . . , XN) =
+N
+Y
+i=1
+P(Xi|pa(Xi)).
+(A3)
+Using this property, the Bayesian network only needs to
+store O(N2m) values rather than 2N values to represent
+FIG. 3. An example of Bayesian network. Some events in
+medical fields are represented as nodes, the edges represent
+the causal relationship between these events, and conditional
+probability distributions are listed as tables.
+the joint probability distribution P(X1, X2, . . . , XN),
+where m = maxi |pa(Xi)| is the maximum degree of the
+Bayesian network. A typical Bayesian network is given
+in Fig 3.
+Inference is one of the main tasks for probabilistic
+models.
+The values of certain evidence variables X
+are observed and we want to calculate the conditional
+probability distribution P(Y|X) for some variables Y
+that we care about. We foucs on the inference problem
+on Bayesian network.
+In the example of Fig 3, the
+disease a person has, i.e., the value of the evidence
+variables X = {HP, D}, is always known. It is important
+for doctors to infer what is the cause of the disease.
+With Bayesian networks, the conditional probability
+distribution P(Y|X) can be calculated, where Y
+=
+{FH, OD}, so that the cause of the disease can be
+inferred.
+So, how to calculate P(Y|X) based on the Bayesian
+network? Bayes formula is the most commonly used tool
+to calculate the conditional probability distribution.
+P(Y|X) = P(X|Y)P(Y)
+P(X)
+.
+(A4)
+Unfortunately, exact inference based on Bayes formula
+is proved to be #P-hard [50]. All path nodes between X
+and Y need to be taken into summation in Bayes formula
+and the complexity is therefore exponential as shown in
+Fig 4.
+Metropolis sampling algorithm is applied instead [51,
+52].
+The values of the nodes are randomly sampled
+following
+the
+conditional
+probability
+tables.
+The
+complexity of sampling algorithm is proved to be
+O(NmP(X = x)−1) [27], where N is the number of nodes
+in the network, m is the maximum indegree.
+As |X|
+increases, P(X = x)−1 decreases exponentially, so the
+sampling complexity becomes exponentially large. Other
+
+===== Page 9 =====
+
+9
+FIG. 4. Suppose we want to calculate P(G|A) exactly on this
+Bayesian network.
+Based on the structure of the network,
+P(G|A) = P
+B,C,E P(G|E)P(E|B, C)P(B|A)P(C|A).
+So
+exact calculation takes all path nodes(marked blue) into
+summation, leading to high complexity.
+inference algorithms on Bayesian network also suffer from
+the problem of high computational complexity, all proved
+to be at least NP-hard [53, 54].
+Appendix B: Chow-Liu Tree Structure Learning
+Algorithm
+The Chow-Liu algorithm is a foundational method
+for learning Bayesian networks from given data, which
+optimally approximate a joint probability distribution
+using pairwise dependencies [30]. The algorithm exploits
+the mutual information between the random variables
+and finds a Bayesian network structure for the input data,
+which minimizes the Kullback-Leibler (KL) divergence
+from the true distribution.
+The procedure of the
+algorithm is explained below.
+First, a mutual information matrix containing the
+dependency information of the variables is calculated.
+The mutual information between two random variables
+X and Y describes the dependency of X and Y , defined
+as
+I(X, Y ) = −1
+2 ln
+ 1 −Corr(X, Y )2
+,
+(B1)
+where Corr(X, Y ) is the correlation function between
+random variables X and Y , defined as
+Corr(X, Y ) = E(XY ) −E(X)E(Y )
+p
+D(X)D(Y )
+,
+(B2)
+where E(X) is the expectation value of X and D(X)
+is the variance of X. Thus, I(X, Y ) can be calculated
+from the given data.
+For multiple random variables
+{X1, · · · , XN}, a mutual information matrix M can be
+defined. Each element of the mutual information matrix
+M is defined as
+Mij = I(Xi, Xj), ∀i, j = 1, · · · , N.
+(B3)
+Next, a maximum weight spanning tree is constructed
+from the mutual information matrix M. As the matrix
+M
+is a symmetric matrix, it can be viewed as a
+representation of a weighted undirected graph.
+A
+maximum weight spanning tree is a connected subgraph
+of a weighted undirected graph that includes all vertices
+with no cycles and maximize the total edge weight.
+Kruskal’s Algorithm [55] or Prim’s Algorithm [56] can
+be applied.
+Denote a valid spanning tree T , then the
+maximum weight spanning tree T ∗is
+T ∗= arg max
+T
+X
+(i,j)∈T
+I(Xi, Xj).
+(B4)
+Finally, for each edge chosen to form the maximum
+weight spanning tree, the direction of the edge can
+be assigned arbitrarily.
+Thus, the spanning tree is
+transformed into a directed acyclic graph, which is the
+learned Bayesian network structure from the given data
+of the variables.
+For the convenience of the following
+procedure of encoding the Bayesian network into a
+quantum circuit, we use the depth-first search to assign
+the directions of the edges, such that one variable has
+at most one parent variable.
+Thus, the constructed
+Bayesian network has a tree structure with maximum
+indegree 1.
+The whole Chow-Liu algorithm runs in
+O(N 2) time where N is the number of variables, making
+it scalable for high-dimensional data.
+The reason that Chow-Liu tree structure learning
+algorithm works is because the KL divergence between
+the true joint probability distribution P(X1, · · · , XN)
+and the probability distribution of the constructed
+Bayesian network Q(X1, · · · , XN) is
+D(P ∥Q) = −
+X
+(i,j)∈T ∗
+I(Xi; Xj)+
+N
+X
+i=1
+H(Xi)−H(X1, . . . , XN).
+(B5)
+Only the first term is dependent of the structure of
+the Bayesian network, which is minimized with the
+construction of the maximum weight spanning tree.
+Thus, the Chow-Liu algorithm learns a Bayesian network
+structure that minimizes the KL divergence from the true
+distribution.
+Appendix C: Algorithms and Theorems in the text
+We formalize the algorithms and theorems used in
+the QBI algorithm.
+The topological sorting algorithm
+of Bayesian network is summarized in Algorithm 1.
+The algorithm for constructing a quantum state |ψ⟩
+representing a given Bayesian network B is summarized
+in Algorithm 2. The theorem for performing quantum
+amplitude
+estimation
+with
+arbitrary
+precision
+and
+success probability is summarized in Theorem 1.
+The
+theorem for performing quantum Bayesian inference
+with quantum amplitude estimation is summarized in
+Theorem 2. The proof of Algorithm 1 is accomplished
+
+===== Page 10 =====
+
+10
+in [31].
+The proofs of Algorithm 2, Theorem 1, and
+Theorem 2 are given in the subsequent sections.
+Algorithm 1: Topological sort of graph
+Input: A directed acyclic graph G = ⟨N, E >, N is
+the node set and E is the edge set.
+Output: An array T, Ti ∈N. For each i, the indexes
+of the parent nodes of Ti are all smaller than
+i.
+1 T ←∅;
+2 Q ←{Ni|Ni ∈N, pa(Ni) = ∅};
+3 while Q ! = ∅do
+4
+remove node N from the head of Q;
+5
+add node N to the tail of T;
+6
+for M ∈ch(N) do
+7
+remove the edge (M, N) in E;
+8
+if Indegree of M is 0 then
+9
+add node M to the tail of Q;
+10
+end
+11
+end
+12 end
+13 return T;
+Algorithm 2: Construction of quantum state
+representing a Bayesian network
+Input: A Bayesian network B, stored as a series of
+conditional probability distribution tables.
+Output: A quantum state |ψ⟩. Each qubit encodes a
+variable, the amplitudes encode the joint
+probability distribution.
+1 Extract graph G = ⟨N, E⟩from B;
+2 Get topologically sorted node set T from algorithm 1;
+3 Initialize a |N|-qubit quantum state |ψ⟩= |00 . . . 0⟩;
+4 for i = 1, 2, . . . , |X| do
+5
+if pa(Ti) = ∅then
+6
+θ = 2 arccos
+p
+P(Ti = 0);
+7
+apply RY (θ) to the qi;
+8
+end
+9
+else
+10
+for pa(Ti) = {0, 1}|pa(Ti)| do
+11
+θ = 2 arccos
+p
+P(Ti = 0|pa(Ti));
+12
+apply CRY (θ) to the qi;
+13
+end
+14
+end
+15 end
+16 return |ψ⟩;
+Theorem
+1
+(Quantum amplitude estimation with
+arbitrary success probability). The arbitrary success
+probability quantum amplitude estimation algorithm takes
+as input one copy of a quantum state |ψ⟩, a unitary
+transformation U
+=
+2|ψ⟩⟨ψ| −I,
+another unitary
+transformation V = I −2P for some projector P, an
+error rate ϵ, and probability of failure δ. The algorithm
+output is ˜a, which is an estimate of a = ⟨ψ|P|ψ⟩, such
+that
+|˜a −a|
+|a|
+≤ϵ
+(C1)
+is satisfied with probability at least 1 −δ, using operator
+UV
+O
+ 1
+ϵ√a ln 2
+δ
+
+(C2)
+times. If a = 0 or a = 1 then ˜a = a with certainty.
+Theorem 2 (Quantum Bayesian inference with quantum
+amplitude estimation). The QBI algorithm takes as input
+a quantum state |ψ⟩representing a Bayesian network B,
+a set of evidence variables X and target variables Y, the
+value of evidence variables X = x, an error rate ϵ, and
+probability of failure δ. The algorithm output is P(Y|X =
+x), which is an estimate of P(Y|X = x), such that for
+arbitrary possible value y of Y,
+|P(Y = y|X = x) −P(Y = y|X = x)|
+P(Y = y|X = x)
+≤ϵ
+(C3)
+is satisfied with probability at least 1 −δ, using
+O
+
+N2mP(X = x)−1
+2 (2
+√
+2)|Y| 1
+ϵ ln 2
+δ
+
+(C4)
+quantum gates. N is the number of variables and m is
+the maximum indegree of B
+Appendix D: Maximum Indegree Reduction
+It is noted that the time complexity of constructing
+a quantum circuit representing a Bayesian network is
+high.
+This complexity increases exponentially with
+the parameter m, the maximum indegree of Bayesian
+network.
+There is more than one kind of structure
+of Bayesian network that is able to represent the
+joint distribution P(X1, X2, . . . , XN) of random variables
+{X1, X2, . . . , XN}.
+However,
+finding
+the
+globally
+optimized structure with minimum max-indegree is NPhard [57, 58]. Instead, locally reducing indegrees of nodes
+is possible.
+Each variable Xi in Bayesian network contributes
+to
+the
+joint
+probability
+distribution
+with
+term
+P(Xi|pa(Xi)).
+Therefore,
+adding
+some
+ancillary
+variables between Xi and pa(Xi), the term P(Xi|pa(Xi))
+can be fixed but the indegree of Xi is changed. Suppose
+we want to add some nodes between a node Xj and
+pa(Xj), where Xj has the highest indegree in the
+Bayesian network.
+Denote the added variable set
+A
+=
+{A1, A2, · · · AL}, each variable Al is just an
+ancillary node with no real-world meaning. It is required
+that
+P(Xj|pa(Xj)) =
+X
+A
+P(Xj|A)P(A|pa(Xj)),
+(D1)
+
+===== Page 11 =====
+
+11
+and
+X
+al=0,1
+P(Al = al|pa(Al)) = 1, ∀Al ∈A.
+(D2)
+The size of |A|, the structure of A and the conditional
+probability tables P(Al|pa(Al)) can be chosen manually
+or with machine learning methods so that the indegree
+of each Al and Xj is smaller than the original indegree
+|pa(Xj)|.
+Thus, a globally NP-hard structure finding
+problem can be reduced to a local optimization problem.
+An example of introducing ancillary nodes is shown in
+Fig 5, requiring
+P(X|P1, P2, P3, P4)
+=
+X
+A1,A2,A3
+P(X|A1, A2, A3)P(A1|P1, P2, P3)
+P(A2|P2, P3, P4)P(A3|P1, P3, P4)
+(D3)
+Three
+hidden
+variables
+A1, A2, A3
+(marked
+in
+grey)
+are
+introduced
+into
+the
+original
+Bayesian
+network
+to
+suppress
+the
+maximum
+indegree
+from 4 to 3.
+The conditional probability tables
+P(A1|P1, P2, P3), P(A2|P2, P3, P4), P(A3|P1, P3, P4) and
+P(X|A1, A2, A3) can be solved with Eq. (D2) and
+Eq. (D3).
+FIG. 5. An example of introducing ancillary nodes.
+Appendix E: Previously Best Quantum Bayesian
+Inference Algorithm
+An algorithm in [27] was proposed to performed
+Bayesian inference,
+which was the previously best
+quantum algorithm for performing Bayesian inference.
+First a quantum state |ψ⟩is constructed to represent
+a given Bayesian network. The construct procedure of
+|ψ⟩is same as the procedure of Algorithm 2. Suppose
+the evidence variable set is X with value X = x and
+the target evidence variable set is Y.
+The quantum
+amplitude amplification algorithm is utilized to calculate
+P(Y|X = x), which is proved to achieve a quadratic
+speeedup over the classical sampling algorithm.
+We
+review their quantum Bayesian inference algorithm.
+Suppose a quantum state |ψ⟩has been constructed,
+representing a given Bayesian network.
+|ψ⟩can be
+rewritten as a linear combination of the subspaces with
+correct evidence values and the other.
+|ψ⟩=
+p
+P(X = x)|ϕ⟩|X = x⟩+
+p
+1 −P(X = x)|ϕx⟩
+(E1)
+Quantum amplitude amplification algorithm [18, 19] is
+used to amplify the amplitude of state |ϕ⟩|x⟩utilizing
+the Grover operator, which is defined as
+ˆG = ˆO†S0 ˆOSx,
+(E2)
+where
+ˆO|0⟩= |ψ⟩,
+(E3)
+S0 = I −2|0⟩⟨0|,
+Sx = I −2|x⟩⟨x|.
+Apply the Grover operator to |ψ⟩for k times, where
+k ≈⌈
+π
+4
+p
+P(X = x)−1/2 ⌉.
+(E4)
+The final state satisfies
+ˆGk ˆO|0⟩≈|ϕ⟩|x⟩
+(E5)
+with
+∥⟨ϕ|⟨x| ˆGk ˆO|0⟩∥2= O(1).
+(E6)
+Thus, P(Y|X = x) can be sampled from state ˆGk ˆO|0⟩
+with success probabiliy O(1) rather than P(X
+=
+x).
+Each use of
+ˆG requires two use of
+ˆO, and
+ˆO
+is implemented with O(N2m) quantum gates, where
+N is the variable number and m is the maximum
+indegree of the Bayesian network.
+So the total gate
+complexity for accepting one sample is O(N2mP(X =
+x)−1
+2 ), which has a quadratic speedup over the classical
+sampling complexity O(NmP(X = x)−1). Summarily,
+the quantum amplitude amplification based quantum
+Bayesian inference method increases the probability of
+getting a successful sample, which ultimately provides
+the quantum advantage.
+However,
+to
+get
+multiple
+successful
+samples
+for
+estimating P(Y|X = x), the algorithm in [27] needs to
+be run repeatedly. The repeated run of their algorithm
+is a classical procedure, so there is no quantum speedup
+in the sampling step. To estimate P(Y = y|X = x) for a
+certain y, according to the Hoeffding’s inequality, a total
+number of
+1
+ϵ2P(Y = y|X = x)2 ln 2
+δ
+(E7)
+samples are needed, such that
+P
+
+|P(Y = y|X = x) −P(Y = y|X = x)
+P(Y = y|X = x)
+| < ϵ
+
+> 1 −δ.
+(E8)
+
+===== Page 12 =====
+
+12
+Thus, to estimate all 2|Y| values of the probability
+distribution P(Y|X = x), a total number of
+1
+ϵ2 miny P(Y = y|X = x)2 ln 2
+δ = O
+4|Y|
+ϵ2 ln 2
+δ
+
+(E9)
+samples are needed, such that
+P
+
+|P(Y = y|X = x) −P(Y = y|X = x)
+P(Y = y|X = x)
+| < ϵ
+
+> 1 −δ
+(E10)
+for ∀y. Thus the total sampling complexity is
+O
+
+N2mP(X = x)−1
+2 4|Y|
+ϵ2 ln 2
+δ
+
+.
+(E11)
+Compared to the classical sampling algorithm with
+sampling complexity
+O
+
+NmP(X = x)−1 4|Y|
+ϵ2 ln 2
+δ
+
+.
+(E12)
+the algorithm in [27] only achieves a quadratic speedup
+in the parameter P(X = x)−1, bringing an exponential
+term 2m in the final expression.
+Appendix F: Introduction to Quantum Amplitude
+Estimation Algorithm
+Quantum amplitude estimation algorithm was first
+proposed
+as
+an
+application
+of
+quantum
+amplitude
+amplification
+algorithm
+[19],
+and
+later
+continually
+improved [34–36].
+In this section, we give a brief
+review to the algorithm of quantum amplitude estimation
+proposed in [19].
+Suppose a quantum state |ϕ⟩is constructed with a
+quantum operator O as
+O|0⟩= |ϕ⟩,
+(F1)
+and the quantum state |ϕ⟩has a form of linear
+combination of
+|ϕ⟩= cos θ|x0⟩+ sin θ|x1⟩,
+(F2)
+where |x0⟩and |x1⟩are two orthogonal states, and θ is
+an unknown angle related to the probability
+a = sin2 θ.
+(F3)
+The goal of the Quantum Amplitude Estimation (QAE)
+algorithm is to estimate a, i.e., the probability of
+measuring |x1⟩.
+Defining operators
+S0 = I −2|0⟩⟨0|,
+(F4)
+Sx = I −2|x1⟩⟨x1|.
+(F5)
+FIG. 6.
+Quantum circuit for quantum phase estimation
+algorithm.
+Then the Grover operator is defined as
+ˆG = OS0O†Sx.
+(F6)
+The operator ˆG preserves the 2-dimensional subspace
+span{|x0⟩, |x1⟩}. The matrix form of ˆG in this subspace
+is
+ˆG =
+
+cos(2θ) −sin(2θ)
+sin(2θ)
+cos(2θ)
+
+(F7)
+with eigenvalues e±i2θ.
+Thus, by applying quantum
+phase estimation algorithm [16, 17] to ˆG, the value of
+θ can be estimated.
+The quantum phase estimation
+algorithm proceeds as follows.
+1. Two registers are used in the quantum phase
+estimation
+algorithm.
+An
+auxiliary
+register
+containing T qubits is initialized in state |0⟩⊗T ,
+which is used for storing the estimated eigenvalues
+of ˆG. The auxiliary register is denoted as the first
+register. The second register is the data register,
+which is initialized in the state |ϕ⟩. The state of
+the whole system is |0⟩⊗T |ϕ⟩.
+2. The Hadamard gates, the controlled rotation gates
+and the inverse quantum Fourier transformation
+are applied to the state |0⟩⊗T |ϕ⟩in sequence. This
+extracts the phase 2θ and stores it in the auxiliary
+qubit register.
+The quantum circuit of quantum
+phase estimation is shown in Fig 6.
+3. Measuring the first qubit register in the computational basis. Suppose the measure outcome is some
+integer T0 ∈[0, 2T −1], then the value of θ can be
+estimated with
+˜θ = T0π
+2T +1 ,
+(F8)
+Thus, the value of a can be estimated with
+˜a = sin2 ˜θ = sin2
+ T0π
+2T +1
+
+.
+(F9)
+Thus, the procedure gives an estimation of amplitude
+of |x1⟩. It is proved in [19] that
+P
+
+|˜θ −θ| <
+1
+2T +1
+
+≥8
+π2 .
+(F10)
+
+===== Page 13 =====
+
+13
+Thus, by enlarging the qubit number T
+in the first
+register, this estimation becomes exponentially accurate.
+We summarize the main result of [19] as follows.
+The quantum amplitude estimation [19] takes as
+input one copy of a quantum state |ψ⟩, a unitary
+transformation U
+=
+2|ψ⟩⟨ψ| −I,
+another unitary
+transformation V = I −2P for for some projector P,
+and an integer m. The algorithm output is ˜a, which is
+an estimate of a = ⟨ψ|P|ψ⟩. If
+|˜a −a| ≤2π
+p
+a(1 −a)
+m
++ π2
+m2
+(F11)
+with probability at least 8/π2, then the m operator UV
+are required. If a = 0, then the algorithm outputs ˜a = 0
+with certainty. If a = 1 and m is even, then the algorithm
+outputs ˜a = 1 with certainty.
+However, the success probability of the quantum
+amplitude estimation [19] is only lower bounded by a
+constant number of 8/π2 instead of an arbitrary value.
+Thus we improve the original algorithm to an arbitrary
+success probability and summarize our results in the
+main text and Theorem 1.
+Appendix G: Proof of Theorem 1 and Theorem 2
+Now we give a proof of Theorem 1 and Theorem 2. We
+first prove Theorem 1.
+Proof. First, we take the value of m to be m
+=
+2⌈π/(√aϵ)⌉as in Eq. (F11). The notation ⌈·⌉denotes
+round up. Thus
+|˜a −a| ≤2π√a
+p
+a(1 −a)ϵ
+2π
++ π2ϵ2a
+4π2
+= ϵa
+√
+1 −a + ϵ2a
+4
+≤ϵa(1 −a
+2) + ϵ2a
+4
+= ϵa
+
+1 −a
+2 + ϵ
+4
+
+≤ϵa.
+Thus the quantum amplitude estimation algorithm
+can estimate the value of a with relative error ϵ
+with successful probability larger than 8/π2.
+Suppose
+quantum amplitude estimation algorithm are used for
+multiple times to get multiple estimations a1, a2, · · · , aJ
+of a. Then a1, a2, · · · , aJ is independent with each other,
+satisfying the same probability distribution. Each of the
+aj satisfies
+P
+|aj −a|
+|a|
+≤ϵ
+
+≥8
+π2 ,
+(G1)
+and
+E(aj) = a, ∀j = 1, 2, · · · , J.
+(G2)
+According to the Chebyshev’s inequality
+P(|aj −E(aj)| ≤ϵ) ≥1 −σ2
+ϵ2 , ∀j = 1, 2, · · · , J,
+(G3)
+where σ2 is the variance of each aj. Thus,
+1 −σ2
+a2ϵ2 ≥8
+π2 ,
+(G4)
+giving us an upper bound of the variance of each aj as
+σ2 ≤a2ϵ2
+
+1 −8
+π2
+
+.
+(G5)
+Denote ˜a to be an estimation of a with
+˜a = 1
+J
+J
+X
+j=1
+aj.
+(G6)
+Then according to the law of large numbers, ˜a obeys
+normal distribution f(˜a)
+˜a ∼f(˜a) = N
+
+a, σ2
+J
+
+.
+(G7)
+Letting
+Z a+aϵ
+a−aϵ
+f(˜a)d˜a ≥1 −δ.
+(G8)
+Combining Eq. (G5) and Eq. (G8), an lower bound of J
+is given as
+J ≥2(π2 −8)(Erf −1(1 −δ))2
+π2
+,
+(G9)
+where Erf −1(x) is the inverse function of Erf(x) which
+is defined as
+Erf(x) =
+2
+√π
+Z x
+t=0
+e−t2dt.
+(G10)
+Expanding the Erf −1(1 −δ) at δ = 0:
+2(Erf −1(1 −δ))2 ≈ln
+2
+πδ2
+(G11)
+Thus, taking
+J = O
+
+ln 2
+δ
+
+,
+(G12)
+Eq. (G9) can be satisfied.
+Summarily, if we perform
+J times of quantum amplitude estimation of a to get
+a1, a2, · · · , aJ with J = O(ln 2/δ) and each estimation
+approximates a to accuracy ϵ with probability larger than
+8/π2, then ˜a = PJ
+j=1 aj/J is an estimation of a, and
+|˜a −a|/|a| < ϵ is satisfied with probability larger than
+1 −δ. The total uses of operator UV as defined in the
+quantum amplitude algorithm is then
+O
+ 1
+ϵ√a ln 2
+δ
+
+.
+(G13)
+
+===== Page 14 =====
+
+14
+As we take the number m in the quantum amplitude
+estimation to be 2⌈π/(√aϵ)⌉, which is an even number.
+Then following the results of [19], if a = 0 or a = 1,
+then the algorithm outputs ˜a = a with certainty. Thus,
+Theorem 1 is proved.
+Next, Theorem 2 is proved.
+Proof. To estimate P(Y = y|X = x) for a certain y,
+following the Bayesian formula
+P(Y = y|X = x) = P(Y = y, X = x)
+P(X = x)
+,
+(G14)
+we need to estimate the value of P(Y = y, X = x) and
+P(X = x). Following Theorem 1, when the projector is
+taken as
+P = I ⊗|X = x⟩⟨X = x|,
+(G15)
+P(X = x) is estimated. When the projector is taken as
+P = I ⊗|Y = y, X = x⟩⟨Y = y, X = x|,
+(G16)
+P(Y = y, X = x) is estimated. Suppose for a certain
+y, we use Theorem 1 to estimate P(Y = y, X = x) to
+relative error ϵ/3 with probability larger than 1 −δ/2.
+And P(X = x) is estimated to relative error ϵ/3 with
+probability larger than 1 −δ/2. It is required that ϵ <
+1/3. Then a total number of
+O
+ 
+1
+ϵ
+p
+P(Y = y, X = x)
+ln 2
+δ
+!
+(G17)
+operators UV are used. Denote P(Y = y, X = x) = Pxy
+and the estimation of Pxy is Pxy. Denote P(X = x) = Px
+and the estimation of Px is Px, then
+P
+
+|Pxy −Pxy| ≤ϵPxy
+3
+
+≥1 −δ
+2,
+(G18)
+P
+
+|Px −Px| ≤ϵPx
+3
+
+≥1 −δ
+2.
+(G19)
+When both |Pxy −Pxy| ≤ϵPxy/3 and |Px −Px| ≤ϵPx/3
+hold true, then
+|Pxy/Px −Pxy/Px|
+|Pxy/Px|
+≤−2ϵ
+3 −ϵ < ϵ.
+(G20)
+Thus,
+P
+|Pxy/Px −Pxy/Px|
+|Pxy/Px|
+< ϵ
+
+≥(1 −δ
+2)2 > 1 −δ (G21)
+is proved, which is
+P
+
+|P(Y = y|X = x) −P(Y = y|X = x)
+P(Y = y|X = x)
+| < ϵ
+
+> 1 −δ.
+(G22)
+Therefore, to estimate P(Y = y|X = x) to relative error
+ϵ with probability larger than 1 −δ, the total number of
+uses of operators UV as defined in Theorem 1 is
+O
+ 
+1
+ϵ
+p
+P(Y = y, X = x)
+ln 2
+δ
+!
+.
+(G23)
+Thus, to estimate all 2|Y| values of the probability
+distribution P(Y|X = x), a total number of
+O
+ 
+2|Y|
+ϵ miny
+p
+P(Y = y, X = x)
+ln 2
+δ
+!
+.
+(G24)
+uses of operators UV are needed, such that
+P
+
+|P(Y = y|X = x) −P(Y = y|X = x)
+P(Y = y|X = x)
+| < ϵ
+
+> 1 −δ
+(G25)
+for ∀y. And
+min
+y
+p
+P(Y = y, X = x) ≥P(X = x)−1/2√
+2
+−|Y|.
+(G26)
+Thus, the total number of uses of operators UV is
+O
+ 
+P(X = x)−1/2 (2
+√
+2)|Y|
+ϵ
+ln 2
+δ
+!
+.
+(G27)
+U and V are defined as
+U = 2|ψ⟩⟨ψ| −I
+(G28)
+and
+V = I −2P.
+(G29)
+The gate complexity of one use of U is O(N2m) while
+the gate complexity of one use of V is O(N), where N
+is the variable number and m is the maximum indegree
+of the original Bayesian network. Thus, the total gate
+complexity for estimating P(Y|X = x) is
+O
+ 
+N2mP(X = x)−1/2 (2
+√
+2)|Y|
+ϵ
+ln 2
+δ
+!
+.
+(G30)
+Consequently, Theorem 2 is proved.
+
+===== Page 15 =====
+
+15
+Appendix H: Proof of Algorithm 2
+Proof. We use mathematical induction method to prove the correctness of Algorithm 2. First, for k = 1, following
+Algorithm 2, a quantum state |ψ1⟩is constructed with a rotation-y quantum gate RY(θ) where θ = 2 arccos P(X1 = 0).
+|ψ1⟩=
+p
+P(X1 = 0)|0⟩+
+p
+1 −P(X1 = 0)|1⟩=
+p
+P(X1 = 0)|0⟩+
+p
+P(X1 = 1)|1⟩
+(H1)
+Thus, Algorithm 2 is correct for the case k = 1.
+Suppose for the first k variables, we have successfully construct a quantum state |ψk⟩to represent the joint
+probability distribution
+|ψk⟩=
+X
+q1,··· ,qk
+p
+P(X1 = q1, · · · , Xk = qk)|q1q2 · · · qk⟩.
+(H2)
+Denote
+K = {1, 2, · · · , k}
+(H3)
+S is the index of pa(Xk+1) = {Xs1, , Xs2, · · · , Xsm}
+S = {s1, s2, · · · , sm}.
+(H4)
+Algorithm 2 utilizes 2m quantum gates U1, U2, · · · , U2m to build state |ψk+1⟩based on state |ψk⟩as
+|ψk+1⟩=
+2m
+Y
+j=1
+Uj|ψk⟩|0⟩.
+(H5)
+Each of the Uj is a controlled rotation-y operator, where the control qubits are the qubits representing pa(Xk+1) and
+the target qubit is the (k + 1)th qubit which represents variable Xk+1. We now prove the constructed |ψk+1⟩satisfies
+|ψk+1⟩=
+X
+q1,··· ,qk,qk+1
+p
+P(X1 = q1, · · · , Xk = qk, Xk+1 = qk+1)|q1q2 · · · qkqk+1⟩.
+(H6)
+Combining Eq. (H2) and Eq. (H6) we have
+|ψk+1⟩=
+2m
+Y
+j=1
+Uj
+X
+q1,··· ,qk
+p
+P(X1 = q1, · · · , Xk = qk)|q1q2 · · · qk⟩|0⟩.
+(H7)
+Change the order of production and summation, and divide the qubits that are taken into summation into two sets:
+the qubits represent pa(Xk+1) and others,
+|ψk+1⟩=
+X
+qi,i∈K\S
+X
+qi,i∈S
+2m
+Y
+j=1
+Uj
+p
+P(X1 = q1, · · · , Xk = qk)|q1q2 · · · qk⟩|0⟩.
+(H8)
+Applying Q2m
+j=1 Uj to state |q1q2 · · · qk⟩|0⟩gives us
+|ψk+1⟩=
+X
+qi,i∈K\S
+X
+qs1,··· ,qsm
+p
+P(X1 = q1, · · · , Xk = qk)|q1q2 · · · qk⟩
+ αqs1···qsm |0⟩+ βqs1···qsm|1⟩
+
+,
+(H9)
+where according to Algorithm 2,
+αqs1···qsm =
+p
+P (Xk+1 = 0|Xs1 = qs1, · · · , Xsm = qsm),
+(H10)
+βqs1···qsm =
+p
+P (Xk+1 = 1|Xs1 = qs1, · · · , Xsm = qsm).
+(H11)
+
+===== Page 16 =====
+
+16
+Thus,
+P(X1 = q1, · · · , Xk = qk, Xk+1 = 0) = P(Xk+1 = 0|X1 = q1, · · · , Xk = qk)P(X1 = q1, · · · , Xk = qk)
+= P (Xk+1 = 0|Xs1 = qs1, · · · , Xsm = qsm) P(X1 = q1, · · · , Xk = qk)
+= α2
+qs1···qsm P(X1 = q1, · · · , Xk = qk),
+(H12)
+P(X1 = q1, · · · , Xk = qk, Xk+1 = 1) = P(Xk+1 = 1|X1 = q1, · · · , Xk = qk)P(X1 = q1, · · · , Xk = qk)
+= P (Xk+1 = 1|Xs1 = qs1, · · · , Xsm = qsm) P(X1 = q1, · · · , Xk = qk)
+= β2
+qs1···qsm P(X1 = q1, · · · , Xk = qk).
+(H13)
+Combining the two equations above and Eq. (H9),
+|ψk+1⟩=
+X
+qi,i∈K\S
+X
+qs1,··· ,qsm
+p
+P(X1 = q1, · · · , Xk = qk, Xk+1 = 0)|q1q2 · · · qk0⟩
++
+p
+P(X1 = q1, · · · , Xk = qk, Xk+1 = 1)|q1q2 · · · qk1⟩,
+(H14)
+which is
+|ψk+1⟩=
+X
+q1,··· ,qk,qk+1
+p
+P(X1 = q1, · · · , Xk = qk, Xk+1 = qk+1)|q1q2 · · · qkqk+1⟩.
+(H15)
+It is shown that |ψk+1⟩represents the joint probability distribution of the first k + 1 variables. Thus, we prove the
+correctness of Algorithm 2 with the mathematical induction method.
+Appendix I: Examples of Wafer Bin Maps
+Some examples of different defect types on wafer bin maps. There are total nine kinds of defect types on the
+wafer bin maps: Normal, Center, Donut, Edge-Loc, Edge-Ring, Loc, Near-full, Scratch, Random. Some examples are
+shown.
+The first column has the types of the defects. The second column is the original data from the data set we use.
+The third column is the bivalued original data. The fourth column shows the compressed data. The original data as
+in the second column has three different values: 0, 1, and 2. 1 represents that there is no error on the chip, marked
+in green. 2 represents that there is an error on this chip, marked in yellow. 0 represents that there is no chip at this
+pixel, marked in purple. For convenience of Bayesian network construction, we first do data preprocess to turn the
+original data into bivalued data with only 0 and 1. The bivalued data is shown in the third column, where the purple
+pixels represent data 0 and the yellow pixels represent data 1. Finally, major voting compression methods are used
+to compress the data from 52-by-52 to 8-by-8. The compressed data is shown in the last column where the purple
+pixels represent data 0 and the yellow pixels represent data 1.
+
+===== Page 17 =====
+
+17
+
+===== Page 18 =====
+
+18
+Appendix J: Confusion Matrices of Training and Testing
+The confusion matrix of quantum Bayesian inference on the training set is shown in Fig. 7(a). The confusion matrix
+of quantum Bayesian inference on the test set is shown in Fig. 7(b). Each element in the confusion matrix represents
+the number of data with the correct category as the horizontal index and the classification result as the vertical index.
+The characters on the axis represent the type of defect. N stands for Normal. C stands for Center. D stands for
+Donut. EL stands for Edge-Loc. ER stands for Edge-Ring. L stands for Loc. NF stands for Near-Full. S stands for
+Scratch. R stands for Random. The data on the diagonal is classified correctly, and the data on the non-diagonal is
+classified incorrectly. The value of diagonal elements is much larger than that of non-diagonal elements as shown in
+Fig. 7(a) and Fig. 7(b), and only similar categories may cause misclassification. This proves the reliability and high
+accuracy of the quantum Bayesian inference method.
+N
+C
+D
+EL
+ER
+L
+NF
+S
+R
+Predicted label
+N
+C
+D
+EL
+ER
+L
+NF
+S
+R
+True label
+794
+0
+0
+0
+0
+0
+0
+6
+0
+1
+781
+2
+1
+0
+3
+0
+12
+0
+0
+99
+701
+0
+0
+0
+0
+0
+0
+0
+0
+0
+760
+30
+0
+0
+10
+0
+0
+0
+0
+17
+783
+0
+0
+0
+0
+0
+0
+0
+1
+0
+788
+0
+11
+0
+0
+0
+0
+0
+0
+0
+800
+0
+0
+2
+0
+0
+2
+0
+1
+0
+795
+0
+0
+1
+6
+2
+0
+2
+4
+2
+783
+0
+100
+200
+300
+400
+500
+600
+700
+800
+Number
+(a)
+N
+C
+D
+EL
+ER
+L
+NF
+S
+R
+Predicted label
+N
+C
+D
+EL
+ER
+L
+NF
+S
+R
+True label
+182
+0
+0
+1
+0
+0
+0
+17
+0
+0
+191
+2
+0
+0
+1
+0
+6
+0
+0
+27
+173
+0
+0
+0
+0
+0
+0
+0
+0
+0
+182
+13
+1
+0
+4
+0
+0
+0
+0
+1
+199
+0
+0
+0
+0
+0
+0
+0
+0
+0
+195
+0
+5
+0
+0
+0
+0
+0
+0
+0
+179
+0
+21
+0
+0
+0
+1
+0
+1
+0
+197
+1
+0
+1
+1
+3
+0
+1
+8
+0
+186
+0
+25
+50
+75
+100
+125
+150
+175
+Number
+(b)
+FIG. 7. (a) The confusion matrix of quantum Bayesian inference on the training set. (b) The confusion matrix of quantum
+Bayesian inference on the test set.

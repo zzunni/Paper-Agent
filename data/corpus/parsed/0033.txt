@@ -1,0 +1,442 @@
+
+
+===== Page 1 =====
+
+Wafer-scale waveguide sidewall roughness scattering loss
+characterization by image processing
+MOHIT KHURANA1,2,*, SAHAR DELFAN1,2, ZHENHUAN YI1,2,†
+1Department of Physics and Astronomy, Texas A&M University, College Station, TX 77843, USA
+2Institute for Quantum Science and Engineering, Texas A&M University, College Station, TX 77843, USA
+*mohitkhurana@tamu.edu, †yzh@tamu.edu
+Abstract: Photonic integrated circuits (PICs) are vital for developing affordable, high-performance optoelectronic
+devices that can be manufactured at an industrial scale, driving innovation and efficiency in various applications. Optical
+loss of modes in thin film waveguides and devices is a critical measure of their performance. Thin films growth,
+lithography, masking, and etching processes are imperfect processes that introduce significant sidewall and top-surface
+roughness and cause dominating optical losses in waveguides and photonic structures. These roughness as perturbations
+couple light from guided to far-field radiation modes, leading to scattering losses that can be estimated from theoretical
+models. Typically, with UV-based lithography sidewall roughness is found to be significantly larger than wafer-top
+surface roughness. Atomic force microscopy (AFM) imaging measurement gives 3D and high-resolution roughness
+profile but the measurement is inconvenient, costly, and unscalable for large-scale PICs and at wafer-scale. Here,
+we evaluate the sidewall roughness profile based on 2D high-resolution scanning electron microscope imaging. We
+characterized the loss on two homemade nitride and oxide films on 3-inch silicon wafers with 12 waveguide devices on
+each and co-related the scattering loss estimated from a 2D image-based sidewall profile and theoretical Payne model.
+The lowest loss of guided fundamental transverse electric (TE0) is found at 0.075 dB/cm at 633 nm across 24 devices,
+which is a record at visible wavelength. Our work shows a 100% success in edge detection in image processing to
+estimate autocorrelation function and optical mode loss. These demonstrations offer valuable insights into waveguide
+sidewall roughness and comparison of experimental and 2D SEM image-processing-based loss estimations.
+1.
+Introduction
+Photonic integrated circuits (PICs) are vital in advancing various technologies, including high-speed optical communication, optical interconnects, PIC-based optical clocks, neural networks-based optical computing, sensing, light sources,
+and quantum circuits [1–4]. Manufacturing these devices on a large scale requires precise and scalable fabrication
+techniques and processes for high-performance yield. The critical components of these procedures are lithography,
+patterning, and etching of material to develop the photonic components on the chip. The primary techniques are
+photolithography and electron-beam lithography (EBL), with photolithography being the predominant choice in the
+industry. Although it has resolution limitations, it is generally preferred for all applications except prototypes because
+of its speed, cost-effectiveness, and scalability. In the large-scale manufacture of PICs, photolithography enables the
+simultaneous patterning of entire wafers, rapidly producing hundreds or thousands of PIC components within minutes.
+In atomic and molecular research applications, resolutions within the 50-100 nm range are generally sufficient for
+PIC architectures and components in visible and near-infrared wavelengths, making deep UV photolithography more
+practical [5]. In contrast, EBL offers higher resolution and can achieve features as small as 5 nm, but it is significantly
+expensive and slower, taking hours or even days for a single wafer. EBL allows design flexibility without requiring new
+masks; its high operational costs make it better suited for prototyping and small-scale production.
+The resolution of a lithographic process is determined by a simplified version of the Rayleigh criterion, 𝑅= 𝑘1·𝜆
+𝑁𝐴, where,
+𝑅is the smallest resolvable feature size (resolution), 𝜆is the wavelength of the light source, 𝑁𝐴is the numerical
+aperture of the imaging system, 𝑘1 is a process constant dependent on the resist and the patterning technique (typically
+around 0.4 to 0.9 in practical photolithography processes), the resolution improves with shorter wavelengths (𝜆) and
+higher numerical apertures (NA) [6]. In photolithography, ongoing research and advancements aim to reduce the costs
+of small wavelength laser sources and hardware components, enhancing device yield performance. The 365 nm (i-line)
+wavelength works well for older semiconductor devices, while the 248 nm and 193 nm wavelengths accommodate
+increasingly smaller features, achieving down to 65 nm for advanced photolithography [7]. The state-of-the-art 13.5 nm
+(EUV) technology allows for features patterning as tiny as 10 nm, underscoring the industry’s commitment to developing
+more intricate circuits. In visible-telecom wavelengths, PICs necessitate minimum feature sizes for components like
+waveguides, microring resonators, on-chip modulators, photonic crystal waveguides, and cavities, roughly around 50
+nm.
+arXiv:2501.11590v1  [physics.optics]  20 Jan 2025
+
+===== Page 2 =====
+
+Thin film growth, lithography patterning, masking, and etching processes are imperfect processes that introduce
+significant sidewall and top-surface roughness and cause dominating optical losses in waveguides and photonic
+structures. These roughnesses act as perturbations that couple light from guided to far-field radiation modes, leading
+to unwanted scattering losses. Waveguide loss is evaluated as the total loss quantity, 𝛼includes all the effects such
+as radiative loss, surface and sidewall roughness loss, absorption in material, material defects, mechanical defects,
+etc. Sidewall roughness is significantly larger than wafer-top surface roughness due to high-quality thin film, lowquality resist edges, and top-down etching process. Scattering losses from sidewall (𝛼𝑠𝑖𝑑𝑒𝑤𝑎𝑙𝑙) and surface (𝛼𝑠𝑢𝑟𝑓𝑎𝑐𝑒)
+roughness are typically the most dominant factors among all for a straight rectangular waveguide. Evaluating loss
+due to this roughness using Maxwell’s solvers like FDTD is impractical and is measured directly from experimental
+observations. Experimental methods include high-resolution roughness measurements using atomic force microscopy
+and optical characterization of waveguide loss. Experiments measure average loss, i.e., 𝛼= 𝛼𝑎𝑣𝑔. =
+Í
+𝑖𝛼𝑖𝐿𝑖
+Í
+𝑖𝐿𝑖, where
+𝛼𝑖is optical loss of 𝐿𝑖waveguide length unless advanced imaging and optical characterization are performed such
+as confocal microscopy - which is quite a challenging task because the loss of photons is minimal for typical used
+optical powers, slow speed measurement and require additional experimental verifications with high accuracy. Loss
+measurement is a significant factor in characterizing PIC components. As such, the Q-factor of an on-chip integrated cavity is estimated from total loss quantity, 𝛼[8]. For the microring resonator, the total loss is evaluated as
+𝛼𝑟𝑖𝑛𝑔= 2𝜋𝑛𝑔/(𝑄𝜆) = 𝛼𝑚𝑎𝑡.+𝛼𝑠𝑐𝑎𝑡.+𝛼𝑇𝐼𝑅; in the case of non-symmetric edges of waveguides, 𝛼𝑠𝑐𝑎𝑡. = 𝛼𝑠𝑖𝑑𝑒1+𝛼𝑠𝑖𝑑𝑒2.
+Similarly, for photonic crystal cavity the optical loss, 𝛼= 𝛼𝑇𝐼𝑅+ 𝛼𝑚𝑎𝑡. + 𝛼𝑠𝑐𝑎𝑡. and the Q factor is estimated by,
+1/𝑄𝑡𝑜𝑡. = 1/𝑄𝑇𝐼𝑅+1/𝑄𝑚𝑎𝑡. +1/𝑄𝑠𝑐𝑎𝑡. [9]. Note that, 𝛼𝑠𝑐𝑎𝑡. > 𝛼𝑇𝐼𝑅> 𝛼𝑚𝑎𝑡. therefore, 1/𝑄𝑡𝑜𝑡. = 1/𝑄𝑇𝐼𝑅+1/𝑄𝑠𝑐𝑎𝑡..
+For a PIC with thousands of components and a large number of PICs in industry-scale manufacturing, characterization
+of loss quantity with direct optical measurements is not feasible. As the next photonics revolution awaits, a quick
+and efficient measurement technique of the optical loss quantity is needed. Electron microscope images can extract
+features sub-10 nm size characteristics of devices and have been used as feedback in the FDTD simulator to estimate
+actual photonic device performance [9]. However, FDTD is a computationally time-consuming and intensive method
+to estimate scattering loss and evaluate device performance. A combined methodology of quick measurement of
+the roughness of waveguide edge based on high-resolution imaging and loss estimation using a theoretical model
+would be advantageous in characterizing micro and macro parameters, optical losses, and the performance of PIC
+devices. 2D (electron microscopy) and 3D (atomic force microscopy, focused ion beam tomography, confocal microscopy) imaging methods are crucial in analyzing surface features and sidewall structures. SEM is considerably
+high-resolution, cheaper, faster, and more convenient; however, it overlooks the chiseling effect (variation over the
+depth of waveguide edge roughness), though this is minimal due to the top-down etching process. The sem resolution
+limit, 𝑅SEM = 𝐶𝑠·𝜆
+𝛼, where 𝐶𝑠is the spherical aberration coefficient of the lens, 𝜆is the wavelength of the electrons and
+𝛼is the semi-angle of the electron beam convergence. At typical SEM operating voltages (10-100 kV), the electron
+wavelength 𝜆is on the order of picometers, making it possible to achieve high resolution [10]. However, aberrations
+such as spherical and chromatic aberrations degrade the resolving power of the system. Non-conductive samples require coating with a thin conductive layer (e.g., gold or carbon) to prevent charging effects, which can obscure fine details.
+In this research investigation, we perform image processing on SEM images of waveguide edges to characterize the
+roughness, use a theoretical model to empirically estimate the waveguide loss, and compare it with the experimentally
+observed loss at a wafer-scale level.
+2.
+Theoretical loss and waveguide edge roughness
+The analytical expression of radiation loss coefficient for scattering by surface roughness in a symmetric single-mode
+waveguide that is based on coupled-mode theory (by Marcuse in 1969) was reported by Payne et al. [11,12],
+𝛼𝑐𝑚−1 = 𝐿𝑑𝐵/𝑐𝑚
+4.343
+= 𝜑2(𝑑)(𝑛2
+1 −𝑛2
+2)2 𝑘3
+0
+4𝜋𝑛1
+∫
+𝜋
+0
+˜𝑅(𝛽−𝑛2𝑘0 cos 𝜃) 𝑑𝜃
+(1)
+and scattering loss based on three-dimensional models using coupled-mode theory (2006) and volume current method
+(2005) have been reported by Poulton et al. and Barwicz et al., respectively [13,14]. These models have accurately
+predicted losses in low and high-contrast refractive index core waveguides and cladding. In Eq. 1, if one wall is
+rough, then 𝛼must be multiplied by 1/2, 𝜑(𝑑) is the modal field evaluated at the waveguide surface and is normalized
+
+===== Page 3 =====
+
+so that,
+∫∞
+−∞𝜑2(𝑦) 𝑑𝑦= 1; 𝑛1 and 𝑛2 are the core and cladding refractive indices, respectively; 𝑘0 is the free-space
+wavenumber and 𝛽is the modal propagation constant; the width of the waveguide is 2𝑑. For the bent waveguide,
+the loss, 𝛼= 𝛼𝑠𝑖𝑑𝑒1 + 𝛼𝑠𝑖𝑑𝑒2, where the mode field at both sides is to be estimated numerically from the EME
+or FDTD method. The surface roughness of the waveguide walls is described by the spectral density function
+˜𝑅(Ω), which is related to the autocorrelation function (ACF) 𝑅(𝑢) of the surface roughness through the Fourier
+transform, ˜𝑅(Ω) =
+∫∞
+−∞𝑅(𝑢) exp(𝑖Ω𝑢) 𝑑𝑢[11,12]. The roughness described by R(u) is a function of f(z) - which is a
+one-dimensional distribution with zero mean, 𝑅(𝑢) = ⟨𝑓(𝑧) 𝑓(𝑧+ 𝑢)⟩, where the brackets represent ensemble average,
+in case of the straight waveguide, f(z) is a variation of edges around the ideal straight waveguide [13,14]. In the case of
+a bent waveguide, the edge curve of the waveguide can be best fitted to a polynomial function. Now, the models mostly
+used for ACF that closely relate to the roughness produced by photolithography, hard-mask, and top-down etching
+processes in the fab are: 𝑅(𝑢) = 𝜎2 exp
+
+−|𝑢|
+𝐿𝑐
+
+, 𝑅(𝑢) = 𝜎2 exp
+
+−𝑢2
+𝐿2𝑐
+
+and 𝑅(𝑢) = 𝜎2
+1 exp
+
+−|𝑢|
+𝐿𝑐
+
++ 𝜎2
+2 𝑐𝑜𝑠(2𝜋𝑢/𝐷).
+The surface roughness is characterized by a correlation length 𝐿𝑐, and mean square deviation 𝜎2 from a flat surface,
+where 𝜎2 = 𝑅(0). In waveguide roughness, ACF is useful in understanding spatial dependencies in surface or edge
+variation. The ACF measures how a roughness profile correlates with itself at different location lags. Other models
+include, 𝑅(𝑢) = 𝐴0𝑒−𝑢
+𝐷1 + 𝐴1𝑒−𝑢
+𝐷2 , 𝑅(𝑢) = 𝐴0𝑒−𝛾𝑢cos(𝜔𝑢), 𝑅(𝑢) = 𝐴0𝑒−
+
+𝑢
+𝐿0
+𝛽
+(0 < 𝛽≤1), 𝑅(𝑢) = 𝐴0 −𝛼log(𝑢),
+etc. The analytical integral expression, 𝑆=
+∫𝜋
+0
+˜𝑅(𝛽−𝑛2𝑘0 cos 𝜃) 𝑑𝜃for all these different ACFs may not be available,
+but numerically, it can be estimated.
+Image processing of SEM images to extract ACF involves a crucial step of precise edge detection. Various edge
+detection algorithms can identify image boundaries based on sudden shifts in pixel intensity, including Canny, Sobel,
+Prewitt, Laplacian of Gaussian, and Difference of Gaussians (DoG), etc. We discuss these algorithms here briefly.
+Canny’s algorithm is a multi-stage algorithm that enhances accuracy through noise reduction, gradient computation, and
+hysteresis thresholding; however, it requires careful parameter tuning [15]. Sobel utilizes two 3x3 convolution kernels to
+approximate gradients in horizontal and vertical directions, offering computational efficiency and some noise reduction
+but struggles in low-contrast environments. The Prewitt operator is similar but lacks weight for the central pixel, making
+it less accurate and more noise-sensitive. The Laplacian of Gaussian (LoG) combines Gaussian smoothing with the
+Laplace operator to detect edges through zero-crossings but can be compromised by noise if not correctly adjusted.
+Each technique presents a unique balance of accuracy, noise sensitivity, and computational complexity, catering to
+diverse computer vision and image analysis applications. The Canny algorithm is the most accurate for general use and
+offers excellent noise reduction and edge localization. The Canny’s algorithm consists of applying a Gaussian filter to
+smooth the image, 𝐺(𝑥, 𝑦) =
+1
+2𝜋𝜎2 𝑒−𝑥2+𝑦2
+2𝜎2 and convolving the image 𝐼(𝑥, 𝑦) with 𝐺(𝑥, 𝑦) reduces high-frequency noise,
+computation of the intensity gradients using operators like Sobel filters, non-maximum suppression by thin the edges to
+one-pixel width by suppressing non-maximum gradient magnitudes, double thresholding by applying two thresholds to
+classify pixels as firm edges, weak edges, or non-edges and edge tracking by hysteresis to finalize edge detection by
+connecting weak edges that are linked to solid edges [16]. To accurately capture image details, the sampling frequency
+must satisfy the Nyquist criterion: 𝑓𝑠≥2 𝑓max, where 𝑓𝑠is the sampling frequency, and 𝑓max is the highest frequency
+present in the image. Higher resolution (higher 𝑓𝑠) allows for accurate representation of high-frequency details, which
+is crucial for precise edge detection. The effectiveness of this algorithm is influenced by image resolution and pixel
+count. Higher resolution typically enhances the accuracy of imaging systems; however, it also contributes to increased
+computational complexity (𝑇Canny ∝𝑁= 𝑁𝑥× 𝑁𝑦). If an image has dimensions 𝑁𝑥pixels in width and 𝑁𝑦pixels in
+height, the total pixel count 𝑁is: 𝑁= 𝑁𝑥× 𝑁𝑦. The physical size of each pixel depends on the imaging sensor or
+sampling process. The spatial resolution 𝑅(in pixels per unit length) can be expressed as: 𝑅𝑥= 𝑁𝑥
+𝐿𝑥,
+𝑅𝑦= 𝑁𝑦
+𝐿𝑦, where
+𝐿𝑥and 𝐿𝑦are the physical dimensions of the image along the x and y axes, respectively. The pixel size Δ𝑥and Δ𝑦
+(physical distance represented by each pixel) are: Δ𝑥=
+1
+𝑅𝑥= 𝐿𝑥
+𝑁𝑥,
+Δ𝑦=
+1
+𝑅𝑦= 𝐿𝑦
+𝑁𝑦. The gradient of the image intensity
+𝐼(𝑥, 𝑦) is a key component in edge detection, defined as: ∇𝐼=
+
+𝜕𝐼
+𝜕𝑥, 𝜕𝐼
+𝜕𝑦
+
+. In discrete images, gradients are approximated
+using finite differences: 𝜕𝐼
+𝜕𝑥≈𝐼(𝑖+1, 𝑗)−𝐼(𝑖−1, 𝑗)
+2Δ𝑥
+,
+𝜕𝐼
+𝜕𝑦≈𝐼(𝑖, 𝑗+1)−𝐼(𝑖, 𝑗−1)
+2Δ𝑦
+. Smaller Δ𝑥and Δ𝑦(higher resolution) lead to
+more accurate gradient estimations, improving edge detection accuracy [17].
+
+===== Page 4 =====
+
+3.
+Results and Discussion
+To investigate and demonstrate the estimation of optical loss at a wafer-level scale using a theoretical model combined
+with high-resolution sem image processing, we fabricated two silicon nitride waveguide wafers, each containing 12
+waveguide devices designed for characterizing optical loss in waveguides. Each device includes a single optical
+waveguide that splits into two waveguide branches, with one waveguide branch intentionally designed to have a
+longer length. This variation in path lengths and precise output power measurements facilitate the quantification of
+optical losses. The measurement process involves coupling a continuous-wave laser into the input waveguide using a
+high-precision alignment setup, ensuring optimal coupling efficiency as shown in Fig. 1. As the light propagates through
+the two branches, losses due to scattering, absorption, and fabrication imperfections accumulate along the path length.
+At the output, each branch’s light intensity is measured using a photodetector - power meter. The power difference
+between the two outputs directly correlates with the optical loss per unit length, as the longer waveguide accumulates
+proportionally greater loss. To ensure accuracy, the two waveguide branches’ length difference is identical for each
+device, and multiple measurements are conducted to account for variations in input coupling and environmental factors.
+Fig. 1. Experimental setup for photonic waveguide loss characterization. Laser is launched through an optical isolator
+and polarized and then coupled to fiber that is butt-coupled to a photonic chip waveguide; output diverging beams pass
+through a lens of focal length 8 cm, and each beam is then captured in a photodetector (power meter). a) Schematic
+diagram of the experimental setup, b) top-view image of optical setup, c) Stage-chip and lens system, d) Captured image
+from a camera to collect reflected light from the objective-stage system shows SM fiber butt-coupled to a waveguide chip,
+e) Side-view image in a dark room with light coupled to waveguide chip with an objective-stage system and f) two output
+beams observed on white paper screen. In a typical experiment, ∼5 𝜇𝑊is coupled in to waveguide TE0 mode.
+In intermediate steps of image processing and experimental characterization, first, the waveguide is patterned with the
+lithography and etching process followed by deposition of a thin Gold (Au) nanoparticles layer for acquiring sem images.
+A thin Au layer was deposited on the wafer to achieve high-contrast images. After obtaining the images, the Au layer
+was etched away using an Au etchant, followed by a cleaning procedure. After that, a silica layer (upper cladding) with a
+thickness of 1 𝜇m is deposited on the wafer. Each wafer was cut into 12 individual dies using a diamond cutter, each
+representing one device. Each die was placed under an optical setup as illustrated in Fig. 1. The waveguide architecture
+included a Y-splitter that divided the waveguide into two outputs. These outputs were collected on a white screen or
+power meter for loss characterization of the devices. The optical loss for each device was estimated and presented in Fig.
+2. The observed optical loss ranged from 0.18 to 0.36 dB/cm for wafer 1, while for wafer 2, it ranged from 0.39 to 0.73
+dB/cm across the 12 devices. We believe the loss discrepancy between the two wafers can be attributed to variations in
+the fabrication processes conducted on different days. The supplementary information presents details of fabrication,
+experimental procedure, image processing, edge detection algorithms, and optical loss estimation.
+To estimate the edge roughness by edge detection processing on sem images, we collected 90 sem images of the
+waveguide edge sections from each of the fabricated wafers. An illustration of image processing performed on SEM
+
+===== Page 5 =====
+
+Fig. 2. Waveguide loss wafer profile, the experimental observed waveguide optical loss of each device on two wafers
+(total devices = 24). For all measurements, the error in values is less than 10%.
+images is shown in Fig. 3 to extract the waveguide edges’ ACF and roughness parameters. First, the pixel scale
+information is extracted from the original image. The pixel scale in nanometers is converted by fitting the endpoints of
+the scalebar to its numerical value within the image. Following this, the image underwent sigmoid correction, and an
+edge detection algorithm was used to identify the waveguide edges. These detected edges were then fitted to an ideal
+expected straight line, and the resulting ACF was plotted.
+Fig. 4 shows the result of edge detection algorithm parameters variation on a SEM image. Sigmoid correction gain and
+canny edge detection sigma parameters vary, affecting the final edge detection. This indicates the need to optimize
+these two parameters to find single-edge detection at the edge. We performed a particle-swarm optimization process
+and maximized the edge length to achieve 100 percent success in detecting an edge for a given waveguide SEM image.
+We evaluated ACF for each 90 images randomly acquired from a wafer, in total 180 images for two wafers. Fig. 5
+shows the histograms of the computed
+√︁
+𝑅(𝑢= 0) values derived from 90 SEM images of the respective wafers - (a)
+and (b) corresponding to two wafers. The results indicate that the observed differences in losses are linked to increased
+sidewall roughness of the waveguides, as evidenced by the variations in the computed
+√︁
+𝑅(𝑢= 0) values between the
+two wafers. The mean
+√︁
+𝑅(𝑢= 0) for the first wafer was 5.86 nm, while for the second wafer, it measured 8.58 nm.
+Notably, the first wafer exhibited a spread of up to 2 nm distribution around its mean value. In contrast, the second
+wafer displayed a distribution of approximately 3-4 nm, with three values falling within the 15-17 nm range. The
+extracted values from fitted data characterize the waveguide sidewall roughness, 𝐿𝑐∼100 nm, a mean 𝜎of 5.86 nm
+and 8.58 nm (wafer 1 and 2 respectively), 𝜆∼633 nm, an effective refractive index (𝑛eff) of 1.5, and refractive indices
+𝑛1 = 2.0 and 𝑛2 = 1.46, along with a phase-related parameter 𝜙𝑑= 0.3. Using these inputs, the free-space wavenumber
+is calculated as 𝑘0 = 2𝜋
+𝜆and the propagation constant is given by 𝛽= 𝑛eff · 𝑘0. See supplementary material for the
+theoretical expression of S. Based on the calculation, the loss is 0.08 dB/cm and 0.16 dB/cm for wafers 1 and 2, respectively.
+
+===== Page 6 =====
+
+Fig. 3. Electron microscope image processing. a) The original image acquired from the sem tool. b) Trimmed image.
+c) Edge detection utilizes a sigmoid correction and an optimized parameter process for the edge detection algorithm.
+d) Overlay of both the original and edge-detected images for comparative visualization. e) Quantitative extraction of
+the scalebar and corresponding scale length measured in pixels from the image. f) Plot illustrating the detected edges
+corresponding to pixel numbers. g) Edge data normalized to a metric scale, accompanied by a linear fit of the data,
+represented in blue. h) Transformation of data aligned along the fit line. i) Autocorrelation plot analyzing the data
+presented in (h), highlighting the periodicity and relationships within the transformed dataset.
+
+===== Page 7 =====
+
+Fig. 4. Edge detection optimization process involves image filtering with a sigmoid correction gain parameter and an
+edge detection sigma parameter. This method applies various values of gain and sigma to enhance edge detection, which
+are critical for achieving high-quality, continuous edges that accurately represent the waveguide boundary.
+
+===== Page 8 =====
+
+Fig. 5. Statistical analysis of the waveguide edge roughness of two wafers based on ACF extracted from methods
+discussed before, the x-axis is roughness (in nm), and the y-axis is the total number of edges or sem images (one edge per
+sem image) with a bin.
+Fig. 6. AFM surface profiles of silicon nitride thin films. (a) The surface profile of a homemade silicon nitride thin film
+with a thickness of 40 nm shows an RMS roughness of 2.04 nm over a 1.00 𝜇m × 0.50 𝜇m scan area. (b) The surface
+profile of a commercially bought silicon nitride thin film with a thickness of 200 nm shows an RMS roughness of 1.41
+nm over a 1.00 𝜇m × 0.50 𝜇m scan area. The color scale indicates height variation, demonstrating differences in surface
+quality between the homemade and commercial nitride films.
+We further report the comparison of surface roughness between commercially bought stoichiometric LPCVD nitride
+film (Rogue Valley Microdevices) and our homemade fabricated LPCVD nitride films (see Fig. 6) based on surface
+AFM measurements. The AFM tool used in this measurement has vertical (Z) and horizontal (XY) axes resolution ∼1
+nm and ∼10 nm, respectively. The commercially available silicon nitride thin film of thickness 200 nm demonstrates a
+lower root mean square (RMS) roughness of 1.41 nm compared to the home-manufactured silicon nitride thin film of
+thickness 40 nm, exhibiting an RMS roughness of 2.04 nm as shown in Fig. 6. Nevertheless, the surface roughness of
+the home-manufactured film remains within an acceptable range. It is pertinent to consider that both surface roughness
+values are relatively low when juxtaposed with the typical edge roughness observed in side-wall roughness of waveguides
+as observed, which exceeds three to four times these values. This observation suggests that, in the context of optical
+losses, the surface roughness of these films is unlikely to be the predominant factor when compared to the inherent
+roughness at the edges of waveguides. Nevertheless, in both cases, the surface roughness is several times less than the
+
+===== Page 9 =====
+
+edge roughness; therefore, sidewall roughness losses dominate the total optical waveguide loss demonstrated in this
+work.
+4.
+Discussion and Conclusion
+Modeling sidewall roughness and scattering losses are vital in estimating the waveguide loss, and there is a need to reduce
+the complexity in an optical characterization procedure to calculate the optical losses of photonic waveguide-based
+devices [8,18] so that the process can be scaled to a large number of devices in a convenient and efficient way. In this
+study, we examined SEM images taken at various locations of straight waveguide edge sections and derived the values
+of Lc and sigma through ACF fitting data. The Lc and sigma values differ within the fabricated devices across 3-inch
+PICs and two distinct wafers.
+This work can potentially be applied to characterize various photonic devices, such as the Q-factor of on-chip microring
+cavities, the Q-factor of photonic crystals, and the losses of waveguide crossing optical modes. Since the intrinsic
+Q-factor of cavities is approximated based on the total and where sidewall roughness scattering prevails, sidewall
+roughness scattering loss equals the total loss, as discussed in the introduction.
+Various theories for modeling roughness-induced scattering loss in rectangular waveguides exhibit significant variations in loss estimations [11, 13, 14]. However, the definite understanding is that roughness (ACF and roughness,
+sigma factor) contributes to scattering-induced radiation loss or light loss from a waveguide. Without loss of generality, we can characterize photonic waveguide-based devices and waveguide losses by evaluating S factor, where
+𝑆=
+∫𝜋
+0
+˜𝑅(𝛽−𝑛2𝑘0 cos 𝜃) 𝑑𝜃. For instance, in waveguide crossing, comparison of S values of different waveguide
+crossings, a relative loss estimate can be made if not absolute value. Additionally, from the perspective view for
+future work, machine learning can be effectively utilized, a predictive framework can be established by training a
+model on experimental or simulated data correlating roughness parameters -such as amplitude, correlation length, and
+standard deviation - with waveguide loss. This approach would address the computational challenges associated with
+traditional numerical simulations in complex PIC architectures. The trained model can generalize the roughness-loss
+relationship by incorporating features like waveguide dimensions, material properties, and roughness metrics, facilitating
+rapid predictions across diverse designs. This methodology could potentially be a valuable tool for optimizing PIC
+performance and minimizing losses, circumventing the need for costly and time-intensive full-scale simulations or
+experimental assessments.
+In this work, we demonstrated wafer-scale silicon nitride waveguide optical loss characterization with sem image
+processing and compared it with experiments. We tested 12 devices on each of two wafers, and 0.075 dB/cm was the
+lowest loss observed at 633 nm. We demonstrated low-loss waveguides on homemade silicon nitride and oxide films at
+633 nm. This experimental result adds a new record in previously reported low-loss nitride films for photonic waveguides
+and devices. We demonstrated the application of edge detection algorithms to characterize the edge roughness and
+evaluated optical loss employing a theoretical model. The statistics of waveguide edge roughness over 90 sem images for
+each wafer are demonstrated. The minimum resolution of roughness estimation achieved in our work is ∼4 nm, which
+is not limited by a fundamental principle. The work presented here would be valuable in potentially characterizing
+the photonic devices on large-scale PIC efficiently and quickly, which is a far better option than AFM imaging based
+roughness estimation.
+5.
+Author Contributions
+M.K. and S.D. designed and performed the optical experiment, and S.D. performed the fabrication and acquired sem
+and AFM images of the samples. M.K. conceived the idea, performed the analytical studies, image processing, and data
+analysis, and wrote the manuscript. Z.Y. contributed to discussions.
+6.
+Funding
+S.D. is supported by Herman F. Heep and Minnie Belle Heep Texas A&M University Endowed Fund held/administered
+by the Texas A&M Foundation. We want to thank the Robert A. Welch Foundation (grants A-1261 and A-1547),
+the DARPA PhENOM program, the Air Force Office of Scientific Research (Award No. FA9550-20-10366), and the
+National Science Foundation (Grant No. PHY-2013771). This material is also based upon work supported by the
+
+===== Page 10 =====
+
+U.S. Department of Energy, Office of Science, Office of Biological and Environmental Research under Award Number
+DE-SC-0023103, DE-AC36-08GO28308.
+7.
+Acknowledgment
+We thank Prof. Marlan O. Scully for the insightful discussions during this study. The photonic chip was fabricated at
+Texas A&M University’s Aggiefab facility. We would like to thank Ming-Hsun Chou for assisting Sahar with the AFM
+tool.
+8.
+Additional information
+Supplement material is included as a separate file for additional information.
+9.
+Disclosures
+The authors declare that they have no known competing financial interests or personal relationships that could have
+appeared to influence the work reported in this paper.
+10.
+Data Availability
+Data underlying the results presented in this paper are not publicly available at this time but can be obtained from the
+corresponding author upon reasonable request.
+References
+1.
+S. Shekhar, W. Bogaerts, L. Chrostowski, et al., “Roadmapping the next generation of silicon photonics,” Nat. Commun. 15 (2024).
+2.
+Z. L. Newman, V. Maurice, T. Drake, et al., “Architecture for the photonic integration of an optical atomic clock,” Optica 6, 680 (2019).
+3.
+N. Chauhan, A. Isichenko, K. Liu, et al., “Visible light photonic integrated brillouin laser,” Nat. Commun. 12 (2021).
+4.
+N. Margalit, C. Xiang, S. M. Bowers, et al., “Perspective on the future of silicon photonics and electronics,” Appl. Phys. Lett. 118 (2021).
+5.
+Z. Cui, Electron Beam Lithography (Springer International Publishing, 2024), p. 83âĂŞ139.
+6.
+C. Mack, Fundamental Principles of Optical Lithography: The Science of Microfabrication (Wiley, 2007).
+7.
+R. He, J. Cheng, and F. Wang, Lithography Equipment (Springer Nature Singapore, 2023), p. 1327âĂŞ1359.
+8.
+S. Roberts, X. Ji, J. Cardenas, et al., “Measurements and modeling of atomic-scale sidewall roughness and losses in integrated photonic devices,”
+Adv. Opt. Mater. 10 (2022).
+9.
+D. Englund and J. Vuckovic, “A direct analysis of photonic nanostructures,” Opt. Express 14, 3472 (2006).
+10. N. Tanaka, “Present status and future prospects of spherical aberration corrected tem/stem for study of nanomaterialsâĹŮ,” Sci. Technol. Adv.
+Mater. 9, 014111 (2008).
+11. F. P. Payne and J. P. R. Lacey, “A theoretical analysis of scattering loss from planar optical waveguides,” Opt. Quantum Electron. 26, 977–986
+(1994).
+12. D. Marcuse, “Radiation losses of dielectric waveguides in terms of the power spectrum of the wall distortion function,” Bell Syst. Tech. J. 48,
+3233–3242 (1969).
+13. C. G. Poulton, C. Koos, M. Fujii, et al., “Radiation modes and roughness loss in high index-contrast waveguides,” IEEE J. Sel. Top. Quantum
+Electron. 12, 1306–1321 (2006).
+14. T. Barwicz and H. Haus, “Three-dimensional analysis of scattering losses due to sidewall roughness in microphotonic waveguides,” J. Light.
+Technol. 23, 2719–2732 (2005).
+15. J. Canny, “A computational approach to edge detection,” IEEE Trans. on Pattern Anal. Mach. Intell. PAMI-8, 679âĂŞ698 (1986).
+16. D. Marr and E. Hildreth, “Theory of edge detection,” Proc. Royal Soc. London. Ser. B. Biol. Sci. 207, 187âĂŞ217 (1980).
+17. C. Solomon and T. Breckon, Fundamentals of Digital Image Processing: A Practical Approach with Examples in Matlab (Wiley, 2010).
+18. K. P. Yap, A. Delage, J. Lapointe, et al., “Correlation of scattering loss, sidewall roughness and waveguide width in silicon-on-insulator (soi) ridge
+waveguides,” J. Light. Technol. 27, 3999–4008 (2009).

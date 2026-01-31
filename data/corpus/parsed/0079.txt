@@ -1,0 +1,1625 @@
+
+
+===== Page 1 =====
+
+Heat and charge transport in bulk semiconductors with interstitial defects
+Vitaly S. Proshchenko,1 Pratik P. Dholabhai,1 and Sanghamitra Neogi1, ∗
+1Ann and H.J. Smead Aerospace Engineering Sciences,
+University of Colorado Boulder, Boulder, Colorado 80309, USA
+(Dated: June 4, 2018)
+Interstitial defects are inevitably present in doped semiconductors that enable modern-day electronic, optoelectronic or thermoelectric technologies. Understanding of stability of interstitials and
+their bonding mechanisms in the silicon lattice was accomplished only recently with the advent of
+ﬁrst-principles modeling techniques, supported by powerful experimental methods. However, much
+less attention has been paid to the eﬀect of diﬀerent naturally occurring interstitials on the thermal
+and electrical properties of silicon. In this work, we present a systematic study of the variability
+of heat and charge transport properties of bulk silicon, in the presence of randomly distributed
+interstitial defects (Si, Ge, C and Li). We ﬁnd through atomistic lattice dynamics and molecular dynamics modeling studies that, interstitial defects scatter heat-carrying phonons to suppress
+thermal transport—1.56% of randomly distributed Ge and Li interstitials reduce the thermal conductivity of silicon by ∼30 and 34 times, respectively. Using ﬁrst principles density functional
+theory and semi-classical Boltzmann transport theory, we compute electronic transport coeﬃcients
+of bulk Si with 1.56% Ge, C, Si and Li interstitials, in hexagonal, tetrahedral, split-interstitial and
+bond-centered sites. We demonstrate that hexagonal-Si and hexagonal-Ge interstitials minimally
+impact charge transport. To complete the study, we predict the thermoelectric property of an experimentally realizable bulk Si sample that contains Ge interstitials in diﬀerent symmetry sites. Our
+research establishes a direct relationship between the variability of structures dictated by fabrication
+processes and heat and charge transport properties of silicon. The relationship provides guidance
+to accurately estimate performance of Si-based materials for various technological applications.
+I.
+INTRODUCTION
+Applicability of any material to optical, energy transport or topological architectures is largely determined by
+our ability to design and manipulate defects and doping
+in the material that either supply or destroy free carriers. Signiﬁcant advances have been made to understand
+the physics and the properties of defects in inorganic
+semiconductors, owing to the strong historical interaction between the theory of defects and doping-enabled
+semiconductor-based technologies—microelectronics, [1–
+4] photovoltaics, [5] light-emitting diodes (LEDs) [6],
+and, more recently, spintronics [7] and quantum devices [8, 9].
+Design of defect tolerant semiconductors
+that can retain their properties despite the presence
+of crystallographic defects, is actively pursued for the
+next-generation Earth-abundant solar energy conversion
+technologies. [10] In contrast, introduction of defectinduced innovative transport mechanisms in bulk [11, 12]
+and nanostructured materials [13–16] enabled paradigmshifting advances in the thermoelectric (TE) energy con-
+∗sanghamitra.neogi@colorado.edu
+version devices. Innovative defect engineering eﬀorts in
+future technology-enabling materials heavily rely on a
+better understanding of the role of intrinsic point defects
+in carrier transport.
+In the last two decades, Si-Ge based heterostructures
+have emerged as key materials in numerous electronic,
+optoelectronic [17–19] and TE devices. [20–23] During
+the growth and fabrication of these devices, especially
+ones that require high temperature processes, several
+undesirable damages [24]—vacancies, interstitials, additional substitutional atoms, clusters—are introduced as
+a byproduct. [25] These defects mostly degrade the device performances. [26, 27] It is of great technological
+signiﬁcance to consider the variability of the conﬁgurations, dictated by fabrication processes, while predicting
+the performance of Si-based materials for various applications. Studies of point defects in Si, introduced through
+radiation damage, started in the late 1940s. [24] However, a uniﬁed understanding of stability of interstitial defects and their formation mechanisms was accomplished
+only recently, with the advent of ﬁrst-principles modeling
+techniques, [28–33] supported by powerful experimental
+methods, such as electron paramagnetic resonance spectroscopy and deep-level transient spectroscopy. [34–38]
+arXiv:1806.00217v1  [cond-mat.mtrl-sci]  1 Jun 2018
+
+===== Page 2 =====
+
+2
+The commonly studied interstitials in the silicon lattice, using ﬁrst principles modeling methods, are selfinterstitials, [29, 30, 39, 40] germanium, [33, 40] carbon, [41–43] and lithium [44–46].
+Carbon interstitials
+play an important role in the radiation-damage behavior
+of silicon. [35] Li interstitials in silicon signiﬁcantly inﬂuence the stability of the host material, and thus, the
+applicability of silicon as an anode material in the next
+generation lithium-ion batteries. [46] These ﬁrst principles based electronic structure modeling studies primarily
+investigated the structural changes, stability and bonding mechanism of defects in the silicon lattice.
+Introduction of vacancies and substitutional point defects have been extensively investigated to suppress the
+thermal conductivity of bulk silicon. [47–49] Around a
+vacancy, lattice relaxation creates additional scattering
+sites for phonons. The reduction of thermal conductivity
+is thus explained by increased phonon scattering and a
+reduction in the mean-free-path of phonons, due to the
+relatively high concentration of vacancies (1-4%). [49–
+51] However, the number of studies to investigate the
+inﬂuence of interstitials on thermal conductivity is fairly
+limited. Few studies exist that focused on phonon properties employing Green’s function techniques with approximated force constant based models. [52–56] Interstitials in the context of thermoelectrics have been widely
+studied in the form of clathrates and other caged structures. [57] A comprehensive understanding of the eﬀect
+of diﬀerent naturally occurring interstitials (Si, Ge, C
+and Li) on the thermal and electrical properties of silicon, however, doesn’t exist.
+In this work, we present
+a systematic study of the variability of charge and heat
+transport properties of bulk silicon in the presence of
+randomly distributed interstitial defects (Si, Ge, C and
+Li), using ﬁrst principles density functional theory (DFT)
+and atomistic lattice dynamics and molecular dynamics
+(MD) techniques, respectively. This theoretical investigation furnishes indirect measures to estimate the presence of interstitial defects in a sample. Furthermore, our
+study establishes a processing-structure-transport (heat
+and charge) property map that provides guidelines for
+design, synthesis and processing to develop Si-based materials with predictable, robust and optimal performance.
+As an illustration of the relevance of this work for practical applications, we discuss the relationship between
+the structure dictated by processing and material performance of bulk silicon, with naturally occurring interstitial impurities in the lattice, for thermoelectric applications. Solid state TE generators [58] are expected to play
+a key role to meet the rapidly increasing power demands
+of the internet of things, by converting any source of
+heat into electricity. Defect engineering in TE materials
+aims to aﬀect the interdependent heat and charge transport properties toward higher material performance. The
+maximum power-generation eﬃciency (η) of a TE material is, η =
+
+Thot−Tcold
+Thot
+ 
+√1+ZT −1
+√1+ZT +
+ Tcold
+Thot
+
+
+, where the
+Carnot eﬃciency is the ratio of the temperature diﬀerence between the hot and cold end (Thot −Tcold) to Thot.
+The dimensionless ﬁgure of merit, ZT, is the primary
+parameter that determines the eﬃciency and is given by
+ZT =
+σS2T
+κe+κph =
+PF T
+κe+κph , where σ is the electrical conductivity, S is the thermopower or Seebeck coeﬃcient, T is
+the temperature, PF (= σS2) is the power factor, κe and
+κph are the electronic and ionic contributions to the thermal conductivity, respectively. [58] Our MD studies show
+that interstitial defects scatter heat-carrying phonons to
+suppress the κph; 1.56% of randomly distributed Li, Ge,
+Si and C interstitials reduce the thermal conductivity of
+silicon by ∼34, 30, 20 and 9 times, respectively.
+We
+provide further insights into the modiﬁcation of phonon
+propagation properties in the presence of interstitials by
+computing the density of states and group velocities using
+lattice dynamics technique. Defects commonly introduce
+additional impurity levels within the TE materials energy
+band gap, [59, 60] leading to a reduced charge transport.
+We investigate the electronic transport properties of bulk
+Si with 1.56% Ge, C, Si and Li interstitials in hexagonal,
+tetrahedral, split-interstitial and bond-centered sites. We
+demonstrate that Si and Ge interstitials in the hexagonal sites minimally impact the charge transport properties of bulk silicon. This combined with the decreased
+values of κph leads to a 14 and 17 times improved ZT,
+respectively. To complete the study, we predict the thermoelectric property of an experimentally realizable bulk
+silicon sample with Ge interstitials in diﬀerent symmetry
+locations.
+II.
+METHOD
+In order to elucidate the impact of interstitial defects
+on the electronic and heat transport properties of bulk
+silicon, we employed ﬁrst principles DFT and atomistic
+lattice dynamics and MD techniques, respectively.
+
+===== Page 3 =====
+
+3
+(a) 
+(b)
+FIG. 1.
+Representative conﬁgurations of bulk Si with Ge
+interstitials studied using (a) classical MD and (b) ﬁrstprinciples DFT method. The MD conﬁguration consists of
+4096 host Si (yellow) and 64 interstitial Ge (green) atoms.
+The DFT conﬁguration has 64 Si (yellow) and 1 Ge (green)
+atoms. The concentration of Ge in bulk Si is 1.56% in both
+conﬁgurations.
+A.
+System details
+We investigated bulk silicon conﬁgurations with commonly occurring interstitial impurities: Ge, C, Si, and
+Li; the systems studied will henceforth be referred to as
+Si-I-X systems (where I ≡Interstitials and X = Ge, C,
+Si or Li). Representative microscopic conﬁgurations of
+the Si-I-X systems investigated are shown in Fig. 1. The
+bulk Si supercell templates were generated by replicating a conventional unit cell (CC) of silicon, which consists of 8 atoms in a diamond face centered cubic lattice
+arrangement with side length 5.431 ˚A. The guest atom
+species (X) were then inserted in the interstitial sites (I)
+of these supercell templates to create the Si-I-X conﬁgurations.
+The most widely studied interstitial sites in
+bulk silicon lattice, investigated with semi-empirical and
+ﬁrst-principle methods, are of hexagonal, tetrahedral,
+split-interstitial, and bond-centered type. [29, 30, 33, 39–
+42, 44, 45] Previous studies discussed that each of these
+sites is energetically favorable for only a speciﬁc set of
+guest atoms as interstitials.
+Additionally, the stability of interstitials also depends on the charge state of
+the defects due to the change in the number of dangling bonds. [28, 30] We investigated electronic transport
+properties of relaxed Si-I-X conﬁgurations with neutrally
+charged interstitials in each of these stable sites (illustrated in Fig. 2) using DFT. Each of the [2 × 2 × 2] × CC
+DFT model supercell conﬁgurations (Fig. 1) has 64 Si and
+1 interstitial (I) atoms yielding a 1.56 % concentration of
+guest atoms in host Si. The system size was chosen to allow us to study charge transport in a large set of defected
+(a) Hexagonal 
+(b) Tetrahedral
+(d) Split 
+(e) Bond-center
+(c) Diamond
+FIG. 2. (c) Conventional unit cell of bulk silicon and commonly studied interstitial sites (a, b, d and e) in the diamond
+cubic lattice. Yellow and red colors represent host and interstitial atoms, respectively.
+semiconductors with a varied chemical bonding environment. In parallel, to study the extent of disruption of
+phonon transport in the presence of interstitial scatterers, we performed MD studies of the Si-I-X systems with
+three diﬀerent interstitial concentrations, 0.1%, 0.5%,
+and 1.56%. The MD models consisted of several thousands of atoms (≥32768). The system sizes were chosen
+to represent bulk systems with low enough interstitial
+concentrations realizable in experimental conditions, [23]
+as well as to perform a large set of calculations with
+reasonable computing expenses. The interstitial sites in
+these large replicated MD supercells were generated using
+a systematic search algorithm. The algorithm employs
+a repulsive pair potential to model interatomic interactions between an interstitial atom and its neighboring
+host lattice atoms to identify interstices in materials. [61]
+These generated tetrahedral sites were randomly populated with a chosen number of interstitial atoms consistent with the concentration. Three distinct randomized
+conﬁgurations were investigated for each concentration.
+We obtain the initial conﬁgurations of the Si-I-X systems
+by placing all the diﬀerent species investigated (Ge, C, Si,
+and Li) at tetrahedral interstitial sites, to ensure a consistent comparison of their impact on thermal properties of
+bulk Si. However, as we discuss in the following “Atomistic calculations” subsection, a percentage of these interstitial atoms are likely to populate other sites in the
+
+===== Page 4 =====
+
+4
+ﬁnal conﬁgurations following equilibration at 300K, due
+to thermal ﬂuctuations.
+B.
+Atomistic calculations
+We analyzed the thermal transport properties of Si-IX systems by performing equilibrium molecular dynamics (EMD) simulations, with periodic boundary conditions enforced in all three directions to emulate inﬁnite
+systems. The interatomic forces between Si, Ge and C
+atoms were modeled using the empirical potential proposed by Tersoﬀ. [62] This potential was parametrized
+to treat heteronuclear bonds, and to reproduce correctly
+the elastic properties of silicon, SiC and its defects, in
+particular. To model interactions in the Si-I-Li systems,
+we implemented a second nearest-neighbor modiﬁed embedded atom method (2NN MEAM) interatomic potential, which was used to describe interactions in Li–Si alloys [63]. To the best of our knowledge, this potential has
+not been employed for thermal property calculations. We
+performed several test calculations of thermal conductivities (TC) of bulk Si with the 2NN MEAM potential, and
+compared with the TC results obtained with the widely
+used Tersoﬀpotential.
+We present the computational
+details and the comparison, in the following paragraphs.
+All systems with interstitials were equilibrated at 300
+K to ensure that the stability of the structures is maintained. After equilibration, the initial velocities in the
+MD simulations were set to 300K and the systems were
+coupled to a Nos´e–Hoover thermostat for 1 ns to decorrelate the systems from their initial conﬁgurations. The
+thermostat was then decoupled from the systems so that
+the simulations were performed under microcanonical
+conditions.
+The equations of motions were integrated
+with a time step of 0.25 fs to ensure energy conservation over simulation times of several tens of nanoseconds.
+We computed the TCs from the ﬂuctuations of the heat
+current in EMD simulations, using the Green–Kubo relation [64]: κα = 1/(k BVT 2)
+R ∞
+0
+dt⟨Jα(t)Jα(0)⟩where α
+= x, y, z; kB is the Boltzmann constant, V is the volume
+of the system, T is the temperature, and ⟨Jα(t)Jα(0)⟩
+is the heat current autocorrelation function along the
+direction (α) of heat propagation. The heat current is
+computed by J = PN
+i ϵivi + 1/2 PN
+i,j;i̸=j(Fij · vi)rij +
+1/6 PN
+i,j,k;i̸=j;j̸=k(Fijk · vi)(rij + rik), where ϵi and vi
+are the energy density and velocity associated with atom
+i, respectively. F is the interatomic force acting between
+atoms separated by a distance r. The heat ﬂux data were
+recorded at 5 fs intervals. The total simulation times varied between 15 and 30 ns for diﬀerent conﬁgurations. All
+EMD simulations were carried out using LAMMPS software [65].
+A known disadvantage of the Green-Kubo formalism
+combined with EMD method is that the TCs obtained
+might suﬀer from system size dependence. The size converged TC value of bulk Si modeled with Tersoﬀempirical potential is reported to be 196.8 ± 33.3 W/m-K. [66]
+However, no such study has been reported for Si described with the 2NN MEAM interatomic potential. [63]
+To obtain a reference bulk Si TC described with 2NN
+MEAM interatomic potential, we performed simulations
+of supercells of increasing volume from [4 × 4 × 4] × CC
+to a size [32×32×32]×CC containing 262144 atoms. As
+depicted in Fig. 3, we ﬁnd that the converged bulk Si TC
+using 2NN MEAM is 122.22±13.81 W/m-K. We will use
+this value in the following analysis as our reference for
+bulk Si TC, using 2NN MEAM empirical potential. We
+ﬁnd that to obtain a converged value of TC, one has to
+use simulation cells with at least 32,768 atoms. Each of
+the data points reported in Fig. 3 was obtained by averaging over 10 calculations performed with independent conﬁgurations, and the standard deviation is reported as the
+uncertainty. Compared to the experimentally measured
+TC values (depicted in the blue shaded regions in Fig. 3)
+ranging from 130 to 150 W/m-K at 300 K, it can be argued that the bulk Si TC modeled using 2NN MEAM is
+in reasonable agreement with the measured values, and
+the empirical potential oﬀers a rational choice to model
+bulk Si with Li interstitials.
+In order to test system size dependence of TCs of Si-IX samples, we computed TCs of two systems, Si-I-Ge and
+Si-I-Li, each with two supercells of sizes [8 × 8 × 8] × CC
+(4096 atoms) and [16 × 16 × 16] × CC (32768 atoms).
+This strategy ensured that we tested the size convergence of TCs of defected Si systems described with two
+diﬀerent potentials used in this study, Tersoﬀand 2NN
+MEAM. For the two system sizes of Si-I-Ge and Si-I-Li,
+the TCs diﬀer by ∼9.8% and ∼9.6%, respectively, which
+fall within our method uncertainty limits. In our conservative estimate the dimension of simulation supercell
+with minimum system size eﬀects is [16 × 16 × 16] × CC.
+Henceforth, all TC computations of Si-I-X systems were
+performed using this system size. For each of the three
+chosen concentrations of interstitials (0.1%, 0.5%, and
+1.56%) in the Si-I-X systems, TCs are averaged over 45
+data sets—obtained from 3 randomized conﬁgurations,
+
+===== Page 5 =====
+
+5
+10 1
+10 2
+10 3
+10 4
+10 5
+10 6
+Number of atoms
+0
+50
+100
+150
+200
+250
+300
+Thermal conductivity (W/m-K)
+Ref. data (Tersoff)
+Present work (2NN MEAM)
+Exp.
+data
+FIG. 3. Thermal conductivities of bulk silicon at 300 K computed from equilibrium molecular dynamics using the Green–
+Kubo theorem, as a function of the number of atoms in the
+simulation cell.
+The ﬁlled squares represent the TCs computed using the 2NN MEAM potential. [63] To facilitate a
+coherent comparison, corresponding TCs obtained with Tersoﬀpotential [66] are shown with open circles (data extracted
+from Ref. [66]; converged TC: 196.8±33.3 W/m-K) alongside
+2NN MEAM values. The dashed line connecting the points
+is displayed as a guide to the eye. The blue shaded region,
+extracted from Ref. [66], indicates the range of TCs measured
+in the experiments where most values lie in the darker portion of the region. The converged TC of bulk Si using 2NN
+MEAM is 122.22 ± 13.81 W/m-K.
+simulations initialized with 5 diﬀerent random velocities
+and results averaged over x, y and z directions.
+C.
+First principle calculations
+A century of developments in empirical and semiempirical models [67, 68] realized the modern theory
+of defects in crystalline solids, based on ﬁrst-principles
+electronic structure techniques. [69] The method has
+been demonstrated to expose phenomena that can be
+readily implemented to optimize the performance of a
+broad-range of technology-enabling materials.
+We implemented electronic structure calculations with DFT,
+using the generalized gradient approximation (GGA) of
+the exchange-correlation functional by Pedrew-BurkeErnzerhof (PBE) [70] as implemented in the plane-waves
+code Quantum Espresso (QE), [71] to study the eﬀect of
+interstitial species types and their positions on electronic
+transport. We employed scalar relativistic normconserving pseudopotentials to treat core electrons of both the
+host Si and the interstitial atoms. [71] The Kohn-Sham
+orbitals expanded in terms of a plane wave basis set,
+had a cutoﬀenergy of 30 Ry for all calculations. A convergence threshold for self-consistency was chosen to be
+10−9. As illustrated in Fig. 1(b), the periodic DFT supercells consisted of 64 silicon and 1 interstitial atoms—
+corresponding to 1.56% interstitial concentration in the
+bulk (see the “System details” subsection for details).
+The supercells were ﬁrst relaxed employing BroydenFletcher-Goldfarb-Shanno quasi-newton algorithm with
+a 4×4×4 Monkhorst-Pack k-point mesh [72] to optimize
+the lattice constants and the atom positions of the Si-I-X
+supercells. Following relaxation, we performed non selfconsistent ﬁeld (NSCF) calculations to obtain the band
+energies using a dense k-point mesh. Such sampling is
+necessary to converge the calculation of transport coeﬃcients.
+The electronic transport coeﬃcients were evaluated
+within the framework of semi-classical Boltzmann transport theory [73] as implemented in the BoltzTraP
+code. [74] The code employs Fourier expansion to realize
+an analytical representation of the band energies, computed with DFT. Using such representations of the electronic band structure and the knowledge of the density of
+states, one can evaluate the Seebeck coeﬃcient (S), the
+electrical conductivity (σ) and electronic thermal conductivity (κe) and the power factor (PF) (S2σ), in the
+diﬀusive regime, by integrating the following expressions
+over the ﬁrst Brillouin zone [74, 75]:
+L(a) = e2
+V
+Z
+BZ
+d3k
+4π3
+
+τ(k)ν(k)ν(k)(ϵk −µ(T))a
+
+−∂fµ
+∂ϵk
+
+(1)
+σ = L0,
+(2)
+S = 1
+eT L1/L0
+(3)
+κe =
+1
+e2T
+ L2 −(L1)2/L0
+(4)
+where e is the electron charge and V the volume of the
+system. The integrand in the expression L(a) consists of
+the electron relaxation time τ(k), the electron group velocity ν(k), the a-th power of the Kohn-Sham energies
+ϵk with respect to the electronic chemical potential µ(T)
+and the derivative of the Fermi-Dirac distribution function (fµ). The transport coeﬃcients obtained using Eq.
+(1-4) are tensors: however since transport is isotropic in
+the bulk, we report only the trace of S, σ and κe divided
+by three. Our tests showed that NSCF calculations performed with a 15×15×15 k-point mesh were suﬃcient to
+
+===== Page 6 =====
+
+6
+converge the transport coeﬃcients of the 65 atom Si-I-X
+systems under investigation.
+It is computationally very expensive to compute the
+electron relaxation time τ(k) from ﬁrst principles for our
+systems. We adopt the constant relaxation time approximation (RTA), that assumes that the relaxation time τ
+depends only on the carrier concentration and is independent of ϵ and k. With this approximation τ can be
+factored out of the integrals in Eq. 1, so that it cancels
+out in the expression of S (Eq. 3), while it remains as a
+prefactor in the σ and κe expressions (Eq. 2, 4). In RTA
+τ can be estimated using the experimental values of electron (hole) mobility [76] and eﬀective masses [77], which
+is known for bulk silicon.
+We employed a further assumption that small (∼1%) concentration of interstitials
+does not aﬀect the electron relaxation times signiﬁcantly
+and compute σ and κe using τ values obtained from bulk
+silicon data. [76, 77]
+III.
+RESULTS AND DISCUSSION
+We now turn to discuss the main focus of this work
+which is to determine how the presence of interstitials
+aﬀect heat and charge transport properties of bulk silicon.
+We performed a series of EMD simulations (see
+the “Method” section for details) and computed the TCs
+of Si-I-X systems with varied concentrations of interstitials. After establishing a series of results with MD simulations, we analyzed the bonding environments of the
+interstitials to analyze and interpret our data.
+Additionally, we used lattice dynamics (LD) calculations to
+understand the propagating character of phonons. Lattice dynamics calculations are essential to gain insights
+into the modiﬁcation of the phonon properties of bulk
+silicon with interstitials. In particular, we computed the
+vibrational density of states of Si with interstitial defects
+in tetrahedral sites, as well as the propagating character
+of the phonons of the defected systems. In parallel, we
+systematically investigated charge transport properties
+of systems with a wide range of conﬁgurations, incorporating various guest species and a number of interstitials
+symmetry sites for each type. Finally, we combined the
+phonon and electron transport properties to establish a
+structure-processing-ﬁgure-of-merit map of bulk silicon
+with interstitials.
+0
+0.5
+1
+1.5
+2
+2.5
+Interstitial concentration (%)
+5
+10
+50
+100
+Thermal conductivity (W/m-K)
+C Interstitials
+Si Interstitials
+Ge Interstitials
+Li Interstitials
+Ref. data
+FIG. 4. Thermal conductivities of bulk silicon with C (blue
+squares), Si (orange inverted triangles), Ge (green triangles)
+and Li (magenta diamonds) interstitials at 300 K as a function of interstitial concentrations. To oﬀer a comparison with
+the eﬀect of widely employed Ge substitutions on TC of bulk
+Si, corresponding TC values are displayed with black open
+circles(data extracted from Ref. [78]). The X-axis label corresponds to substitutional concentration of Ge in bulk Si in
+this case.
+A.
+Thermal conductivity
+We start by discussing our MD results.
+Figure 4
+displays the room temperature TCs of Si-I-C (blue
+squares), -Si (orange inverted triangles), -Ge (green
+triangles),
+and -Li (magenta diamonds) systems as
+a function of interstitial concentrations.
+The TCs
+of
+Si-I-Li
+systems
+were
+computed
+using
+the
+2NN
+MEAM potential [63] while the TCs of all the other
+Si-I-X systems were computed with Tersoﬀpotential. [62] However, to facilitate a coherent comparison,
+we scale the reported values in the plot as follows:
+TCLi
+reported=(TCLi
+2NN-MEAM/TCBulk Si
+2NN-MEAM)×TCBulk Si
+Tersoﬀ
+where TCBulk Si
+Tersoﬀ
+=
+196.8 ± 33.3 W/m-K [66] and
+TCBulk Si
+2NN-MEAM = 122.22 ± 13.81 W/m-K, respectively.
+As evident from Fig. 4, the TC is lowered signiﬁcantly
+upon the addition of a small fraction of interstitials,
+independent of the species type. Remarkably, even with
+a concentration of 0.1%, there is a ∼2 (C)–4 (Li)-fold
+reduction in the TC from the bulk value (196.8 ± 33.3
+W/m-K). The decrease in TC is more pronounced with
+increased interstitials concentrations, as expected.
+A
+general trend of decrease in the TC is noted as Si-I-Li <
+-Ge < -Si < -C, as displayed in Fig. 4, with Ge and Li
+having the most and C the least impact in lowering the
+
+===== Page 7 =====
+
+7
+2
+3
+4
+Neighbor count
+Neighbor distance (A)
+128
+0
+256
+384
+512
+2
+3
+4
+2
+3
+4
+2
+3
+4
+(a)
+(b)
+(c)
+(d)
+C
+Si
+Ge
+Li
+FIG. 5. Nearest-neighbor environment analysis of Si-I (a) -C,
+(b) -Si, (c) -Ge, and (d) -Li systems. The neighbor distances
+are sorted in ascending order over all interstitial atoms in the
+supercell and displayed against the neighbor count.
+TC, respectively. There is almost a factor 2 diﬀerence
+in the TC between systems with diﬀerent guest atoms
+with a small (∼0.1%) concentration of interstitials. The
+spread in TC decreases with increased concentration of
+interstitials—randomly dispersed 1.56% Li, Ge, Si and
+C interstitials decrease the TC of bulk Si by ∼34, 30, 20
+and 9 times, respectively. It is interesting to note that
+the phonon transport in bulk Si is aﬀected more in the
+presence of Ge interstitials (Fig. 4) than the widely
+employed Ge substitutions [78] for similar guest species
+concentrations, by a signiﬁcant amount. This suggests
+that interstitials oﬀer a strategy to eﬀectively scatter
+phonons by tuning the mass and size of the guest atom,
+and thereby achieve phonon-glass paradigm to engineer
+next-generation thermoelectric materials.
+B.
+Bonding environment analysis
+To understand the inﬂuence of interstitials on phonon
+transport, we analyzed the bonding environment of the
+guest atoms in the Si-I-X systems. In Fig. 5 we present
+nearest-neighbor (NN) environment analysis of Si-I (a)
+-C, (b) -Si, (c) -Ge, and (d) -Li systems. In this analysis,
+we investigated [8 × 8 × 8] × CC (4096 atoms) Si-I-X supercells with 1.56% interstitials. This concentration corresponds to 64 guest interstitials in a supercell. For each
+guest type, we computed the distance between a given interstitial atom and the eight NN Si atoms, to make sure
+that we include all ﬁrst NNs in the analysis. A hexagonal
+interstitial site has maximum number of NNs, 6, in the
+silicon lattice. Therefore, the total neighbor count is 512
+(= 64 × 8) in the supercell containing 4096 atoms, in a
+conservative estimate. The neighbor distances are sorted
+in ascending order over all interstitial atoms in the supercell and displayed in Fig. 5. From the panels (a), (b)
+and (c) we mark a gap in the neighbor distance curve
+and infer that this gap indicates the division between
+the ﬁrst and the second NNs. The number of the ﬁrst
+NNs increases with increasing the size of the interstitial
+atom (Fig. 5)—average ﬁrst NN distances in Si-I-C, -Si,
+and -Ge are estimated as 2.04 ± 0.2 ˚A, 2.27 ± 0.28 ˚A,
+2.53 ± 0.18 ˚A, respectively.
+The diﬀerent number of the ﬁrst NNs and the uncertainty in the neighbor distances indicate that the interstitials reside in a dynamic bonding environment due
+to temperature ﬂuctuations.
+The NN analysis manifests that the interstitials access other symmetry positions during the MD simulations even though the initial
+conﬁguration consisted of only four-coordinated tetrahedral sites. This was the reason to check 8 NN distances
+in the previous bonding environment analysis as well. An
+interesting aspect that can be noted from Fig. 5 is that
+there is no clear separation between the ﬁrst and the
+second NN distances in Si-I-Li unlike the other systems
+investigated. Therefore, we do not report an estimated
+ﬁrst NN value for this system. This disparity illustrates
+that Li interstitials are more diﬀusive in character leading to signiﬁcant disorder in the lattice; which is likely
+to be the reason for Li interstitials being the most eﬀective in lowering bulk Si TC as compared to Ge, C, or
+Si. One other likely origin of dissimilar NN environment
+of interstitial atoms is strain. In these materials, atoms
+with dissimilar masses and sizes compared to the host
+atoms (other than Si-I-Si) are randomly placed in interstitial sites, leading to anisotropic strain in the material.
+The strain could further contribute to disparate relaxation that results in diverse bonding environment of the
+interstitial atoms, leading to varied impact on TC.
+Interstitial atoms potentially serve as scattering centers that reduce the mean free path of phonons. It can
+be argued that the individual atoms as well as the diverse local structural environment caused by distribu-
+
+===== Page 8 =====
+
+8
+System Uniform (W/m-K) Random (W/m-K)
+Si-I-Ge
+11.23 ± 0.48
+5.88 ± 0.23
+Si-I-Li
+5.62 ± 0.88
+5.36 ± 0.83
+TABLE I. Thermal conductivities of 4096-atom Si supercells
+with 1.56% Ge and Li interstitial atoms placed uniformly and
+randomly.
+tion of interstitials, play a critical role in lowering the
+bulk Si TC. In order to investigate the eﬀect of distribution of interstitials on TC, we investigated two sets
+of [8 × 8 × 8] × CC (4096 atoms) Si-I-X supercells with
+1.56% Ge and Li interstitials: one set contains conﬁgurations in which the interstitials were uniformly placed in
+tetrahedral sites, the other contains conﬁgurations with
+randomly populated sites. As shown in Table I, we ﬁnd
+that the TCs of Si-I-Ge-uniform samples are ∼2 times
+higher than the Si-I-Ge-random samples. On the contrary, there is no noticeable diﬀerence between the TCs
+of Si-I-Li-uniform and Si-I-Li-random samples. Our NN
+analysis shows that the individual bonding environments
+for the 64 interstitials in the equilibrated (at 300K) Si-IGe-uniform samples are similar within statistical ﬂuctuations. However, that is not the case in Si-I-Li-uniform
+samples due to the diﬀusive character of Li in Si; the
+distribution of interstitials in the equilibrated conﬁgurations is no longer uniform. Li atoms diﬀuse through both
+the uniform and random sample during equilibration to
+yield a randomized distribution of local strain in the bulk
+yielding similar TC. Nevertheless, it is important to note
+that addition of Ge interstitials considerably lowers TC
+with reduction comparable to Li, despite lacking the diffusive character. Overall, considering the stability of the
+material we infer that Ge interstitials oﬀer a promising
+route to decreasing TC of bulk Si.
+C.
+Phonon properties
+In order to characterize the transformation of Si heat
+carriers in the presence of interstitials in Si-I-X systems,
+and to analyze the TC decrease trend (Ge < Si < C), we
+carried out a series of lattice dynamics (LD) calculations.
+In a bulk material, TC can be modeled using the kinetic
+theory of thermal diﬀusion, which relies on an approximated solution of the linearized Boltzmann transport
+equation. The 3 × 3 thermal conductivity tensor can be
+FIG. 6.
+Vibrational density of states of bulk silicon with
+1.56% C (blue), Si (orange) and Ge (green) interstitials. The
+population of the phonon modes in Si-I-X systems is slightly
+aﬀected in the ∼15 THz region.
+expressed as [73]
+καβ = 1
+V
+X
+q,λ
+ℏωλ(q)∂nλ(q)
+∂T
+vλ,α(q)vλ,β(q)τλ(q)
+(5)
+Similar to the expression in Eq. 1 the summation is over
+all the phonon modes in the ﬁrst Brillouin zone enumerated by wave vector q and polarization λ. V is the sample volume, ℏis the reduced Planck constant, ωλ(q) is
+the phonon frequency, nλ(q) is the Bose-Einstein distribution, T is temperature, vλ,α(q) is the component of
+the phonon group velocity vector along the Cartesian direction α, and τλ(q) is the phonon lifetime.
+Previous
+studies computed eigenfrequencies of localized phonon
+modes and phonon density of states of Si with interstitials defects (Si, O, C, B, Li) in tetrahedral sites, using
+Green’s function techniques. [54] However, only isolated
+interstitials were considered, therefore, the results cannot be compared. We computed the phonon dispersions
+ωλ(q) of Si-I-X systems by direct diagonalization of the
+dynamical matrix of a 8 × 8 × 8 × CC (4096 atoms) supercell with 1.56% randomly dispersed interstitials (as
+described in the “System details” subsection). The sum
+in equation Eq. 5 is implicitly aﬀected by the vibrational
+density of states (VDOS) of the system; we computed
+the VDOS of Si-I-X systems by integrating the ﬁrst Brillouin zone using a 8 × 8 × 8 Monkhorst-Pack mesh of
+q-points [72]. We ﬁnd that there is a slight decrease and
+shift in the intensity of the peak related to optical modes
+at about 15 THz, as displayed in Fig. 6, however, these
+
+===== Page 9 =====
+
+9
+FIG. 7. Phonon group velocities of bulk silicon with 1.56% C
+(blue), Si (orange) and Ge (green) interstitials compared to
+bulk (black). Phonon group velocities are strongly reduced in
+the Si-I-X systems above 3–5 THz and the vg proﬁle is approximately of the order Ge < Si < C. Inset: Phonon group
+velocities in Si-I-Ge systems with uniform (magenta) and random (green) distribution of interstitials. Group velocities are
+more suppressed in Si-I-Ge system with randomly distributed
+interstitials.
+modes do not contribute greatly to heat transport. Previous calculation of phonon density of states also reported
+a shift in the intensity in the high frequency region, as
+well as a peak near ∼4 THz.
+However, only one interstitial defect was considered in this calculation, and
+simplifying assumptions were made that the interstitials
+are weakly bound to the host atom, and therefore, should
+not disturb the local symmetry appreciably. [52]
+In order to analyze the propagating character of the
+phonons, we compute the group velocities. The phonon
+group velocity term plays a dominant role in the TC
+expression (Eq. 5) and hence, can help us to make a
+qualitative prediction of TC of the material. The gradient of the frequency ωλ(q) with respect to wavevector q
+yields the group velocity vector vλ(q), i.e., vg = vλ(q) =
+∂ωλ(q)/∂q. In Fig. 7, we show the phonon group velocities in Si-I-C (blue), -Si (orange) and -Ge (green) systems, along the symmetry direction [000]−[100] of the supercell in comparison with bulk (black). We ﬁnd that the
+phonon group velocities above 3–5 THz are greatly decreased in defected systems with respect to those in bulk
+crystalline Si (approximately 1 order of magnitude) due
+to the presence of interstitials. In fact, the suppression of
+group velocities has a direct correspondence with the TC
+decrease trend (Ge < Si < C), as illustrated by our MD
+simulations (see Fig. 4). As can be noted from Fig. 7, the
+vg values in between 3-5 THz are least suppressed in SiI-C systems, when compared with Si-I-Ge systems. The
+reduction of vg, especially in the low frequency region,
+plays a dominant role in heat transport and is directly
+responsible for the diﬀerence in TC values between the
+systems (Ge < C, see Fig. 4). The group velocities of SiI-Si and Si-I-Ge have a similar proﬁle yielding similar TC
+values. The inset of Fig. 7 shows the phonon group velocities along the symmetry direction [000]−[100] in Si-IGe systems with uniform (magenta) and random (green)
+distribution of interstitials. The group velocity proﬁle of
+the Si-I-Ge-random system is lower than the corresponding system with uniform distribution of Ge interstitials,
+yielding a ∼2-fold reduced TC, as reported in Table I.
+D.
+Electronic transport
+In this section, we illustrate the eﬀect of diﬀerent interstitials in varied lattice symmetry positions on electronic transport properties of Si. The drastic reduction
+of TC of bulk silicon with the introduction of interstitials makes this a promising materials engineering strategy for thermoelectric applications. However, in order
+to achieve a high ﬁgure of merit (ZT) and attain the
+phonon-glass-electron-crystal regime, it is important to
+not only decrease TC but to simultaneously maintain
+a high power factor (PF). Previous studies with semiempirical and ﬁrst-principles methods demonstrated that
+the energetically stable interstitial sites in bulk silicon
+are of hexagonal, tetrahedral, split-interstitial and bondcentered type (see Fig. 2). [29, 30, 33, 39–42, 44, 45] We
+computed the charge transport properties of the Si-I-X
+systems (X = Ge, C, Si or Li) with interstitials in each
+of these possible energetically stable sites. Table II displays the total energies of the Si-I-X systems with speciﬁc
+atom species X (listed in the leftmost column) in varied
+interstitial sites of Si, computed with DFT. We assigned
+a reference value (0.00 eV) to the lowest energy across
+each row and presented the energies in the neighboring
+columns in the same row with respect to this reference.
+The split-interstitial sites in Si-I-Si (and -Ge) and Si-I-C
+systems are considered to be along the [110] and [100]
+cubic lattice symmetry directions, respectively. The results displayed in Table II indicate that split-interstitials
+are the most energetically favorable sites in Si-I-Si, -
+Ge and -C systems, while Li atoms are more stable in
+
+===== Page 10 =====
+
+10
+Total energies of Si-I-X systems (eV)
+Interstitial
+Interstitial site
+atom (X)
+Bond-center Hexagonal Split Tetrahedral
+Si[29, 30, 39, 40]
+0.07
+0.00
+0.20
+Ge[33, 40]
+0.29
+0.00
+0.25
+C[41, 42]
+0.93
+0.44
+0.00
+Li[44, 45]
+0.51
+0.00
+TABLE II. Total energies of 65-atom Si-I-X supercells with
+diﬀerent interstitials in varied sites. The lowest energy across
+each row is assigned to be the reference and the energies in
+other columns along the same row is presented with respect
+to the reference. The gray cells represent systems which are
+either unstable or have total energies higher than 1 eV from
+reference.
+The blue and white cells correspond to systems
+with semiconductor-like and metal-like behavior, respectively.
+tetrahedral sites at 0K. These results are in good agreement with previous theoretical calculations. For Si selfinterstitials, the split and the hexagonal sites are reported
+to be the ﬁrst and the second most stable geometries,
+respectively, with insigniﬁcant diﬀerence in energies between them. [29, 30, 40, 79] Split-interstitial sites were
+also demonstrated to be the equilibrium positions for Ge
+and C defects in the silicon lattice. [33, 40–42] And, a
+binding energy analyis reported that Li is most stable in
+a tetrahedral site. [44] However, our MD studies reveal
+that interstitials are highly likely to access diﬀerent sites
+due to temperature ﬂuctuations. Therefore, it is safe to
+assume that all the sites with energy values reported in
+Table II are equally probable due to temperature ﬂuctuations and random defect distributions in a sample.
+We decided to compute charge transport properties of
+only the systems that are stable and have total energies
+within 1 eV compared to the most energetically favorable system in the same row. The systems represented
+by the empty gray cells in Table II didn’t satisfy these
+criteria and therefore, were omitted from further investigation.
+Some of the stable Si-I-X systems exhibited
+semiconductor-like behavior (blue) while other exhibited
+metal-like behavior (white). We discuss the properties of
+the semiconductor-like systems in the next paragraphs
+followed by the metal-like systems.
+To illustrate the role of the diﬀerent interstitials on
+charge transport, we calculate the transport coeﬃcients
+S, σ, κe and the power factor (S2σ) as functions of the
+carrier concentration, ne, and compare with the corresponding values of bulk silicon. Fig. 8 shows the electronic transport coeﬃcients of semiconductor-like Si-I-X
+10 18
+10 19
+10 20
+ne (cm -3)
+0
+200
+400
+600
+|S| (
+V/K)
+10 18
+10 19
+10 20
+ne (cm -3)
+0
+1000
+2000
+3000
+(S/cm)
+10 18
+10 19
+10 20
+ne (cm -3)
+0
+1
+2
+3
+(W/m-K)
+10 18
+10 19
+10 20
+ne (cm -3)
+0
+1
+2
+S2
+(mW/m-K 2)
+e
+FIG. 8. Calculated Seebeck coeﬃcient, electrical conductivity,
+electronic thermal conductivity and power factor of bulk Si
+and bulk Si-I-X systems.
+systems (blue cells in Table II) for the n-doping case at
+300K. As can be seen from Fig. 8, the transport coefﬁcients are signiﬁcantly altered due to the presence of
+the interstitials. Both Si-I-Si and -Ge systems with splitinterstitials have a smaller S compared to bulk Si, while
+other interstitials leave S relatively unaltered. Introduction of the interstitials consistently decreases both σ and
+κe. All Si-I-X systems except Si-I-C-hexagonal have similar values of the conductivities; a hexagonal C interstitial
+yields the lowest σ and κe. The combination of S and
+σ yields a small PF for the Si-I-C-hexagonal system as
+well as Si-I-Si and -Ge systems with the split-interstitials.
+However, the power factor of Si-I-Si and Si-I-Ge approach
+the power factor of bulk silicon at high carrier concentrations. The electronic transport coeﬃcients were evaluated within the framework of semi-classical Boltzmann
+transport theory [73] as expressed in Eqs. (1-4). Therefore, it is essential to examine the factors in the argument
+of the integral in Eq. 1, for a complete understanding of
+the eﬀect of interstitials on the charge transport coeﬃcients.
+In the following, we discuss the details of the electronic
+band structures and the density of states (DOS) that
+determine the transport coeﬃcients. The left panel of
+Fig. 9 shows the band structures of the semiconductorlike Si-I-X systems (blue cells in Table II). All interstitial
+impurities introduce additional levels within the energy
+bandgap. The levels close to the band edges (either conduction band minimum or valence band maximum) are
+
+===== Page 11 =====
+
+11
+10 18
+10 19
+10 20
+ne (cm -3)
+0
+0.01
+0.02
+0.03
+0.04
+0.05
+0.06
+0.07
+ZT
+-2
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+2
+W
+G
+X
+W
+L
+G
+-2
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+2
+W
+G
+X
+W
+L
+G
+-2
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+2
+W
+G
+X
+W
+L
+G
+-2
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+2
+W
+G
+X
+W
+L
+G
+-2
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+2
+W
+G
+X
+W
+L
+G
+Energy (eV)
+Energy (eV)
+-2
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+2
+W
+G
+X
+W
+L
+G
+-2
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+2
+W
+G
+X
+W
+L
+G
+-2
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+2
+W
+G
+X
+W
+L
+G
+A.U.
+Bulk
+Si (Hex) 
+Ge (Hex) 
+C (Hex)
+C (Hex)
+Bulk 
+Si (Split) 
+Ge (Split) 
+C (Bond) 
+C (Bond)
+Si 
+Si - Interstitials - 
+LDOS
+(a) Si (Hex)           (b) Ge (Hex)         (c) C (Hex)    (d) C (Hex)
+FIG. 9. Left panel: Band structures of bulk Si and semiconductor-like Si-I-X systems (blue cells in Table II). Middle panel:
+The local density of states (LDOS) of Si-I-C with C interstitial in the bond-centered and the hexagonal sites. The Fermi level
+is chosen to be at 0 eV for all cases. Right panel: Figure of merit (ZT) of semiconductor-like Si-I-X systems compared to that
+of bulk Si.
+referred to as “shallow” levels and those far away from
+the band edges as “deep” levels. [59] The band structures
+of Si-I-Si (panel (a)) and -Ge (panel (b)) are very similar. Interstitials in hexagonal sites in these two systems
+introduce two deep levels in the valence zone and few
+shallow levels in the conduction zone. The same species
+in the split-interstitial sites create two deep levels in the
+valence zone with one deep and a few shallow levels in the
+conduction zone. It is known that the energy gap computed from Kohn-Sham states is systematically underestimated. [80] However, it does not aﬀect the calculation
+of transport coeﬃcients because we only study transport
+properties of the highly doped n-type materials, therefore, the integrations in Eq. (1-4) are performed over the
+energy bands in the conduction zone. The deep levels in
+the conduction zone decrease transport coeﬃcients due to
+the ∂f /∂ϵ factor in the integrand as shown in Eq. (1). In
+general, deep levels lead to poor electron (hole) transport
+properties because of the low density of available states
+in the region close to the conduction (valence) zone edge
+(see Fig. 9). That is the reason the hexagonal interstitials
+induce better charge transport in the n-type Si-I-Si(-Ge)
+(Fig. 8 (solid orange (green) line)) rather than the splitinterstitials (Fig. 8 (orange (green) dashed line)). On the
+other hand, C-interstitials in hexagonal sites introduce
+one deep level in both the valence and the conduction
+zones (panel (c)-top). The deep level in the conduction
+band leads to poor transport properties as shown in Fig. 8
+(blue solid line).
+Interestingly, C-interstitials in bondcentered positions do not add any deep levels within the
+band gap (panel (c)-bottom) and yield better transport
+properties (Fig. 8 (blue dashed line)).
+In order to understand the origin of the deep and the
+shallow levels, we compute the local density of electronic
+states (LDOS) of Si-I-C systems, shown in Fig. 9 panel
+(d). LDOS describes the space-resolved electronic density of states that is computed using postprocessing projwfc.x code available through QE package. LDOS allows
+us to quantify the contributions from interstitial and host
+atoms separately to the full electronic density of states.
+Figure 9 panel (d)-top shows the comparison between
+the density of states contributed by the C-interstitial
+(blue) and the host Si atoms (normalized by the number of Si atoms) (orange). The peaks in the LDOS indicate that C-interstitials primarily contribute to the additional deep and the shallow levels, in both hexagonal and
+bond-center sites. The two peaks (panel (d)-top, blue) in
+LDOS close to the Fermi level correspond to the deep levels in band structure in Si-I-C-hexagonal systems, while
+two distinguished peaks ∼0.5 and ∼0.7 eV (panel (d)-
+bottom, blue) are directly related to the shallow levels in
+the Si-I-C-bond-centered systems.
+
+===== Page 12 =====
+
+12
+Introduction of the interstitials consistently decreases
+both σ and κe.
+All Si-I-X systems except Si-I-Chexagonal have similar conductivities lower than bulk Si,
+as can be seen from Fig. 8; a hexagonal C interstitial
+yields the lowest σ and κe. Lowered conductivities might
+stem from the additional deep levels which lead to the reduced density of available states in the region close to the
+conduction zone edge. The combination of S and σ yields
+a small PF for the Si-I-C-hexagonal system as well as Si-ISi and -Ge systems with the split-interstitials. However,
+the power factor of the Si-I-Si(and -Ge)-hexagonal systems approach the power factor of bulk silicon at high
+carrier concentrations. We obtained the thermoelectric
+ﬁgure of merit ZT of the Si-I-X systems at 300K (Figure 9 right panel) by combining the electronic transport
+coeﬃcients with our MD κph results, shown in Fig. 4.
+Since κph is strongly suppressed in the presence of the
+interstitials, we see a signiﬁcant improvement of ZT for
+all Si-I-X systems studied in this work compared to bulk
+Si.
+The highest ZT are obtained for Si-I-Si and -Gehexagonal systems due to a combination of low κph’s and
+high PFs. 1.56% of Ge interstitials in the hexagonal sites
+are found to improve ZT of bulk Si by a factor of 17. The
+lowest ZT value is found to be for Si-I-C systems with
+interstitials in the hexagonal sites. Even for this case the
+ﬁgure of merit is 3 times larger than the reference bulk
+value [81].
+As we discussed in the preceding text, interstitials introduce additional energy levels in the band structure.
+Both the deep and the shallow levels lead to smaller energy gaps of the Si-I-X systems. We now turn our attention to the systems marked with white cells in Table II.
+The interstitials not only shrink the energy bandgaps of
+these systems but greatly alter the electronic properties
+rendering them metal-like. In Fig. 10 we present the band
+structures of the metal-like Si-I-X systems (white cells in
+Table II): Si-I-Si, -Ge and -Li in the tetrahedral sites and
+-C in the split-interstitial sites. (The interstitial conﬁgurations are as depicted in Fig. 2.)
+In the Si-I-Si(-Ge
+or -Li)-tetrahedral systems (panel (a), (b) and (e)) the
+energy gap is minimally altered but the Fermi level is
+shifted so that it intersects the conduction bands—such
+behavior resembles the band structures of highly doped
+n-type semiconductors.
+The band structures of Si-I-Si
+and Si-I-Ge in tetrahedral positions (panel (a) and (b))
+are rather similar.
+The interstitials not only shift the
+Fermi level but introduce additional shallow energy levels in the conduction zone. In comparison, Li interstiW
+G
+X
+W
+L
+G
+W
+G
+X
+W
+L
+G
+W
+G
+X
+W
+L
+G
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+W
+G
+X
+W
+L
+G
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+W
+G
+X
+W
+L
+G
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+W
+G
+X
+W
+L
+G
+Si 
+Si - Interstitials - 
+LDOS 
+Energy (eV) 
+Energy (eV)
+A.U.
+ Bulk                 (a) Si (Td)          (b) Ge (Td)   (c) Ge (Td)
+ Bulk                (d) C (Split)           (e) Li (Td)    (f) Li (Td)
+FIG. 10.
+Band structures of bulk Si and metal-like Si-I-X systems (white cells in Table II) The plots in the rightmost panels
+represent the local density of states of (c) Si-I-Ge-tetrahedral
+and (f) Si-I-Li-tetrahedral systems. The Fermi level is chosen
+to be at 0 eV for all cases.
+tials do not create any additional levels near the conduction band edge (panel (e)). However, the Fermi level
+is shifted to the conduction zone indicating metal-like
+behavior similar to Si-I-Si and -Ge in tetrahedral sites.
+We found no signiﬁcant diﬀerence in the band structures
+between Si-I-Li-tetrahedral and -hexagonal systems. In
+order to avoid redundancy, we refrain from displaying the
+Si-I-Li-hexagonal band structure in this article. The SiI-C-split-interstitial system exhibits a combined eﬀect of
+smaller energy gap due to additional deep energy levels
+(similar to Si-I-C-hexagonal system shown in Fig. 9) and
+shifted Fermi level leading to metal-like characteristics.
+We present the LDOS of the metal-like Si-I-X systems
+in the rightmost panel of Fig. 10 to discuss the origin
+of the additional bands. Comparison between the LDOS
+of Si-I-Ge and Si-I-Li tetrahedral systems (panel (c) and
+(f)) shows that Ge interstitials (green) are responsible for
+creating shallow energy levels in ∼−0.2−1 eV range. In
+contrast, Li interstitials (magenta) do not create distinct
+peaks either in conduction or valence zones. This can be
+explained by the fact that Li has fewer electrons than Ge
+and Si atoms. For the same reason, Li interstitials do
+not aﬀect the band structure signiﬁcantly. The orange
+curves in Fig. 10 represent contribution of host atoms
+to the DOS, scaled with respect to the total number of
+
+===== Page 13 =====
+
+13
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+W
+G
+X
+W
+L
+G
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+W
+G
+X
+W
+L
+G
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+W
+G
+X
+W
+L
+G
+Energy (eV)
+Si - Interstitials - 
+(a) Ge (Hex)                (b) Ge (Td)             (c) Ge (Hex+Td)
+FIG. 11.
+Band structures of Si-I-Ge systems with interstitials located in (a) hexagonal, (b) tetrahedral and (c) both
+hexagonal and tetrahedral sites. The Fermi level is chosen to
+be at 0 eV for all cases.
+Si atoms. Additionally, we analyzed the projected density of states in Si-I-Ge tetrahedral system, and found
+that the additional conduction bands created are mostly
+formed from the p-electrons of the guest atom. These results indicate that interstitials oﬀer a viable strategy to
+design n-type semiconductors without explicit dopants,
+e,g, substitutionally doped bulk silicon with pentavalent
+impurities such as phosphorus.
+We acknowledge that in experimental samples the interstitial atoms are likely to reside in diﬀerent symmetry
+positions (e.g., hexagonal, tetrahedral) within the crystal
+due to the variability of the neighbor bonding environment and temperature ﬂuctuations. In order to simulate
+an experimentally realizable system, we turn to investigate the electronic properties of a Si-I-X system containing interstitial atoms in diﬀerent symmetry sites. The
+system consists of 128 Si host atoms and 2 Ge interstitials, one in the hexagonal and the other in the tetrahedral symmetry position. Thus we maintain a 1.56% concentration of interstitials within bulk, consistent with the
+cases discussed thus far. In Fig. 11 we present the band
+structures of Si-I-Ge (a) -hexagonal, (b) -tetrahedral and
+(c) -combination of hexagonal and tetrahedral conﬁgurations. As can be noted, the combined system (panel
+(c)) preserves features from both individual cases (panel
+(a) and (b)).
+Hexagonal Ge interstitial introduce two
+additional levels in the energy gap closer to the valence
+band edge and additional shallow levels in the conduction zone (panel (a) and (c)), while tetrahedral Ge shifts
+the Fermi level to conduction zone and introduces additional shallow energy levels in the conduction zone (panel
+(b) and (c)). To calculate the ﬁgure of merit of the SiI-Ge system with interstitials placed in both hexagonal
+ZT
+0
+0.02
+0.04
+0.06
+0
+0.02
+0.04
+0.06
+ZT
+0
+0.02
+0.04
+0.06
+(a)
+(b)
+Si
+Hex
+Ge
+Hex
+C
+Hex
+C
+Bond
+Si
+Split
+Ge
+Split
+C
+Split
+Ge
+Td
+Si
+Td
+Li
+Td
+FIG. 12. Variability of the thermoelectric ﬁgure of merit ZT
+of bulk Si with interstitials, as a function of the guest atom
+type and its symmetry position in the lattice.
+and tetrahedral positions (panel (c)), we calculate transport coeﬃcients at the Fermi level. Combining results
+obtained from the electronic transport calculations with
+our κph results, we ﬁnd the ﬁgure of merit to be 0.01.
+E.
+Structure-ZT map
+We present a comprehensive illustration of the variability of the thermoelectric ﬁgure of merit ZT of Si-I-X
+systems in Fig. 12, by combining the electronic transport coeﬃcients with our MD results of κph.
+The x,
+y and z axes represent interstitial site type in bulk Si,
+guest species type and ZT, respectively. The top panel
+(a) displays ZT values of n-doped bulk Si systems with
+interstitials in diﬀerent symmetry sites. The carrier concentration is chosen such that the ZT values is optimal.
+All the systems exhibit higher ZT than bulk Si, which
+peaks at ∼0.004, computed with a similar method [81].
+The highest ZT value was found for Si-I-Ge-hexagonal
+systems with ZT approaching ∼0.067, which is 17 times
+larger than the reference bulk value. The lowest ZT value
+∼0.012 was obtained for Si-I-C system with interstitials
+in the hexagonal sites. Even for this case the ﬁgure of
+merit is 3 times larger than the reference bulk value. The
+bottom panel (b) shows ZT of Si-I-X systems with metal-
+
+===== Page 14 =====
+
+14
+like character.
+The ﬁgure of merit was obtained from
+the transport coeﬃcients calculated at the Fermi level.
+The most improved ZT for metal-like systems was found
+for Si-I-Li-tetrahedral system with ZT value of ∼0.047.
+The system with C interstitials in split positions yields
+the lowest ZT value of ∼0.0003, which is 10 times lower
+than the bulk value.
+IV.
+SUMMARY
+In summary, we performed a systematic study of the
+eﬀect of naturally occurring randomly distributed interstitial defects (Si, Ge, C and Li) on the charge and heat
+transport properties of bulk silicon, using ﬁrst principles DFT and atomistic lattice dynamics and MD techniques, respectively. Our atomistic modeling, using empirical potential, reveals that interstitial defects do not
+signiﬁcantly alter the phonon density of states.
+However, the group velocities, and therefore the propagation
+of phonons, are strongly suppressed (∼1 order of magnitude). Previous studies reported an additional low frequency peak in the density of states. However, the calculations only incorporated isolated interstitials interacting
+with simpliﬁed neighbor forces, therefore, the results cannot be compared. The reduction of group velocities follows the trend: Ge < Si < C, leading to a decrease in the
+TCs following the same order: Si-I-Ge < -Si < -C, with
+Ge having the most and C the least impact in lowering
+the TC, respectively. Li interstitials are diﬀusive in character leading to signiﬁcant disorder in the lattice. This is
+likely to be the reason for Li interstitials to lower bulk Si
+TC the most. Randomly dispersed 1.56% Li, Ge, Si and
+C interstitials decrease the TC of bulk Si by ∼34, 30, 20
+and 9 times, respectively. This suggests that interstitials
+oﬀer a viable approach to achieve controlled phonon scattering, due to the tunablity of mass and size of the guest
+atom, and thereby achieve phonon-glass paradigm to engineer next-generation thermoelectric materials.
+In parallel, we investigated the electronic transport
+properties of bulk Si with 1.56% Ge, C, Si and Li interstitials in hexagonal, tetrahedral, split-interstitial and
+bond-centered sites. We demonstrate that Si and Ge in
+the hexagonal sites minimally impact the charge transport properties of bulk silicon. This combined with the
+decreased values of κph leads to 14 and 17 times improved
+thermoelectric ﬁgure of merits without introduction of
+explicit dopants, respectively. Our results illustrate that
+electronic transport in defected systems strongly depends
+on the symmetry positions of defects in the lattice. For
+example, the bonding environment of split Ge interstitials is marked with the smallest ﬁrst NN distance 2.3
+˚A(obtained from DFT relaxation).
+The LDOS reveal
+that the interstitials introduce two deep levels in the valence zone and one deep and few shallow levels in the
+conduction zone. The deep level (conduction) leads to
+reduced charge transport properties compared to pristine
+bulk Si. In comparison, Ge in a hexagonal site, bonded
+with the ﬁrst NNs at a distance 2.43 ˚A, introduces two
+deep levels in the valence zone and only shallow levels in
+the conduction zone. The shallow levels result in a better
+charge transport. A tetrahedral Ge interstitial, on the
+other hand, pushes host NN silicon atoms father away
+to a distance 2.5˚A, yielding a shifted Fermi level resembling a highly doped n-type semiconductor. When the
+Ge interstitial is loosely bound to its ﬁrst NN, it tends to
+create additional shallow energy levels. A tightly bound
+split interstitial leads to deep levels in the band structure that diminishes electron transport. This qualitative
+understanding, however, may not be generalized to all
+defects.
+We acknowledge that it may not be possible to control
+the symmetry locations of the interstitials in an experimental sample. We compute the properties of an experimentally realizable silicon system, comprised of both a
+hexagonal and a tetrahedral Ge interstitial defect. We
+illustrate that the defects in this system display an additive behavior: the Fermi level is shifted (characteristic
+of a tetrahedral Ge) as well as additional shallow levels
+are introduced in the conduction zone (due to hexagonal Ge). Our modeling data furnish indirect measures
+to estimate the presence of interstitial defects in a sample. For example, electronic DOS can be measured with
+STM techniques. [82] The observed band gap and the
+presence of deep/shallow levels in the STM data can be
+compared with our theoretical results, to estimate the
+defects present in the system, and to accurately predict
+performance of Si-based materials for various technological applications.
+Our research establishes a direct relationship between the variability of structures dictated
+by fabrication processes and heat and charge transport
+properties.
+We envision that the processing-structuretransport (heat and charge) property map will enable
+further developments of silicon-based materials with predictable, robust and optimal performance.
+
+===== Page 15 =====
+
+15
+V.
+ACKNOWLEDGEMENTS
+We thank Ty Sterling for a critical reading of the
+manuscript. This work is funded by the DARPA (DSO)
+MATRIX program.
+This work used the Extreme Science and Engineering Discovery Environment (XSEDE),
+which is supported by National Science Foundation grant
+number ACI-1548562. We acknowledge the computing
+resources provided the RMACC Summit supercomputer,
+which is supported by the National Science Foundation
+(awards ACI-1532235 and ACI-1532236), the University
+of Colorado Boulder, and Colorado State University. The
+Summit supercomputer is a joint eﬀort of the University
+of Colorado Boulder and Colorado State University.
+[1] G. Pacchioni, L. Skuja,
+and D. L. Griscom, Defects
+in SiO2 and related dielectrics: science and technology,
+Vol. 2 (Springer Science & Business Media, 2012).
+[2] G. Ribes, J. Mitard, M. Denais, S. Bruyere, F. Monsieur, C. Parthasarathy, E. Vincent, and G. Ghibaudo,
+IEEE Transactions on Device and materials Reliability
+5, 5 (2005).
+[3] J. S. Park, W.-J. Maeng, H.-S. Kim,
+and J.-S. Park,
+Thin solid ﬁlms 520, 1679 (2012).
+[4] G. D. Wilk, R. M. Wallace, and J. Anthony, Journal of
+applied physics 89, 5243 (2001).
+[5] L. L. Baranowski, P. Zawadzki, S. Lany, E. S. Toberer,
+and A. Zakutayev, Semiconductor Science and Technology 31, 123004 (2016).
+[6] F. Scholz, Semiconductor Science and technology 27,
+024002 (2012).
+[7] J. A. Weil, Physics and Chemistry of Minerals 10, 149
+(1984).
+[8] F. Jelezko and J. Wrachtrup, physica status solidi (a)
+203, 3207 (2006).
+[9] L.
+Rondin,
+J.
+Tetienne,
+T.
+Hingant,
+J.
+Roch,
+P. Maletinsky,
+and V. Jacques, Reports on progress in
+physics 77, 056503 (2014).
+[10] C. Wadia, A. P. Alivisatos, and D. M. Kammen, Environmental science & technology 43, 2072 (2009).
+[11] G. J. Snyder and E. S. Toberer, Nature materials 7, 105
+(2008).
+[12] X. Shi, L. Chen,
+and C. Uher, International Materials
+Reviews 61, 379 (2016).
+[13] P. Pichanusakorn and P. Bandaru, Materials Science and
+Engineering: R: Reports 67, 19 (2010).
+[14] A. Shakouri, Annual Review of Materials Research 41
+(2011).
+[15] C. J. Vineis, A. Shakouri, A. Majumdar,
+and M. G.
+Kanatzidis, Adv. Mater. 22, 3970 (2010).
+[16] J.-F. Li, W.-S. Liu, L.-D. Zhao, and M. Zhou, NPG Asia
+Mater. 2, 152 (2010).
+[17] S. E. Thompson, M. Armstrong, C. Auth, M. Alavi,
+M. Buehler, R. Chau, S. Cea, T. Ghani, G. Glass,
+T. Hoﬀman, et al., IEEE Transactions on Electron Devices 51, 1790 (2004).
+[18] S. J. Koester, J. D. Schaub, G. Dehlinger, and J. O. Chu,
+IEEE Journal of selected topics in quantum electronics
+12, 1489 (2006).
+[19] J. Liu, X. Sun, R. Camacho-Aguilera, L. C. Kimerling,
+and J. Michel, Optics letters 35, 679 (2010).
+[20] G. Chen, M. Dresselhaus, G. Dresselhaus, J.-P. Fleurial,
+and T. Caillat, International Materials Reviews 48, 45
+(2003).
+[21] M. S. Dresselhaus, G. Chen, M. Y. Tang, R. Yang, H. Lee,
+D. Wang, Z. Ren, J.-P. Fleurial,
+and P. Gogna, Adv.
+Mater. 19, 1043 (2007).
+[22] H. Alam and S. Ramakrishna, Nano Energy 2, 190
+(2013).
+[23] G. Kissinger and S. Pizzini, Silicon, germanium, and
+their alloys: growth, defects, impurities, and nanocrystals (CRC Press, 2014).
+[24] J. Srour, C. J. Marshall,
+and P. W. Marshall, IEEE
+Transactions on Nuclear Science 50, 653 (2003).
+[25] A. Haque and S. Sumaiya, Journal of Manufacturing and
+Materials Processing 1, 6 (2017).
+[26] G. Dehlinger, S. Koester, J. Schaub, J. Chu, Q. Ouyang,
+and A. Grill, IEEE Photonics Technology Letters 16,
+2547 (2004).
+[27] J. Jung, S. Yu, O. O. Olubuyide, J. L. Hoyt, D. A. Antoniadis, M. L. Lee, and E. A. Fitzgerald, Applied physics
+letters 84, 3319 (2004).
+[28] D. Chadi, Physical Review B 46, 9400 (1992).
+[29] R. Needs, Journal of Physics:
+Condensed Matter 11,
+10437 (1999).
+[30] W.-C. Lee, S.-G. Lee, and K. Chang, Journal of Physics:
+Condensed Matter 10, 995 (1998).
+[31] W.-K. Leung, R. Needs, G. Rajagopal, S. Itoh,
+and
+S. Ihara, Physical Review Letters 83, 2351 (1999).
+[32] P. Rinke, A. Janotti, M. Scheﬄer,
+and C. G. Van de
+Walle, Physical review letters 102, 026402 (2009).
+[33] D. Caliste, P. Pochet, T. Deutsch, and F. Lan¸con, Physical Review B 75, 125203 (2007).
+[34] R. Aggarwal, P. Fisher, V. Mourzine,
+and A. Ramdas,
+Physical Review 138, A882 (1965).
+[35] G. Watkins and K. Brower, Physical Review Letters 36,
+1329 (1976).
+
+===== Page 16 =====
+
+16
+[36] R. Newman, Reports on Progress in Physics 45, 1163
+(1982).
+[37] G. D. Watkins, Materials science in semiconductor processing 3, 227 (2000).
+[38] J. Bourgoin and M. Lannoo, “Point defects in semiconductors, vol. 2: Experimental aspects, ed. by m. cardona,” (1983).
+[39] Y. Bar-Yam and J. Joannopoulos, Physical Review B 30,
+2216 (1984).
+[40] L. Wang, P. Clancy, and C. Murthy, Physical Review B
+70, 165206 (2004).
+[41] G. Watkins, Chinese Journal of Physics 15, 92 (1977).
+[42] M. J. Burnard and G. G. DeLeo, Physical Review B 47,
+10217 (1993).
+[43] J. Tersoﬀ, Physical review letters 64, 1757 (1990).
+[44] W. Wan, Q. Zhang, Y. Cui,
+and E. Wang, Journal of
+Physics: Condensed Matter 22, 415501 (2010).
+[45] G. A. Tritsaris, K. Zhao, O. U. Okeke, and E. Kaxiras,
+The Journal of Physical Chemistry C 116, 22212 (2012).
+[46] H. Kim, K. E. Kweon, C.-Y. Chou, J. G. Ekerdt,
+and
+G. S. Hwang, The Journal of Physical Chemistry C 114,
+17942 (2010).
+[47] G. Joshi, H. Lee, Y. Lan, X. Wang, G. Zhu, D. Wang,
+R. W. Gould, D. C. Cuﬀ, M. Y. Tang, M. S. Dresselhaus,
+et al., Nano letters 8, 4670 (2008).
+[48] X. Wang, H. Lee, Y. Lan, G. Zhu, G. Joshi, D. Wang,
+J. Yang, A. Muto, M. Tang, J. Klatsky, et al., Applied
+Physics Letters 93, 193121 (2008).
+[49] N. S. Bennett, N. M. Wight, S. R. Popuri, and J.-W. G.
+Bos, Nano Energy 16, 350 (2015).
+[50] Y. Lee, S. Lee, and G. S. Hwang, Physical Review B 83,
+125202 (2011).
+[51] T. Wang, G. Madsen,
+and A. Hartmaier, Modelling
+and Simulation in Materials Science and Engineering 22,
+035011 (2014).
+[52] D. K. Brice, Physical Review 140, A1211 (1965).
+[53] K. Ohashi and Y. Ohashi, Journal of Physics C: Solid
+State Physics 9, 733 (1976).
+[54] D. Talwar, Journal of Applied Physics 54, 2366 (1983).
+[55] D. Talwar, M. Vandevyver, and K. Bajaj, Physical Review B 36, 1715 (1987).
+[56] L. Bellomonte and M. Pryce, Proceedings of the Physical
+Society 89, 973 (1966).
+[57] T.
+Takabatake,
+K.
+Suekuni,
+T.
+Nakayama,
+and
+E. Kaneshita, Reviews of Modern Physics 86, 669 (2014).
+[58] G. S. Nolas, J. Sharp, and J. Goldsmid, Thermoelectrics:
+basic principles and new materials developments, Vol. 45
+(Springer Science & Business Media, 2013).
+[59] H. Grimmeiss, Annual Review of Materials Science 7, 341
+(1977).
+[60] Q. Song, J. Zhou, L. Meroueh, D. Broido, Z. Ren, and
+G. Chen, Applied Physics Letters 109, 263902 (2016).
+[61] C. Jiang, S. Maloy, and S. Srinivasan, Scripta Materialia
+58, 739 (2008).
+[62] J. Tersoﬀ, Phys. Rev. B 39, 5566 (1989).
+[63] Z. Cui, F. Gao, Z. Cui,
+and J. Qu, Journal of Power
+Sources 207, 150 (2012).
+[64] R. Zwanzig, Annu. Rev. Phys. Chem. 16, 67 (1965).
+[65] S. Plimpton, J. Comput. Phys. 117, 1 (1995).
+[66] Y. He, I. Savi´c, D. Donadio, and G. Galli, Phys. Chem.
+Chem. Phys. 14, 16209 (2012).
+[67] A. M. Stoneham, Theory of defects in solids: electronic
+structure of defects in insulators and semiconductors
+(Oxford University Press, 2001).
+[68] S. T. Pantelides, Reviews of Modern Physics 50, 797
+(1978).
+[69] C. Freysoldt, B. Grabowski, T. Hickel, J. Neugebauer,
+G. Kresse, A. Janotti, and C. G. Van de Walle, Reviews
+of modern physics 86, 253 (2014).
+[70] J. P. Perdew, K. Burke,
+and M. Ernzerhof, Physical
+review letters 77, 3865 (1996).
+[71] P. Giannozzi, S. Baroni, N. Bonini, M. Calandra, R. Car,
+C. Cavazzoni, D. Ceresoli, G. L. Chiarotti, M. Cococcioni, I. Dabo, et al., Journal of physics: Condensed matter 21, 395502 (2009).
+[72] H. J. Monkhorst and J. D. Pack, Physical review B 13,
+5188 (1976).
+[73] J. M. Ziman, Electrons and phonons: the theory of transport phenomena in solids (Oxford university press, 1960).
+[74] G. K. Madsen and D. J. Singh, Computer Physics Communications 175, 67 (2006).
+[75] N. W. Ashcroft and N. D. Mermin, Solid State Physics
+(Saunders, Philadelphia, 1976).
+[76] C. Jacoboni, C. Canali, G. Ottaviani, and A. A. Quaranta, Solid-State Electronics 20, 77 (1977).
+[77] S. M. Goodnick, Computational electronics (Morgan and
+Claypool Publishers, 2006).
+[78] J. Garg, N. Bonini, B. Kozinsky, and N. Marzari, Physical review letters 106, 045901 (2011).
+[79] R. Jones, A. Carvalho, J. Goss, and P. Briddon, Materials Science and Engineering: B 159, 112 (2009).
+[80] J. P. Perdew, International Journal of Quantum Chemistry 30, 451 (1986).
+[81] C. Mangold, S. Neogi, and D. Donadio, Applied Physics
+Letters 109, 053902 (2016).
+[82] A. J. Yost, A. Pimachev, C.-C. Ho, S. B. Darling,
+L. Wang, W.-F. Su, Y. Dahnovsky, and T. Chien, ACS
+applied materials & interfaces 8, 29110 (2016).

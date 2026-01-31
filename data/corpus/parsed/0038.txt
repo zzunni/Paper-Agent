@@ -1,0 +1,654 @@
+
+
+===== Page 1 =====
+
+Improved Defect Detection and Classification Method for
+Advanced IC Nodes by Using Slicing Aided Hyper Inference
+with Refinement Strategy
+Vic De Ridder,1, 2, a) Bappaditya Dey,2, b) Victor Blanco,2 Sandip Halder,3, c) and
+Bartel Van Waeyenberge1
+1Ghent University, Ghent, 9000, Belgium
+2imec, Leuven, 3001, Belgium
+3SCREEN SPE Germany GmbH, Ismaning, 85737, Germany
+a)These authors contributed equally; vic.deridder.ext@imec.be
+b)These authors contributed equally; bappaditya.dey@imec.be
+c)This research was conducted during Sandip Halder’s tenure at imec
+Abstract. In semiconductor manufacturing, lithography has often been the manufacturing step defining the smallest possible
+pattern dimensions. In recent years, progress has been made towards high-NA (Numerical Aperture) EUVL (Extreme-UltravioletLithography) paradigm, which promises to advance pattern shrinking (2 nm node and beyond). However, a significant increase
+in stochastic defects and the complexity of defect detection becomes more pronounced with high-NA. Present defect inspection
+techniques (both non-machine learning and machine learning based), fail to achieve satisfactory performance at high-NA dimensions. In this work, we investigate the use of the Slicing Aided Hyper Inference (SAHI) framework for improving upon current
+techniques. Using SAHI, inference is performed on size-increased slices of the SEM images. This leads to the object detector’s
+receptive field being more effective in capturing small defect instances. First, the performance on previously investigated semiconductor datasets is benchmarked across various configurations, and the SAHI approach is demonstrated to substantially enhance the
+detection of small defects, by ∼2x. Afterwards, we also demonstrated application of SAHI leads to flawless detection rates on a
+new test dataset, with scenarios not encountered during training, whereas previous trained models failed. Finally, we formulate an
+extension of SAHI that does not significantly reduce true-positive predictions while eliminating false-positive predictions.
+INTRODUCTION
+As Machine Learning (ML) gets increasingly adopted in different domains such as drug discovery, self-driving cars,
+financial risk analysis and many other extensive computational applications, importance of developing faster and
+energy-efficient integrated circuits (IC’s) continues to grow. In producing an IC, lithography is a crucial step, involving
+deposition of a photoresist on the raw silicon wafer and then exposing certain parts of this photoresist to lightwaves
+such that an intended geometrical pattern gets printed. Therefore, the smallest possible, printable pattern dimension
+is largely limited by lithography, which itself is limited in large part by light-wavelength λ and numerical aperture
+(NA) of the lens used, following Rayleigh criterion [1]. In the last decade, production of smaller device features has
+been enabled by smaller wavelengths through Extreme Ultra Violet Lithography (EUVL), which has λ = 13.5nm,
+NA=0.33. A next step being developed towards enabling further pattern shrinkage (beyond ∼2nm node technology)
+is high-NA EUVL (NA=0.55). With the deployment of high-NA EUVL, improved metrology and nano-scale defect
+inspection is crucial at various R&D stages of semiconductor manufacturing.
+Since rule-based, classical defect detection approaches failed at these advanced nodes [2], Machine Learning (ML-
+) based methods have been developed as an alternative [3]. Nevertheless, the reliability and adaptability of these
+machine learning models have not been fully verified for high-volume manufacturing (HVM). Several factors to be
+considered, are i) limited availability of some stochastic defect patterns/types in annotated training dataset, and ii) ambiguity in defining precise pixel extent (foreground/background) for some defect classes/instances. Additionally, due
+to the reduced depth of focus, thickness of photoresists for high-NA EUVL is lower compared to previous lithography
+approaches (EUVL), leading to increased noise and lower contrast in SEM (Scanning Electron Microscope) imaging, and thus even more challenging defect inspection conditions are emerging towards facilitating high-NA enabled
+lithography.
+In this research work, we investigate using the Slicing Aided Hyper Inference (SAHI) framework [4] to improve
+SEM-based defect detection of resist wafers at EUVL process pitch-scales and beyond. We evaluate the performance
+of SAHI on two semiconductor SEM-based defect inspection datasets with different patterns: Hexagonal Contact
+Hole Directed-Self-Assembly (HEXCH DSA) and line-space (LS). SAHI is a model-agnostic inference framework,
+arXiv:2311.11439v2  [cs.CV]  21 Nov 2023
+
+===== Page 2 =====
+
+FIGURE 1: Example defect types in the line-space dataset
+and can thus be appended to various ML-based ADCD (Automated Defect Classification and Detection) frameworks.
+Our main contributions are:
+(i) We investigated SAHI-based inference framework for two different YOLO models/architecture variants and
+different configurations on two semiconductor SEM datasets: Line-space and Hexagonal Contact-Hole Arrays, to
+demonstrate defect detection performance improvement, specifically for challenging nano-scale defect types.
+(ii) We demonstrated SAHI-based framework resulted in flawless detection rates on a novel test dataset, encompassing scenarios that were not encountered during training, in contrast to the previous trained models, which experienced
+significant failures.
+(iii) Finally, we propose a new strategy appended to SAHI-framework, to refine model predictions towards eliminating false-positive predictions.
+PREVIOUS WORK
+Semiconductor Defect Inspection
+Ref. [2], attempted defect inspection with traditional, rule-based algorithms on semiconductor wafers in line with
+high-NA EUVL requirements, and concluded that as resist thickness shrinks, rule-based methods fail to detect any
+defects. Other, non ML-methods have already been proposed for EUVL, such as [5], which is a statistical approach
+that uses reference images without defects. However, the reliance on reference images has two disadvantages. First,
+a proper reference image needs to be available, which is not necessarily the case, especially when performing defect
+inspection on more complex, irregular patterns. Secondly, it relies on precise, near perfect alignment between the
+reference image and inspected images, which is extremely difficult for nano-scale patterns due to process window
+variation [6]. Moreover, the defect detection performance of this type of approach on aggressive pitches (∼2 nm and
+beyond) is significantly affected by higher noise levels [7].
+To tackle these challenges, it has been proposed to use advanced ML-based object detection frameworks for defect
+classification and detection [7]. This approach does not rely on any reference images and can learn to detect challenging stochastic defects even in the presence of significant noise levels and low contrast, provided it has sufficient
+annotated data. Ref. [8] proposed using YOLOv3 [9] and compared different training data strategies, concluding
+that training on mixture of real and simulated SEM images leads to the best performance. These simulated SEM
+images increase total training data, and do not require manual annotation. However, as of now there is no method
+of accurately simulating SEM images with line-width roughness or noise parameters identical to those obtained from
+real SEM imaging tools. With high-NA EUVL, stochastic noise (and low Signal-to-Noise-Ratio) will be one of the
+major concerns that need to be tackled, thus using simulated data in training does not seem to be a viable strategy for
+advanced defect inspection in HVM (High-Volume-Manufacturing) using thin-resists.
+While various object detection architectures have been explored for defect inspection task [3, 10, 11], this is a
+time-consuming procedure and its results may not necessarily generalize to different semiconductor datasets, which
+is why different methods for improving semiconductor defect inspection performance need to be further investigated.
+Hence, this research work aims to investigate the object detection inference framework SAHI [4], which was originally
+proposed for improving small object detection and can be added to any defect inspection pipeline that uses ML-based
+object detectors.
+
+===== Page 3 =====
+
+(a) Closed Patch
+(b) Partially Closed Hole
+(c) Missing Hole
+FIGURE 2: Examples defect types in HEXCH DSA dataset
+Small Object Detection with SAHI
+In most object detection frameworks, predictions are obtained by passing the image as a whole to the model. By
+contrast, the SAHI inference framework [4] slices the image into overlapping patches and increases the size of these
+slices before passing them to the model, which in turn helps to significantly improve performance of detection models
+on smaller objects. Public object detection datasets such as COCO contain both small and large instances of each
+object type. For these object classes, the smaller instances (also in a size increased slice using SAHI) share feature
+similarity with larger instances, which object detectors already trained with. Therefore, no additional fine-tuning was
+required to improve the detection performance.
+One popular method for increasing detection accuracy of small objects is Feature Pyramid Networks (FPN) [12],
+which integrates feature maps of various resolutions into a unified object detection head. RetinaNet based ADCD
+framework (which uses FPN) was proposed and investigated on LS (ADI) dataset [7] and also compared against
+several other benchmark models [3]. However, though performance was significantly improved for several (comparatively larger)defect classes, for smaller defect classes/instances it was negligible.
+While other ML architectures have been proposed for small object detection [13], we decide to investigate SAHI on
+private semiconductor datasets (mainly for above discussed challenging smaller defect classes and instances) for three
+main reasons: i) SAHI is model-agnostic, which enables integration into already existing ADCD pipelines. ii) SAHIbased inference strategy increases the computational time, however, for semiconductor industry, the primary concern
+is acquiring best dataset to feed to ML models (as relevant data is not just rare and noisy, but also extremely expensive
+to get). iii) towards enabling data-centric ML-based improved defect inspection, which means rather than investigating different models (to increase performance time-to-time), to investigate and improve dataset itself (generally by
+correcting mislabeled/unannotated classes and instances).
+FIGURE 3: Illustration of proposed semiconductor ADCD framework based on SAHI [4]
+
+===== Page 4 =====
+
+TABLE 1: LINE-SPACE (ADI) DATASET DISTRIBUTION AND STATISTICS
+Training Validation Test
+Total Images
+1053
+117
+154
+Class name
+Abbreviation Training Validation Test
+Gap
+gap
+1046
+156
+174
+Probable Gap
+pgap
+315
+49
+54
+Bridge
+bridge
+238
+19
+17
+Microbridge
+mb
+380
+47
+78
+Line Collapse
+lc
+555
+66
+76
+Total Instances
+2529
+337
+399
+TABLE 2: HEXAGONAL DSA DATASET DISTRIBUTION AND STATISTICS
+Training Validation Test
+Total Images
+174
+34
+42
+Class name
+Abbreviation Training Validation Test
+Missing Hole
+mh
+30
+8
+5
+Partially Closed Hole
+pch
+94
+16
+23
+Closed Patch
+cp
+74
+13
+19
+Total Instances
+198
+37
+47
+DATASETS
+In this work, performance was investigated on two different semiconductor SEM datasets: LS (ADI) [7] and HEXCH
+DSA [11]. In this study, these two datasets are reused from [7, 11] to demonstrate improvement over previous
+benchmarking performance. No synthetic images were used. All encountered defects were stochastic in nature and
+hand-labeled by expert annotators. The first dataset consists of line-space patterned resist wafer SEM images (ADI)
+with possible defect types as shown in fig.1: probable gap (pgap), gap, bridge, microbridge, and line collapse. In
+previous works [10, 14], mAP was significantly lower on the pgap defect type compared to all others. The probable
+cause can be hypothesized as the interplay of following two problems: i) pgap has the smallest defect pixel area, thus
+it is hard for the model to learn to differentiate between the corresponding background pixels and gap defect instance
+pixels, and detect the precise pgap features. ii) Relatively few pgap instances are present inside the training dataset
+(table.1). Hence this research work will put an emphasis of SAHI’s impact on pgap detection. In the HEXCH DSA
+dataset, printed patterns are hexagonal Contact Hole (HEXCH) arrays, with three different defect types shown in fig.2:
+closed patch (cp), missing hole (mh), partially closed hole (pch).
+PROPOSED METHODOLOGY
+Training
+To evaluate the application of SAHI on ADCD performance, following architectures are trained on both HEXCH
+DSA and LS (ADI) dataset from COCO [15] pretrained weights: YOLOv8 (n,s,m,l,x) and YOLOv5 (n,m,x). On each
+dataset, models are trained for a maximum of 200 epochs, with early stopping enabled and batch size of 32. For each
+model, application of SAHI is investigated for the variation(s) that achieve(s) the highest mAP by normal inference
+(without SAHI), as demonstrated in tables 3 and 4 respectively.
+While the SAHI framework could improve performance on the datasets considered in the original work [4] without
+requiring fine-tuning, the same applied on the investigated semiconductor datasets showed problematic results. The
+considered semiconductor defects have limited intra-class variations in pixel area. Thus, when model is only trained
+
+===== Page 5 =====
+
+FIGURE 4: Example of DSA defect scenario where conventional models fails [New test data]
+TABLE 3: MAP AND MAR METRICS ON LS (ADI) VALIDATION DATASET FOR ALL CONSIDERED MODEL
+VARIANTS, USING STANDARD INFERENCE. THRESHOLDS USED ARE 0.5 FOR IOU, AND 0.25 FOR CONFIDENCE
+SCORE. BEST MAP FOR EACH YOLO VERSION IN BOLD.
+Model
+mAP mAR
+YOLOv8n
+0.827 0.869
+YOLOv8s
+0.833
+0.88
+YOLOv8m 0.856 0.904
+YOLOv8l
+0.84
+0.883
+YOLOv8x
+0.834 0.882
+YOLOv5n
+0.85
+0.901
+YOLOv5m 0.822 0.863
+YOLOv5x
+0.856 0.893
+on full images, it never encountered defects at the size they would be in the size-increased slices, and was not able to
+make correct predictions within SAHI framework.
+Hence, models are finetuned on sliced datasets before performing SAHI-based inference. The finetuning strategy is
+adopted from the original work [4], where it was first proposed for increased performance. Sliced datasets are made
+for slice-sizes of 128, 256, and 512 at an overlap ratio of 0.5 and with the restraint that at least one defect is contained
+entirely within that slice. Models are finetuned for 50 epochs on each of these sliced datasets, with the same training
+hyperparameters as those of the normal training. Our proposed ADCD framework is illustrated in fig.3.
+Comparison and Metrics
+In initial experimentation, average-precision of SAHI-based predictions was significantly lower than baseline, while
+average-recall was better than baseline. Manual visual inspection of the predictions on validation data showed that
+SAHI-based predictions included a lot of correct predictions, which were not included in the annotations. Thus,
+manual inspection is performed on both without SAHI and SAHI-based inference results when comparing the two
+methods against each other. The number of true- and false-positives (both according to manual evaluation of each
+prediction) is used for comparisons. During the comparisons, a confidence threshold of 0.25 is used, as this was found
+to be optimal for both standard and SAHI-based inference. All SAHI-based methods are evaluated for an overlap ratio
+of 0.1 between patches.
+Additionally, model from Ref. [11], was mainly trained on single instances for missing hole (mh) and partially
+closed hole (pch) defects. During inference, model was not able to correctly predict above two defect classes if
+multiple of them are located near each other, as shown in fig. 4. The model either miss-classified them as closed
+patches or could not detect them at all. These SEM images (with 2/3 missing holes/partially closed holes) are part of a
+new test dataset of HEXCH DSA patterns (models never trained with this dataset and only used during inference).Our
+goal is to demonstrate if proposed SAHI-based ADCD framework can enable appropriate detection and classification
+of these missed defect instances without re-training.
+
+===== Page 6 =====
+
+TABLE 4: MAP AND MAR METRICS ON HEXCH VALIDATION DATASET FOR ALL CONSIDERED MODEL
+VARIANTS, USING STANDARD INFERENCE. THRESHOLDS USED ARE 0.5 FOR IOU, AND 0.25 FOR CONFIDENCE
+SCORE. BEST MAP FOR EACH YOLO VERSION IN BOLD.
+Model
+mAP mAR
+YOLOv8n
+0.842 0.875
+YOLOv8s
+0.882 0.896
+YOLOv8m 0.865
+0.87
+YOLOv8l
+0.867
+0.87
+YOLOv8x
+0.884 0.891
+YOLOv5n
+0.887 0.896
+YOLOv5m 0.866 0.891
+YOLOv5x
+0.86
+0.87
+FIGURE 5: Examples of false-positive predictions caused by predictions at slice edge for pgap (left) and pch (right)
+Refining Predictions
+In initial experimentation, it was found that SAHI caused a new type of false-positive, related to detections made at
+the edge of a slice, as demonstrated in fig.5. While setting a higher confidence threshold can eliminate these, it also
+eliminates a lot of true-positive predictions. To maximize the number of true-positive predictions while eliminating
+false-positives due to edges of the slice, we propose an extension of the SAHI framework. In normal SAHI, the image
+FIGURE 6: Our proposed refinement strategy for SAHI framework. Illustrated for case of TP prediction (left) and
+FP prediction (right) at slice edge. Red bounding box is detection at edge. When set threshold IoU between Red and
+bounding boxes of predictions on new slice (Green) is not reached, predictions are discarded.
+
+===== Page 7 =====
+
+is sliced, and final predictions result from postprocessing of predictions on each slice. As an extension of this, we
+propose to keep track of all predictions with bounding boxes ending or starting at an edge of the considered slice. Once
+all predictions have been made and postprocessed, a new slice is made for each such prediction, with its bounding box
+at the center of the slice. These slices are now passed again to the model. If a prediction is made that surpasses the
+predefined IoU threshold with the original bounding box, it is saved as a prediction. Otherwise, it is discarded. Our
+proposed refinement strategy is illustrated in fig.6. Optionally, multiple models can be used for making predictions on
+the new slices, and affirmative, consensus, or unanimous voting can be used to confirm if the edge prediction is valid.
+For validating this strategy, results using SAHI strategy with and without refinement are compared on each dataset for
+the best performing model at slice size 128.
+RESULTS
+Line-Space Dataset
+(a) Human Annotation
+(b) Inference (without SAHI)
+(c) Inference (with SAHI, proposed
+approach)
+FIGURE 7: Example defects (a) Annotated by human expert [included missing defects], (b) Predicted by YOLOv8m
+without SAHI and (c) Predicted by proposed SAHI-enabled ADCD framework with YOLOv8m.
+TABLE 5: GAP AND PGAP DETECTION RESULTS ON LS (ADI) DATASET FOR INFERENCE WITHOUT SAHI AND
+WITH SAHI AT VARIOUS SLICING SIZES. *BEST OVERALL INFERENCE RESULTS IN BOLD.
+Model
+Inference Strategy
+gap
+pgap
+TP
+FP
+TP
+FP
+YOLOv5x
+Without SAHI
+173
+1
+49
+0
+SAHI
+128
+177
+4
+173
+6
+256
+165
+1
+69
+0
+512
+166
+4
+64
+0
+YOLOv8m
+Without SAHI
+170
+0
+62
+0
+SAHI
+128
+210
+9
+164
+10
+256
+163
+3
+67
+0
+512
+161
+4
+56
+0
+Table 5 shows the inference results obtained both with and without SAHI using YOLOv8m and YOLOv5x models,
+which were the best performing variants during standard training and validation. While SAHI-based inference for
+
+===== Page 8 =====
+
+slicing sizes of 256 or 512 does not offer significant improvements in number of true-positive predictions compared to
+conventional inference, slicing size of 128 significantly increases the true-positive count of predicted pgap instances
+by more than 100. SAHI-based inference detects additional new defect instances against human annotations, as
+demonstrated in fig. 7. Interestingly, SAHI-based inference does not cause significant increases in true-positive
+predictions for gap when using YOLOv5x model, but increases it significantly when YOLOv8m is used. However,
+for all slice sizes, SAHI-based inference increases the number of false-positive predictions. These are caused primarily
+as an artifact of slicing, as discussed in section . When the model makes predictions on the slice, it may only have
+partial information on the lines at the slice edges. Due to this, it sometimes predicts a defect on that line, while
+if the entire width of the line is analysed, no defect is present. An example of such a false-positive prediction is
+demonstrated in fig.5.
+HEXCH DSA Dataset
+(a) Human Annotation
+(b) Inference (without SAHI)
+(c) Inference (with SAHI, proposed
+approach)
+FIGURE 8: Example defects (a) Annotated by human expert, (b) Predicted by YOLOv5n without SAHI and (c)
+Predicted by proposed SAHI-enabled ADCD framework with YOLOv5n.
+(a) Test image (unannotated)
+(b) Inference (without SAHI)
+(c) Inference (with SAHI, proposed
+approach)
+FIGURE 9: Example defects predicted on HEXCH DSA test data (three missing holes): (a) Test image
+(unannotated), (b) normal inference, and (c) SAHI-based inference.
+Table 6 shows the inference results obtained both with and without SAHI using YOLOv8x and YOLOv5n mod-
+
+===== Page 9 =====
+
+TABLE 6: PARTIALLY CLOSED AND MISSING HOLE DETECTION RESULTS ON HEXCH DSA DATASET FOR
+INFERENCE WITHOUT SAHI AND WITH SAHI AT VARIOUS SLICING SIZES. *BEST OVERALL INFERENCE
+RESULTS IN BOLD.
+Model
+Inference Strategy
+pch
+mh
+TP
+FP
+TP FP
+YOLOv5n
+Without SAHI
+17
+0
+7
+0
+SAHI
+128
+43
+122
+7
+1
+256
+30
+0
+9
+0
+YOLOv8x
+Without SAHI
+20
+0
+7
+0
+SAHI
+128
+47
+40
+14
+0
+256
+35
+11
+8
+0
+els, which were the best performing variants during conventional training and inference. In contrast to previously
+discussed ADI dataset, true-positive predictions are increased significantly not only at 128, but also 256 slicing size.
+Improvement against both inference without SAHI and human annotation, is shown in fig. 8. However, the number of
+false-positive predictions for partially closed hole defect type also increases significantly. Again, this may be caused
+due to impartial information at the slice edges, as shown in fig.5. Performance comparison on the new test dataset
+(with 2/3 missing holes/partially closed holes), for both conventional inference method and proposed SAHI-based inference method is demonstrated in fig. 9. While proposed SAHI-based inference detects and classifies all (previously
+unseen and untrained) defects correctly, conventional inference method either miss-classifies them as closed patches
+or background or could not detect them at all.
+SAHI-based ADCD framework with refinement strategy
+Finally, table 7 demonstrates the results for SAHI-based inference with refinement strategy at slicing size 128 on
+ADI data with YOLOv5x and on DSA with YOLOv8x. The proposed approach eliminates nearly all false-positive
+predictions on both datasets, properly validating it. On HEXCH DSA dataset, nearly no significant reduction in
+true-positive prediction numbers is found, while for LS (ADI) dataset, this number is significantly reduced (while
+compared against expert human annotation and conventional inference, true-positive predictions for pgap are still
+improved by ∼x2). Further to be investigated, if pgap has more ambiguous learn-able features compared to other
+defect instances (for HEXCH DSA dataset), and thus model may not always be conscious of the defect on the refined
+slice, in the same way experts may not always agree on whether it is a pgap.
+TABLE 7: IMPROVED DEFECT DETECTION RESULTS FOR BOTH DATASETS WITH SAHI-BASED ADCD
+FRAMEWORK WITH REFINEMENT STRATEGY AT SLICING SIZE OF 128.
+Model
+Defect Type
+TP
+FP FP Reduction by Refinement Human Annotation
+YOLOv5x
+gap
+175
+0
+100%
+156
+pgap
+157
+1
+83.3%
+49
+YOLOv8x
+pch
+46
+2
+95%
+16
+mh
+11
+0
+n/a
+8
+Comparison of metrics using different ground truth annotations
+In the previous sections, it has been established that using SAHI, many defect instances are detected which were not
+annotated by humans (manual labeling counts demonstrated in tables 1,2 against TP predictions in table 7, specifically
+for most challenging defect instances to label as pgap, pch and mh, respectively). Hence, when AP is calculated against
+
+===== Page 10 =====
+
+human annotations as ground truth, a lot of correct predictions (TP’s) are being considered as FPs, and negatively
+influence the AP/mAP scores, considering Eqn. 1 and Eqn. 2 for P (Precision) and R (Recall) as:
+P :=
+CumulativeTP
+CumulativeTP+CumulativeFP
+(1)
+,
+R :=
+CumulativeTP
+Total Ground Truths
+(2)
+To study the effect this has on AP (Average Precision) and AR (Average Recall) metrics, we compared predictions
+(of detections and classifications) of best performing models (YOLOv8m for LS (ADI) dataset, and YOLOv5n for
+HEXCH dataset) -without and -with SAHI against three ground-truth annotation/labeling strategies, towards calculating these two metrics. First, human annotation is used as ground truth. Second, predictions made by selected YOLO
+model without SAHI are used as ground truth in calculating AP and AR. Finally, predictions from same YOLO model
+with SAHI are used as ground truth. YOLOv5x (-without and -with SAHI) model predictions are used as groundtruth for LS (ADI) dataset and YOLOv8x (-without and -with SAHI) model predictions are used as ground-truth for
+HEXCH dataset. Results are shown in tables 8 and 9. Compared to AP score using human annotations as ground truth,
+with YOLO (-without or -with SAHI) based predictions as ground-truth, SAHI-based inference methods achieved relatively better AP/AR metrics on probable gap, missing hole and partially closed hole defect instances. This means
+that a significant number of defect instances have been predicted which were missed in human annotation, but have
+been predicted by different model variants and inference methods. The major difference between human annotations
+and average predictions of multiple models (as it cannot be guaranteed as all architecture variants individually will
+detect all/same instances), and consistency in predictions among various architecture variants and inference methods
+suggests a high likelihood of the presence of defect instances. Future work can be extended towards exploring the
+implementation of ensemble strategies for SAHI-based predictions across different architectures, aiming to minimize
+or eliminate uncertainties in true positive predictions.
+TABLE 8: METRICS FOR LS (ADI) DEFECT TYPES WITH YOLOV8M [-WITHOUT AND -WITH SAHI]
+PREDICTIONS, CALCULATED AND COMPARED AGAINST THREE GROUND TRUTH ANNOTATION/LABELING
+STRATEGIES. Y5X STANDS FOR YOLOV5X.
+Detection at Inference
+Annotation
+gap AP50 gap AR50 pgap AP50 pgap AR50
+YOLOv8m without SAHI
+Human
+0.949
+0.974
+0.479
+0.633
+Y5x without SAHI
+0.949
+0.957
+0.806
+0.849
+Y5x with SAHI
+0.874
+0.889
+0.245
+0.293
+YOLOv8m with SAHI
+Human
+0.95
+0.974
+0.346
+0.714
+Y5x without SAHI
+0.902
+0.914
+0.438
+0.811
+Y5x with SAHI
+0.9
+0.91
+0.486
+0.604
+TABLE 9: METRICS FOR HEXCH DEFECT TYPES WITH YOLOV5N [-WITHOUT AND -WITH SAHI]
+PREDICTIONS, CALCULATED AND COMPARED AGAINST THREE GROUND TRUTH ANNOTATION/LABELING
+STRATEGIES. Y8X STANDS FOR YOLOV8X.
+Detection at Inference
+Annotation
+pch AP50 pch AR50 mh AP50 mh AR50
+YOLOv5n without SAHI
+Human
+0.808
+0.812
+0.871
+0.875
+Y8x without SAHI
+0.74
+0.75
+1
+1
+Y8x with SAHI
+0.312
+0.312
+0.634
+0.636
+YOLOv5n with SAHI
+Human
+0.531
+0.875
+0.871
+0.875
+Y8x without SAHI
+0.783
+0.9
+1
+1
+Y8x with SAHI
+0.772
+0.792
+0.634
+0.636
+
+===== Page 11 =====
+
+DISCUSSION AND FUTURE WORK
+The results demonstrated in this research work not only show a significant improvement in defect inspection performance using SAHI, but also highlight that manual annotations (by human experts) may also fail to capture all defect
+instances present in those SEM images. For example, in HEXCH DSA validation dataset, only 16 partially closed
+holes were annotated. In contrast, proposed SAHI-based inference method detected upwards of 47 (using, illustrating
+the fact that at least 31 pch’s were not annotated. For LS (ADI) dataset, the same pattern can be found for pgap, and in
+lesser terms for gap. It is very likely that significant number of missed/unannotated defect instances exist in training
+data. Thus, future work could be directed towards (re-)training objector detector models with previously annotated
+dataset as well as SAHI-inference-based improved annotations (mostly with newly detected defect instances probably
+missed during tedious manual annotation). This can be thought of as an alternative data augmentation strategy (for
+similar datasets), which may result in better training annotations as well as improved defect detection performance.
+Finally, while this research work aims to demonstrate first-time application of SAHI in semiconductor defect inspection, performance may be further improved through use of ensembles of different machine learning models and
+tuning SAHI parameters such as slice overlap, or area threshold during refinement.
+CONCLUSION
+In this research work, SAHI object detection inference framework has been applied to semiconductor defect inspection
+task. SAHI was investigated for various configurations and two different YOLO model/architecture variants (YOLOv5
+and YOLOv8) on two semiconductor SEM datasets: Line-space and Hexagonal Contact-Hole Arrays. Predictions
+made by these models were further manually evaluated as either true-positives or false-positives for each model
+and SAHI configuration. On both datasets, application of SAHI framework caused 2x increase in true-positive
+predictions for some of the most challenging nano-scale defect types (probable gap and partially closed hole) against
+mislabeled/unannotated instances. The SAHI-enabled predictions were not only compared against predictions by
+same models without SAHI, but also against human expert annotations. This highlighted that models using SAHI
+framework made many more true-positive predictions (as per extensive manual evaluation) compared to expert human
+annotation. Thus, human annotations also miss significant numbers of defect instances, which are hence unannotated.
+Because these unannotated defect instances are also present in training data, we propose as future work using SAHI to
+improve training labels. Finally, we formulated an extension of the SAHI framework, where a new refinement strategy
+is added to reduce false-positive predictions at slice edges. Most notably, we demonstrate this proposed refinement
+strategy reduces false-positive predictions on partially closed hole defect type from 40 to 2, without any significant
+decreases of true-positive predictions.
+REFERENCES
+1. Hugh D. Young, Roger A. Freedman, "Circular Apertures and Resolving Power" in University Physics with Modern Physics, Pearson, p.12311233, 2020
+2. Gian Francesco Lorusso, Christophe Beral, Janusz Bogdanowicz, Danilo De Simone, Mahmudul Hasan, Christiane Jehoul, Alain Moussa,
+Mohamed Saib, Mohamed Zidan, Joren Severi, Vincent Truffert, Dieter Van den Heuvel, Alex Goldenshtein, Kevin Houchens, Gaetano
+Santoro, Daniel Fischer, Angelika Muellender, Joey Hung, Roy Koret, Igor Turovets, Kit Ausschnitt, Chris Mack, Tsuyoshi Kondo, Tomoyasu
+Shohjoh, Masami Ikota, Anne-Laure Charley, Philippe Leray, "Metrology of thin resist for high NA EUVL," in Metrology, Inspection, and
+Process Control XXXVI, Vol. 12053, p. 120530O, 2022, SPIE, doi: 10.1117/12.2614046.
+3. Enrique Dehaerne, Bappaditya Dey, Sandip Halder, "A comparative study of deep-learning object detectors for semiconductor defect detection," in 2022 29th IEEE International Conference on Electronics, Circuits and Systems (ICECS), pp. 1-2, 2022, IEEE.
+4. Fatih Cagatay Akyon, Sinan Onur Altinuc, Alptekin Temizel, "Slicing aided hyper inference and fine-tuning for small object detection," in
+2022 IEEE International Conference on Image Processing (ICIP), pp. 966-970, 2022, IEEE.
+5. Tal Itzkovich, Aner Avakrat, Shimon Levi, Omri Baum, Noam Amit, and Kevin Houchens. "SEM inspection and review method for addressing
+EUV stochastic defects." In Metrology, Inspection, and Process Control for Microlithography XXXIII, vol. 10959, pp. 371-378. SPIE, 2019.
+6. Bappaditya Dey, Dorin Cerbu, Kasem Khalil, Sandip Halder, Philippe Leray, Sayantan Das, Yasser Sherazi, Magdy A. Bayoumi, and Ryoung
+Han Kim. "Unsupervised machine learning based CD-SEM image segregator for OPC and process window estimation." In Design-ProcessTechnology Co-optimization for Manufacturability XIV, vol. 11328, pp. 317-327. SPIE, 2020.
+7. Bappaditya Dey, Dipam Goswami, Sandip Halder, Kasem Khalil, Philippe Leray, Magdy A. Bayoumi, "Deep learning-based defect classification and detection in SEM images," in Metrology, Inspection, and Process Control XXXVI, p. PC120530Y, 2022, SPIE.
+8. Ahn, J., Kim, Y. C., Kim, S. Y., Hur, S. M., & Thapar, V. (2021). Defect recognition in line-space patterns aided by deep learning with data
+augmentation. Journal of Micro/Nanopatterning, Materials, and Metrology, 20(4), 041203-041203.
+
+===== Page 12 =====
+
+9. Redmon, J., & Farhadi, A. (2018). YOLOv3: An incremental improvement. arXiv preprint arXiv:1804.02767
+10. Bappaditya Dey, Enrique Dehaerne, Sandip Halder, "Towards improving challenging stochastic defect detection in SEM images based on
+improved YOLOv5," in Photomask Technology 2022, Vol. 12293, pp. 28-37, 2022, SPIE.
+11. Enrique Dehaerne, Bappaditya Dey, Hossein Esfandiar, Lander Verstraete, Hyo Seon Suh, Sandip Halder, and Stefan De Gendt. "YOLOv8 for
+defect inspection of hexagonal directed self-assembly patterns: a data-centric approach." In 38th European Mask and Lithography Conference
+(EMLC 2023), vol. 12802, pp. 286-299. SPIE, 2023.
+12. Tsung-Yi Lin, Priya Goyal, Ross Girshick, Kaiming He, Piotr Dollár, "Focal Loss for Dense Object Detection," in Proceedings of the IEEE
+International Conference on Computer Vision, pp. 2980-2988, 2017.
+13. Gong Cheng, Xiang Yuan, Xiwen Yao, Kebing Yan, Qinghua Zeng, Xingxing Xie, Junwei Han, "Towards Large-Scale Small Object Detection:
+Survey and Benchmarks," IEEE Transactions on Pattern Analysis and Machine Intelligence, 2023, IEEE.
+14. Enrique Dehaerne, Bappaditya Dey, Sandip Halder, Stefan De Gendt, "Optimizing YOLOv7 for semiconductor defect detection," in Metrology,
+Inspection, and Process Control XXXVII, Vol. 12496, pp. 635-642, 2023, SPIE.
+15. Tsung-Yi Lin, Michael Maire, Serge Belongie, James Hays, Pietro Perona, Deva Ramanan, Piotr Dollár, C Lawrence Zitnick, "Microsoft
+coco: Common objects in context," in Computer Vision–ECCV 2014: 13th European Conference, Zurich, Switzerland, September 6-12, 2014,
+Proceedings, Part V 13, pp. 740-755, 2014, Springer.

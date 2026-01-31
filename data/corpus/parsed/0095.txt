@@ -1,0 +1,995 @@
+
+
+===== Page 1 =====
+
+Optimisation of NbN thin ﬁlms on GaAs substrates for in-situ
+single photon detection in structured photonic devices
+G. Reithmaier,1, ∗J. Senf,1 S. Lichtmannecker,1 T. Reichert,1
+F. Flassig,1 A. Voss,1 R. Gross,2 and J.J. Finley1, †
+1Walter Schottky Institut, Technische Universit¨at M¨unchen,
+Am Coulombwall 4, 85748 Garching, Germany
+2Walther Meißner Institut, Technische Universit¨at M¨unchen,
+Walther-Meißner-Straße 8, 85748 Garching, Germany
+(Dated: June 22, 2021)
+1
+arXiv:1212.2038v1  [cond-mat.supr-con]  10 Dec 2012
+
+===== Page 2 =====
+
+Abstract
+We prepare NbN thin ﬁlms by DC magnetron sputtering on [100] GaAs substrates, optimise their
+quality and demonstrate their use for eﬃcient single photon detection in the near-infrared. The
+interrelation between the Nb:N content, growth temperature and crystal quality is established for
+4−22nm thick ﬁlms. Optimised ﬁlms exhibit a superconducting critical temperature of 12.6±0.2K
+for a ﬁlm thickness of 22 ± 0.5nm and 10.2 ± 0.2K for 4 ± 0.5nm thick ﬁlms that are suitable for
+single photon detection. The optimum growth temperature is shown to be ∼475◦C reﬂecting
+a trade-oﬀbetween enhanced surface diﬀusion, which improves the crystal quality, and arsenic
+evaporation from the GaAs substrate. Analysis of the elemental composition of the ﬁlms provides
+strong evidence that the δ-phase of NbN is formed in optimised samples, controlled primarily via
+the nitrogen partial pressure during growth. By patterning optimum 4nm and 22nm thick ﬁlms
+into a 100nm wide, 369µm long nanowire meander using electron beam lithography and reactive
+ion etching, we fabricated single photon detectors on GaAs substrates.
+Time-resolved studies
+of the photo-response, absolute detection eﬃciency and dark count rates of these detectors as a
+function of the bias current reveal maximum single photon detection eﬃciencies as high as 21±2%
+at 4.3 ± 0.1K with ∼50k dark counts per second for bias currents of 98%IC at a wavelength
+of 950nm. As expected, similar detectors fabricated from 22nm thick ﬁlms exhibit much lower
+eﬃciencies (0.004%) with very low dark count rates ≤3cps. The maximum lateral extension of a
+photo-generated hotspot is estimated to be 30±8nm, clearly identifying the low detection eﬃciency
+and dark count rate of the thick ﬁlm detectors as arising from hotspot cooling via the heat reservoir
+provided by the NbN ﬁlm.
+PACS numbers: 74.78.-w 74.25.Gz 78.67.Uh 85.25.Oj 85.25.-j 42.50.-p
+∗Electronic address: guenther.reithmaier@wsi.tum.de
+†Electronic address: j.j.ﬁnley@wsi.tum.de
+2
+
+===== Page 3 =====
+
+Optical quantum information technologies [1] would proﬁt signiﬁciantly from the availability of single photon sources and detectors that can be compactly and directly integrated
+on-chip together with passive optical components. In these respects, semiconductor based
+2D photonic crystals (PCs) [2] are highly attractive since quantum dots (QDs) serving as
+deterministic single photon sources can be embedded into them [3] and passive optical hardware such as waveguides [4–6], beamsplitters [7] and phase-shifters can be integrated around
+them [8]. Recently, the eﬃcient directional guiding of single photons from QDs into propagating PC waveguide modes has been theoretically [9] and experimentally [10, 11] investigated,
+demonstrating the broad feasibility of this approach. Furthermore, several experiments have
+conﬁrmed that the strong light-matter coupling regime is accessible in high-Q PC nanocavities containing individual QDs [12, 13] illustrating that few photon quantum non-linearities
+could be exploited to provide the phase and amplitude control [8] needed for photon based
+quantum information processing [14]. Whilst much progress has been made, the on-chip detection of single photons on photonic crystal nanostructures [15] would complete the pallete
+of components needed for photon based quantum information technologies [16] in a highly
+integrated geometry.
+Nanowire based superconducting single photon detectors (SSPDs) combine high detection
+eﬃciency, low dark count rates and picosecond timing resolution [17, 18], properties that
+strongly depend on the crystal quality of the NbN ﬁlm and the fabrication process used to
+pattern the ﬁlm [19]. The growth of NbN thin ﬁlms on MgO and sapphire substrates is well
+established [20], giving rise to critical temperatures as high as TC ∼16.4K [21]. However, the
+growth of NbN on crystalline GaAs is challenging due to the 27% lattice mismatch and the
+need to deposit ﬁlms at low temperatures [22] below the threshold for thermal decomposition. The ﬁgures of merit that determine SSPD operation are a high superconducting critical
+temperature (TC), an abrupt superconducting phase transition (∆TC) and a large critical
+current density JC [23]. Building upon recent studies [22] we explored and optimised the
+deposition of NbN on GaAs using reactive DC magnetron sputtering and analysed the inﬂuence of growth conditions such as the growth temperature (Tgrowth) and N2:Nb stoichometry
+on the crystal phase of thin ﬁlms with thicknesses in the range dNbN = 4 −22nm. By comparing our electrical measurements with detailed materials analysis using Rutherford Back
+Scattering (RBS) and X-Ray photoemission spectroscopy (XPS) we clearly show that the
+optimised ﬁlms are both homogeneous and consist primarily of δ-phase NbN [21]. We then
+3
+
+===== Page 4 =====
+
+continue to present the opto-electrical characterisation of SSPDs fabricated from optimised
+ﬁlms. By investigating the time-evolution of photon induced voltage pulses we deduce the
+hotspot resistance and the spatial extension of the hotspot along the nanowires. The results
+show that the devices fabricated from the 22nm thick ﬁlms exhibit a poor top-illumination
+detection eﬃciency (0.004% at 950nm) but a low dark count rate (≤3cps). In contrast, detectors fabricated from much thinner 4nm ﬁlms exhibit detection eﬃciencies up to 21 ± 2%,
+albeit with rather high dark count rates (> 50kcps); values that compare very well to the
+current state of the art [24, 25] in this material system. The high detection eﬃciencies in
+combination with measured low timing jitters of 35ps [26] and the possibility for waveguide
+integration [25] makes these devices the ideal candidates for on-chip semiconductor based
+quantum photonics.
+The NbN thin ﬁlms investigated were grown using DC reactive magnetron sputtering in
+an Ar + N2 plasma. Prior to growth, the chamber was conditioned by sputtering NbN at the
+desired nitrogen ﬂux to remove contaminants and enhance the growth reproducibility. Before
+depositing the ﬁlm, the GaAs [100] substrate was cleaned using acetone and isopropanol
+and baked for 4 −6h at 200◦C to remove oxygen whilst remaining below the dissociation
+temperature of GaAs which occurs for temperatures of ∼400◦C [27]. During baking, the
+chamber was evacuated to a base pressure of Pbase ≤(2.0±1.0)×10−6mbar. After growth, the
+NbN ﬁlm was electrically contacted in a 4-point geometry and the temperature dependence
+of the ﬁlm resistance was recorded.
+Figure 1 compares the temperature dependent resistance measured for a number of NbN
+ﬁlms for a range of diﬀerent nitrogen partial pressures PN2 , determined in terms of the N2
+percentage of the total Ar + N2 pressure (Ptotal = 0.005 ± 0.001mbar). All ﬁlms presented
+in ﬁg 1 exhibit a thickness of dNbN = 22 ± 0.5nm, determined by AFM, and were deposited
+at Tgrowth = 350◦C. A clear superconducting phase transition is observed from which TC and
+∆TC can be extracted [46]. As PN2 is reduced from 31% to 26%, we observe a clear and
+systematic increase of TC from 4.8 ± 0.2K to 9.7 ± 0.2K and a commensurate decrease of
+∆TC (0.63 ± 0.03K to 0.46 ± 0.03K). These observations indicate that the crystal quality
+improves as the N2 partial pressure decreases.
+As PN2 is reduced further from 26% to
+24%, TC again reduces to 6.7K and ∆TC increases, signifying a clear optimum nitrogen
+partial pressure at this growth temperature. The highest TC and lowest ∆TC observed at
+PN2 = 26% can be understood as the PN2 that results in optimum ﬁlm stoichiometry and
+4
+
+===== Page 5 =====
+
+4
+5
+6
+7
+8
+9
+10
+11
+12
+0
+100
+200
+300
+400
+500
+600
+ Temperature (K)
+26%
+28%
+24%
+PN2 = 31%
+TC = 
+0.50K
+Resistance (arb.u.)
+TC = 6.65K
+FIG. 1:
+Temperature dependent NbN thin ﬁlm resistance for nitrogen partial pressures in the
+range 26% −31% for ﬁlms grown at a temperature of Tgrowth = 350◦C with a thickness of 22nm.
+The critical temperature TC and transition width ∆TC are extracted using the mean value and
+width of the 90% −10% resistance-transition width.
+microstructure for these growth conditions. A higher PN2 pushes the ratio of N and Nb
+adatoms incorporated into the growth surface above the ideal stoichiometry and, thus, leads
+to a defective niobium sub-lattice. Similarly, lower PN2 leads to a defective nitrogen sublattice [28]. Since crystalline NbN has a critical temperature of 16.4K [21] and thin (5.5nm)
+ﬁlms on GaAs have been reported to exhibit TC up to 10.7K [22], the maximum observed
+TC of 9.7K for a 26% nitrogen partial pressure is unlikely to correspond exclusively to the
+high-TC δ-phase [29] of NbN. As is conﬁrmed below using materials microscopy, the partial
+pressure of PN2 = 26% seems to favour a NbN crystal phase with a correspondingly lower
+TC, such as the nitrogen-rich ϵ-phase [29]. In order to change growth conditions in a way
+that favours the formation of the desired δ-phase, the growth temperature and PN2 were
+systematically varied for a range of 4 −6nm (marked as 5 ± 1nm) and 21 −23nm (marked
+as 22 ± 1nm) thick ﬁlms to fully explore the parameter space.
+A summary of the results obtained during these PN2 and Tgrowth studies are presented
+in ﬁgs 2(a) and 2(b), respectively , where the lower panel shows the measured values of
+TC while the upper panel shows ∆TC. To test the reproducibility of the ﬁlm deposition,
+5
+
+===== Page 6 =====
+
+ 
+5 1nm, 13%
+221nm, 26%
+(b)
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+22nm
+22nm
+5nm
+(a)
+350°C
+475°C
+475°C
+ 
+Transition Width TC (K)
+5
+10
+15
+20
+25
+30
+35
+4
+6
+8
+10
+12
+
+ 
+ 
+Nitrogen Partial Pressure PN2 (% Ptotal)
+Critical Temperature TC (K)
+
+350
+400
+450
+500
+550
+ 
+ 
+Growth Temperature Tgrowth (°C)
+QG 
+SD 
+GaAs dissociation 
+FIG. 2:
+Overview of measured superconductivity metrics for NbN ﬁlms on GaAs with thicknesses
+of 4 −6nm (marked as 5 ± 1nm) and 21 −23nm (marked as 22 ± 1nm) as a function of PN2
+and Tgrowth. (a) Critical temperature TC (lower panels) and transition width ∆TC (upper panels)
+measured for 5nm (red symbols) and 22nm (black/blue symbols) thick NbN ﬁlms as a function of
+N2 partial pressure PN2 for Tgrowth = 350◦C (black symbols) and 475◦C (blue/red symbols). (b)
+Measured growth temperature dependent data.
+we grew and measured three samples with a ﬁlm deposited at Tgrowth = 475◦C, PN2 =
+26%. The results obtained were found to be highly reproducible, yielding a small error
+bar that was then adopted for all measurements presented in ﬁg 2. The PN2 dependent
+measurements were performed for the thick ﬁlms (dNbN = 22nm) at growth temperatures of
+350◦C (black squares) and 475◦C (blue triangles), respectively. For the thin, dNbN = 5nm
+ﬁlms, the nitrogen partial pressure was varied over the same range for substrate temperatures
+of Tgrowth = 475◦C (red circles) only. As already discussed in connection with ﬁg 1, the
+maximum TC measured for PN2 = 26% and 350◦C was 9.7K, indicated by the arrow labelled
+ϵ in ﬁg 2(a). Furthermore, for both thick and thin ﬁlms grown at 475◦C, a broad maximum
+6
+
+===== Page 7 =====
+
+is observed in TC at PN2 = 13 ± 1%, indicated by the arrow labelled δ on ﬁg 2(a).
+A
+hint of the ϵ maximum is also observed at PN2 ∼26% for the thin ﬁlms (ﬁg 2(a)). The
+observation of two maximum TC values for the datasets recorded with PN2 = 26% and
+13%, the prominence of which can be varied by changing Tgrowth, suggests that a change
+in ﬁlm microstructure occurs from a nitrogen-rich phase at PN2 = 26% to a phase with
+lower nitrogen content at PN2 = 13%. Amongst all the diﬀerent crystal phases that occur
+for NbN the face-centered cubic δ-NbNx phase with a nitrogen content 0.88 ≤x ≤0.98
+has the highest TC of 16.4K [21]. Our observations suggest that the optimum 13% nitrogen
+ﬁlm grown at Tgrowth = 475◦C may consist primarily of polycrystalline δ-phase NbN, an
+expectation that is supported by the structural microscopy data presented below.
+The
+phase diagram of NbNx [28] indicates that the hexagonal ϵ-phase is preferentially formed for
+nitrogen contents, that are signiﬁcantly higher than the δ-phase [30], lending support to the
+indentiﬁcation of the two maxima labelled in ﬁg 2(a). Therefore, we tentatively attribute
+the two maxima in TC at PN2 = 26%, indicated by labelled arrows in ﬁg 1, as arising from
+δ and ϵ-phases of NbN, respectively.
+In order to obtain quantitative insight into the role of the growth temperature in this
+picture, we systematically investigated the properties of 5nm and 22nm thick NbN-GaAs
+ﬁlms grown at PN2 = 13% and 26% for growth temperatures in the range 350◦C ≤Tgrowth ≤
+525◦C. The results of these studies are summarised in ﬁg 2(b). The maximum (minimum)
+TC (∆TC) is found to occur close to Tgrowth ∼475◦C for all samples studied, independent of
+ﬁlm thickness or the nitrogen partial pressure. This global maximum can be interpreted as
+reﬂecting the interplay of two eﬀects; Firstly, for Tgrowth ≥400◦C desorption of As2 from the
+GaAs [100] surface begins [31] promoting surface reconstruction and a deviation from ideal
+stoichiometry - both eﬀects that may help to overcome the large lattice mismatch between
+NbN and GaAs. Secondly, the diﬀusion length of adatoms arriving at the growth surface
+signiﬁcantly increases with Tgrowth promoting a transition from the quenched growth regime,
+in which poor crystal quality arises from the incorporation of adatoms on the surface close to
+point where they arrive, to a more favourable growth regime dominated by surface diﬀusion
+[29, 32]. In the quenched growth regime, the microstructure typically consists of columns of
+material with poor crystallinity, and even amorphous regions separated by voids while higher
+Tgrowth signiﬁcantly promotes improved crystal quality with isotropic equiaxed crystal grains.
+Generically, NbN ﬁlms grown at much higher temperatures (≥600◦C) on conventional
+7
+
+===== Page 8 =====
+
+PN2 = 26%
+Tgrowth = 475°C
+5
+10
+15
+20
+25
+8
+9
+10
+11
+12
+Film Thickness dNbN (nm)
+Critical Temperature TC (K)
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+Transition Width TC (K)
+GaAs 
+thinned 
+as-grown 
+GaAs 
+NbN 
+NbN 
+dNbN 
+FIG. 3:
+Critical temperature TC (bottom panel) and transition width ∆TC (top panel) as a
+function of ﬁlm thickness dNbN for NbN ﬁlms grown at PN2 = 26% and Tgrowth = 475◦C. Blue
+triangles correspond to as-grown ﬁlms with sputtering times of 15s, 30s and 55s, indicated in the
+schematic on the top. The red symbols correspond to selectively thinned ﬁlms, originating from a
+single 19nm ﬁlm, which was etched down for 0s, 30s, 60s and 90s, respectively.
+substrates such as MgO and sapphire tend to exhibit high TC [20] as a consequence of the
+dominance of the surface diﬀusion limited growth regime and resulting high crystal quality.
+The observed maximum (minimum) of TC (∆TC) behaviour is found to be independent of the
+nitrogen partial pressure during growth, as shown by the similarity of the blue (PN2 = 26%,
+dNbN = 22nm) and red (PN2 = 13%, dNbN = 5nm) curves in ﬁg 2(b).
+To support these viewpoints and exclude the possibility that the crystal structure and
+quality vary strongly with dNbN due to the formation of a buﬀer layer, comparative measurements were performed on several ﬁlms grown under nominally identical conditions, but with
+diﬀerent ﬁnal thicknesses (6nm ≤dNbN ≤22nm), and a 19nm thick ﬁlm that was selectively
+thinned after growth using reactive ion etching in a SF6/C4F8 plasma. In the following
+we refer to these two types of samples as the ”as-grown” and ”thinned” ﬁlms, respectively.
+8
+
+===== Page 9 =====
+
+Figure 3 shows TC (lower panel) and ∆TC (upper panel) as a function of ﬁlm thickness for
+as-grown (blue triangles) and thinned (red triangles) ﬁlms. All the NbN ﬁlms studied in ﬁg
+3 were grown using PN2 = 26% and Tgrowth = 475◦C. The as-grown ﬁlms had a thickness
+dNbN = 22nm, 16nm and 6nm, whereas the thinned ﬁlms were obtained from an initially
+19nm thick ﬁlm that was etched back for 0s, 30s, 60s and 90s resulting in ﬁlm thicknesses of
+19nm, 17nm, 15nm and 10nm, as measured by AFM. Comparing TC and ∆TC of as-grown
+and thinned ﬁlms reveals results that are identical within the experimental error. For asgrown ﬁlms TC decreases from 11.7K to 8.6K as dNbN reduces from ∼22nm to ∼6nm. Over
+the same thickness range ∆TC increases from 0.30K to 0.67K. For thinned ﬁlms TC decreases
+from 10.1K to 9.2K, whereas ∆TC increases from 0.37K to 0.55K. These trends are in very
+good agreement with the ﬁndings of [22], which showed that the reduction of TC (increase of
+∆TC) reﬂects the stronger inﬂuence of disorder which induces the superconductor-insulator
+transition [33, 34].
+The observation of a monotonic dNbN dependence of the superconducting metrics, that
+are identical for as-grown and thinned ﬁlms, indicates that the grown ﬁlms are homogeneous
+along the growth direction. In addition, the thickness of the NbN ﬁlm appears to have little
+or no inﬂuence on the growth conditions indicating that the large lattice mismatch between
+NbN and GaAs is most likely accomodated by defects close to the NbN-GaAs interface. In
+contrast, crystal quality seems to be intrinsically limited for thinner ﬁlms. The ﬁnding that
+the ﬁlm thickness has no signiﬁcant inﬂuence on the growth conditions of NbN on GaAs is
+not at all intuitive, since one would expect a thickness dependence caused by the strain ﬁeld
+that builds up due to the 27% lattice mismatch [22] at the NbN-GaAs interface. Considering
+these ﬁndings and the data presented in ﬁg 2, we conclude that the nitrogen partial pressure
+fully determines the crystal phase, whereas a growth temperature of ∼475◦C provides an
+optimum crystal quality independent of ﬁlm thickness.
+The clear ﬁlm thickness dependence of the superconducting metrics presented in ﬁg 3
+allows us to quantitatively scale the data for the 5nm thick ﬁlms presented in ﬁg 2 and
+directly compare it with the data recorded from the 22nm ﬁlm. The result of this procedure
+is shown by the grey curve plotted in ﬁg 2(a).
+Remarkably, both the form of the data
+recorded from the scaled 5nm data and the absolute values of TC (∆TC) agree within the
+experimental errors strongly suggesting that the observed maximum in the ﬁlm quality for
+PN2 ∼13% is indeed a general result.
+9
+
+===== Page 10 =====
+
+ 
+-NbN
+-NbN
+PN2 = 26% Ptot
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+1.2
+ 
+-NbN
+Nitrogen concentration x in NbNx
+-NbN
+PN2 = 13% Ptot
+0
+5
+10
+15
+20
+25
+Depth (nm)
+ N
+ O
+ Ga
+ As
+ Nb
+4%
+0
+1
+2
+3
+4
+5
+0
+10
+20
+30
+40
+50
+60
+Atomic concentration (%)
+Depth (nm)
+ N
+ O
+ Ga
+ As
+ Nb
+4%
+(a) 
+(b) 
+Nb 
+N 
+FIG. 4:
+Atomic concentration (bottom panels) and nitrogen content x (top panels) for NbNx
+ﬁlms as a function of depth obtained by XPS and RBS. (a) corresponds to dNbN = 4nm grown
+at PN2 = 13% and (b) shows dNbN = 22nm grown at PN2 = 26%. Both ﬁlms were grown for
+Tgrowth = 475◦C. PN2 = 13% grown ﬁlms consist of nitrogen poor fcc δ-NbN, as indicated by the
+blue shaded region, whereas PN2 = 26% grown ﬁlms exhibit nitrogen rich hexagonal ϵ-NbN, as
+indicated by the red shaded region. The corresponding crystal structures are adapted from [28].
+We continue by presenting direct measurements of the depth proﬁle of the atomic composition and stoichiometry of the NbN ﬁlms grown using the optimum growth temperature
+of Tgrowth = 475◦C and obtain results that strongly support these conclusions. Depth dependent X-ray photoemission spectroscopy (XPS) and Rutherford backscattering (RBS)
+measurements were performed through the NbN ﬁlm, and into the GaAs substrate, to conﬁrm that the nitrogen concentration during growth does indeed determine the crystal phases
+and that the optimised ﬁlms consist primarily of δ−phase NbN. Measurements were performed on two ﬁlms grown with 13% (4nm thick) and 26% (22nm thick) nitrogen partial
+10
+
+===== Page 11 =====
+
+pressures as marked by arrows on ﬁg 2(a). Figures 4(a) and 4(b) show the depth dependent atomic concentrations (bottom panels) and nitrogen content x (top panels) for the
+13% (4nm thick) and 26% (22nm thick) ﬁlms, respectively. The XPS measurements reveal
+a thin NbOx layer at the surface with a thickness of ∼1nm. This ﬁnding compares very
+well with the observations from the etching depth dependent measurements presented in ﬁg
+3 that showed no diﬀerence between the unetched sample and the sample etched for 30s,
+as indicated by the dashed circle. While the oxygen concentration decreases rapidly with
+depth, to levels below 4% for the thick ﬁlm, the oxygen concentration remains above ∼4%
+for the thin ﬁlm throughout the NbN layer. This can be clearly seen by the red curve in
+ﬁg 4. Since both samples were grown for the same base pressure of Pbase < 3 · 10−6mbar,
+the oxygen concentration should be equal for both ﬁlms and, hence, we interpret the higher
+oxygen concentration in the thin ﬁlm to post-growth oxygen interdiﬀusion. Whilst the oxygen concentration decreases, the Nb and N content in both samples increases and then
+remains constant throughout the entire ﬁlm. At the NbN-GaAs interface we again observe
+a thin oxygen rich layer with a thickness of ∼1nm and the stoichiometry of the GaAs layer
+deviates from the expected value of 50%. This observation correlates very well with the
+thermal dissociation of GaAs at the surface for Tgrowth ≥400◦C due to As2 desorption. The
+resulting arsenic vacancies appear to be occupied by Nb atoms, as shown in the atomic
+concentrations in the bottom panels of ﬁg 4. The top panels of ﬁg 4 show the nitrogen
+concentration x of the NbNx ﬁlms as a function of depth for the ﬁlm grown at 13% N2 (left
+panel) and 26% N2 (right panel). The range of x that would correspond to δ-NbN [28, 30] is
+indicated schematically by the blue hatched region, whereas the range corresponding to the
+ϵ-phase [28, 30] is denoted by the red shaded region, respectively. For the thin ﬁlm, grown
+at 13% N2, x increases from 0 to ∼0.89 within the 1nm thick region of the ﬁlm closest
+to the surface. Thereafter, x slowly decreases again for depths ranging from 2 to 3nm but
+remains entirely within the range expected for δ-NbN. Afterwards, a sharp decrease in x
+is observed close to the NbN-GaAs interface. From these measurements we conclude that
+the ﬁlm grown for PN2 = 13% does indeed consist of the δ-phase having high TC, in good
+agreement with observations from the electrical transport measurements and the optimised
+superconductivity metrics presented in ﬁgures 1 and 1. The data for the sample grown at
+PN2 = 26%, presented in the rightmost column of ﬁg 4, exhibits a similarly sharp increase in
+x over the uppermost 1nm. However, in contrast to the thin sample a much higher value of
+11
+
+===== Page 12 =====
+
+Vb 
+Ib (t) 
+100kΩ 
+0.22µF 
+ISSPD (t) 
+Rn (t) 
+Iout (t) 
+1.5mH 
+Lk 
+50Ω 
+V(t) 
+2µm 
+1µm 
+Rn(t) 
+ 
+Time
+Bias
+Current
+FIG. 5:
+Schematic of opto-electrical SSPD characterisation setup.
+A meander-type detector
+(SEM pictures on the left) is operated just below the critical current IC by using a bias-tee (1.5mH
+inductance and 0.22µF capacitance) connected to a 100kΩresistor and a constant voltage source
+Vb. The SSPD can be modelled as an inductor Lk and a time-dependent resisitor Rn(t). As depicted
+schematically in the leftmost SEM image, a normal conducting region Rn is formed upon photon
+absorption. This leads to a redirection of the bias current onto the output-capacitor, producing a
+voltage pulse V (t) which is monitored using an oscilloscope.
+x ∼1.2 is reached. Afterwards, x gradually decreases to ∼1.05 within the next ∼2nm and
+then remains constant in the range expected for the ϵ-phase, until the NbN-GaAs interface
+is reached. These observations support the conclusion that ﬁlms grown with PN2 = 26%
+consist primarily of the nitrogen-rich ϵ-phase, supporting the conclusions reached in relation
+to the discussion of ﬁg 2.
+Using optimised, predominant δ-phase NbN ﬁlms we fabricated SSPDs in the typical
+meander-type geometry [17] on 4nm and 22nm thick ﬁlms.
+In the following, these two
+samples are termed the thin and thick SSPDs, respectively.
+The SSPD fabrication was
+performed using a negative tone electron beam resist for patterning of the detectors. After
+development of the exposed resist, the sample is reactively etched in a SF6/C4F8 plasma,
+transferring the electron beam written structures onto the NbN ﬁlm. This results in 10 ×
+10µm2 NbN meanders on GaAs, each of which consists of 41 NbN nanowires with a width
+of 100±5nm, as presented in the SEM images in ﬁg 5. In order to electrically address single
+detectors in a low-temperature microwave probe station, Ti/Au contact pads were deﬁned
+using photo-lithography. For opto-electrical characterisation, the sample was cooled down
+to T = 4.3 ± 0.1K and single detectors are electrically connected to the bias-tee that has
+12
+
+===== Page 13 =====
+
+an inductance of 1.5mH and a capacitance of 0.22µF (ﬁg 5). A ﬁxed bias-voltage Vb in
+series with a 100kΩresistor is fed into the DC port of the bias-tee, operating the detector
+at a drive-current Ib = Vb/100kΩ. The AC port of the bias-tee is directly connected to a
+20GHz sampling oscilloscope with a 50Ωinput impedance for pulse-shape measurements, as
+depicted schematically in ﬁg 5. Such meander type nanowire detectors can be electrically
+modelled as an inductor Lk in series with a time-dependent resistor Rn(t) [35, 36]. When
+operating the device with a bias current ISSPD = Ib, slightly below the device-critical current
+IC, the absorption of a photon by a Cooper pair creates a small normal conducting region,
+a so-called hotspot, which then extends across the whole wire [37, 38].
+This process is
+schematically depicted in the SEM picture in the upper left panel of ﬁg 5. The appearance
+of Rn ̸= 0 in the left arm of the circuit redirects a part of the bias current Iout = Ib −ISSPD
+into the right arm leading to a voltage pulse V (t) at the oscilloscope. Due to the ohmic
+character of Rn, higher bias currents result in higher voltage pulses, as shown in the V (t)
+data presented in ﬁg 5. After hotspot healing, the recovery of the current is limited to a
+nanosecond timescale by the rise time τI,rise = Lk/50Ω[35], thereby limiting the detector
+countrate to a few hundred MHz.
+To probe the time evolution of the hotspot resistance, both thick and thin SSPDs were
+operated and measured using the circuit presented in ﬁg 5. Laser pulses with a duration of
+∼90ps at λ = 950nm were delivered by a laser diode with a repetition rate of 80MHz. Light
+is focussed onto the detector using a long working distance compound objective. Typical
+voltage pulses V (t) arising from the response of the thick and thin detectors are shown in
+the inset of ﬁg 5. For the thick detector the observed pulses could be detected directly by a
+20GHz sampling oscilloscope, whereas voltage traces originating from the thin SSPD were
+ampliﬁed using two calibrated low-noise 30dB high-frequency ampliﬁers. For the further
+analysis, the ampliﬁcation and pulse shortening due to high-pass ﬁltering of the ampliﬁers
+were corrected to reproduce the original, photo-generated pulse shape. The kinetic inductance of the corresponding device was determined by ﬁtting an exponential decay to the
+falling edge of the voltage trace. The thick SSPD then exhibits Lk = 76 ± 14nH, whereas
+the thin SSPD shows Lk = 393 ± 20nH, the diﬀerence between the two values being in
+very good agreement with Lk = Lk
+R
+ds/A(s), where Lk is the kinetic inductivity, A is the
+cross-sectional area and integration is done along the wire [35, 39]. The temporal evolution
+of the hostpot resistivity Rn(t) and the corresponding current drop ISSPD(t) can then be
+13
+
+===== Page 14 =====
+
+(a) 
+(b) 
+(c) 
+10
+-1
+10
+0
+10
+1
+Ib = 3.5A
+ISSPD (A)
+Rmax = 2.5k
+10
+0
+10
+1
+10
+2
+10
+3
+10
+4
+Rn ()
+dNbN = 4nm
+0.1
+0.2
+0.3
+0.8
+0.9
+1.0
+1.1
+1.2
+1.3
+0
+20
+40
+60
+80
+100
+120
+140
+0.99
+4nm
+0.97
+0.89
+0.82
+0.75
+0.93
+0.87
+0.81
+ Number of Events
+ 
+Amplified Pulse-Height (V)
+0.75
+22nm
+0
+2
+4
+6
+8
+10
+15
+20
+25
+30
+35
+ 
+Time (ns)
+ISSPD (A)
+10
+0
+10
+1
+10
+2
+10
+3
+Rmax = 72
+Rn ()
+dNbN = 22nm
+Ib = 33.4A
+4nm  
+thin SSPD 
+22nm 
+thick SSPD 
+resistive 
+ region Rn 
+bias current 
+ ISSPD 
+phonon 
+escape 
+into substrate 
+FIG. 6:
+(a) Temporal dependence of the hotspot resistance (red squares) and detector bias current
+(blue circles) for the thick (bottom panel) and thin (top panel) SSPD. (b) Schematic of a photon
+induced resistive region along the nanowire. (c) Histograms of the ampliﬁed voltage pulses resulting
+from hotspot detection events for diﬀerent bias currents Ib in units of IC. The leftmost (rightmost)
+data sets were obtained from SSPDs deﬁned with 4 ± 0.5nm/22 ± 0.5nm thick ﬁlms.
+obtained from V (t) by using a simple electro-dynamic model [47] for the circuit shown in
+ﬁg 5. The data was recorded for a ﬁxed bias current of Ib = 0.56IC for the thin SSPD and
+0.75IC for the thick one, as indicated by the dashed blue lines in ﬁg 6a. The current through
+the detector ISSPD(t) (blue circles) and the hotspot resistance Rn(t) (red squares) are presented in a logarithmic scale in ﬁg 6a for the thin detector (top panel) and the thick detector
+(bottom panel), respectively. For the thick detector the resistance builds up within 1.3ns
+to a maximum value of Rmax = 72Ωand then reduces to zero within ∼0.8ns. In contrast,
+the thin SSPD shows a 35× larger maximum resistance of 2.5kΩwhich is ∼50% smaller
+than typical values for SSPDs on MgO substrates [36]. Furthermore, when compared to the
+thick device the resistance build-up and healing takes place over much faster timescales for
+the thin devices (0.7ns and 0.4ns, respectively). For both cases, a drop of ISSPD is observed
+14
+
+===== Page 15 =====
+
+shortly after the hotspot resistivity starts to build up, delayed by the kinetic inductance
+of the device. For the thick detector, the current drops to 74% (34 −25µA), whereas the
+current through the thin detector reduces to 6% (3.4 −0.2µF), reﬂecting the much higher
+resistance of the thin device. Again, delayed by the kinetic inductance, the current then
+recovers with a rise time of 1.5±0.3ns for the thick detector and 7.9±0.4ns for the thin one,
+the diﬀerence arising from the ﬁlm thicknesses. However, the 34× larger hotspot resistivity
+of the thinner detector cannot be explained by a 5.5× smaller ﬁlm thickness alone. As the
+build-up of a resistive region across the entire wire upon photon absorption is determined by
+a complex interplay of various eﬀects [17, 36, 40], we present here a qualitative explanation
+for the observed behaviour. To get a better understanding of the responsible mechanisms,
+the horizontal extension of the hotspot along a nanowire is estimated for both cases. With
+the knowledge of the ohmic resistance Rwire of a single nanowire of length lwire for temperatures T > TC, the horizontal extension of the photon induced resistive region lmax along the
+nanowire can be estimated to be lmax = lwire × Rmax/Rwire. Here, Rwire is determined from
+the current voltage characteristics of the investigated devices where a sequential switching
+of the nanowires from superconducting state to normal conductivity is observed. Now lmax
+can be estimated to be 270±10nm for the thin detector and 30±8nm for the thick detector,
+as schematically shown in ﬁg 6b. Here, the larger hotspot extension of the thinner detector
+promotes a faster cooling of the resistive region via phonon emission into the adjacent GaAs
+substrate. In addition, thermal boundary conductivity at the NbN/GaAs interface scales
+with 1/dNbN [36] and, hence, is expected to be signiﬁcant higher for the thin device. In case
+of the thick detector the initially photon-created hotspot with an extension of ∼13nm [41]
+cannot extend as fast and wide as for the thin device due to heat transfer within the wire
+[36]. Here, cooling inside the comparatively larger heat sink provided by the surrounding
+nanowire takes place, before switching of the side channels [17, 40] and creation of the entire
+resistive region occours. Therefore, if the photon absorption leads to a detectable event, the
+resistance and its lateral extension are expected to be smaller, since hotspot quenching is
+promoted during the longer resistance built up, as observed in ﬁg 6a. These considerations
+suggest a considerably lower dark count rate for thick SSPD devices, however, at the price
+of a much smaller detection eﬃciency.
+In order to determine the detection eﬃciency, we set an event-treshhold level Vt that
+both rejects the noise of the readout-electronics but does not cut oﬀany photon detection
+15
+
+===== Page 16 =====
+
+events. In order to ﬁnd the optimum value of Vt, the device was illuminated with a constant
+calibrated photon ﬂux and a histogram of the ampliﬁed voltage pulses of the detection events
+was recorded for diﬀerent values of I/IC. The results of typical measurements are presented
+in ﬁgure 6c for the thin (leftmost panel) and thick (rightmost panel) detectors. For these
+measurements the maximum output voltage was recorded within each trigger cycle, as given
+by the laser repetition rate. The data presented shows the average over 500 independent
+measurements. In this way, the number of events depicted in the histogram reﬂects the
+number of registered photon detection events per time and, therefore, when compared with
+the calibrated incident photon ﬂux on the detector, the corresponding detection eﬃciency.
+As one would expect from other reports in the literature [42, 43], the detectivity scales
+exponentially with the drive current, an eﬀect that can be clearly seen in the data recorded
+for the thick detector. In contrast, the thin detector was operated in saturation, so the
+histograms show no increase of the registered events for higher drive currents. Besides, a clear
+shift of the mean pulse height is observed for increasing bias currents reﬂecting the ohmic
+nature of the photon induced resistive region. For the following count-rate measurements,
+presented in ﬁgure 7, the voltage treshhold level was set to be 80mV for the thin SSPD and
+to 700mV for the thick detector, respectively.
+Before discussing further experimental ﬁndings of thick and thin detectors, we compare
+these devices with respect to their critical current densities JC = IC/A (with the wire crosssection A) and ﬁnd the ratio Jthick
+C
+/Jthin
+C
+= 1.3 ± 0.2. However, since JC is expected to be
+solely a property of the crystal phase, this ratio should be close to unity. By deﬁning an
+eﬀective active ﬁlm thickness deﬀ= dNbN −dOx, where deﬀis the active thickness of the
+superconducting NbN layer and dOx is an optically and electrically dead oxide layer, we
+found that this ratio becomes unity for dOx ∼1nm, in excellent agreement with the XPS
+results presented in ﬁg 4. Therefore, SSPDs fabricated from the 4nm ﬁlm have an eﬀective
+thickness deﬀ= 3 ± 0.5nm and, due to their extremely small thickness, are expected to
+show very high detection eﬃciencies [44]. For the detectivity and dark count measurements,
+presented in ﬁgure 7, the oscilloscope in the circuit in ﬁg 5 is replaced by two low-noise
+30dB high-bandwidth ampliﬁers which are connected to a 350MHz frequency counter. The
+respective SSPD is now operated at a ﬁxed bias current ratio I/IC, as indicated for each
+data series presented in ﬁg 7. The device is illuminated using a parallel laser beam with a
+carefully calibrated circular intensity proﬁle with a diameter of dbeam = 5.5 ± 0.1mm (see
+16
+
+===== Page 17 =====
+
+(a) 
+10
+4
+10
+5
+10
+6
+10
+7
+10
+8
+10
+9
+10
+10
+10
+-1
+10
+0
+10
+1
+10
+2
+10
+3
+10
+4
+10
+5
+10
+6
+10
+7
+10
+8
+ Top - Incident Photons per Second
+0.61
+dNbN = 4nm
+I / IC
+0.71
+0.80
+0.90
+0.98
+Photon Events (cps)
+7
+120
+2000
+52000
+DC (cps)
+ungated
+DE = 21 2 %
+10
+4
+10
+5
+10
+6
+10
+7
+10
+8
+10
+9
+10
+10
+dNbN = 22nm
+0.92
+0.95
+0.97
+0.99
+Top - Incident Photons per Second
+0.2
+3
+DE = 0.004 0.001%
+DC (cps)
+ungated
+I / IC
+2
+4
+6
+8
+2
+4
+6
+8
+ 
+ 
+Y (mm)
+X (mm)
+(b) 
+FIG. 7:
+Number of detected photon events as a function of the top-incident photon number
+for a 4nm thin SSPD (a) and a 22nm thick SSPD (b), respectively. Data is shown in a double
+logarithmic plot and presented for diﬀerent I/IC ratios. The corresponding dark count rates are
+indicated by the dashed lines on the left. The solid lines are linear ﬁts with slopes of 0.98 ± 0.02
+(thin device) and 1.09 ± 0.03 (thick device) revealing the single photon character of the detected
+events. A maximum detection eﬃciency of 21 ± 2% is reached for the 4nm detector at 0.98IC,
+whereas the 22nm SSPD shows 0.004±0.001% detectivity for a current of 0.99IC. The inset shows
+the measured beam proﬁle used for illumination.
+ﬁg 7b - inset). The recorded number of events per second (open symbols in ﬁg 7) is then
+corrected for the respective dark count rate (dashed line in ﬁg 7). In order to calibrate the
+incident photon arrival rate on the detector, the beam proﬁle was mapped by scanning the
+beam accross a 500±100µm diameter pinhole and measuring the transmitted power proﬁle,
+as shown in the inset of ﬁg 7b. A horizontal cross-section of the beam proﬁle at Y = 5mm
+is shown in red. Now the number of incident photons on the detector can be calculated
+using Nγ = P/(ℏω) × ASSPD/(πd2
+beam/4) × xloss × xbeam with the average power of the beam
+P, the photon energy ℏω, the active area of the detector ASSPD, the measured losses at
+cryostat windows xloss and the correction factor arising from the detector position within
+the beam proﬁle xbeam. For both the 4nm thin (ﬁg 7a) and the 22nm thick (ﬁg 7b) detector
+we observe a clear linear increase of photon detection events as a function of the incident
+photon number in this double logarithmic plot for all shown bias current ratios, proving that
+the detectors operate in the single photon regime [41, 42]. The solid lines are ﬁts with an
+17
+
+===== Page 18 =====
+
+exponent of 0.98 ± 0.02 for the thin SSPD and 1.09 ± 0.03 for the thick one, respectively.
+The fact that the observed behaviour is slightly superlinear for the thick device suggests
+that a small percentage of detected events arises from double photon events, in agreement
+with expectations for larger detector areas [41]. For both the thin and thick SSPDs the
+dark count rate as well as photon counts at a ﬁxed photon ﬂux scale exponentially with
+I/IC, which is in good agreement with previous publications [42, 43]. In order to estimate
+the maximum device detection eﬃciency, the number of detected events is divided by the
+number of incident photons at 0.98I/IC for the thin, 4nm detector and for 0.99I/IC for the
+thick, 22nm one, respectively. This was done for the maximum possible photon ﬂux that did
+not push the detector permanently into a normal conducting state caused by a reduction
+of the critical current due to device heating [36]. In this way the detection eﬃciency η for
+top-illumination using light at 950nm was determined to be η = 21±2% for the thin detector
+at an ungated dark count rate of 52000 per second. This compares very well to the current
+state-of-the-art NbN SSPD detectors on GaAs that have been reported to have a normal
+incidence detection eﬃciency of 18.3% at 1300nm [24], as well as to ﬁndings reported for
+other substrates [17, 40, 45]. Also the high dark count rate compares well with other values
+reported in literature [25]. In contrast, the thick SSPD exhibits a much lower detection
+eﬃciency η = 0.004±0.001% with an almost negligible dark count rate of only 3 per second.
+This observation is fully expected from the hotspot analysis presented in ﬁgure 6 and is in
+very good accord with the ﬁndings reported in [44].
+In summary, we optimised the growth of NbN thin ﬁlms on GaAs substrates by varying the
+substrate temperature and N2 partial pressure. Optimum crystal phases for SSPD operation
+were obtained using a nitrogen partial pressure of PN2 = 13% at a growth temperature of
+Tgrowth = 475◦C. Evidence was obtained that these conditions promote the formation of the
+high TC δ-phase of NbN. Under these growth conditions an optimised dNbN = 4±0.5nm thin
+ﬁlm with TC = 10.2±0.2K and ∆TC = 0.53±0.03K has been obtained, values which are very
+close to the state of the art on GaAs substrates [22]. For lower Tgrowth the superconducting
+critical temperature reduces signiﬁcantly. The maximum TC = 9.7K for 22nm ﬁlms for PN2 =
+26% and Tgrowth = 350◦C was attributed to the formation of the hexagonal ϵ-phase with
+signiﬁcantly lower TC values, as compared to δ-NbN. By systematically varying Tgrowth, we
+observe an optimum value of 475◦C, independent of nitrogen partial pressure, attributed to a
+trade-oﬀbetween disorder induced by arsenic evaporation and higher crystal quality caused
+18
+
+===== Page 19 =====
+
+by increased surface diﬀusion. Finally, the growth conditions responsible for the formation
+of δ- and ϵ-NbN, have been veriﬁed using RBS and depth dependent XPS measurements.
+Superconducting single photon detectors were fabricated and characterised for 4 and 22nm
+thick optimised NbN ﬁlms. The electro-optical characterisation of the devices revealed an
+extension of the photon induced resistive region of 270 ± 10nm for the thin SSPD and
+30 ± 8nm for the thick detector. By varying the normally incident photon number and
+measuring the detected photon events, the single photon character of both devices was
+proven. The maximum detection eﬃciency was determined to be 0.004±0.001% for the thick
+detector and 21 ± 2% for the thin detector, following excitation with 950nm photons. The
+origin of the negligibly low dark count rate for the thicker detector, operated at 4.3 ± 0.1K,
+was attributed to hotspot quenching with the 22nm thick ﬁlm acting as a heat sink. The
+evanescent coupling of such SSPDs with waveguides is likely to signiﬁcantly improve these
+performance metrics, providing strong potential for the development of integrated single
+photon quantum optics using semiconductors.
+We gratefully acknowledge D. Sahin, A. Fiore (TU Eindhoven) and K. Berggren, F.
+Najaﬁ(MIT) and R. Hadﬁeld (Heritot-Watt) for useful discussions, EAG Labs for ﬁlm
+characterisation via RBS / XPS and the BMBF via QuaHL-Rep Project number 01BQ1036.
+[1] J. L. O’Brien, A. Furusawa, and J. Vuˇckovi´c, Nature Photonics 3 (2009).
+[2] T. F. Krauss and R. M. de La Rue, Prog. Quantum Electron. 23 (1999).
+[3] A. Kress, F. Hofbauer, N. Reinelt, M. Kaniber, H. J. Krenner, R. Meyer, G. B¨ohm, and J. J.
+Finley, Phys. Rev. B 71 (2005).
+[4] S. Olivier, C. Smith, H. Benisty, C. Weisbuch, T. Krauss, R. Houdre, and U. Oesterle, Quantum Electronics, IEEE Journal of 38 (2002).
+[5] S. McNab, N. Moll, and Y. Vlasov, Opt. Express 11 (2003).
+[6] M. Notomi, A. Shinya, S. Mitsugi, E. Kuramochi, and H. Ryu, Opt. Express 12 (2004).
+[7] S. Boscolo, M. Midrio, and T. F. Krauss, Opt. Lett. 27 (2002).
+[8] I. Fushman, D. Englund, A. Faraon, N. Stoltz, P. Petroﬀ, and J. Vuˇckovi´c, Science 320 (2008).
+[9] V. S. C. Manga Rao and S. Hughes, Phys. Rev. B 75 (2007).
+[10] A. Schwagmann, S. Kalliakos, I. Farrer, J. P. Griﬃths, G. A. C. Jones, D. A. Ritchie, and
+19
+
+===== Page 20 =====
+
+A. J. Shields, Appl. Phys. Lett. 99 (2011).
+[11] A. Laucht, S. P¨utz, T. G¨unthner, N. Hauke, R. Saive, S. Fr´ed´erick, M. Bichler, M.-C. Amann,
+A. W. Holleitner, M. Kaniber, et al., Phys. Rev. X 2 (2012).
+[12] A. Laucht, N. Hauke, J. M. Villas-Bˆoas, F. Hofbauer, G. B¨ohm, M. Kaniber, and J. J. Finley,
+Phys. Rev. Lett. 103 (2009).
+[13] Y. Ota, S. Iwamoto, N. Kumagai, and Y. Arakawa, Phys. Rev. Lett. 107 (2011).
+[14] J. L. O’Brien, G. J. Pryde, A. G. White, T. C. Ralph, and D. Branning, Nature 426 (2003).
+[15] R. W. Heeres, S. N. Dorenbos, B. Koene, G. S. Solomon, L. P. Kouwenhoven, and V. Zwiller,
+Nano Letters 10 (2010).
+[16] E. Knill, R. Laﬂamme, and G. J. Milburn, Nature 409 (2001).
+[17] G. N. Gol’tsman, O. Okunev, G. Chulkova, A. Lipatov, A. Semenov, K. Smirnov, B. Voronov,
+A. Dzardanov, C. Williams, and R. Sobolewski, Appl. Phys. Lett. 79 (2001).
+[18] F. Najaﬁ, F. Marsili, E. Dauler, R. J. Molnar, and K. K. Berggren, Appl. Phys. Lett. 100
+(2012).
+[19] F. Marsili, F. Najaﬁ, E. Dauler, F. Bellei, X. Hu, M. Csete, R. J. Molnar, and K. K. Berggren,
+Nano Letters 11 (2011).
+[20] S. P. Chockalingam, M. Chand, J. Jesudasan, V. Tripathi, and P. Raychaudhuri, Phys. Rev.
+B 77 (2008).
+[21] R. E. Treece, M. S. Osofsky, E. F. Skelton, S. B. Qadri, J. S. Horwitz, and D. B. Chrisey,
+Phys. Rev. B 51 (1995).
+[22] F. Marsili, A. Gaggero, L. H. Li, A. Surrente, R. Leoni, F. L`evy, and A. Fiore, Superconductor
+Science and Technology 22 (2009).
+[23] R. H. Hadﬁeld, Nature Photonics 3 (2009).
+[24] A. Gaggero, S. J. Nejad, F. Marsili, F. Mattioli, R. Leoni, D. Bitauld, D. Sahin, G. J. Hamhuis,
+R. N¨otzel, R. Sanjines, et al., Applied Physics Letters 97 (2010).
+[25] J. P. Sprengers, A. Gaggero, D. Sahin, S. Jahanmirinejad, G. Frucci, F. Mattioli, R. Leoni,
+J. Beetz, M. Lermer, M. Kamp, et al., Applied Physics Letters 99 (2011).
+[26] J. Zhang, W. Slysz, A. Verevkin, O. Okunev, G. Chulkova, A. Korneev, A. Lipatov,
+G. Gol’tsman, and R. Sobolewski, Applied Superconductivity, IEEE Transactions on 13
+(2003).
+[27] K. Iizuka, K. Matsumaru, T. Suzuki, H. Hirose, K. Suzuki, and H. Okamoto, Journal of
+20
+
+===== Page 21 =====
+
+Crystal Growth 150 (1995).
+[28] V. G. Brauer and R. Esselborn, Z. Anorg. Allg.Chem. 309 (1961).
+[29] J. A. Thornton, Annu. Rev. Mater. Sci. 7 (1977).
+[30] C. Politis and G. Rejman, KfK- Ext. 102 (1978).
+[31] C. R. Bayliss and D. L. Kirk, Journal of Physics D: Applied Physics 9 (1976).
+[32] F. Marsili, Ph.D. thesis, Lausanne (2009).
+[33] A. I. Larkin, Ann. Phys. 8 (1999).
+[34] N. Markovi´c, C. Christiansen, A. M. Mack, W. H. Huber, and A. M. Goldman, Phys. Rev. B
+60 (1999).
+[35] A. J. Kerman, E. A. Dauler, W. E. Keicher, J. K. W. Yang, K. K. Berggren, G. Gol’tsman,
+and B. Voronov, Applied Physics Letters 88 (2006).
+[36] J. Yang, A. Kerman, E. Dauler, V. Anant, K. Rosfjord, and K. Berggren, Applied Superconductivity, IEEE Transactions on 17 (2007).
+[37] W. J. Skocpol, M. R. Beasley, and M. Tinkham, Journal of Applied Physics 45 (1974).
+[38] A. D. Semenov, G. N. Goltsman, and A. A. Korneev, Physica C-superconductivity and Its
+Applications 351 (2001).
+[39] R. H. Hadﬁeld, A. J. Miller, S. W. Nam, R. L. Kautz, and R. E. Schwall, Applied Physics
+Letters 87 (2005).
+[40] G. N. Gol’tsman, A. Korneev, I. Rubtsova, I. Milostnaya, G. Chulkova, O. Minaeva,
+K. Smirnov, B. Voronov, W. Sysz, A. Pearlman, et al., physica status solidi (c) 2 (2005).
+[41] L. Maingault, M. Tarkhov, I. Florya, A. Semenov, R. E. de Lama¨estre, P. Cavalier,
+G. Gol’tsman, J.-P. Poizat, and J.-C. Vill´egier, Journal of Applied Physics 107 (2010).
+[42] A. Divochiy, F. Marsili, D. Bitauld, A. Gaggero, R. Leoni, F. Mattioli, A. Korneev, V. Seleznev, N. Kaurova, O. Minaeva, et al., Nature 2 (2008).
+[43] S. N. Dorenbos, P. Forn-D´ıaz, T. Fuse, A. H. Verbruggen, T. Zijlstra, T. M. Klapwijk, and
+V. Zwiller, Applied Physics Letters 98 (2011).
+[44] M. Hofherr, D. Rall, K. Ilin, M. Siegel, A. Semenov, H.-W. Hubers, and N. A. Gippius, Journal
+of Applied Physics 108 (2010).
+[45] A. Korneev, V. Matvienko, O. Minaeva, I. Milostnaya, I. Rubtsova, G. Chulkova, K. Smirnov,
+V. Voronov, G. Gol’tsman, W. Slysz, et al., Applied Superconductivity, IEEE Transactions
+on 15 (2005).
+21
+
+===== Page 22 =====
+
+[46] The determination of TC and ∆TC was done using the middle value and width of the 10%−90%
+transition of the ﬁlm resistance corresponding to [32].
+[47] Following the electrodynamic model presented in [36], Rn(t) and ISSPD(t) can be derived by
+using the measured voltage trace V (t) to solve the following equations, obtained from the
+circuit presented in ﬁg 5:
+Ib(t) = ISSPD(t) + Iout(t) with Iout(t) = V (t)/50Ω
+Vb = Vhigh(t) + Vlow(t)
+Vhigh(t) = 100kΩ× Ib(t) + 1.5mH × ˙Ib(t) ≈100kΩ× Ib
+˙Vlow(t) = 1/0.22µF × Iout(t) + ˙V (t)
+⇒ISSPD(t) = (Vb −Vlow(t))/100kΩ−V (t)/50Ω
+⇒Rn(t) = 1/ISSPD(t)
+
+Vlow(t) −Lk × ˙ISSPD
+
+22

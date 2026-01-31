@@ -1,0 +1,788 @@
+
+
+===== Page 1 =====
+
+In-situ study and modeling of the reaction kinetics during molecular beam epitaxy 
+of GeO2 and its etching by Ge 
+Wenshan Chen, Kingsley Egbo, Hans Tornatzky, Manfred Ramsteiner, Markus R. Wagner, Oliver 
+Bierwagen 
+Paul-Drude-Institut für Festkörperelektronik, Leibniz-Institut im Forschungsverbund Berlin e.V., 
+Hausvogteiplatz 5–7, 10117 Berlin, Germany 
+ 
+Abstract 
+Rutile GeO2 has been predicted to be an ultra-wide bandgap semiconductor suitable for future 
+power electronics devices while quartz-like GeO2 shows piezoelectric properties. To explore 
+these crystalline phases for application and fundamental materials investigations, molecular 
+beam epitaxy (MBE) is a well-suited thin film growth technique. In this study, we investigate the 
+reaction kinetics of GeO2 during plasma-assisted MBE using elemental Ge and plasma-activated 
+oxygen fluxes. The growth rate as a function of oxygen flux is measured in-situ by laser 
+reflectometry at different growth temperatures. A flux of the suboxide GeO desorbing off the 
+growth surface is identified and quantified in-situ by the line-of-sight quadrupole mass 
+spectrometry. Our measurements reveal that the suboxide formation and desorption limits the 
+growth rate under metal-rich or high temperature growth conditions, and leads to etching of the 
+grown GeO2 layer under Ge flux in the absence of oxygen. The quantitative results fit the subcompound mediated reaction model, indicating the intermediate formation of the suboxide at 
+the growth front. This model is further utilized to delineate the GeO2-growth window in terms of 
+oxygen-flux and substrate temperature. Our study can serve as a guidance for the thin film 
+synthesis of GeO2 and defect-free mesa etching in future GeO2-device processing. 
+ 
+ 
+ 
+
+===== Page 2 =====
+
+Introduction 
+In contrast to wide-bandgap semiconductors, such as SiC or GaN, ultra-wide-bandgap (UWBG) 
+semiconductors with a bandgap larger than 3.4 eV show great advantages for power electronics 
+as their bandgap allows for a larger breakdown field strength that enables much higher power 
+density and thus make practical contributions for energy saving1–4. Such merits offer UWBG 
+materials a competitive edge over traditional narrow band gap semiconductors. So far, β-Ga2O3, 
+diamond, and AlN/AlGaN are the mainstream UWBGs in the fundamental research of high-power 
+devices and a series of impressive progress has been achieved5–10. However, β-Ga2O3 encounters 
+insurmountable bottlenecks such as poor thermal conductivity and doping asymmetry which 
+limit its further breakthrough, while diamond and AlN/AlGaN are hampered by the high AlN and 
+diamond substrate price and the difficulties in homogeneous epitaxy8,11. Hence, alternative 
+UWBG materials are indispensable to meet  the demand of next generation power devices.  
+Rutile GeO2 (r-GeO2) is emerging as promising UWBG oxide material as it possesses a bandgap of 
+≈4.7 eV12 and exhibits superior thermal conductivity13 as well as higher predicted carrier mobility 
+compared to β-Ga2O3.14 More encouragingly, GeO2 has also been predicted to exhibit a bipolar 
+doping behavior, a property that is very rare in most oxide semiconductor materials15. The ability 
+to dope r-GeO2 both n- and p-type can thus promote desirable oxide homojunction applications. 
+These intrinsic prominent features of r-GeO2 highlight its tremendous prospects in efficient high 
+voltage high power electronic applications.14 Besides the rutile phase, GeO2 can also form 
+competing amorphous glass16 and piezoelectric quartz-like phases,17 necessitating a stabilization 
+of the desired phase by epitaxy. 
+To date, several efforts towards growth of single crystalline r-GeO2 using pulsed laser deposition, 
+mist-chemical vapor deposition (mist-CVD) and MBE have been reported and recently GeO2 has 
+also achieved the transition from the amorphous phase to the polycrystalline one by postannealing 18–23. Among these techniques, MBE is well suited for development of r-GeO2 following 
+its success in pioneering the development of Ga2O3 due to the possibility of controlled epitaxial 
+growth and doping using the most simple chemistry towards high quality films.10 A 
+comprehensive understanding of the reactions during MBE of GeO2 and the rational 
+establishment of a growth window are essential for the controlled synthesis of high-quality thin 
+films. Specific research on this growth kinetics is lacking at present. Solely, the seminal work by 
+Chae et al. 24 demonstrated the MBE growth of r-GeO2 using a source of the suboxide GeO in 
+ozone-MBE. They related the observed absence of growth at high growth temperature or low 
+ozone partial pressure to a full desorption of the supplied GeO.  
+In metal-oxide MBE, MexOy is usually grown by the oxidation of an evaporated metal (Me) or 
+suboxide flux by a flux of molecular oxygen, plasma-activated oxygen, or ozone on a heated 
+substrate in vacuum. This process has been well studied in several oxide materials. The growth 
+kinetics during this process mediated by the suboxide phase as intermediate reaction product 
+has been studied in depth for Ga2O3, In2O3, and SnO2 grown from the metal source 25–30 and for 
+Ga2O3 grown from the suboxide source.31  
+
+===== Page 3 =====
+
+In this letter, we extend this understanding to explore the growth process of GeO2 without 
+focusing on the formed phase. We present a detailed, systematic study investigating the 
+formation of oxide and volatile suboxide during MBE growth of GeO2 by monitoring in-situ the 
+growth rate (Γ) or etch rate and desorbing species from the growth surface. We observed, that 
+the suboxide formation and its desorption reduced the growth rate under oxygen-deficient or 
+high temperature growth conditions, and resulted in etching of the grown GeO2 layer by a pure 
+Ge-flux. Based on the two-step oxidization mechanism that describes the MBE growth of binary 
+oxides such as In2O3, Ga2O3 and SnO232, we empirically modeled the GeO2 growth via the 
+intermediate formation of its suboxide GeO. Our measured growth rate as a function of growth 
+temperature (TG) and oxygen flux (ΦO) is in good quantitative agreement with this model. The 
+growth rate of GeO2 was found to be governed by the competition between GeO2 accumulation 
+and GeO desorption as a function of growth parameters.  
+Experimental details 
+For this study, GeO2 layers were grown on 2-inch diameter, single-side polished, c-plane sapphire 
+(Al2O3(0001)) wafers by plasma-assisted MBE (PAMBE). The rough backside of the substrate was 
+sputter-coated with titanium to allow for non-contact substrate heating by radiation from the 
+substrate heater. The growth temperature was measured with a thermocouple placed between 
+the heater and the substrate. A standard shuttered effusion cell was used to evaporate Ge (7N 
+purity) from a BN crucible. To avoid the potential cracking of the cell crucible during solidification 
+of Ge, the Ge cell was ramped down slowly across the melting point. A radio frequency plasma 
+source with a mass flow controller supplied activated oxygen from the research-grade O2 gas (6N 
+purity). The beam equivalent pressure (BEP), proportional to the particle flux, was measured by 
+a nude filament ion gauge positioned at the substrate location. A Ge cell temperature of 1300oC 
+was maintained throughout the experiments and the corresponding BEPs as function of cell 
+temperature are shown in Fig S1. The BEPs are given in units of mbar and are converted into the 
+equivalent particle flux (atoms nm-2s-1) by multiplying the measured growth rate of the GeO2 
+layer under conditions of full Ge incorporation by the cation number density33.  A value of 
+2.4x1022 cm-3 for rutile GeO2 is used, and the full Ge incorporation is ensured by growing in the 
+oxygen-rich regime and at low substrate temperature of 300 oC where GeO or Ge desorption are 
+negligible, a fixed Ge flux of ՓGe= 4.06 nm-2s-1 was obtained based on the measured growth rate 
+of 1.7 Å/s (corresponding to 612 nm/h). The oxygen-rich regime was identified by measuring the 
+growth rate as function of oxygen flux and will be discussed below. The radio frequency power 
+of the plasma source was maintained at 300 W and the oxygen mass flow was set to 0.5, 0.8, 1.0, 
+1.5 and 2.0, standard cubic centimeters per minute (sccm), respectively. These oxygen flows were 
+converted to active oxygen fluxes (in atoms nm-2s-1) by multiplying the growth rate at 
+stochiometric flux conditions with anion number density as described in Ref.[33]. In a separate 
+experiment, we attempted to use molecular oxygen to oxidize Ge and found that the molecular 
+oxygen was not reactive enough to form GeO2 even at a high flow of 2 sccm.  
+In-situ laser reflectometry (LR) with a laser emitting at a wavelength of 650 nm at an incident 
+angle of 30 degrees was used to measure the growth and etch rates for all layers. Using this laser, 
+one oscillation period corresponds to a change of layer thickness by 200 nm taking into account 
+the refractive index of our films of 1.6 as determined by spectroscopic ellipsometry. The flux of 
+
+===== Page 4 =====
+
+desorbing species during growth and etching was measured in-situ by line-of-sight quadrupole 
+mass spectrometry (QMS). The QMS signal was converted into the equivalent growth rate by 
+scaling it to reference conditions (high temperature of 800oC with 1 sccm plasma-activated 
+oxygen flow) where the provided Ge flux completely desorbed as GeO. Further, growth was insitu monitored by reflection high-energy electron diffraction (RHEED), which allowed us to 
+corroborate our interpretation of the QMS and LR measurements.  
+The GeO2 phase was identified ex-situ by Raman spectra acquired after growth using a Horiba 
+LabRAM Evolution 800 mm Spectrograph with 473 nm laser excitation in backscattering 
+geometry. The refractive index, required for the LR growth-rate-calibration, was determined by 
+spectroscopic ellipsometry using a variable-angle spectroscopic ellipsometer based on a grating 
+monochromator equipped with an auto retarder, in the range from 2500-250nm (∼0.5-5eV). This 
+measurement yields the amplitude ratio between the parallel and perpendicular component of 
+the reflected polarized light from the sample with respect to the plane of incidence (Ψ) and the 
+corresponding phase shift between these components (Δ). From this the refractive index n and 
+the extinction coefficient k were determined, using a multi-layer model which contained a model 
+refractive index n(ħω) of the c-plane Al2O3 substrate layer34 and the GeO2 layer of interest and as 
+top layer an effective medium approximated surface roughness layer based on a model by 
+Bruggeman.35 The refractive index was extracted based on a Cauchy model.36 
+ 
+Results and discussion  
+Figure 1(a) presents the reflected laser intensity measured by LR as a function of time during 
+the GeO2 growth and its subsequent etching by Ge. The two observed oscillatory periods, of 
+growth (under Ge and activated oxygen flux, “(i)”—“(ii)”) and etching (under Ge flux only, 
+starting at (iii)), allow us to determine the growth and etch rate. Figure 1(b) shows the species 
+desorbing off the substrate measured in-situ by QMS during a similar growth and etching 
+experiment. Here the applied TG was 300oC while the oxygen flux was 8.12 nm-2s-1. Under this 
+oxygen-rich and low TG condition, the provided Ge flux did not result in any appreciable 
+desorbing cation or suboxide flux, implying the full incorporation of the Ge into the oxide film. 
+In the process of etching, the substrate temperature (Tsub) was increased to 700oC to facilitate 
+GeO desorption. While the film is stable at this temperature in vacuum (invariant LR signal in 
+Figure 1 (a) and negligible QMS signal in Figure 1 (b) directly before (iii)), the impinging Ge 
+atoms decompose the already grown GeO2 layer, resulting in a reduction of its thickness 
+(oscillation starting at (iii) in Figure 1 (a)) and a sharp increase of the GeO desorbing flux (seen 
+in Figure 1 (b)). During etching, the detected Ge signal is an artifact of the fragmentation of GeO 
+molecules by the electrons of the ionizer of the QMS. The grown GeO2 layer could be etched 
+down to the substrate, which is indicated by a disappearing GeO and an increased Ge desorbing 
+flux in Figure 1(b)) and by reappearance of the streaky RHEED pattern of the sapphire substrate 
+(Figure 2). 
+
+===== Page 5 =====
+
+ 
+Figure 1. (a) LR signal during growth and etching of GeO2 with corresponding oscillation periods 
+indicated. The events of opening and closing Ge and O-fluxes are marked (i)—(iii). (b) The 
+corresponding desorbing Ge and GeO fluxes measured by QMS in a similar growth and etching 
+experiment. The events (i)—(iii) correspond to those in (a). The inset shows the mass spectrum 
+of Ge and GeO detected by line-of-sight quadrupole mass spectroscopy (QMS). The Ge flux is 
+fixed at ՓGe= 4.06 nm-2s-1.  
+ 
+ 
+Φdes
+Ge
+  
+ Φdes
+GeO
+ 
+ 
+3000
+6000
+0
+10k
+20k
+Mass spectrum
+70 75 80 85 90
+Intensity (arb. units)
+Atomic mass (amu)
+90GeO
+88GeO
+86GeO
+70Ge
+72Ge
+74Ge
+QMS signal (arb. units)
+Growth/etch time (s)
+QMS 
+background
+(b)
+↓
+（i）
+（ii）
+（iii）
+↓
+↓
+ý
+Prf=300W  ΦO / ΦGe=2 
+TG=300oC 
+Tsub=700oC 
+Growth
+Etching
+0
+4000
+8000
+LR intensity (arb.units)
+Growth/etch time (s)
+(a)
+¯
+Open: Ge, O Close: Ge, O Open: Ge
+tgrowth
+oscillation
+tetch
+oscillation
+（i）
+（ii）
+（iii）
+¯
+¯
+¯
+
+===== Page 6 =====
+
+ 
+ 
+Figure 2. Evolution of the RHEED pattern during growth and subsequent in-situ etching of GeO2: 
+(a) c-plane sapphire substrate after oxygen plasma cleaning before growth; (b) after growth of 
+an amorphous GeO2 layer at 300°C and (c) after subsequent etching of the layer at 700°C by Ge. 
+The net reactions for the growth and etching are, Ge(g) + 2O(g)  GeO2(s) and Ge (g) + GeO2(s) 
+ 2GeO(g), respectively. The gas and solid phases are labeled as g and s, respectively. Here, the 
+same proportion of Ge is required to grow and etch the same amount of GeO2 layer, therefore 
+the etch rate was equal to the growth rate (cf. Figure 1(a)). These findings are in accordance with 
+the PAMBE growth and etching of SnO2 mediated by its suboxide SnO.37  
+The intensity and absence of diffraction spots or streaks in the RHEED image (Figure 2(b)) of the 
+GeO2 layer grown at 300°C indicates formation of the amorphous GeO2 phase. The same holds 
+true for a multi-layer sample grown at 500°C and 600°C, using several different O-fluxes at each 
+temperature to extract the growth kinetics. Ex-situ Raman spectroscopy and spectroscopic 
+ellipsometry confirmed the formation of GeO2 in the amorphous phase (Figs. S2, S3) and allowed 
+us to extract the refractive index of 1.6 at the wavelength of our LR (see Fig. S3).   
+The LR signal of this multilayer sample is shown in Figure 3. 
+(a)
+(b)
+(c)
+
+===== Page 7 =====
+
+ 
+ 
+Figure 3. LR signal during GeO2 growth with different growth conditions. The extracted growth 
+rates are summarized in Figure 4. The Ge flux is fixed at ՓGe= 4.06 nm-2s-1. 
+ 
+10000
+20000
+LR intensity (arb.units)
+Growth time (s)
+16.2
+12.2
+8.12
+6.50
+4.06
+O flux (cm-2s-1)
+6.50 8.1 12.216.2
+TG=600oC
+TG=500oC
+
+===== Page 8 =====
+
+  
+ 
+Figure 4. GeO2 growth rate (Γ) measured by LR and GeO desorption rate (γ) simultaneously 
+measured by QMS at different TG as a function of activated oxygen flux ՓO. The Ge flux is fixed 
+at ՓGe=4.06 nm-2s-1, corresponding to a growth rate of 1.7 Å/s at full Ge incorporation, i.e., for 
+Γ=ՓGe. The lines are guides to the eye. 
+  
+The GeO2 growth rates and corresponding GeO desorption rates for the layers of this sample are 
+shown in Figure 4 as a function of ΦO at different TG. At TG of 500 oC and 600 oC, the growth rate 
+increases with increasing ΦO until it reached a plateau in the oxygen-rich regime. Under the 
+oxygen-deficient condition, i.e., before the plateau, the given active oxygen flux is not sufficient 
+to oxidize all the provided Ge flux to GeO2. For instance, an oxygen flux of 4.06 O-atoms nm-2s-1 
+is equal to the supplied Ge flux, conforming to the stoichiometric ratio of the suboxide. The 
+provided oxygen and Ge flux would thus form GeO. Depending on the specific growth 
+temperature, the GeO could desorb (at ≥600°C in our case) or (partially) attach to the substrate 
+(at 500°C in our case). The oxygen-deficiency-induced formation of the volatile suboxide can be 
+evidenced by a decreasing GeO desorption rate as ΦO increases. 
+0 2 4 6 8 10 12 14 16
+0
+1
+2
+3
+4
+5
+Г of GeO2 (nm-2s-1)
+O2 flux ΦO (nm-2s-1)
+TG=600oC
+  TG=700oC 
+TG=500oC 
+TG=700oC 
+TG=600oC
+  TG=500oC 
+0
+1
+2
+3
+4
+5
+γ of GeO (nm-2s-1)
+
+===== Page 9 =====
+
+In addition, it is apparent that the growth rate of GeO2 is strongly temperature sensitive: At fixed 
+ΦO and ΦGe, the growth rate decreases as TG increases from 500oC to 600°C and growth 
+completely ceases at 700°C. This holds true even under oxygen-rich flux ratios and confirms the 
+increased thermally activated GeO desorption with increasing TG. For all growth conditions 
+employed, the GeO-desorption equals the difference between the impinging Ge flux and the 
+GeO2 growth rate, i.e., any Ge that is not incorporated into the GeO2 film desorbs as GeO. 
+In a previous study32, a two-step reaction mechanism was established to describe the MBE 
+growth of binary oxides like In2O3, Ga2O3 and SnO2, in which the metal (e.g., Ga, In, Sn) oxidized 
+to form a suboxide (e.g., Ga2O, In2O, SnO) via a first oxidization step and the suboxide further 
+oxidized to form the solid metal oxide via a second oxidization step. Analogously, we applied this 
+model to the growth of GeO2. In this case, the first oxidization step is:  
+Ge(g) + O (g)  GeO(s). 
+The second oxidation step is: 
+GeO(s)  GeO2(s)  
+and competes with the thermally activated suboxide desorption  
+GeO(s)  GeO(g). 
+Since GeO2 and SnO2 as well as their suboxides exhibit the same stoichiometry, we used the same 
+rate equation for the chemical reaction and desorption of SnO2 for the growth of GeO2: 
+Г = 
+1
+2 (ϒ + 𝛷O - √ϒ2 + 2ϒ𝛷𝑂+ (2𝛷𝐺𝑒−𝛷𝑂)2 )                         (1) 
+in which ϒ = ΦGe - Г, representing the suboxide desorption rate, and ϒ can be further expressed 
+as (related factorization and simplification can be seen in the Ref.32):  
+                                                  ϒ (𝑅, 𝑇𝐺) = ϒ0𝑒
+−(𝐸𝑎(𝑅)
+𝐾𝐵𝑇𝐺)                                                        (2) 
+here, ϒ0 = e37.2 , which is obtained  by fitting the related vapor pressure data of the suboxide from 
+literature and by converting the pressure to flux unit38, R is the ratio of ΦGe/ΦO, KB is Boltzmann 
+constant, the activation energy value Ea is the only free parameter. Performing least-square fit of 
+Eq. (1) to the Г of GeO2 as a function of TG (Figure 5(b)), we are able to obtain Ea as shown in Fig. 
+S4, the value is linearly dependent on R:  
+                                                    𝐸𝑎(𝑅) = 𝐸0 −𝜁𝑅                                                                 (3) 
+By applying Eq. (3) and Eq. (2) to Eq. (1), Г of GeO2 can be modeled quantitatively as a function 
+of TG and ΦO. The resulting model curves presented in Figure 5, are in good agreement withour 
+measured growth rates as a function of TG and ΦO. The two-step oxidation model, thus, physically 
+and quantitatively describes the PAMBE growth kinetics of GeO2. 
+ 
+
+===== Page 10 =====
+
+ 
+Figure 5. Growth rate of GeO2 as a function of (a) oxygen flux ՓO and (b) TG. Black symbols 
+represent measured Г and red lines represent the model prediction. 
+ 
+In order to predict the GeO2-growth window, we used the model to calculate Г at the fixed 
+ΦGe=4.06 nm-2s-1 used in this study but for a wider range of ΦO and TG --- the results are shown 
+in Fig. S5 and Fig. S6. Based on these calculated results we extract the predicted regions of 
+different Ge-incorporation (>90% “full incorporation”, 90%--10% “partial incorporation”, <10% 
+“no growth”) shown in the ΦO/ΦGe-TG space in Figure 6.  
+ΦGe = 4.06 nm-2s-1 
+ Prf=300W
+TG = 500 °C
+TG = 600 °C
+4
+8
+12
+16
+0
+2
+4
+6
+8
+Γ of GeO2 (nm-2
+ s-1)
+O2 flux ΦO (nm-2
+ s-1)
+（a）
+ΦO/ΦGe = 2
+Prf=300W
+250
+500
+750
+1000
+Temperature TG (°C)
+（b）
+
+===== Page 11 =====
+
+ 
+ 
+Figure 6. The PAMBE growth diagram of GeO2 illustrating the growth window as a function of 
+O-to-Ge flux ratio and TG modelled for the fixed Ge-flux of 4.06 nm-2s-1 used in our growth 
+experiments. Horizontal lines separate the flux stoichiometry regions that enable O-rich growth, 
+Ge-rich growth, and layer etching by Ge as labeled. The region of predicted condensation of 
+secondary GeO phases into the film is marked by a hatched pattern and includes a star-shaped 
+data point that corresponds to a condition in which we found condensation of GeO in our 
+experiments. This growth diagram can also apply to the growth of GeO2 by using GeO cell, 
+which bypasses the intermediate formation of suboxide on the substrate, a case can be seen in 
+ref [24]. 
+ 
+The predicted GeO2-growth window thus comprises the regions of full (blue shaded) and partial 
+(red shaded) incorporation, whereas the grey-shaded region denotes the no-growth region. Full 
+Ge-incorporation into GeO2 can be found only in the ΦO/ΦGe≥2-region (O-rich flux stoichiometry) 
+at sufficiently low TG that prevents desorption of the intermediately-formed GeO. At a Ge-rich 
+flux stoichiometry (1<ΦO/ΦGe<2) the growth of pure GeO2 is only possible at TG low enough 
+(≤637°C in our example) to prevent full GeO desorption but high enough to prevent condensation 
+secondary GeO-phases into the film. Impeded GeO desorption can, for example, explain the finite 
+growth rate (of GeO) in Figure 4 and Figure 5(a) at ΦO/ΦGe=1 (ΦO=4.06 nm-2s-1) and TG=500oC --  
+these conditions are marked by the star-shaped datapoint in Figure 6. 
+Ge-rich
+0
+300
+600
+900
+1200
+0
+1
+2
+3
+4
+5
+6
+7
+O-GeO flux ratio
+O-Ge flux ratio
+Temperature TG (oC)
+O-rich
+Full incorporation
+Partial incorporation
+No growth
+GeO/Ge 
+condense
+Etching
+0
+1
+2
+3
+4
+5
+6
+
+===== Page 12 =====
+
+ Finally, at ΦO/ΦGe<1 the fraction of provided Ge not oxidized into GeO can etch the GeO2 film.  
+Lower(higher) ΦGe would shift the non-horizontal boundaries Figure 6 to lower(higher) 
+temperatures to account for the decreased(increased) absolute GeO desorption. Since GeO 
+desorption and oxidation into GeO2 are also the main processes in suboxide MBE (providing a 
+GeO instead of Ge flux) of GeO2,24 we conjecture our growth diagram to cover this growth 
+method as well when offsetting the flux-ratio scale to account for absent consumption of O for 
+the GeO formation. This scenario is described by the right-hand-side scale in Figure 6 and 
+precludes layer etching, since this would require supply of an elemental Ge flux. 
+Summary and Conclusion 
+We have investigated the Ge incorporation and the competing desorption of its suboxide GeO 
+during the growth of amorphous GeO2 by plasma-assisted MBE from an elemental Ge source. 
+The growth rate and desorbing flux were measured in-situ by laser reflectometry and line-ofsight quadrupole mass spectroscopy, respectively. For a detailed understanding of the reaction 
+kinetics of GeO2, the growth rate dependence on growth temperatures and oxygen fluxes was 
+studied systematically. A Ge flux in the absence of oxygen lead to a negative growth rate, i.e., 
+etching of the GeO2 film. We generally demonstrated, that growth rates lower than the provided 
+Ge flux were caused by GeO desorption driven by oxygen-deficiency or high temperatures. This 
+behaviour was physically and quantitatively explained by a two-step oxidization model via the 
+intermediate formation of GeO in good quantitative agreement with the measured growth rate 
+as a function of all the studied growth parameters. Based on our results, we established a diagram 
+describing the growth window and different growth regimes in parameter space spanned by OGe flux ratio and growth temperature.  
+We conclude, that our growth-kinetics study and the resulting growth diagram (Figure 6) can 
+serve as a guidance for the thin film synthesis of all phases of GeO2, since the oxidation reactions 
+and GeO desorption are phase-independent. Potentially different surface free energies of 
+crystalline GeO2 phases, would be reflected by a different activation energy Ea for GeO desorption 
+and correspondingly re-scaled absolute temperatures in Figure 6.  
+We further conjecture our findings to also apply to the growth of GeO2 by ozone- or suboxideMBE. For all these flavors of MBE, O-rich growth conditions are recommended to (a) prevent 
+condensation of secondary GeO phases into the film at low substrate temperature, and (b) 
+prevent excessive GeO desorption at high substrate temperature. Ge-rich condition, on the other 
+hand, may impact surface faceting (as observed during the MBE of In2O3)39 or Ge/O-vacancy 
+formation. Stabilization of crystalline phases of GeO2 should be enabled by the choice of 
+substrate or buffer layer (e.g., rutile-TiO2 or rutile-SnO2 for the growth of r-GeO2)40,41 likely within 
+a limited, not too O-rich region41 of the growth window.  
+ 
+
+===== Page 13 =====
+
+Finally, the in-situ etching of GeO2 by Ge, at elevated temperatures that enable GeO desorption, 
+provides the potential for damage-free mesa etching in future GeO2-device formation, a process 
+already demonstrated for the case of Ga2O3 etched by Ga.42 
+Acknowledgments 
+The authors thank Elias Kluth, Martin Feneberg and Rüdiger Goldhahn for ellipsometric analysis 
+of the GeO2 stack. We further thank Hans-Peter Schönherr, Carsten Stemmler, and Steffen 
+Behnke for technical support, as well as Johanna Nordlander for critically reading the manuscript. 
+This work was performed in the framework of GraFOx, a Leibniz-ScienceCampus partially funded 
+by the Leibniz association. W.C. gratefully acknowledges financial support from the Leibniz 
+association under Grant No. K417/2021. 
+References 
+(1) Tsao, J. Y.; Chowdhury, S.; Hollis, M. A.; Jena, D.; Johnson, N. M.; Jones, K. A.; Kaplar, R. J.; 
+Rajan, S.; Van de Walle, C. G.; Bellotti, E.; Chua, C. L.; Collazo, R.; Coltrin, M. E.; Cooper, J. 
+A.; Evans, K. R.; Graham, S.; Grotjohn, T. A.; Heller, E. R.; Higashiwaki, M.; Islam, M. S.; 
+Juodawlkis, P. W.; Khan, M. A.; Koehler, A. D.; Leach, J. H.; Mishra, U. K.; Nemanich, R. J.; 
+Pilawa-Podgurski, R. C. N.; Shealy, J. B.; Sitar, Z.; Tadjer, M. J.; Witulski, A. F.; Wraback, M.; 
+Simmons, J. A. Ultrawide-Bandgap Semiconductors: Research Opportunities and 
+Challenges. Advanced Electronic Materials 2018, 4 (1), 1600501. 
+https://doi.org/10.1002/aelm.201600501. 
+(2) Kim, K.; Park, Y.; Hyun, B. G.; Choi, M.; Park, J. Recent Advances in Transparent Electronics 
+with Stretchable Forms. Adv. Mater. 2019, 31 (20), 1804690. 
+https://doi.org/10.1002/adma.201804690. 
+(3) Morales‐Masis, M.; De Wolf, S.; Woods‐Robinson, R.; Ager, J. W.; Ballif, C. Transparent 
+Electrodes for Efficient Optoelectronics. Adv. Electron. Mater. 2017, 3 (5), 1600529. 
+https://doi.org/10.1002/aelm.201600529. 
+(4) Wong, M. H.; Bierwagen, O.; Kaplar, R. J.; Umezawa, H. Ultrawide-Bandgap 
+Semiconductors: An Overview. Journal of Materials Research 2021, 36 (23), 4601–4615. 
+https://doi.org/10.1557/s43578-021-00458-1. 
+(5) Patil-Chaudhari, D.; Ombaba, M.; Oh, J. Y.; Mao, H.; Montgomery, K. H.; Lange, A.; 
+Mahajan, S.; Woodall, J. M.; Islam, M. S. Solar Blind Photodetectors Enabled by 
+Nanotextured β-Ga2O3 Films Grown via Oxidation of GaAs Substrates. IEEE Photonics J. 
+2017, 9 (2), 1–7. https://doi.org/10.1109/JPHOT.2017.2688463. 
+(6) Peng, Y.; Zhang, Y.; Chen, Z.; Guo, D.; Zhang, X.; Li, P.; Wu, Z.; Tang, W. Arrays of SolarBlind Ultraviolet Photodetector Based on $\beta$ -Ga 2 O 3 Epitaxial Thin Films. IEEE 
+Photon. Technol. Lett. 2018, 30 (11), 993–996. https://doi.org/10.1109/LPT.2018.2826560. 
+(7) Zhang, J.; Shi, J.; Qi, D.-C.; Chen, L.; Zhang, K. H. L. Recent Progress on the Electronic 
+Structure, Defect, and Doping Properties of Ga 2 O 3. APL Materials 2020, 8 (2), 020906. 
+https://doi.org/10.1063/1.5142999. 
+(8) Amano, H.; Miyazaki, A.; Iida, K.; Kawashima, T.; Iwaya, M.; Kamiyama, S.; Akasaki, I.; Liu, 
+R.; Bell, A.; Ponce, F. A.; Sahonta, S.; Cherns, D. Defect and Stress Control of AlGaN for 
+
+===== Page 14 =====
+
+Fabrication of High Performance UV Light Emitters. phys. stat. sol. (a) 2004, 201 (12), 
+2679–2685. https://doi.org/10.1002/pssa.200405044. 
+(9) Kneissl, M.; Yang, Z.; Teepe, M.; Knollenberg, C.; Schmidt, O.; Kiesel, P.; Johnson, N. M.; 
+Schujman, S.; Schowalter, L. J. Ultraviolet Semiconductor Laser Diodes on Bulk AlN. Journal 
+of Applied Physics 2007, 101 (12), 123103. https://doi.org/10.1063/1.2747546. 
+(10) Green, A. J.; Speck, J.; Xing, G.; Moens, P.; Allerstam, F.; Gumaelius, K.; Neyer, T.; AriasPurdue, A.; Mehrotra, V.; Kuramata, A.; Sasaki, K.; Watanabe, S.; Koshi, K.; Blevins, J.; 
+Bierwagen, O.; Krishnamoorthy, S.; Leedy, K.; Arehart, A. R.; Neal, A. T.; Mou, S.; Ringel, S. 
+A.; Kumar, A.; Sharma, A.; Ghosh, K.; Singisetti, U.; Li, W.; Chabak, K.; Liddy, K.; Islam, A.; 
+Rajan, S.; Graham, S.; Choi, S.; Cheng, Z.; Higashiwaki, M. β-Gallium Oxide Power 
+Electronics. APL Materials 2022, 10 (2), 029201. https://doi.org/10.1063/5.0060327. 
+(11) Coltrin, M. E.; Kaplar, R. J. Transport and Breakdown Analysis for Improved Figure-of-Merit 
+for AlGaN Power Devices. Journal of Applied Physics 2017, 121 (5), 055706. 
+https://doi.org/10.1063/1.4975346. 
+(12) Mengle, K. A.; Chae, S.; Kioupakis, E. Quasiparticle Band Structure and Optical Properties 
+of Rutile GeO2, an Ultra-Wide-Band-Gap Semiconductor. Journal of Applied Physics 2019, 
+126 (8), 085703. https://doi.org/10.1063/1.5111318. 
+(13) Chae, S.; Mengle, K. A.; Lu, R.; Olvera, A.; Sanders, N.; Lee, J.; Poudeu, P. F. P.; Heron, J. T.; 
+Kioupakis, E. Thermal Conductivity of Rutile Germanium Dioxide. Applied Physics Letters 
+2020, 117 (10), 102106. https://doi.org/10.1063/5.0011358. 
+(14) Bushick, K.; Mengle, K. A.; Chae, S.; Kioupakis, E. Electron and Hole Mobility of Rutile GeO2 
+from First Principles: An Ultrawide-Bandgap Semiconductor for Power Electronics. Applied 
+Physics Letters 2020, 117 (18), 182104. https://doi.org/10.1063/5.0033284. 
+(15) Chae, S.; Lee, J.; Mengle, K. A.; Heron, J. T.; Kioupakis, E. Rutile GeO 2 : An Ultrawide-BandGap Semiconductor with Ambipolar Doping. Appl. Phys. Lett. 2019, 114 (10), 102104. 
+https://doi.org/10.1063/1.5088370. 
+(16) Durben, D. J.; Wolf, G. H. Raman Spectroscopic Study of the Pressure-Induced 
+Coordination Change in GeO2 Glass. Phys. Rev. B 1991, 43 (3), 2355–2363. 
+https://doi.org/10.1103/PhysRevB.43.2355. 
+(17) Lignie, A.; Armand, P.; Papet, P. Growth of Piezoelectric Water-Free GeO 2 and SiO 2 -
+Substituted GeO 2 Single-Crystals. Inorg. Chem. 2011, 50 (19), 9311–9317. 
+https://doi.org/10.1021/ic200661q. 
+(18) Chae, S.; Paik, H.; Vu, N. M.; Kioupakis, E.; Heron, J. T. Epitaxial Stabilization of Rutile 
+Germanium Oxide Thin Film by Molecular Beam Epitaxy. Appl. Phys. Lett. 2020, 117 (7), 
+072105. https://doi.org/10.1063/5.0018031. 
+(19) Rathore, M. S.; Vinod, A.; Angalakurthi, R.; Pathak, A. P.; Thatikonda, S. K.; Nelamarri, S. R. 
+Role of Oxygen Pressure on the Structural and Photoluminescence Properties of Pulsed 
+Laser Deposited GeO2 Thin Films. Physica B: Condensed Matter 2022, 625, 413466. 
+https://doi.org/10.1016/j.physb.2021.413466. 
+(20) Deng, G.; Huang, Y.; Chen, Z.; Saito, K.; Tanaka, T.; Arita, M.; Guo, Q. Heteroepitaxy of (1 0 
+0)-Oriented Rutile GeO2 Film on c-Plane Sapphire by Pulsed Laser Deposition. Materials 
+Letters 2022, 326, 132945. https://doi.org/10.1016/j.matlet.2022.132945. 
+
+===== Page 15 =====
+
+(21) Nalam, P. G.; Das, D.; Tan, S.; Ramana, C. V. Controlled Phase Stabilization Enabled 
+Tunable Optical Properties of Nanocrystalline GeO2 Films. ACS Appl. Electron. Mater. 
+2022, 4 (6), 3115–3124. https://doi.org/10.1021/acsaelm.2c00549. 
+(22) Takane, H.; Kaneko, K. Erratum: “Establishment of a Growth Route of Crystallized Rutile 
+GeO 2 Thin Film (≧1 μ m/h) and Its Structural Properties” [Appl. Phys. Lett. 119 , 062104 
+(2021)]. Appl. Phys. Lett. 2022, 120 (9), 099903. https://doi.org/10.1063/5.0088164. 
+(23) Niwa, K.; Ikegaya, H.; Hasegawa, M.; Ohsuna, T.; Yagi, T. Submicron Rectangular Hollow 
+Tube Crystals of Rutile-Type GeO2. Journal of Crystal Growth 2010, 312 (10), 1731–1735. 
+https://doi.org/10.1016/j.jcrysgro.2010.02.006. 
+(24) Chae, S.; Lee, J.; Mengle, K. A.; Heron, J. T.; Kioupakis, E. Rutile GeO2: An Ultrawide-BandGap Semiconductor with Ambipolar Doping. Applied Physics Letters 2019, 114 (10), 
+102104. https://doi.org/10.1063/1.5088370. 
+(25) Tsai, M. Y.; White, M. E.; Speck, J. S. Investigation of (110) SnO[Sub 2] Growth Mechanisms 
+on TiO[Sub 2] Substrates by Plasma-Assisted Molecular Beam Epitaxy. Journal of Applied 
+Physics 2009, 106 (2), 024911. https://doi.org/10.1063/1.3176932. 
+(26) Tsai, M.-Y.; Bierwagen, O.; White, M. E.; Speck, J. S. Beta -Ga[Sub 2]O[Sub 3] Growth by 
+Plasma-Assisted Molecular Beam Epitaxy. Journal of Vacuum Science & Technology A: 
+Vacuum, Surfaces, and Films 2010, 28 (2), 354–359. https://doi.org/10.1116/1.3294715. 
+(27) Vogt, P.; Bierwagen, O. The Competing Oxide and Sub-Oxide Formation in Metal-Oxide 
+Molecular Beam Epitaxy. Applied Physics Letters 2015, 106 (8), 081910. 
+https://doi.org/10.1063/1.4913447. 
+(28) Vogt, P.; Bierwagen, O. Reaction Kinetics and Growth Window for Plasma-Assisted 
+Molecular Beam Epitaxy of Ga 2 O 3 : Incorporation of Ga vs. Ga 2 O Desorption. Appl. Phys. 
+Lett. 2016, 108 (7), 072101. https://doi.org/10.1063/1.4942002. 
+(29) Vogt, P.; Bierwagen, O. Comparison of the Growth Kinetics of In 2 O 3 and Ga 2 O 3 and 
+Their Suboxide Desorption during Plasma-Assisted Molecular Beam Epitaxy. Appl. Phys. 
+Lett. 2016, 109 (6), 062103. https://doi.org/10.1063/1.4960633. 
+(30) Vogt, P.; Bierwagen, O. Quantitative Subcompound-Mediated Reaction Model for the 
+Molecular Beam Epitaxy of III-VI and IV-VI Thin Films: Applied to 
+$\mathrmGa_2\mathrmO_3$, $\mathrmIn_2\mathrmO_3$, and $\mathrmSnO_2$. Phys. 
+Rev. Materials 2018, 2 (12), 120401. https://doi.org/10.1103/PhysRevMaterials.2.120401. 
+(31) Vogt, P.; Hensling, F. V. E.; Azizie, K.; Chang, C. S.; Turner, D.; Park, J.; McCandless, J. P.; 
+Paik, H.; Bocklund, B. J.; Hoffmann, G.; Bierwagen, O.; Jena, D.; Xing, H. G.; Mou, S.; Muller, 
+D. A.; Shang, S.-L.; Liu, Z.-K.; Schlom, D. G. Adsorption-Controlled Growth of Ga2O3 by 
+Suboxide Molecular-Beam Epitaxy. APL Materials 2021, 9 (3), 031101. 
+https://doi.org/10.1063/5.0035469. 
+(32) Vogt, P.; Bierwagen, O. Quantitative Subcompound-Mediated Reaction Model for the 
+Molecular Beam Epitaxy of III-VI and IV-VI Thin Films: Applied to Ga 2 O 3 , In 2 O 3 , and 
+SnO 2. Phys. Rev. Materials 2018, 2 (12), 120401. 
+https://doi.org/10.1103/PhysRevMaterials.2.120401. 
+(33) Bierwagen, O.; Vogt, P.; Mazzolini, P. Plasma-Assisted Molecular Beam Epitaxy 2: 
+Fundamentals of Suboxide-Related Growth Kinetics, Thermodynamics, Catalysis, 
+Polymorphs, and Faceting. In Gallium Oxide; Higashiwaki, M., Fujita, S., Eds.; Springer 
+
+===== Page 16 =====
+
+Series in Materials Science; Springer International Publishing: Cham, 2020; Vol. 293, pp 
+95–121. https://doi.org/10.1007/978-3-030-37153-1_6. 
+(34) Malitson, I. H. Refraction and Dispersion of Synthetic Sapphire. J. Opt. Soc. Am. 1962, 52 
+(12), 1377. https://doi.org/10.1364/JOSA.52.001377. 
+(35) Bruggeman, D. A. G. Berechnung verschiedener physikalischer Konstanten von 
+heterogenen Substanzen. I. Dielektrizitätskonstanten und Leitfähigkeiten der Mischkörper 
+aus isotropen Substanzen. Ann. Phys. 1935, 416 (7), 636–664. 
+https://doi.org/10.1002/andp.19354160705. 
+(36) Cauchy, A. L. Sur La Réfraction et La Réflexion de La Lumière. Bull. Sci. Math. 1830, 14, 6. 
+(37) Vogt, P.; Bierwagen, O. The Competing Oxide and Sub-Oxide Formation in Metal-Oxide 
+Molecular Beam Epitaxy. Appl. Phys. Lett. 2015, 106 (8), 081910. 
+https://doi.org/10.1063/1.4913447. 
+(38) Drowart, J.; Degrève, F.; Verhaegen, G.; Colin, R. Thermochemical Study of the Germanium 
+Oxides Using a Mass Spectrometer. Dissociation Energy of the Molecule GeO. Trans. 
+Faraday Soc. 1965, 61 (0), 1072–1085. https://doi.org/10.1039/TF9656101072. 
+(39) Bierwagen, O.; Rombach, J.; Speck, J. S. Faceting Control by the Stoichiometry Influence on 
+the Surface Free Energy of Low-Index Bcc-In 2 O 3 Surfaces. Journal of Physics: Condensed 
+Matter 2016, 28 (22), 224006. https://doi.org/10.1088/0953-8984/28/22/224006. 
+(40) Takane, H.; Kaneko, K. Establishment of a Growth Route of Crystallized Rutile GeO 2 Thin 
+Film ( ≧ 1 μ m/h) and Its Structural Properties. Appl. Phys. Lett. 2021, 119 (6), 062104. 
+https://doi.org/10.1063/5.0060785. 
+(41) Chae, S.; Paik, H.; Vu, N. M.; Kioupakis, E.; Heron, J. T. Epitaxial Stabilization of Rutile 
+Germanium Oxide Thin Film by Molecular Beam Epitaxy. Appl. Phys. Lett. 2020, 117 (7), 
+072105. https://doi.org/10.1063/5.0018031. 
+(42) Kalarickal, N. K.; Fiedler, A.; Dhara, S.; Huang, H.-L.; Bhuiyan, A. F. M. A. U.; Rahman, M. 
+W.; Kim, T.; Xia, Z.; Eddine, Z. J.; Dheenan, A.; Brenner, M.; Zhao, H.; Hwang, J.; Rajan, S. 
+Planar and Three-Dimensional Damage-Free Etching of β-Ga 2 O 3 Using Atomic Gallium 
+Flux. Appl. Phys. Lett. 2021, 119 (12), 123503. https://doi.org/10.1063/5.0057203. 
+(43) Pajasová, L. Optical Properties of GeO2 in the Ultraviolet Region. Czech J Phys 1969, 19 
+(10), 1265–1270. https://doi.org/10.1007/BF01690313. 
+(44) Weber, H.-J. Crystal Growth of Tetragonal GeO2 and Na4Ge9O20 and a Comparison of 
+Their Optical Properties with Glasses. Materials Research Bulletin 1982, 17 (10), 1313–
+1318. https://doi.org/10.1016/0025-5408(82)90167-2. 
+
+===== Page 17 =====
+
+Supplementary material to 
+In-situ study and modeling of the reaction kinetics during molecular beam 
+epitaxy of GeO2 and its etching by Ge 
+ 
+Wenshan Chen, Kingsley Egbo, Hans Tornatzky, Manfred Ramsteiner, Markus R. Wagner, Oliver 
+Bierwagen 
+Paul-Drude-Institut für Festkörperelektronik, Leibniz-Institut im Forschungsverbund Berlin e.V., 
+Hausvogteiplatz 5–7, 10117 Berlin, Germany 
+ 
+ 
+ 
+Figure S1. The beam equivalent pressure (BEP) as a function of inverse Ge-cell temperature. The 
+symbols are measured values while the red dash line is the fitting line based on Arrhenius 
+equation. 
+ 
+ 
+0.6
+0.7
+0.8
+0.9
+1393.2 1155.1
+976.5
+837.6
+10-9
+10-8
+10-7
+10-6
+Cell Temperature (°C)
+BEP (mbar)
+Inverse Cell Temperature 1000/T (K-1)
+Ea = 3.4 eV
+
+===== Page 18 =====
+
+ 
+Figure S2. Corresponding Raman spectrum of the GeO2 film described in Figure 3 as well as 
+reference spectra measured for a pure sapphire substrate and amorphous GeO2 from Ref. 16. 
+Excellent agreement of the broad feature can be found with the reference spectrum of a-GeO2 
+while the observed sharp peaks are originated from the sapphire substrate. 
+ 
+Figure S3. Average refractive index of the GeO2 stack described in Figure 3 based on a Cauchy 
+model (red) in comparison with experimental results of amorphous GeO2 by Pajasova43 (blue), of 
+rutile GeO2 by Weber44 (black), and theoretical calculations of rutile GeO2 by Mengle et al. 12 
+(green). In case of rutile GeO2, both the ordinary (E⊥c) (solid) and the extraordinary component 
+(E||c) (dashed) are displayed. The extracted extinction coefficient k of the GeO2 stack was zero in 
+the whole measurement range. 
+ 
+
+===== Page 19 =====
+
+ 
+ 
+ 
+Figure S4. Activation energy Ea for SnO and GeO desorption as a function of Me-to-O flux ratio. 
+Symbols for GeO2 are the data obtained by fitting the TG dependent Г in Fig 3(b), solid line is the 
+linear fit of Eq. (3) to the data.  The data for SnO2 growth are taken from 32. 
+ 
+ 
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+4.0
+4.5
+Energy Ea (eV)
+Me-to-O flux ratio R
+Ea=3.02-1.9R
+Ea=4.13-1.31R
+SnO2
+GeO2
+
+===== Page 20 =====
+
+ 
+Figure S5. Model predicted growth rate of GeO2 as a function of TG. The model paremeters are 
+shown in Fig. S4. 
+ 
+300
+600
+900
+1200
+0
+1
+2
+3
+4
+5
+Γ of GeO2  (nm-2s-1)
+Temperature TG (oC)
+ ΦO/ΦGe =0.8
+ ΦO/ΦGe =1.5
+ ΦO/ΦGe =1.7
+ ΦO/ΦGe =2.2
+ ΦO/ΦGe =3.5
+ ΦO/ΦGe =4
+ ΦO/ΦGe =6
+ ΦO/ΦGe =7.5
+90% Ge
+incorporated
+10% Ge
+ incorporated
+ΦO/ΦGe increasing 
+
+===== Page 21 =====
+
+ 
+ 
+Figure S6. Model predicted growth rate of GeO2 as a function of O-Ge flux ratio. The model 
+paremeters are shown in Fig. S4. 
+1
+2
+3
+4
+5
+6
+7
+0
+1
+2
+3
+4
+5
+Γ of GeO2  (nm-2s-1)
+O-Ge flux ratio 
+TG increasing 
+90% 
+10% 
+TG =1200oC 
+TG =1000oC 
+TG =900oC 
+TG =300oC 
+TG =700oC 

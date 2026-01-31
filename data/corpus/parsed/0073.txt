@@ -1,0 +1,1587 @@
+
+
+===== Page 1 =====
+
+Low-loss frequency-tunable Josephson junction array cavities on Ge/SiGe
+heterostructures with a tapered etching approach
+Franco De Palma†,1, 2 Elena Acinapura†,1, 2 Wonjin Jang,1, 2 Fabian Oppliger,1, 2 Radha Krishnan,1, 2 Arianna
+Nigro,3 Ilaria Zardo,3, 4 and Pasquale Scarlino∗1, 2
+1)Hybrid Quantum Circuits Laboratory, Institute of Physics, École Polytechnique Fédérale de Lausanne (EPFL), Lausanne 1015,
+Switzerland
+2)Center for Quantum Science and Engineering, École Polytéchnique Fédérale de Lausanne (EPFL), Lausanne 1015,
+Switzerland
+3)Physics Department, University of Basel, Klingelbergstrasse 82, Basel CH-4056, Switzerland
+4)Swiss Nanoscience Institute, Klingelbergstrasse 82, Basel CH-4056, Switzerland
+(*Electronic mail: pasquale.scarlino@epfl.ch)
+(Dated: 22 December 2025)
+Ge/SiGe heterostructures represent a promising platform for hosting various quantum devices such as hole spin qubits
+and Andreev spin qubits. However, the compatibility of such heterostructures with high-quality-factor microwave
+superconducting cavities remains a challenge due to defects in the material stack. In this work, we present an approach
+to enhance the coherence of cavity modes on a reverse-graded Ge/SiGe heterostructure, which consists of etching the
+full ∼1.6µm-thick Ge/SiGe stack down to its starting high-resistivity Si substrate, in order to pattern superconducting
+cavities directly on it. We engineer the mesa step to be tapered, so that it can be easily climbed by the superconducting
+cavities to reach the quantum devices potentially hosted in the Ge quantum well. Using this approach, we observe internal
+quality factors of Qi ≈10000 −20000 for high-impedance frequency-tunable Josephson junction array resonators,
+limited by the junctions’ fabrication, and Qi ≈100000 for 50 Ωcoplanar waveguide Nb lift-off resonators. These Qi are
+preserved despite the overlap with the mesa structure in the climbing region, and are comparable to the ones obtained for
+identical resonators fabricated on a high-resistivity Si wafer reference. Thereby, this work paves a practical path toward
+superconductor-semiconductor hybrid devices, immediately applicable to emerging technologies on planar Ge.
+Planar Ge/SiGe heterostructures have recently emerged
+as a prominent platform for scalable quantum computation
+and simulation1–6.
+2-dimensional hole gases (2DHG) in
+Ge quantum wells (QW) can be engineered to encompass
+mobilities exceeding 106 cm2/Vs7, a small effective mass
+(mHH ≈0.05me)8, and low isotope populations with non-zero
+nuclear spins9,10, all of which can be beneficial for quantum
+dot (QD) hole spin qubits in Ge1–3. Significantly, holes in Ge
+exhibit novel features such as a large spin-orbit interaction2,11,
+an anisotropic gyromagnetic ratio tensor (g-tensor)12, and
+a small contact hyperfine coupling to surrounding nuclear
+spins13,14. These properties are also tunable via gate voltages12,
+allowing all-electrical manipulation of the hole spin states1,2,
+and in-situ optimization of the spin coherence1,12. Additionally, superconducting germanosilicide contacts in planar Ge
+heterostructures15 provide novel paths to study Andreev bound
+states (ABSs)16–18 and minimal Kitaev chains19 within planar
+Ge heterostructures, also showcasing the significance of planar
+Ge for various quantum device applications.
+Superconducting cavities have been used to coherently interface microwave photons with various quantum systems20.
+In this regard, embedding semiconductor quantum states into
+superconducting cavities unlocks possibilities for novel quantum architectures, facilitating, for instance, high-fidelity spin
+readout21, coherent interconnects between remote spins22,23,
+microwave optics24,25, and readout and manipulation of An-
+† These authors contributed equally to this work.
+dreev bound states17,26,27. In such hybrid circuit quantum
+electrodynamics (cQED) approach28, achieving large holephoton coupling strengths and low photon loss rates (or large
+internal quality factors Qi) of the resonators are needed for
+realizing coherent hole-photon interfaces29–31. In this context, recent studies have demonstrated strong hole chargephoton coupling in Ge/SiGe hetrostructures, exploiting a
+high-impedance superconducting resonator realized with a
+SQUID array29 and a high-kinetic granular aluminum (grAl)
+nanowire31. However, a substantial amount of defects present
+in Ge/SiGe heterostructures greatly limits the internal quality
+factor of the cavity modes in this platform to Qi ≈3000−5000
+for forward-graded heterostructures31–33 and Qi ≈1000 for
+reversed-graded ones34 in the low-photon regime, relevant in
+some cQED applications20,28.
+In this work, we present an approach to significantly reduce
+the internal losses of superconducting cavities on planar Ge. It
+consists of a tapered etching of the full heterostructure down to
+the intrinsic Si substrate, leaving only a small mesa on planar
+Ge for hosting semiconductor or hybrid super-semi devices.
+We fabricate superconducting high-impedance (Zr = 3kΩ)
+Al/AlOx/Al Josephson junction (JJ) array resonators35 on the
+etched heterostructure, which also climb over the tapered mesa
+step, and show that the internal quality factor of the resonators
+increases from Qi ≈3000 −4000 on the bare Ge/SiGe heterostructure, to Qi ≈10000−20000 on the etched structure.
+These values match the ones obtained on an intrinsic Si substrate reference, suggesting that the obtained upper bound in
+the Qi is not limited by the tapered etching process, but rather
+by the Josephson junctions fabrication process. We confirm
+arXiv:2512.17812v1  [quant-ph]  19 Dec 2025
+
+===== Page 2 =====
+
+2
+2 µm
+Ge QW 
+(16 nm)
+Ge virtual
+substrate
+(430 nm)
+Graded
+Si1-xGex
+(750 nm)
+Si0.2Ge0.8
+(300 nm)
+Si0.2Ge0.8
+(60 nm)
+SiO2
+(~2 nm)
+Float zone Si-001
+(280 μm)
+Resonator
+Resonator
+To QDs
+300 nm
+300 nm
+Si
+Ge virtual substrate
+Ge QW
+Graded Si1-xGex
+Si0.2Ge0.8
+Si0.2Ge0.8
+a
+b
+c
+d
+e
+f
+50 Ω
+B
+50 µm
+FIG. 1. (a) Schematic of a Ge/SiGe heterostructure with a resonator defined on top of the structure. Defects, each denoted by two white parallel
+lines in a circle, reside in various layers and interfaces of the heterostructure, and couple to the resonator (in yellow). (b) Schematic of a Ge/SiGe
+heterostructure etched down to the Si substrate with a tapered mesa step. The resonator is patterned mainly on the Si substrate and its termination
+climbs over the mesa to be connected to potential structures defined there. (c) Scanning electron microscope (SEM) image of a Ge/SiGe
+heterostructure after the tapered etching process. The etching leaves an approximately 45◦angled mesa step. An approximately 100nm-deep
+trench is visible in the Si substrate, due to an increased ion scattering rate at the mask sidewall during the etching step (see Appendix A.3). As is
+visible from the overetched region at the Ge virtual substrate, Ge is etched at a slightly faster rate than SiGe. (d) Schematic of five notch-type
+Josephson junction (JJ) array resonators coupled to a 50Ωphoton feedline. (e) Optical micrograph of a JJ array resonator coupled to the 50Ω
+feedline. The JJ array resonator is false-colored in yellow. One end of the resonator consists of a large pad shunting it to ground to form a
+quarter-wave resonator, while the other end is climbing the mesa (purple shaded structure). A hook (colored in green) extends from the feedline
+and defines the capacitive coupling between the feedline and the resonator. (f) SEM image of the JJ array resonator at the voltage antinode
+(yellow color). The tapered etching, in combination with the angled evaporation of the junctions, allows to successfully climb the mesa (purple
+color) without discontinuity of the metal.
+this by fabricating low-impedance (Zr = 50Ω) coplanar waveguide (CPW) Nb lift-off resonators on the etched Ge/SiGe heterostructure which exhibit Qi ≈100000 at low-photon number.
+Furthermore, we tune the inductance of the JJ arrays resonators
+with an in-plane magnetic field parallel to the JJ arrays and
+effectively modulate their resonance frequency (and hence the
+impedance) in a wide-range of 4 −7GHz (5 −3kΩ), which
+represents a useful resource for studying hybrid systems24.
+We also characterize a degradation of the Qi down to ≈3000
+as the magnetic field approaches the junctions’ critical field,
+which can be attributed either to an increase of the quasiparticle population near such critical field36,37, or also to the creation of vortices in the proximity of the resonators38. This
+work provides a systematic path toward optimizing a hybrid
+cQED architecture on planar Ge, which can be highly beneficial for various quantum applications involving hole-photon
+interactions16,29,31.
+Figure 1a schematically represents the cross section of
+a reverse-graded Ge/SiGe heterostructure that hosts defects
+(white circles) throughout the material stack8,39. These defects can originate from amorphous materials, such as oxides
+at the top interface40, impurities due to contaminants during
+the growth process8,39,41, and threading dislocations due to
+the lattice constant mismatch at the interfaces between different materials in the stack8,14,42. These can effectively act
+as two-level fluctuators (TLFs), or result in buried conductive layers hosting free charge carriers introducing resistive
+losses for the resonators . The microwave electric and magnetic field confined in superconducting cavities can couple
+to these defects, effectively opening up channels for photon
+dissipation34,43–46. As a result, superconducting resonators
+defined on semiconductor heterostructures typically exhibit
+internal quality factors few orders of magnitude smaller than
+the ones on high-resistivity substrates such as intrinsic Si47,
+which in contrast can reach up to Qi ≈106.
+One of the main photon loss mechanisms on reverse-graded
+Ge/SiGe heterostructures most likely stems from residual conductive layers located at the interface between the bottom
+Si substrate and the Ge virtual substrate, due to the lattice
+mismatch34.
+For this reason, etching completely the heterostructure down to the bottom intrinsic Si substrate, and
+defining the resonators directly on it, can effectively eliminate
+the majority of the loss channels. In our work, we selectively
+etch the Ge and SiGe layers (≈1.6µm thick) down to the bot-
+
+===== Page 3 =====
+
+3
+g
+f
+a
+b
+c
+d
+e
+h
+i
+j
+k
+l
+FIG. 2. Spectroscopy of JJ array resonators fabricated on different substrates. Schematic of the cross-section of the resonator on (a) a bare
+Ge/SiGe heterostructure, (b) a Ge/SiGe heterostructure etched down to Si with one resonator’s end climbing the tapered mesa, and (c) an
+intrinsic Si substrate. (d) Normalized feedline transmission amplitude |S21| as a function of the resonator drive frequency fd and drive power Pd
+for a resonator on the etched heterostructure (panel (b)). (e) Simulated |S21| as a function of fd and Pd, with the parameters extracted from the
+numerical fit of (d) to an input-output model taking into account the Kerr-nonlinearity of the resonator (see Appendix E.2). Dashed lines in
+(d) and (e) denote the power PSP
+d
+≈−133dBm corresponding to an average resonator photon number ⟨Nph⟩≈1. (f-h) |S21| measured as a
+function of fd for the respective resonator illustrated in panels (a-c). (i-k) Phase of the normalized feedline transmission Arg(S21) measured as
+a function of fd for the respective resonator illustrated in panels (a-c). Solid lines in (f-k) are fits to an input-output model (see Appendix E.1),
+yielding the internal resonator loss rates κi reported in (f-k). The power of the drive tone at the feedline Pd is −140dBm for all the panels
+(f-k). (l) Internal quality factor Qi as a function of ⟨Nph⟩for the resonators respectively on the bare Ge/SiGe heterostructure (green data), on
+the Ge/SiGe heterostructure etched down to Si with one resonator end climbing the tapered mesa (pink data), and on intrinsic Si (blue data).
+Different shades of each color denote different resonators on the same type of substrate. The value of Qi for the different resonators are extracted
+from power sweeps similar to the one presented in panel (d) (see Appendix F).
+tom high-resistive Si substrate (resistivity > 10kΩ·cm, see
+Appendix A.1), leaving only relatively small mesa islands
+(150µm ×150µm) for potentially hosting semiconductor devices in the Ge QW. The etch process results in a surface with
+an extremely low roughness of ≈0.1nm on the Si substrate
+and is engineered to provide a tapered profile on the mesa step,
+facilitating connections from the bottom Si to the top SiGe and
+further fabrication processing, as illustrated in Fig. 1b. Details
+about the etch process are provided in Appendix A.2. Fig. 1c
+reports a scanning electron microscope (SEM) image of the
+cross-section of the heterostructure after the etch process. Despite the Ge virtual substrate is etched slightly faster than SiGe,
+the profile shows a smoothly tapered step48.
+To investigate the microwave properties of the etched
+heterostructure, we fabricate high-impedance (Zr = 3kΩ)
+Al/AlOx/Al JJ array resonators on top of the Si substrate in the
+etched region. As depicted in Fig. 1d, we couple five notchtype JJ array resonators, each with a distinct number of JJs, to
+a single 50Ωphoton feedline49–51. The JJ arrays are defined
+with the standard Dolan-bridge technique52, using two angled
+evaporations at ±45◦53 (see Appendix A.3). The number of JJs
+in a resonator (50 ≥N ≥42) determines its total inductance,
+and therefore its resonance frequency fr (6GHz ≤fr ≤7GHz).
+From room temperature resistance measurements of junction
+test structures, we extract a resistance per JJ of RJJ ≈1.25kΩ,
+corresponding to an inductance of LJJ ≈1.48nH, and a critical
+current of Ic,JJ ≈220nA54. Given the JJ area, we also estimate
+a ratio between Josephson and charging energy EJ/EC of about
+180.
+Figure 1e shows an optical micrograph of one of the notch
+resonators, where the JJ array (false-colored in yellow) is
+shunted to the ground plane at one end, and capacitively coupled to the photon feedline at the other end via a hook structure
+(false-colored in green), resulting in a quarter-wave resonator20.
+The capacitive coupling between the hook and the resonator
+determines the external coupling rate κc and the external qual-
+
+===== Page 4 =====
+
+4
+ity factor Qc = 2π fr/κc. To facilitate the galvanic connection
+between the resonator and potential structures on top of the
+mesa, we terminate the narrow JJ array with a wider and longer
+junction, which does not significantly contribute to the total
+inductance. In Fig. 1f we show that the angled evaporation
+allows a successful climbing of the tapered mesa structure
+(shaded in purple) without further optimization of the fabrication steps. We also probe the electrical conduction of twenty
+similar test structures climbing the mesa, which are fabricated
+on the same chip, and find that the climbing does not introduce
+any disconnection, as can be anticipated from the smooth etch
+profile shown in Fig. 1c.
+To systematically quantify the effect of this etching approach
+on the internal loss rates of JJ array resonators, we fabricate
+nominally identical resonators on the bare Ge/SiGe heterostructure (Fig. 2a), on the etched Ge/SiGe heterostructure (Fig. 2b)
+and on an intrinsic (resistivity ≈10kΩ·cm) Si reference substrate (Fig. 2c). We characterize the resonators by performing
+microwave measurements in a dilution refrigerator at a base
+temperature of 10 mK. See Appendix B for details about the
+measurement setup.
+We first explore the power dependence of the resonators’
+spectrum. Fig. 2d presents the normalized feedline transmission amplitude |S21| as a function of the estimated drive power
+Pd at the sample feedline (see Appendix B) and drive frequency
+fd, measured around the resonance frequency of one of the
+five notch resonators on the etched heterostructure with the
+mesa climb (Fig. 2b). For the power spectroscopies of all resonators on all substrates, refer to Appendix F. Starting from
+Pd ≈−130dBm, a decrease of the resonance frequency for
+increasing Pd becomes distinguishable, which is attributed to
+the Kerr nonlinearity of the JJs55,56. We fit the complex spectroscopy data at each individual power Pd < −130dBm to a
+linear input-output theory model for notch-type resonators (see
+Appendix E.1), from which we extract the resonance frequency
+fr, the external coupling rate κc, the internal loss rate κi and
+the average photon number ⟨Nph⟩at each value of Pd. From
+the fit we extract that ⟨Nph⟩= 1 for Pd ≈−133dBm. We further fit numerically the full 2D spectroscopy data (Fig. 2j) to
+an input-output model that takes into account the self-Kerr
+nonlinearity (see Appendix E.2), as presented in Fig. 2e, and
+extract the self-Kerr coefficient K = (99.5 ± 0.4)kHz. This
+value is consistent with the expected one for N = 44 junctions and a single-junction charging energy EC ≈0.6GHz (see
+Appendix F).
+We perform similar measurements for all the resonators
+on the three different substrates (see Appendix F), and report
+their spectrum measured at a specific value of ⟨Nph⟩< 1 in
+Figs. 2f-k, for one representative resonator on each substrate
+type indicated in Figs. 2a-c. Solid lines in Figs. 2f-k present
+the numerical fit to the linear input-output model for each spectrum. Figure 2l shows the Qi for all the resonators, extracted
+from a numerical fit to the linear input-output model at the
+low-photon-number regime ⟨Nph⟩< 1, relevant in some cQED
+applications20,28 (see Appendix G for the extracted Qc of all
+the resonators). For ⟨Nph⟩> 1, the large self-Kerr nonlinearity
+of the JJ array resonators complicates an accurate estimation
+of the Qi, as explained in Appendix E.2. In Figure 2l, different
+a
+b
+FIG. 3. Magnetospectroscopy of the resonators on the intrinsic Si
+substrate. (a) Normalized feedline transmission amplitude |S21| measured as a function of the resonator drive frequency fd and the in-plane
+magnetic field B∥parallel to the JJ arrays. Five JJ array resonators
+with a different number of JJs are coupled to the same feedline, as
+depicted in Fig. 1d. (b) Internal quality factor Qi of the resonators, averaged over multiple drive powers in the low-photon-number regime
+as a function of B∥(blue data). Red data points represent the Qi averaged over the five resonators. The black arrow indicates a resonator
+with a reduced Qi due to the coupling with a TLF (see Appendix I).
+shades of the same color denote the different resonators on the
+same substrate with a distinct number of JJs. The resonators
+on the same substrate exhibit consistent values of Qi regardless
+of the number of JJs. We observe that the Qi remain relatively
+constant over the range of ⟨Nph⟩shown in Fig. 2l. This is expected when ⟨Nph⟩≪nc, with nc the critical photon number at
+which the TLF-induced losses would start becoming negligible
+compared to other losses36,57.
+Notably, Fig. 2l shows that the resonators on the etched heterostructure feature Qi ≈10000−20000 (pink data), systematically outperforming those on the bare heterostructure showing
+Qi ≈3000−4000 (green data). This clearly demonstrates that
+the etching technique is effectively eliminating potential loss
+
+===== Page 5 =====
+
+5
+channels residing in the heterostructure, enhancing the lifetime
+of the photons in the resonators.
+Furthermore, even though there is a finite region where
+the microwave cavity is inevitably overlapping with the mesa,
+the Qi on the etched structure (pink data) match those on the
+intrinsic Si reference (blue data), and are hence limited by
+loss mechanisms associated to typical Dolan-style JJs, such
+as TLFs in the junctions’ tunneling oxide, lift-off residues,
+or TLFs in the native SiO2 or in the Si substrate58–60. The
+combination of this with a minimal overlapping area of the
+resonators with the mesa (Aoverlap ≈2µm×5µm) makes it difficult to estimate the residual losses potentially introduced by
+the etching process itself and the overlap with the mesa. For
+completeness, we conduct electromagnetic (EM) simulations
+to demonstrate that our tapered etching approach can also be effective for other Ge/SiGe heterostructures that initially exhibit
+even higher microwave losses, with the simulated Qi showing
+significant dependence on the overlap area (See Appendix D).
+In this work, we also characterize JJ array resonators in the
+presence of an in-plane magnetic field B∥up to 60 mT, applied
+parallel to the JJ arrays’ axis (see Fig. 1e). Such magnetic field
+range is compatible with the operation of spin qubits in planar
+Ge5,12,61. Figure 3a shows the spectroscopy measurement of
+the five notch resonators on the intrinsic Si substrate as a function of B∥, where fr of each resonator is effectively tuned in
+a wide range of 7−4GHz in a span of B∥< 60mT. For magnetic fields above 60 mT the resonance frequencies are below
+the measurement bandwidth (see Appendix B). The observed
+modulation of fr is due to an effective variation of LJJ, which
+can be attributed to the interplay of two different effects: (a) the
+reduction of the superconducting gap of Al with an increasing
+external magnetic field, and (b) the penetration of B∥inside
+the junctions, generating a magnetic flux that modulates their
+critical current62,63. An analytical model for fr(B∥) and a fit of
+the experimental data is provided in Appendix H, where we
+extract the junctions’ in-plane critical field to be approximately
+B∥
+crit ≈66mT.
+Furthermore, we characterize the Qi of the resonators as
+a function of B∥in steps of 5mT by performing resonator
+spectroscopy as a function of the microwave drive power Pd in
+the low-photon-number regime (⟨Nph⟩< 1). Figure 3b shows
+the average Qi of each resonator in the low-photon-number
+regime (blue data points) as a function of B∥, while the red
+data points represent the Qi averaged over the five resonators.
+Some resonators exhibit a strong reduction in Qi for specific
+values of B∥(see for example the data point indicated by the
+black arrow in Fig. 3b), which we attribute to some TLFs in
+the junctions’ tunneling barrier becoming resonant with the
+resonator mode and strongly coupling to it29,58,59. We report
+such an example in Appendix I. We observe an overall trend of
+decreasing Qi with increasing B∥, which can be attributed to an
+increased quasiparticle population due to the superconducting
+gap reduction as B∥approaches the critical field of the JJ Al
+leads36,37, or to the creation of vortices in the proximity of the
+resonators38. Nevertheless, the average Qi stays above 5000
+for magnetic fields up to 40mT.
+To further probe the limit of the photon loss rates of resonators on the etched Ge/SiGe heterostructure, we also char200 μm
+a
+b
+c
+50 Ω
+FIG. 4. 50ΩNb superconducting resonators on an etched Ge/SiGe
+heterostructure and on intrinsic Si. (a) Schematic of three notch-type
+quarter-wave resonators inductively coupled to a 50Ωfeedline. (b)
+Scanning electron microscope (SEM) of a 50ΩNb resonator on the
+etched Ge/SiGe heterostructure. (c) Internal quality factor Qi of the
+50ΩNb resonators on the etched Ge/SiGe heterostructure (purple)
+and on intrinsic Si (orange), as a function of the average number of
+photons in the resonator ⟨Nph⟩. Different shades of each color denote
+different resonators on the same type of substrate.
+acterize quarter-wave 50ΩNb CPW resonators. Moreover,
+such 50Ωsuperconducting resonators are relevant for various
+cQED architectures, including for instance superconducting
+qubits33 and Andreev spin qubits18,26,27 systems, which do not
+necessitate large fluctuations of the vacuum electric field in
+the resonator to approach the strong coupling regime. As illustrated in Fig. 4a,b, we fabricate three lift-off 50 nm-thick CPW
+Nb resonators with different lengths inductively coupled to the
+same 50Ωphoton feedline in a notch configuration. The same
+resonators are fabricated both on the etched heterostructure
+and on the intrinsic Si substrate. See Appendix A.4 for details
+about the fabrication. Differently from the JJ array resonators,
+the CPW resonators on the etched heterostructure presented
+here do not climb any mesa island, providing an upper limit
+for the Qi on an etched surface and with a lift-off fabrication
+method.
+Figure 4c reports Qi as a function of ⟨Nph⟩for the resonators
+on the etched heterostructure (purple dots) and on the intrinsic
+Si substrate (orange dots). To extract Qi shown in Fig. 4c, we
+perform spectroscopy of each resonator as a function of Pd, and
+numerically fit to a linear input-output model for each value
+of Pd. We note that the absence of non-linearity of the CPW
+resonators facilitates the numerical fit to the linear model up
+to ⟨Nph⟩≫1, as opposed to the case of JJ array resonators
+
+===== Page 6 =====
+
+6
+(Fig. 2l), where the fit to the linear model was limited to the
+range ⟨Nph⟩< 1. In Fig. 4c, we observe Qi ≈100000 for
+⟨Nph⟩≈1 for both substrates, which is about two orders of
+magnitude larger than the Qi obtained for similar resonators
+defined directly on top of the Ge/SiGe heterostructure34. The
+presented internal quality factors increase to Qi ≈400000
+for ⟨Nph⟩≫1, implying TLF-dominated losses, most likely
+due to the native SiO2 and NbOx45,57. Here, the extracted
+similar values of Qi on the etched heterostructure and on the
+intrinsic Si clearly indicate that the etching process itself does
+not introduce additional loss channels for CPW resonators.
+In conclusion, in this work we perform a tapered etching of a Ge/SiGe heterostructure down to its starting intrinsic Si substrate and characterize high-impedance (Zr = 3kΩ)
+Al/AlOx/Al JJ array resonators and 50ΩNb CPW resonators
+fabricated on the etched surface. While the characterized
+JJ array resonators on the bare heterostructure exhibit Qi ≈
+3000−4000 in the low-photon regime, mainly due to the defects residing in various layers of the heterostructure14, we
+find that the etching of the heterostructure down to the the Si
+substrate significantly enhances the internal quality factor up to
+Qi ≈10000−20000. We show that both the etching process
+itself and the small overlapping region with the mesa do not
+introduce notable losses. We further demonstrate Qi ≈100000
+for the 50ΩNb resonators, confirming that the extracted Qi of
+the JJ array resonators are limited by the JJ fabrication process.
+In addition, we demonstrate the resonance frequency tunability
+of the JJ array resonators in a wide range of 7 −4GHz by
+means of an in-plane magnetic field up to 60mT, preserving
+Qi above 5000 below 40mT. These magnetic fields are compatible with the operation of spin qubits on planar Ge5,12,61.
+While we mainly focus on the resonators defined on a
+Ge/SiGe heterostructure, which is a promising platform for
+various hybrid quantum systems including hole QDs29,31,
+ABSs16–18 and minimal Kitaev chains19, the presented tapered etching technique is a versatile approach for any kind of
+heterostructure comprising defects located at different layers.
+Therefore, our work provides a path toward highly coherent
+light-matter interface in semiconductor heterostructures.
+ACKNOWLEDGMENTS
+P.S. acknowledges support from the Swiss State Secretariat
+for Education, Research and Innovation (SERI) under contract
+number MB22.00081 / REF-1131-52105, and the NCCR SPIN,
+a National Centre of Competence in Research, funded by the
+Swiss National Science Foundation (SNSF) with grant number 225153. P.S. also acknowledges support from the SNSF
+through the grants Ref. No. 200021_200418 / 1 and Ref. No.
+206021_205335 / 1. W.J. acknowledges support from EPFL
+QSE Postdoctoral Fellowship Grant. The authors furthermore
+thank Camille Roy, Filippo Ferrari and Léo Peyruchat for the
+useful discussions.
+AUTHORS CONTRIBUTIONS
+P.S. conceived the project. F.D.P, E.A. and R.K. developed
+the fabrication recipes. F.D.P. and E.A. fabricated the devices
+measured in this work. F.D.P., F.O. and W.J. built the experimental setup. F.D.P. and E.A. designed the devices and
+performed the electrical measurements. E.A. analyzed the data
+and prepared the data visualization. A.N and I.Z. designed and
+performed the growth of the SiGe heterostructure. F.D.P. performed the electromagnetic simulations. F.D.P., E.A., W.J. and
+P.S. wrote the manuscripts with inputs from all authors. P.S. initiated and supervised the project. F.D.P. and E.A. contributed
+equally to the work.
+
+===== Page 7 =====
+
+7
+Appendix A: Fabrication methods
+A.1.
+Heterostructure growth
+The Ge/SiGe heterostructure shown in Fig. 1a is grown
+via chemical vapor deposition (CVD) by adopting a reversegrading approach as described in ref34. The full stack is ≈
+1.6µm thick, grown on a 280 µm thick intrinsic Si wafer with a
+resistivity > 10kΩ·cm. The 16nm-thick QW is buried below
+≈60nm of SiGe spacer, terminated by ≈2nm of Si cap, fully
+oxidized by an additional oxygen plasma treatment ex-situ just
+before starting the fabrication process.
+A.2.
+Tapered heterostructure etching
+To perform the tapered Ge/SiGe heterostructure etching, the
+sample is spin-coated with 2 µm of positive-tone photoresist
+AZ10XT-20. The etching mask is patterned with photolithography using a 405 nm direct laser writer. In order to provide the
+mesa step with a tapered profile, the sample is baked at 135 ◦C
+for 2 minutes: in this way, the resist reflows and its sidewalls
+acquire a rounded profile, which imprints a tapered edge to
+the heterostructure during the etching. The heterostructure is
+etched using an inductively coupled plasma (ICP) dry etching
+process using Cl2 chemistry. During the etching process, the
+chamber is at a pressure of 5 mTorr, the Cl2 gas flow is kept
+at 50 sccm, the RF power to generate the plasma is 800 W and
+the RF power to accelerate the ions and control their mean
+energy is 100 W. A laser-based end point detection system
+reveals when the Si substrate is reached and is used to stop
+the etching process without excessively over-etching the Si
+substrate. Immediately after the etching process, the sample
+is rapidly neutralized from Cl2 in H2O, and the etching mask
+stripped in a solution of 1-Methyl-2-pyrrolidinone (NMP) at
+70 ◦C for a couple of hours.
+A.3.
+Josephson junction array resonators
+The fabrication of the Josephson junction array resonators
+consists of two steps: (a) Nb ground plane deposition and (b)
+Al-AlOx-Al Josephson junction deposition.
+The ground plane is patterned using photolithography and
+lift-off; the sample is spin-coated with 400 nm of negativetone resist LOR 5A followed by 1.1 µm of positive-tone resist
+AZ 1512 HS and patterned using a 405 nm direct laser writer.
+30 nm of Nb are deposited in a Plassys UHV e-beam evaporator
+at a rate of 0.5 nm/s. Without breaking the vacuum, Nb is
+oxidized statically at a pressure of 10 torr for 10 minutes to
+provide a first clean oxidized interface. Nb is lifted off in an
+NMP solution at 70 ◦C for a couple of hours.
+To pattern the Dolan-style JJ array resonators the sample
+is spin-coated with 400 nm of MMA followed by 220 nm of
+PMMA. The resonator body and the junctions’ suspended
+bridges are patterned with 100 keV electron-beam lithography.
+The junctions are deposited in a Plassys UHV e-beam evaporator; a first layer of 35 nm of Al is deposited with an angle
+of +45◦at a rate of 0.5 nm/s. Without breaking the vacuum,
+the sample is oxidized statically at a pressure of 2 torr for 20
+minutes. A second layer of 130 nm of Al is deposited with
+an angle of −45◦at a rate of 0.5 nm/s. Finally, the sample
+is oxidized again at a pressure of 10 torr for 10 minutes to
+provide a first clean oxidized interface. Al is lifted off in an
+NMP solution at 70 ◦C for a couple of hours.
+A.4.
+CPW Nb resonators
+The CPW Nb resonators are patterned using photolithography and lift-off. The sample is spin-coated with 400 nm of
+LOR 5A resist followed by 1.1 µm of AZ 1512 HS resist and
+patterned using a 405 nm direct laser writer. 50 nm of Nb are
+deposited in a Plassys UHV e-beam evaporator at a rate of
+1 nm/s. The sample is taken out of the evaporator, oxidized in
+air and lifted off in an NMP solution at 70 ◦C for a couple of
+hours.
+Appendix B: Measurement setup
+The measurements reported in this work are performed in a
+dilution refrigerator (Bluefors LD400) equipped with a 6-1-1
+Tesla vector magnet (American Magnetics), at base temperatures around 10 mK. The devices are mounted on a printed
+circuit board (PCB) hosting RF transmission lines with a characteristic impedance of Z0 = 50Ω. The transmission lines are
+wire-bonded to the on-chip photon feedlines on one end, and
+directly connected to coaxial cables for RF signals on the other
+end. Resonator spectroscopy is performed with a vector network analyzer (VNA, Rohde & Schwarz ZNB20). The VNA
+output is attenuated by 20 dB at room temperature, followed
+by a DC block (Inmet 8039 inner-outer). The signal is then
+attenuated at various stages in the cryostat with a total attenuation of 60 dB. In addition, from previous line calibration
+measurements we estimated an additional attenuation of the
+signal by ≈10dB before reaching the device, due to cable
+losses. The signal transmitted through the device then passes
+through two isolators (Low Noise Factory ISISC4_8A) and
+two circulators (Low Noise Factory CICIC4_8A). The signal
+is amplified by a HEMT at the 4 K stage (Low Noise Factory
+LNC4_8C) and by a low noise amplifier at room temperature
+(Agile AMT A0284) after passing through another dc block
+(Inmet 8039).
+Appendix C: Resonator design and parameters
+C.1.
+Josephson junction array resonators
+From room temperature resistance measurements of junction
+test structures, we extract a resistance per JJ of RJJ ≈1.25kΩ,
+corresponding to an inductance per junction of LJJ ≈1.48nH,
+a critical current of Ic,JJ ≈220nA and a Josephson energy
+EJ ≈111GHz. From SEM measurements, we get a JJ area
+of w×l = 520nm×760nm; assuming a thickness tox ≈1nm
+
+===== Page 8 =====
+
+8
+for the oxide tunneling barrier, we compute the junction’s selfcapacitance CJ ≈31.5fF, corresponding to a charging energy
+EC ≈0.6GHz. We obtain a ratio EJ/EC ≈180 and a plasma
+frequency ωp ≈23GHz.
+With a 40µm spacing of the JJ array resonator to the ground
+plane, we estimate a capacitance per unit length to ground of
+C0,Si ≈0.057fF/µm (C0,SiGe ≈0.061fF/µm) on the Si (SiGe
+heterostructure) substrate64. The difference in capacitance
+originates from the difference in dielectric constant of the two
+substrates, respectively assumed to be 11.9 and 13.0. Concerning the central JJ array resonator of the five, we concatenate
+N = 46 junctions. We take into account the aforementioned
+junctions, as well as the extra spurious junctions originated
+by the Dolan-bridge technique (≈3.5µm long, hence contributing much less to the total inductance), and we obtain a
+total inductance of the array Ltot ≈78.9nH and a total length
+of 207µm. We treat the resonator as a distributed element65.
+By grounding one resonator’s side while keeping the other
+end open (see Fig.1e), we define a quarter-wave fundamental
+mode, with a lumped equivalent inductance of Leq ≈67nH
+and capacitance Ceq,Si ≈5.78fF (Ceq,SiGe ≈6.27fF)64. These
+values result in a bare resonance frequency of fSi ≈8.09GHz
+(fSiGe ≈7.77GHz).
+We add the coupling hook shown in Fig.1e (green color) to
+determine the external coupling rate κc to the photon feedline.
+For the resonators on the bare SiGe heterostructure we design
+a coupling hook that is longer than on Si (100µm-long vs
+40µm-long), in order to provide a higher coupling rate. At
+the voltage anti-node of the resonator we add the 150µm ×
+150µm mesa island, together with a 2µm × 10µm patch of
+the resonator end that climbs over the mesa step (see Fig.1f),
+overlapping with the mesa with an area of Aoverlap = 2µm ×
+5µm. As explained in the main text, this patch is realized in
+the same evaporation step of the JJs, therefore its inductance
+can be neglected. Although the resonators on intrinsic Si and
+on SiGe do not need to climb any mesa, we also design them
+with a patch a the voltage antinode with the same dimensions,
+in order to compare resonators with the same design.
+With this JJ array resonator design, we perform electromagnetic (EM) simulations (Sonnet software) to properly estimate
+both the coupling quality factor and the loaded resonance frequency. The simulation setup is shown in Fig.5. To do so,
+we replace the JJ array with a strip of the same length and
+width, and with a sheet inductance of L□≈208pH/□. At this
+simulation stage, the substrate losses that we provide in the
+simulation software can be arbitrarily chosen. Finally, we fit
+the simulation results to Eq. E6 and we extract a resonance
+frequency of fSi ≈7.02GHz (fSiGe ≈6.61GHz) and a coupling quality factor of Qc,Si ≈1000 (Qc,SiGe ≈600). From
+the simulated resonance frequency we extract the total Ceq,
+keeping the same Leq previously computed. This allows us to
+estimate an equivalent impedance of the resonator Zeq = 3kΩ
+for both substrates. In conclusion, to design the remaining four
+resonators hanged to the same transmission line, we just sweep
+the total number of junctions from N = 42 to N = 50 to effectively get a frequency spacing of ≈200MHz between each
+resonator. For EM simulations that take into account the losses
+originating from the mesa climb on the etched heterostructure,
+see Appendix D.
+C.2.
+50 ΩCPW resonators
+For the Nb CPW resonators we follow a standard resonator
+design, where the resonance frequency and impedance depend both on geometric parameters only. The inner conductor
+is 16 µm wide and the gap between the inner conductor and
+the ground plane is 10 µm wide, resulting in a characteristic
+impedance of 50 Ωon a Si substrate. The length of the resonators is adjusted to target resonance frequencies of 5−6GHz.
+The resonators are open on one side and shunted to the ground
+plane on the other side, in a quarter-wave geometry. The very
+high coupling quality factors Qc ≈100000 are achieved just
+by placing the current anti-node of the resonator few µm far
+away from the feedline, as shown in Fig.4b.
+Appendix D: Electromagnetic simulations for losses estimations
+To further validate the efficacy of our tapered etching approach, we perform electromagnetic (EM) simulations using
+Sonnet®. As outlined in the main text, the primary source of
+loss in reverse-graded Ge/SiGe heterostructures originates at
+the lattice-mismatched interface between the initial Si wafer
+and the Ge virtual substrate. Moreover, as discussed in ref34,
+the independence of the Qi on ⟨Nph⟩suggests that the loss
+mechanism cannot be saturated with the power. For this reason, we treat microwave losses as resistive losses as a result of the coupling of the resonator to a conductive layer
+buried at the interface between the Si substrate and the Ge
+virtual substrate.
+We define this layer 100nm thick and
+encapsulate it between the intrinsic (conductivity at 10mK:
+σ = 4.4×10−7 S/m) Si substrate (dielectric losses: loss tangent tanδ = 1.0×10−5) and a 1.5 µm thick intrinsic (conductivity at 10mK: σ = 4.4×10−7 S/m) SiGe spacer (dielectric
+losses: loss tangent tanδ = 1.0×10−5). The total thickness of
+the full stack is 1.6µm, as shown in Fig.5. The assumption of
+identical losses for both the Si substrate and the SiGe spacer is
+unrealistic, given the presence of TLFs in the SiGe heterostructure. However, as the predominant losses arise from the 100
+nm lattice-mismatched layer, a precise quantification of the
+TLF losses in the SiGe layer falls beyond the scope of this
+work. Please note that the thickness of 100nm is completely
+arbitrary: it represents just a way to confine the losses to a
+buried layer not in direct galvanic contact with the resonator.
+On the other hand, a loss tangent tanδ = 1.0×10−5 establishes
+a more realistic upper bound for Qi ≈100000. Without appropriate surface treatment to remove surface contaminants and
+native SiO2, achieving larger Qi would not be feasible in the
+low photon regime, even for simple 50ΩNb resonators. In
+fact, such aggressive surface treatments are typically avoided
+in QW-based semiconductor devices.
+In all the simulation results shown in this section, the object
+of the study is the same resonator described in Appendix C.1.
+In the first set of simulations, shown in Fig. 6a, we study
+Qi as a function of the conductivity σ of the 100nm lattice-
+
+===== Page 9 =====
+
+9
+a
+b
+FIG. 5. Sonnet simulation setup. (a) Cross section and top view of a resonator on top of the bare SiGe heterostructure. (b) Cross section, top
+view and tilted view of a resonator on top of the Si substrate and climbing the SiGe mesa.
+10
+2
+100
+Conductivity  (S/m)
+102
+103
+104
+105
+Simulated Qi
+0
+25
+50
+Aoverlap ( m2)
+Aoverlap = 2x5
+m2
+= 0.1 S/m
+On bare heterostructure
+On etched h.s. with climb
+FIG. 6. Results of the simulated Qi. (a) Qi as a function of conductivity σ for both the bare heterostructure and the etched down to the
+Si substrate cases. Here, the overlap area with the mesa is fixed to
+Aoverlap = 2µm×5µm, as in the experiments. (b) Qi as a function of
+Aoverlap for a fixed σ = 0.1S/m.
+mismatched layer. We sweep σ by five orders of magnitude,
+from 0.001S/m to 10S/m, corresponding to a resistivity ρ
+varying from 100kΩ·cm to 10Ω·cm. Fig. 6a reports the
+resulting Qi as a function of σ in two different cases. In
+the first case (green dots), the resonator lies on top of the
+full heterostructure, while in the second case (pink dots) the
+body of the resonator lies on top of the Si substrate, and
+climbs a 150µm×150µm mesa only with an overlap area of
+Aoverlap = 2µm×5µm, exactly as in the case of the fabricated
+and characterized devices. With respect to the bare heterostructure case, the simulation predicts an increase of about one
+order of magnitude in Qi for σ ≥0.1S/m with our etching
+approach. This suggests that the proposed tapered etching approach can also be efficient for resonators directly fabricated
+on Ge/SiGe heterostructures which present Qi < 1000. We
+note that the case σ = 0.1S/m predicts Qi ≈4000 on the bare
+heterostructure, and Qi ≈30000 on the etched one. This scenario may reproduce our experimental data for the JJ array
+resonator case. Unfortunately, as discussed in the main text,
+the quality of the JJ fabrication does not allow us to observe
+Qi beyond 10000−20000.
+In the second simulation, whose results are reported in Fig.
+6b, we fix σ = 0.1S/m and sweep the area of the overlap
+region from 0 to 2µm×30µm. Within this interval, we notice
+a drop in Qi by one order of magnitude (from ≈100000 to
+≈10000), which underlines the importance of keeping the
+overlap area as small as possible in order to minimize the
+losses.
+Appendix E: Resonator fitting models
+E.1.
+Linear model
+The experimental spectroscopy data S21(fd) is fitted to a
+master equation model. For the JJ array resonators in the
+low-photon regime and for the CPW resonators at any photon
+number, we describe the resonators with a linear Hamiltonian:
+H = ¯hω0a†a.
+(E1)
+We follow the standard input-output theory49,66 to write the
+Heisenberg-Langevin equation of motion for the a field operator for a notch-type resonator in the rotating frame at
+
+===== Page 10 =====
+
+10
+ωd = 2π fd:
+˙a = −i(ω0 −ωd)a−κc +κi
+2
+a−
+r
+κc
+2 bin,
+(E2)
+where bin represents the input photon field. In the following,
+we use ∆r = ω0 −ωd. Stationary solutions for Eq. E2 are found
+by imposing ˙a = 0, leading to:
+a = −
+p
+κc/2
+κc+κi
+2
++i∆r
+bin.
+(E3)
+The relation between the input photon field bin and the output
+photon field bout reads:
+bout = bin +
+r
+κc
+2 a.
+(E4)
+Combining Eq. E3 and Eq. E4 we obtain:
+S21 = ⟨bin⟩
+⟨bout⟩= 1−
+κc/2
+κc+κi
+2
++i∆r
+.
+(E5)
+If we add to this simple model the presence of a non-ideal
+response of the cavity due to environmental factors, we obtain
+the following model50 which we use for fitting the resonators
+in the linear regime:
+S21 = aeiαe−iωdτ 2i∆r +κL −κceiφ0/cos(φ0)
+2i∆r +κL
+,
+(E6)
+where we have defined the loaded quality factor κL = κi +κc
+and a, α, τ and φ0 are correction factors to take into account
+the non-ideal response of the cavity due to the environment.
+From Eq. E3 we calculate the number of photons55 at ωd = ω0:
+⟨Nph⟩= ⟨a†a⟩= 2κc
+κ2
+L
+⟨b†
+inbin⟩= 2κc
+κ2
+L
+P[W]
+¯hω0
+.
+(E7)
+E.2.
+Nonlinear model
+For a nonlinear model that takes into account the Kerr nonlinearity of the JJ array, we describe the resonator with the
+Hamiltonian55:
+H = ¯hω0a†a−¯hK
+2 a†aa†a.
+(E8)
+Following the same input-output theory derivation described
+above, we obtain the following scattering parameter55,67:
+S21 = aeiαe−iωdτ
+
+1−
+κc
+κc +κi
+eiφ
+cos(φ)
+1
+1+2i(δ −ξn)
+
+,
+(E9)
+where:
+δ = ωd −ω0
+κc +κi
+,
+ξ = |αin|2κcK
+(κc +κi)3 ,
+n = ⟨Nph⟩
+|αin|2
+(κc +κi)2
+κc
+.
+(E10)
+|αin|2 = P[W]/¯hωd is the input photon flux and K is the selfKerr parameter. The renormalized number of photons n is
+calculated by solving the equation:
+1
+2 =
+
+δ 2 + 1
+4
+
+n−2δξn2 +ξ 2n3.
+(E11)
+To fit the full power sweep spectroscopy data of JJ array resonators like the one represented in Fig. 2d, we first perform a
+linear fit of single power slices of the data to Eq. E6 below the
+single photon power, in order to extract the parameters ω0, κc,
+κi and the environmental parameters. We then fit the whole 2D
+data of the power sweep spectroscopy to Eq. E9, optimizing
+only the values of K and φ while keeping the values of ωd,
+κc and κi fixed to the values obtained from the linear fit. We
+operate in this way because at high photon number the fitting
+procedure typically struggles to properly extract all the fitting
+parameters independently, and our goal for the nonlinear fit is
+to estimate the self-Kerr nonlinearity K.
+Appendix F: Power spectroscopies for all resonators
+Figure 7 shows power spectroscopy measurements for all
+resonators. By fitting these power scans to Eq. E6 in the lowphoton-number regime, we obtain the internal quality factors
+shown in Figs. 2l, 4c. We note that for some resonators it
+is possible to observe the strong hybridization, and the corresponding resonance splitting, of the resonators with TLFs
+that reside in the junctions’ oxide tunneling barriers (see for
+instance Figs. 7d, l, m). By fitting the full power sweeps of
+the JJ arrays to the nonlinear model in Eq. E9, we consistently
+find Kerr nonlinearities in the range K ≈100kHz −300kHz.
+These values are consistent with an approximate theoretical
+estimate of the JJ array’s nonlinearity: for a single JJ, indeed,
+K1 = EC ≈600MHz20 (see Appendix C.1); given that the Kerr
+nonlinearity scales55 with the number of junctions N approximately as KN ∝1/N2, we obtain KN ≈EC/N2 ≈280kHz for
+N = 46.
+Appendix G: Extracted coupling quality factors
+In Fig.8 (Fig.9) we report the extracted coupling quality
+factors Qc of the JJ array (the Nb 50Ω) resonators. Qc is
+≈1000−2000 for the JJ array resonators on the Si reference
+and on the etched heterostructure, and ≈600 for the ones on
+top of the bare heterostructure, matching the simulated ones
+(see Appendix C.1). For the 50Ωresonators, we extract Qc
+of 100000−200000, also in this case perfectly matching the
+simulated ones (see Appendix C.2).
+Appendix H: In-plane magnetic field dependence of JJ arrays’
+resonance frequencies
+The resonance frequency of Josephson junction array resonators depends on the presence of an external magnetic field.
+
+===== Page 11 =====
+
+11
+5.77
+5.78
+5.79
+fd (GHz)
+160
+140
+120
+Pd (dBm)
+6.67
+6.68
+6.69
+fd (GHz)
+5.89
+5.90
+5.91
+fd (GHz)
+6.65
+6.66
+6.67
+fd (GHz)
+20
+10
+0
+|S21| (dB)
+6.13
+6.14
+6.15
+fd (GHz)
+150
+140
+130
+120
+Pd (dBm)
+6.51
+6.52
+6.53
+fd (GHz)
+6.73
+6.74
+6.75
+fd (GHz)
+6.92
+6.93
+6.94
+fd (GHz)
+7.14
+7.16
+fd (GHz)
+20
+10
+0
+|S21| (dB)
+5.97
+5.98
+5.99
+fd (GHz)
+160
+140
+120
+Pd (dBm)
+6.23
+6.24
+6.25
+fd (GHz)
+6.57
+6.58
+fd (GHz)
+6.59
+6.60
+fd (GHz)
+6.83
+6.84
+6.85
+fd (GHz)
+20
+10
+0
+|S21| (dB)
+5.2318
+5.2323
+fd (GHz)
+160
+140
+120
+100
+Pd (dBm)
+5.4051
+5.4055
+fd (GHz)
+5.5877
+5.5882
+fd (GHz)
+15
+0
+|S21| (dB)
+5.3589
+5.3594
+fd (GHz)
+160
+140
+120
+100
+Pd (dBm)
+5.5263
+5.5268
+fd (GHz)
+5.6997
+5.7001
+fd (GHz)
+15
+0
+|S21| (dB)
+a
+b
+c
+d
+e
+f
+g
+h
+i
+j
+k
+l
+m
+n
+o
+p
+q
+r
+s
+t
+FIG. 7. Power spectroscopies for all the measured resonators. Consistently with the main text, green color ((a)-(d)) is used for JJ arrays on the
+bare heterostructure; pink color ((e)-(i)) is used for JJ arrays on the etched heterostructure with climb; blue color ((j)-(n)) is used for JJ arrays
+on the Si reference substrate; purple color ((o)-(q)) is used for CPW resonators on the etched heterostructure; orange color ((r)-(t)) is used for
+CPW resonators on the Si reference substrate.
+In this work, we investigated this behavior in the presence of
+an in-plane magnetic field B∥applied parallel to the JJ array’s
+axis. The dependence of the resonance frequency fr on B∥is
+due to the interplay of two effects. Firstly, an external magnetic
+field reduces the superconducting gap of the Al leads of the JJs
+
+===== Page 12 =====
+
+12
+10
+2
+10
+1
+100
+Average photon number Nph
+103
+4 × 102
+6 × 102
+2 × 103
+3 × 103
+4 × 103
+Coupling quality factor Qc
+On bare heterostructure
+On etched h.s. with climb
+On Si reference
+FIG. 8. Extracted coupling quality factors for the different JJ array
+resonators on the different substrates. The extracted Qi are reported
+in Fig. 2l.
+100
+102
+104
+106
+Average photon number Nph
+105
+9 × 104
+2 × 105
+Coupling quality factor Qc
+On etched heterostructure
+On Si reference
+FIG. 9. Extracted coupling quality factors for the different CPW Nb
+array resonators on the different substrates. The extracted Qi are
+reported in Fig. 4c.
+according to62,68:
+∆(B∥) = ∆0
+v
+u
+u
+t1−
+ 
+B∥
+B∥
+crit
+!2
+,
+(H1)
+where B∥
+crit is the in-plane critical field of the Al leads and ∆0
+is the zero-field superconducting gap of the Al leads. Notably,
+B∥
+crit depends on the thickness of the Al leads. For a thin
+superconducting film of thickness d, B∥
+crit is62,68:
+B∥
+crit = Bbulk
+crit
+λeff
+d
+√
+24,
+(H2)
+where Bbulk
+crit is the bulk critical field of the superconductor and
+λeff is the effective magnetic penetration depth of the superconductor. The latter also depends on the film thickness as62:
+λeff = λL
+r
+1+ ξ0
+ℓ≈λL
+r
+ξ0
+d ,
+(H3)
+where λL is the material’s London penetration depth, ξ0 is the
+material’s Pippard coherence length and ℓis the Cooper pairs’
+mean free path. The last approximation in Eq. H3 is valid
+if d ≪ℓ(and hence ℓcan be replaced with d) and d ≪ξ0.
+For the Josephson junctions of this work, we use standard Al
+parameters62 λL ≈16nm, ξ0 ≈1600nm and Bbulk
+crit ≈10mT
+and predict λeff,1 ≈129nm and B∥
+crit,1 ≈254mT for the bottom Al layer (d1 = 35nm/
+√
+2 ≈25nm), and λeff,2 ≈67nm and
+B∥
+crit,2 ≈36mT for the top Al layer (d2 = 130nm/
+√
+2 ≈92nm).
+We expect the actual critical field to be dominated by the minimum between B∥
+crit,1 and B∥
+crit,2, hence B∥
+crit ≈36mT.
+Eq. H1 translates into a magnetic-field dependent critical
+current Ic = π∆(B∥)/(2RN), where RN is the normal-state resistance of the junction, which in turn translates into a magneticfield dependent junction inductance LJ = Φ0/(2πIc). Finally,
+the resonance frequency of the JJ array resonators depends on
+the junction’s inductance as fr ∝1/√LJ, hence:
+fr ∝
+4
+v
+u
+u
+t1−
+ 
+B∥
+B∥
+crit
+!2
+(H4)
+In addition to that, an in-plane magnetic field can thread the
+junction in the region corresponding to the oxide tunneling
+barrier and into the Al leads within their penetration depth.
+In such a way, the magnetic field can effectively generate a
+magnetic flux Φext, which further modulates the critical current
+of the junctions according to62,63,68,69:
+Ic →Ic sinc
+
+π Φext
+Φ0
+
+= Ic sinc
+
+π B∥
+BΦ0
+
+,
+(H5)
+where BΦ0 is the value of B∥for which Φext equals one superconducting flux quantum Φ0 = h/(2e). This can be calculated
+by knowing the size of the area A where B∥penetrates, which
+is approximately equal to69:
+A = w(λ1 +tox +λ2),
+(H6)
+where λ1,2 = min(λeff,1,2, d1,2) is the actual portion of the Al
+leads where B∥penetrates, and tox is the thickness of the oxide
+tunneling barrier, as schematically illustrated in Fig. 10. BΦ0
+is then given by:
+BΦ0 = Φ0
+A .
+(H7)
+With the values calculated above and assuming tox ≈1nm, we
+predict BΦ0 ≈42mT.
+By combining the effects described in Eqs. H1 and H5, one
+obtains the following prediction for the dependence of fr on
+B∥:
+fr(B∥) = f0
+4
+v
+u
+u
+t1−
+ 
+B∥
+B∥
+crit
+!2s
+sinc
+
+π B∥
+BΦ0
+
+,
+(H8)
+
+===== Page 13 =====
+
+13
+where f0 is the zero-field resonance frequency of the JJ array
+resonators.
+d2
+Al
+Al
+AlOx
+λ2
+λ1
+Φext
+tox
+w
+d1
+B
+FIG. 10. Schematic cross-sectional view of a JJ, with bottom and
+top Al leads (blue color) with thicknesses d1 and d2 respectively, and
+an oxide tunneling barrier (orange color) with thickness tox. The
+external in-plane magnetic field (denoted by the orange circle above
+the junction) penetrates in the full junction width and, in the vertical
+direction, in the oxide tunneling barrier and in the Al leads within
+their effective penetration depths (area delimited by the dashed line
+and shaded in darker color). By penetrating in such region, it creates
+a magnetic flux that modulates the critical current of the JJ.
+Figure 11 shows a fit of the experimental magnetic field
+spectroscopy data with Eq. H8. From the fit, we extract an
+estimate of B∥
+crit = (66±1)mT and BΦ0 = (102±2)mT. These
+values deviate from the ones predicted from the calculations
+presented in this section. We should first note that there is a
+large negative cross-correlation of C1,2 ≈−0.98 in our fitting
+routine between these two fitting parameters, which hinders a
+reliable independent extraction of both parameters at the same
+time; to mitigate this problem, it would be helpful to collect
+spectroscopy data at magnetic fields much closer to B∥
+crit or
+to BΦ0, where the functional dependence of fr(B∥) allows to
+better fit the two parameters independently. Unfortunately,
+for the devices presented in this work the frequency of the
+resonators falls outside of our measurement bandwidth for
+B∥> 60mT. In addition to this, experimental data can deviate
+from the theoretical prediction presented above in the presence
+of two films of different thicknesses and for very thin films62,
+so that Eqs. H2, and H3 remain true only qualitatively. Lastly,
+small deviations of the thicknesses of the Al leads from the
+values reported here are possible due to the fabrication process.
+However, estimating B∥
+crit and BΦ0 with a higher precision is
+beyond the scope of this work.
+Appendix I: Strong coupling of JJ array resonators with TLFs
+The oxide tunneling barrier of JJs can host defects that
+behave as TLFs29,58,59, whose frequency can happen to fall in
+the GHz range. If the frequency of a JJ array resonator comes
+in resonance with the frequency of a TLF, due to the strong
+electric field in the resonator the two systems can couple and in
+the resonator spectroscopy it is possible to observe a splitting
+of the resonator’s frequency. Figure 12 shows an example
+of such phenomenon for the resonators on the intrinsic Si
+substrate indicated by the black arrow in Fig. 3b. In Fig. 12a,
+0
+10
+20
+30
+40
+50
+60
+In-plane magnetic field B  (mT)
+4.0
+4.5
+5.0
+5.5
+6.0
+6.5
+7.0
+Drive frequency fd (GHz)
+Bcrit =  66 mT
+B
+0 =  102 mT
+Fit
+10
+5
+0
+|S21| (dB)
+FIG. 11. Fit of the magnetic field spectroscopy reported in Fig. 3a,
+according to Eq. H8.
+6.40
+6.45
+6.50
+fd (GHz)
+20
+15
+10
+5
+0
+|S21| (dB)
+6.35
+6.40
+fd (GHz)
+B  = 0 T
+a
+B  = 10 mT
+b
+Data
+Fit
+Data
+Fit
+FIG. 12. Spectroscopy of the JJ resonator on the intrinsic Si substrate
+indicated by the black arrow in Fig. 3b. (a) is taken at zero external
+magnetic field, while (b) at B∥= 10mT. Circular blue points represent the measured data, while the continuous dark line represents
+a fit to Eq. E6. In (a), only the resonator’s resonance dip is visible.
+In (b) the resonator’s frequency, lowered by the external magnetic
+field, comes in resonance with a TLF residing in the oxide tunneling
+barrier of the JJs, and couples with it, resulting in a double and less
+deep resonance dip. As a consequence, the fit extracts a lower internal
+quality factor, as indicated in Fig. 3b.
+at B∥= 0T, one single resonance is visible as the resonator
+does not hybridize with TLFs at this frequency. However, as
+we apply B∥= 10mT and lower the resonator’s frequency, the
+latter comes in resonance with a TLF and observe a double
+resonance as shown in Fig. 12b.
+1N. W. Hendrickx, D. P. Franke, A. Sammak, G. Scappucci, and M. Veldhorst,
+“Fast two-qubit logic with holes in germanium,” Nature 577, 487–491 (2020),
+publisher: Nature Publishing Group.
+
+===== Page 14 =====
+
+14
+2N. W. Hendrickx, W. I. L. Lawrie, L. Petit, A. Sammak, G. Scappucci, and
+M. Veldhorst, “A single-hole spin qubit,” Nature Communications 11, 3478
+(2020), number: 1 Publisher: Nature Publishing Group.
+3N. W. Hendrickx, W. I. L. Lawrie, M. Russ, F. van Riggelen, S. L. de Snoo,
+R. N. Schouten, A. Sammak, G. Scappucci, and M. Veldhorst, “A four-qubit
+germanium quantum processor,” Nature 591, 580–585 (2021), number: 7851
+Publisher: Nature Publishing Group.
+4F. Borsoi, N. W. Hendrickx, V. John, M. Meyer, S. Motz, F. van Riggelen,
+A. Sammak, S. L. de Snoo, G. Scappucci, and M. Veldhorst, “Shared control
+of a 16 semiconductor quantum dot crossbar array,” Nature Nanotechnology
+19, 21–27 (2024), publisher: Nature Publishing Group.
+5X. Zhang, E. Morozova, M. Rimbach-Russ, D. Jirovec, T.-K. Hsiao, P. C.
+Fariña, C.-A. Wang, S. D. Oosterhout, A. Sammak, G. Scappucci, M. Veldhorst, and L. M. K. Vandersypen, “Universal control of four singlet–triplet
+qubits,” Nature Nanotechnology 20, 209–215 (2025).
+6C.-A. Wang, V. John, H. Tidjani, C. X. Yu, A. S. Ivlev, C. Déprez, F. van
+Riggelen-Doelman, B. D. Woods, N. W. Hendrickx, W. I. L. Lawrie, L. E. A.
+Stehouwer, S. D. Oosterhout, A. Sammak, M. Friesen, G. Scappucci, S. L.
+de Snoo, M. Rimbach-Russ, F. Borsoi, and M. Veldhorst, “Operating semiconductor quantum processors with hopping spins,” Science 385, 447–452
+(2024), publisher: American Association for the Advancement of Science.
+7M. Lodari, O. Kong, M. Rendell, A. Tosato, A. Sammak, M. Veldhorst, A. R.
+Hamilton, and G. Scappucci, “Lightly strained germanium quantum wells
+with hole mobility exceeding one million,” Applied Physics Letters 120,
+122104 (2022).
+8A. Sammak, D. Sabbagh, N. W. Hendrickx, M. Lodari, B. Paquelet Wuetz,
+A. Tosato, L. Yeoh, M. Bollani, M. Virgilio, M. A. Schubert, P. Zaumseil,
+G. Capellini, M. Veldhorst, and G. Scappucci, “Shallow and Undoped
+Germanium Quantum Wells: A Playground for Spin and Hybrid Quantum
+Technology,” Advanced Functional Materials 29, 1807613 (2019), _eprint:
+https://onlinelibrary.wiley.com/doi/pdf/10.1002/adfm.201807613.
+9K. M. Itoh and H. Watanabe, “Isotope engineering of silicon and diamond
+for quantum computing and sensing applications,” MRS Communications 4,
+143–157 (2014).
+10O. Moutanabbir,
+S. Assali,
+A. Attiaoui,
+G. Daligou,
+P. Daoust,
+P. D. Vecchio,
+S. Koelling,
+L. Luo,
+and N. Rotaru, “Nuclear
+Spin-Depleted,
+Isotopically
+Enriched
+70Ge/28Si70Ge
+Quantum
+Wells,”
+Advanced
+Materials
+36,
+2305703
+(2024),
+_eprint:
+https://advanced.onlinelibrary.wiley.com/doi/pdf/10.1002/adma.202305703.
+11L. A. Terrazos, E. Marcellina, Z. Wang, S. N. Coppersmith, M. Friesen, A. R.
+Hamilton, X. Hu, B. Koiller, A. L. Saraiva, D. Culcer, and R. B. Capaz,
+“Theory of hole-spin qubits in strained germanium quantum dots,” Physical
+Review B 103, 125201 (2021), publisher: American Physical Society.
+12N. W. Hendrickx, L. Massai, M. Mergenthaler, F. J. Schupp, S. Paredes, S. W.
+Bedell, G. Salis, and A. Fuhrer, “Sweet-spot operation of a germanium hole
+spin qubit with highly anisotropic noise sensitivity,” Nature Materials 23,
+920–927 (2024), publisher: Nature Publishing Group.
+13J. Fischer, “Spin decoherence of a heavy hole coupled to nuclear spins in a
+quantum dot,” Physical Review B 78 (2008), 10.1103/PhysRevB.78.155329.
+14G. Scappucci, C. Kloeffel, F. A. Zwanenburg, D. Loss, M. Myronov, J.-J.
+Zhang, S. De Franceschi, G. Katsaros, and M. Veldhorst, “The germanium
+quantum information route,” Nature Reviews Materials 6, 926–943 (2021),
+publisher: Nature Publishing Group.
+15A. Tosato, V. Levajac, J.-Y. Wang, C. J. Boor, F. Borsoi, M. Botifoll, C. N.
+Borja, S. Martí-Sánchez, J. Arbiol, A. Sammak, M. Veldhorst, and G. Scappucci, “Hard superconducting gap in germanium,” Communications Materials 4, 1–9 (2023), publisher: Nature Publishing Group.
+16M. Hinderling, S. C. ten Kate, M. Coraiola, D. Haxell, M. Stiefel, M. Mergenthaler, S. Paredes, S. Bedell, D. Sabonis, and F. Nichele, “Direct Microwave
+Spectroscopy of Andreev Bound States in Planar $\mathrm{Ge}$ Josephson
+Junctions,” PRX Quantum 5, 030357 (2024), publisher: American Physical
+Society.
+17M. Pita-Vidal, A. Bargerbos, R. Žitko, L. J. Splitthoff, L. Grünhaupt, J. J.
+Wesdorp, Y. Liu, L. P. Kouwenhoven, R. Aguado, B. Van Heck, A. Kou,
+and C. K. Andersen, “Direct manipulation of a superconducting spin qubit
+strongly coupled to a transmon qubit,” Nature Physics 19, 1110–1115 (2023).
+18M. Pita-Vidal, J. J. Wesdorp, L. J. Splitthoff, A. Bargerbos, Y. Liu, L. P.
+Kouwenhoven, and C. K. Andersen, “Strong tunable coupling between two
+distant superconducting spin qubits,” Nature Physics 20, 1158–1163 (2024).
+19T. Dvir, G. Wang, N. van Loo, C.-X. Liu, G. P. Mazur, A. Bordin, S. L. D.
+ten Haaf, J.-Y. Wang, D. van Driel, F. Zatelli, X. Li, F. K. Malinowski,
+S. Gazibegovic, G. Badawy, E. P. A. M. Bakkers, M. Wimmer, and L. P.
+Kouwenhoven, “Realization of a minimal Kitaev chain in coupled quantum
+dots,” Nature 614, 445–450 (2023), publisher: Nature Publishing Group.
+20A. Blais, A. L. Grimsmo, S. Girvin, and A. Wallraff, “Circuit quantum
+electrodynamics,” Reviews of Modern Physics 93, 025005 (2021), publisher:
+American Physical Society.
+21G. Zheng, N. Samkharadze, M. L. Noordam, N. Kalhor, D. Brousse, A. Sammak, G. Scappucci, and L. M. K. Vandersypen, “Rapid gate-based spin
+read-out in silicon using an on-chip resonator,” Nature Nanotechnology 14,
+742–746 (2019), publisher: Nature Publishing Group.
+22P. Harvey-Collard, J. Dijkema, G. Zheng, A. Sammak, G. Scappucci, and
+L. M. Vandersypen, “Coherent Spin-Spin Coupling Mediated by Virtual
+Microwave Photons,” Physical Review X 12, 021026 (2022).
+23J. Dijkema, X. Xue, P. Harvey-Collard, M. Rimbach-Russ, S. L. De Snoo,
+G. Zheng, A. Sammak, G. Scappucci, and L. M. K. Vandersypen, “Cavitymediated iSWAP oscillations between distant spins,” Nature Physics 21,
+168–174 (2025), publisher: Springer Science and Business Media LLC.
+24F. Oppliger, W. Jang, A. Tarascio, F. D. Palma, C. Reichl, W. Wegscheider, V. F. Maisi, D. Zumbühl, and P. Scarlino, “High-Efficiency Tunable
+Microwave Photon Detector Based on a Semiconductor Double Quantum Dot Coupled to a Superconducting High-Impedance Cavity,” (2025),
+arXiv:2506.19828 [quant-ph].
+25Y.-Y. Liu, J. Stehlik, C. Eichler, M. J. Gullans, J. M. Taylor, and J. R. Petta,
+“Semiconductor double quantum dot micromaser,” Science 347, 285–287
+(2015), publisher: American Association for the Advancement of Science.
+26A. Bargerbos, M. Pita-Vidal, R. Žitko, L. J. Splitthoff, L. Grünhaupt, J. J.
+Wesdorp, Y. Liu, L. P. Kouwenhoven, R. Aguado, C. K. Andersen, A. Kou,
+and B. Van Heck, “Spectroscopy of Spin-Split Andreev Levels in a Quantum
+Dot with Superconducting Leads,” Physical Review Letters 131, 097001
+(2023).
+27J. J. Wesdorp, F. J. Matute-Cañadas, A. Vaartjes, L. Grünhaupt, T. Laeven,
+S. Roelofs, L. J. Splitthoff, M. Pita-Vidal, A. Bargerbos, D. J. Van Woerkom,
+P. Krogstrup, L. P. Kouwenhoven, C. K. Andersen, A. L. Yeyati, B. Van Heck,
+and G. De Lange, “Microwave spectroscopy of interacting Andreev spins,”
+Physical Review B 109, 045302 (2024).
+28G. Burkard, M. J. Gullans, X. Mi,
+and J. R. Petta, “Superconductor–semiconductor hybrid-circuit quantum electrodynamics,” Nature Reviews Physics 2, 129–140 (2020), publisher: Nature Publishing Group.
+29F. De Palma, F. Oppliger, W. Jang, S. Bosco, M. Janík, S. Calcaterra, G. Katsaros, G. Isella, D. Loss, and P. Scarlino, “Strong hole-photon coupling in
+planar Ge for probing charge degree and strongly correlated states,” Nature
+Communications 15, 10177 (2024).
+30C. X. Yu, S. Zihlmann, J. C. Abadillo-Uriel, V. P. Michal, N. Rambal, H. Niebojewski, T. Bedecarrats, M. Vinet, E. Dumur, M. Filippone,
+B. Bertrand, S. De Franceschi, Y.-M. Niquet, and R. Maurand, “Strong coupling between a photon and a hole spin in silicon,” Nature Nanotechnology
+18, 741–746 (2023), publisher: Nature Publishing Group.
+31M. Janík, K. Roux, C. Borja-Espinosa, O. Sagi, A. Baghdadi, T. Adletzberger,
+S. Calcaterra, M. Botifoll, A. Garzón Manjón, J. Arbiol, D. Chrastina,
+G. Isella, I. M. Pop, and G. Katsaros, “Strong charge-photon coupling in
+planar germanium enabled by granular aluminium superinductors,” Nature
+Communications 16, 2103 (2025).
+32M. Valentini, O. Sagi, L. Baghumyan, T. de Gijsel, J. Jung, S. Calcaterra,
+A. Ballabio, J. Aguilera Servin, K. Aggarwal, M. Janik, T. Adletzberger,
+R. Seoane Souto, M. Leijnse, J. Danon, C. Schrade, E. Bakkers, D. Chrastina,
+G. Isella, and G. Katsaros, “Parity-conserving Cooper-pair transport and
+ideal superconducting diode in planar germanium,” Nature Communications
+15, 169 (2024), publisher: Nature Publishing Group.
+33O. Sagi, A. Crippa, M. Valentini, M. Janik, L. Baghumyan, G. Fabris,
+L. Kapoor, F. Hassani, J. Fink, S. Calcaterra, D. Chrastina, G. Isella, and
+G. Katsaros, “A gate tunable transmon qubit in planar Ge,” Nature Communications 15, 6400 (2024), publisher: Nature Publishing Group.
+34A. Nigro, E. Jutzi, F. Oppliger, F. De Palma, C. Olsen, A. Ruiz-Caridad,
+G. Gadea, P. Scarlino, I. Zardo,
+and A. Hofmann, “Demonstration of
+Microwave Resonators and Double Quantum Dots on Optimized ReverseGraded Ge/SiGe Heterostructures,” ACS Applied Electronic Materials 6,
+5094–5100 (2024).
+
+===== Page 15 =====
+
+15
+35N. A. Masluk, I. M. Pop, A. Kamal, Z. K. Minev, and M. H. Devoret,
+“Microwave Characterization of Josephson Junction Arrays: Implementing a
+Low Loss Superinductance,” Physical Review Letters 109, 137002 (2012),
+publisher: American Physical Society.
+36M. Scigliuzzo, L. E. Bruhat, A. Bengtsson, J. J. Burnett, A. F. Roudsari, and
+P. Delsing, “Phononic loss in superconducting resonators on piezoelectric
+substrates,” New Journal of Physics 22, 053027 (2020).
+37S. Frasca, I. Arabadzhiev, S. B. de Puechredon, F. Oppliger, V. Jouanny,
+R. Musio, M. Scigliuzzo, F. Minganti, P. Scarlino, and E. Charbon, “NbN
+films with high kinetic inductance for high-quality compact superconducting resonators,” Physical Review Applied 20, 044021 (2023), publisher:
+American Physical Society.
+38I. Nsanzineza and B. Plourde, “Trapping a Single Vortex and Reducing
+Quasiparticles in a Superconducting Resonator,” Physical Review Letters
+113, 117002 (2014), publisher: American Physical Society.
+39A. Nigro, E. Jutzi, N. Forrer, A. Hofmann, G. Gadea, and I. Zardo, “High
+quality Ge layers for Ge/SiGe quantum well heterostructures using chemical
+vapor deposition,” Physical Review Materials 8, 066201 (2024).
+40M.
+Mendes
+Martins,
+P.
+Kumar,
+J.
+Woerle,
+X.
+Ni,
+U.
+Grossner,
+and
+T.
+Prokscha,
+“Defect
+Profiling
+of
+OxideSemiconductor
+Interfaces
+Using
+Low-Energy
+Muons,”
+Advanced
+Materials
+Interfaces
+10,
+2300209
+(2023),
+_eprint:
+https://advanced.onlinelibrary.wiley.com/doi/pdf/10.1002/admi.202300209.
+41V. A. Shah, A. Dobbie, M. Myronov, D. J. F. Fulgoni, L. J. Nash, and D. R.
+Leadley, “Reverse graded relaxed buffers for high Ge content SiGe virtual
+substrates,” Applied Physics Letters 93, 192103 (2008).
+42M. L. Lee, E. A. Fitzgerald, M. T. Bulsara, M. T. Currie, and A. Lochtefeld, “Strained Si, SiGe, and Ge channels for high-mobility metal-oxidesemiconductor field-effect transistors,” Journal of Applied Physics 97,
+011101 (2004).
+43J. M. Martinis, K. B. Cooper, R. McDermott, M. Steffen, M. Ansmann, K. D.
+Osborn, K. Cicak, S. Oh, D. P. Pappas, R. W. Simmonds, and C. C. Yu,
+“Decoherence in Josephson Qubits from Dielectric Loss,” Physical Review
+Letters 95, 210503 (2005).
+44R. de Sousa, “Dangling-bond spin relaxation and magnetic 1/ f noise from
+the amorphous-semiconductor/oxide interface: Theory,” Physical Review B
+76, 245306 (2007), publisher: American Physical Society.
+45J. Burnett, L. Faoro, I. Wisby, V. L. Gurtovoi, A. V. Chernykh, G. M.
+Mikhailov, V. A. Tulin, R. Shaikhaidarov, V. Antonov, P. J. Meeson, A. Y.
+Tzalenchuk, and T. Lindström, “Evidence for interacting two-level systems
+from the 1/f noise of a superconducting resonator,” Nature Communications
+5, 4119 (2014), publisher: Nature Publishing Group.
+46S. E. de Graaf, L. Faoro, J. Burnett, A. A. Adamyan, A. Y. Tzalenchuk, S. E.
+Kubatkin, T. Lindström, and A. V. Danilov, “Suppression of low-frequency
+charge noise in superconducting resonators by surface spin desorption,” Nature Communications 9, 1143 (2018), publisher: Nature Publishing Group.
+47Y. Tominaga, S. Shirai, Y. Hishida, H. Terai, and A. Noguchi, “Intrinsic
+quality factors approaching 10 million in superconducting planar resonators
+enabled by spiral geometry,” EPJ Quantum Technology 12, 60 (2025).
+48G. S. Oehrlein, T. D. Bestwick, P. L. Jones, M. A. Jaso, and J. L. Lindström,
+“Selective Dry Etching of Germanium with Respect to Silicon and Vice
+Versa,” Journal of The Electrochemical Society 138, 1443 (1991), publisher:
+IOP Publishing.
+49Q.-M. Chen, M. Partanen, F. Fesquet, K. E. Honasoge, F. Kronowetter,
+Y. Nojiri, M. Renger, K. G. Fedorov, A. Marx, F. Deppe, and R. Gross,
+“Scattering coefficients of superconducting microwave resonators. II. Systembath approach,” Physical Review B 106, 214506 (2022).
+50S. Probst, F. B. Song, P. A. Bushev, A. V. Ustinov, and M. Weides, “Efficient and robust analysis of complex scattering data under noise in microwave resonators,” Review of Scientific Instruments 86, 024706 (2015),
+arXiv:1410.3365 [cond-mat, physics:physics].
+51C. R. H. McRae, H. Wang, J. Gao, M. R. Vissers, T. Brecht, A. Dunsworth,
+D. P. Pappas, and J. Mutus, “Materials loss measurements using superconducting microwave resonators,” Review of Scientific Instruments 91, 091101
+(2020).
+52L. Frunzio, A. Wallraff, D. Schuster, J. Majer, and R. Schoelkopf, “Fabrication and characterization of superconducting circuit QED devices for
+quantum computation,” IEEE Transactions on Applied Superconductivity
+15, 860–863 (2005).
+53G. J. Dolan, “Offset masks for lift-off photoprocessing,” Applied Physics
+Letters 31, 337–339 (1977).
+54V. Ambegaokar and A. Baratoff, “Tunneling Between Superconductors,”
+Physical Review Letters 10, 486–489 (1963), publisher: American Physical
+Society.
+55C. Eichler and A. Wallraff, “Controlling the dynamic range of a Josephson
+parametric amplifier,” EPJ Quantum Technology 1, 2 (2014).
+56A. Anferov, A. Suleymanzade, A. Oriani, J. Simon, and D. I. Schuster,
+“Millimeter-Wave Four-Wave Mixing via Kinetic Inductance for Quantum
+Devices,” Physical Review Applied 13, 024056 (2020).
+57J. Burnett, L. Faoro, and T. Lindström, “Analysis of high quality superconducting resonators: consequences for TLS properties in amorphous oxides,”
+Superconductor Science and Technology 29, 044008 (2016).
+58D. J. Van Harlingen, T. L. Robertson, B. L. T. Plourde, P. A. Reichardt, T. A.
+Crane, and J. Clarke, “Decoherence in Josephson-junction qubits due to
+critical-current fluctuations,” Physical Review B 70, 064517 (2004).
+59M. Constantin and C. C. Yu, “Microscopic Model of Critical Current Noise
+in Josephson Junctions,” Physical Review Letters 99, 207001 (2007).
+60D. C. Zanuz, Q. Ficheux, L. Michaud, A. Orekhov, K. Hanke, A. Flasby,
+M. B. Panah, G. J. Norris, M. Kerschbaum, A. Remm, F. Swiadek,
+C. Hellings, S. Laz˘ar, C. Scarato, N. Lacroix, S. Krinner, C. Eichler,
+A. Wallraff, and J.-C. Besse, “Mitigating Losses of Superconducting Qubits
+Strongly Coupled to Defect Modes,” (2024), arXiv:2407.18746 [quant-ph].
+61D. Jirovec, A. Hofmann, A. Ballabio, P. M. Mutter, G. Tavani, M. Botifoll,
+A. Crippa, J. Kukucka, O. Sagi, F. Martins, J. Saez-Mollejo, I. Prieto,
+M. Borovkov, J. Arbiol, D. Chrastina, G. Isella, and G. Katsaros, “A singlettriplet hole spin qubit in planar Ge,” Nature Materials 20, 1106–1112 (2021),
+publisher: Nature Publishing Group.
+62J. Krause, C. Dickel, E. Vaal, M. Vielmetter, J. Feng, R. Bounds, G. Catelani,
+J. M. Fink, and Y. Ando, “Magnetic Field Resilience of Three-Dimensional
+Transmons with Thin-Film Al/AlOx/Al Josephson Junctions Approaching
+1 T,” Physical Review Applied 17, 034032 (2022), publisher: American
+Physical Society.
+63R. Kuzmin, N. Mehta, N. Grabon, and V. E. Manucharyan, “Tuning the
+inductance of Josephson junction arrays without SQUIDs,” Applied Physics
+Letters 123, 182602 (2023).
+64M. Göppl, A. Fragner, M. Baur, R. Bianchetti, S. Filipp, J. M. Fink, P. J. Leek,
+G. Puebla, L. Steffen, and A. Wallraff, “Coplanar waveguide resonators for
+circuit quantum electrodynamics,” Journal of Applied Physics 104, 113904
+(2008).
+65M. A. Castellanos-Beltran and K. W. Lehnert, “Widely tunable parametric
+amplifier based on a superconducting quantum interference device array
+resonator,” Applied Physics Letters 91, 083509 (2007).
+66C. W. Gardiner and M. J. Collett, “Input and output in damped quantum
+systems: Quantum stochastic differential equations and the master equation,”
+Physical Review A 31, 3761–3774 (1985).
+67C. Roy, S. Frasca, and P. Scarlino, “Study of Magnetic Field Resilient High
+Impedance High-Kinetic Inductance Superconducting Resonators,” (2025),
+arXiv:2503.13321 [quant-ph].
+68M. Tinkham, Introduction to Superconductivity (McGraw Hill, New York,
+1996).
+69P. Winkel, Superconducting quantum circuits for hybrid architectures, Ph.D.
+thesis, Karlsruher Instituts für Technologie (KIT) (2020).
+70R. Kuzmin, R. Mencia, N. Grabon, N. Mehta, Y.-H. Lin,
+and V. E.
+Manucharyan, “Quantum electrodynamics of a superconductor–insulator
+phase transition,” Nature Physics 15, 930–934 (2019).
+71L. Peyruchat, F. Minganti, M. Scigliuzzo, F. Ferrari, V. Jouanny, F. Nori,
+V. Savona, and P. Scarlino, “Landau–Zener without a qubit: multiphoton
+sidebands interaction and signatures of dissipative quantum chaos,” npj
+Quantum Information 11, 62 (2025), publisher: Nature Publishing Group.

@@ -1,0 +1,888 @@
+
+
+===== Page 1 =====
+
+A heterogeneously integrated lithium niobate-on-silicon nitride photonic platform
+Mikhail Churaev,1, ∗Rui Ning Wang,1, ∗Viacheslav Snigirev,1, ∗Annina Riedhauser,2 Terence Blésin,1
+Charles Möhl,2 Miles A. Anderson,1 Anat Siddharth,1 Youri Popoﬀ,2, 3 Ute Drechsler,2 Daniele Caimi,2
+Simon Hönl,2 Johann Riemensberger,1 Junqiu Liu,1 Paul Seidler,2, † and Tobias J. Kippenberg1, ‡
+1Institute of Physics, Swiss Federal Institute of Technology Lausanne (EPFL), CH-1015 Lausanne, Switzerland
+2IBM Research - Europe, Zurich, Säumerstrasse 4, CH-8803 Rüschlikon, Switzerland
+3Integrated Systems Laboratory, Swiss Federal Institute of Technology Zurich (ETH Zürich), CH-8092 Zürich, Switzerland
+The availability of thin-ﬁlm lithium niobate
+on insulator (LNOI) and advances in processing
+have
+led
+to
+the
+emergence
+of
+fully
+integrated LiNbO3 electro-optic devices[1–4], including low-voltage[5], high-speed modulators[6],
+electro-optic frequency combs[7], and microwaveoptical transducers [8, 9].
+Yet to date, LiNbO3
+photonic integrated circuits (PICs) have mostly
+been fabricated using non-standard etching techniques that lack the reproducibility routinely
+achieved in silicon photonics.
+Widespread future application of thin-ﬁlm LiNbO3 requires a
+reliable and scalable solution using standard processing and precise lithographic control.
+Here
+we
+demonstrate
+a
+heterogeneously
+integrated
+LiNbO3 photonic platform that overcomes the
+abovementioned challenges by employing waferscale bonding of thin-ﬁlm LiNbO3 to planarized
+low-loss silicon nitride (Si3N4) photonic integrated circuits[10], a mature foundry-grade integrated photonic platform.
+The resulting devices combine the substantial Pockels eﬀect of
+LiNbO3 with the scalability, high-yield, and complexity of the underlying Si3N4 PICs.
+Importantly, the platform maintains the low propagation loss (< 0.1 dB/cm) and eﬃcient ﬁber-to-chip
+coupling (<2.5 dB per facet) of the Si3N4 waveguides.
+We ﬁnd that ten transitions between a
+mode conﬁned in the Si3N4 PIC and the hybrid
+LiNbO3 mode produce less than 0.8 dB additional loss, corresponding to a loss per transition not exceeding 0.1 dB. These nearly lossless
+adiabatic transitions thus link the low-loss passive Si3N4 photonic structures with electro-optic
+components.
+We demonstrate high-Q microresonators, optical splitters, electrically tunable photonic dimers, electro-optic frequency combs, and
+carrier-envelope phase detection of a femtosecond
+laser on the same platform, thus providing a reliable and foundry-ready solution to low-loss and
+complex LiNbO3 integrated photonic circuits.
+Modern society has an constantly increasing demand
+for optical communications bandwidth, with aggregate
+∗These authors contributed equally to this work.
+† pfs@zurich.ibm.com
+‡ tobias.kippenberg@epﬂ.ch
+data rates doubling every 18 months[11, 12], and optical
+technology is coming ever closer to the central processing units[13]. Optical modulators play a crucial role in
+this context, providing the means to transfer electronic
+signals to optical carriers.
+With the rise of commercial integrated photonics [14], a wide variety of modulation platforms have been demonstrated that are compatible with wafer-scale manufacturing, among which
+silicon and indium phosphide are the most prominent
+[15–18]. In the last decade, alternative systems, including organic hybrids [19, 20], plasmonic devices [21], and
+modulators based on two-dimensional materials [22–25]
+have also been developed. Among all the materials used,
+lithium niobate (LiNbO3) remains the most preferable
+because of its excellent physical properties, and commercial availability [26]. Advances in wafer-scale transfer of
+LiNbO3 thin-ﬁlms via the SmartCutTM technique, combined with improvements in etching of LiNbO3, have
+enabled low-loss integrated electro-optics [27–29]. This
+has led to several key demonstrations, including ultrahigh-Q optical microresonators[28], eﬃcient electro-optic
+frequency comb generation[7], frequency converters [30],
+and non-reciprocal devices [31, 32]. In addition, electrooptic modulation both at CMOS voltage levels and at
+high speed (up to 100 GHz) has been achieved [5, 6],
+oﬀering routes toward compact integrated LiNbO3 modulators compatible with CMOS microelectronics for applications ranging from classical communication for 5G
+cellular networks and datacenter interconnects to quantum interfaces for microwave-optical conversion [33–35],
+and topological photonics employing synthetic dimensions [36, 37]. Besides the electro-optic applications, integrated LiNbO3 PICs are also of high interest for nonlinear photonics, for example, for eﬃcient second-harmonic
+generation, optical squeezing, and parametric ampliﬁcation [38–40].
+Despite the achievements to date, widespread adoption of LiNbO3 integrated photonics is still impeded by
+several key issues. Current LNOI-based devices are fabricated using speciﬁc non-conventional ion-beam etching
+(IBE) to achieve smooth waveguide surfaces. Insuﬃcient
+etch-mask selectivity leads to the formation of shallow
+ridge waveguides that require more challenging process
+control to achieve the desired geometries. This complicates the establishment of a reliable process design kit
+(PDK) for integrated LiNbO3 platforms. Second, edge
+coupling between ﬁbers and chips is challenging, as the
+ridge waveguide structures demonstrated so far show sigarXiv:2112.02018v2  [physics.optics]  12 Sep 2022
+
+===== Page 2 =====
+
+2
+a
+b
+c
+d
+Ti or proton exchange
+5-10 μm
+0.5-1 μm
+Ridge waveguide devices
+Bulk devices
+Hybrid platforms
+This work
+1 µm
+SiO2
+Si3N4
+LiNbO3
+1 µm
+Substrate
+Si or Si3N4
+SiO2
+LiNbO3
+Electrodes
+f
+e
+g
+4 nm
+2
+0
+-2
+2 μm
+σ = 400 pm
+Figure 1.
+Hybrid integrated Lithium Niobate photonics.(a) Conventional approaches to lithium niobate photonics,
+consisting of traditional Ti or proton exchange based waveguides, and the recently emerged integrated photonics based on
+etching of thin-ﬁlm LNOI (which is mostly based on ridge waveguides) (b) The hybrid approach presented in this work, based
+on heterogeneous integration of thin ﬁlm lithium niobate with Si3N4. (c) Schematics of our approach which is based on wafer
+bonding of 4” (100 mm) thin ﬁlm lithium niobate onto planarized ultra low loss Si3N4 photonic integrated circuits. (d) Hybrid
+optical mode proﬁle for a typical waveguide used in this work (cf Methods). (e) AFM measurements of the Si3N4 wafer before
+bonding showing 400 pm RMS roughness over 5 µm by 5 µm ﬁeld of view. (f) Long-range proﬁlometry scan of the wafer before
+bonding. (g) False-coloured scanning electron micrograph showing the hybrid structure.
+niﬁcant coupling loss, 5 to 10 dB per facet, [30] unless more complicated double-etching techniques are used
+[41, 42]. Third, while record resonance quality factors (Q
+≈107, linear loss of 0.027 dB/cm) have been reported in
+LiNbO3 microresonators[28], this has only been demonstrated for selected optical resonances and has not been
+achieved broadly in other recently reported works, where
+losses are typically one order of magnitude higher (0.2
+- 0.3 dB/cm, see Supplementary Table 1 for comparison). For future applications, uniformly low loss across
+a wafer using precise and mature lithographic processes,
+along with eﬃcient coupling, are necessary to develop a
+foundry-level technology that includes PDKs with, e.g.,
+splitters, arrayed-waveguide gratings, optical ﬁlters or
+beamforming networks.
+As an alternative to conventional bulk LiNbO3 and
+ridge-waveguide-based photonic devices, hybrid platforms combining thin-ﬁlm LiNbO3 with waveguides made
+of Si, Si3N4, or Ta2O5 have been recently developed[43–
+45] (see Fig 1(a)-(c)). With proper geometry optimization, the heterogeneously integrated LNOI devices can
+reach electro-optic performance comparable to that of
+the all-LNOI platforms[46] (VπL = 2.3 V·cm).
+Heterogeneous integration using the organic adhesive benzocyclobutene (BCB) to bond LNOI to silicon and direct
+bonding of chiplets to silicon and silicon nitride PICs has
+been demonstrated, leading to modulators operating at
+CMOS voltages [44, 47]. Even though the low-loss operation of hybrid Si3N4-LiNbO3 waveguides was reported
+[48, 49], the previous works did not provide reliable studies of wafer-scale uniformity, dispersion, insertion loss,
+or other essential aspects of photonic integrated circuits.
+The approaches were aimed at speciﬁc device applications and could not demonstrate all the beneﬁts of heterogeneous integration of LiNbO3 with a well-developed
+photonic platform. Moreover, the wafer-level bonding required to achieve scalable PDKs was not shown. Here, we
+demonstrate a high-yield, low-loss, integrated LiNbO3Si3N4 photonic platform that solves multiple issues of
+LNOI integrated photonics. The approach circumvents
+the need for optimized IBE etching of LiNbO3 and opens
+up the possibility of creating a wide range of low-loss integrated electro-optic photonic circuits. This is achieved
+by wafer-scale heterogeneous integration [48, 50] (i.e. di-
+
+===== Page 3 =====
+
+3
+rect wafer bonding [51]) of an LNOI wafer onto a patterned and planarized ultra-low-loss Si3N4 substrate as
+depicted in Fig 1(c). Our approach combines the maturity of Si3N4 integrated photonics with the large Pockels
+eﬀect of LiNbO3 and enables complex, hybrid PICs that
+incorporate passive Si3N4 and electro-optic LiNbO3 and
+exhibit ultra-low propagation loss (8.5 dB/m).
+Fabrication process. The process ﬂow for our hybrid PICs starts with the fabrication of Si3N4 waveguide
+structures using the photonic Damascene process [10, 52].
+We use a 100 mm-diameter silicon wafer with 4 µm-thick
+wet thermal SiO2, followed by deep-ultraviolet (DUV)
+stepper lithography, preform dry etching, preform reﬂow,
+low-pressure chemical vapor deposition (LPCVD) deposition of Si3N4, chemical-mechanical polishing (CMP),
+and SiO2 interlayer deposition and annealing, as detailed
+in the Supplementary Information. The Si3N4 photonic
+Damascene process is free of crack formation in the highly
+tensile LPCVD Si3N4 ﬁlm and provides high fabrication
+yield and ultra-low propagation loss (1 dB/m). In addition, double-inverse nanotapers [53] are incorporated for
+eﬃcient edge coupling to lensed ﬁbers. Previous devices
+fabricated using this process have been the workhorse
+for numerous system-level applications of soliton microcombs, ranging from coherent telecommunication [54] to
+astrophysical spectrometer calibration [55] to supercontinuum generation [56] and turnkey soliton generation
+[57].
+One of the key advantages of the photonic Damascene process is the possibility of obtaining an extremely
+ﬂat wafer surface suitable for heterogeneous integration.
+Speciﬁcally, we perform CMP on the SiO2 interlayer and
+bond the fabricated Si3N4 Damascene substrate to a
+commercially available LNOI wafer (NanoLN). The most
+critical constraints for achieving high bonding yield, the
+surface roughness and topography, are measured prior
+to bonding.
+With CMP, the long-range topography is
+reduced to a few nanometers over several hundred microns, as shown in Fig.
+1(f).
+Moreover, atomic force
+microscopy (AFM) measurements over a range of a few
+microns reveal a root-mean-square (RMS) roughness of
+400 pm (Fig. 1(e)). This roughness level is suﬃciently
+low for direct wafer bonding.
+The donor and the acceptor wafer (the Si3N4 substrate and the LNOI wafer,
+respectively) are cleaned, and both are coated by atomic
+layer deposition (ALD) with a few nanometers of alumina (Al2O3). The wafers are then bonded and annealed
+at 250◦C to enhance the bonding strength. See SI for
+more technical information on fabrication. We have successfully bonded several wafers, including whole 100-mm
+LNOI wafers, with a bonding yield close to 100%, as
+evidenced by photoacoustic spectroscopy.
+Subsequent
+back-end processing and electrode integration are described in the SI. A scanning electron microscope image
+(Fig. 1(g)) of a cross-section of the layer structure reveals clean bonding results. Finite-element-method simulations (see Fig. 1(d)) indicate that, for the waveguide and wafer parameters used here (cf. SI for waveguide geometry), the optical mode conﬁnement factor for
+LiNbO3 at the telecommunication wavelength of 1550
+nm is Γ =
+˜
+LiNbO3 |E|2dS/
+˜
+Ω|E|2dS = 12%, where
+Ωdenotes the whole cross-section area. To demonstrate
+the electro-optic capabilities of the heterogeneously integrated LiNbO3 photonic circuits, we deposit tungsten
+(W) electrodes on top of the LiNbO3 adjacent to the
+waveguides with an electrode-electrode gap of 6 µm.
+To illustrate the versatility, lithographic precision,
+complexity, and yield of the hybrid platform, we design
+a reticle with various devices. Figure 2(e) shows the design layout of the Si3N4 photonic circuits for a 100-mm
+wafer; it contains nine ﬁelds with 16 chips each – in total, more than 100 chips with dimensions of 5 mm ×
+5 mm.
+The reticle includes chips with three diﬀerent
+types of devices: (1) microresonators with a free spectral
+range (FSR) of either 100 GHz or 21 GHz, the former being used for electro-optic comb generation; (2) photonic
+molecules consisting of a pair of coupled microresonators
+each with a FSR of 50 GHz, as used for microwave-optical
+conversion schemes; and (3) waveguides with a length of
+several centimeters for supercontinuum generation (wafer
+D67b01).
+Optical loss characterization. Linear propagation
+loss is crucial in determining the performance of integrated electro-optic devices, as it limits the length of
+electro-optic modulators and the complexity of the associated photonic circuit. To measure the linear optical
+loss, evanescent coupling properties, and group velocity
+dispersion (GVD) of the hybrid structures, we perform
+broadband frequency-comb-assisted spectroscopy [58] of
+multiple microresonators across the entire wafer with
+three diﬀerent external-cavity diode lasers covering the
+wavelength ranges of 1260–1360 nm, 1355–1505 nm, and
+1500–1630 nm. The intrinsic quality factors of individual
+100 GHz microring resonators reach up to Q = 3 × 106,
+while the 50 GHz photonic dimers (i.e., coupled microrings) and 21 GHz single rings exhibit even higher
+quality factors up to Q = 4.5 × 106. The latter corresponds to a linear propagation loss of 8.5 dB/m.
+We
+observe an absorption peak at approximately 1420 nm
+(207 THz), which we associate with an overtone of OHbond vibrations in lithium niobate [59, 60]. As shown in
+Fig 2(g), optical losses rise with increasing optical frequency.
+We associate this dependency with increased
+whispering-gallery (radiation) loss as the mode shifts into
+the LiNbO3 thin ﬁlm at higher frequencies and becomes
+less conﬁned (see Fig 2(f)). For the same reason, we observe nearly uniform evanescent coupling of optical microresonators over a span of 55 THz. The layout in Fig
+2(e) is labeled with the most probable linewidth measured for 21 GHz microresonators in various regions, indicating the degree of variation across the wafer (see Supplementary Information). These results not only demonstrate high yield and wafer-scale fabrication but include
+some of the highest quality factors achieved to date with
+integrated LiNbO3 devices.
+Notably, the Qs reported
+here are not isolated values as in prior work on ridge
+
+===== Page 4 =====
+
+4
+Figure 2.
+Optical loss measurements of the hybrid devices. (a) Photograph of a fully bonded 2” lithium niobate
+wafer to a 4” photonic damascene wafer. (b) Schematics of the chip facet with lithium niobate removed from the silicon nitride
+inverse tapers. FDTD simulations of the mode transition at interface. (c) Broadband transmission measurements of a 100 GHz
+FSR ring showing ﬂat coupling of resonances from 1260 nm to 1630 nm wavelength. (d) Extracted integrated dispersion of the
+device. The inset shows a zoom-in of one of the modes at 184 THz with amplitude modulation sidebands at 500 MHz and the
+corresponding ﬁtting curve. (e) Wafer map with averaged linewidth indicated for the reference 21 GHz FSR rings. (f) Simulated
+optical mode conﬁnement in LiNbO3 as a function of optical frequency. Insets show typical mode proﬁles. Grey-shadowed area
+represents the measurement bandwidth. (g) Loaded (red), intrinsic (green), and coupling (blue) linewidth of the resonances
+presented in (c). (h) Measured linewidth of 3 types of devices on the wafer accumulated over 55 THz measurement bandwidth.
+resonators[28] but are consistently high, i.e., we measure
+hundreds of resonances with Q above 4 × 106 (linewidth
+below 50 MHz), as shown in Fig. 2(h).
+Our hybrid platform also oﬀers the possibility of precise dispersion engineering; due to the interplay between
+material dispersion and the optical mode distribution,
+the dispersion can be adjusted by varying the Si3N4
+waveguide geometry or the LiNbO3 thickness.
+In this
+work, we designed the structure to work in the nearzero GVD regime advantageous for broadband optical
+frequency comb generation. As shown in Fig. 2(d) for
+a microresonator with a FSR of 100 GHz, the measured
+integrated microresonator dispersion (Dint) only varies
+by 15 GHz over an optical bandwidth of 55 THz. Interestingly, there is no constraint preventing the design
+of devices that are uniformly coupled over a broad frequency range and, at the same time, have extremely small
+dispersion.
+Fiber-chip coupling and interface transitions.
+Eﬃcient input coupling from an optical ﬁber to the
+photonic chip is paramount for numerous applications.
+For air-cladded LiNbO3 ridge waveguides, inverse ta-
+
+===== Page 5 =====
+
+5
+10 um
+a
+b
+c
+d
+e
+Tapered transition
+500 um
+100 um
+3 dB splitter
+Straight transition
+h
+f
+g
+1500
+1520
+1540
+1560
+1580
+1600
+1620
+Wavelength, nm
+-8
+-6
+-4
+Norm. trans., dB
+2 tapers
+4 tapers
+6 tapers
+10 tapers
+2 straight
+<0.8 dB
+1500
+1520
+1540
+1560
+1580
+1600
+1620
+Wavelength, nm
+-14
+-10
+-6
+Norm. trans., dB
+2 tapers
+2 straight
+4 straight
+6 straight
+approx. 2 dB
+1500
+1520
+1540
+1560
+1580
+1600
+1620
+Wavelength, nm
+-10
+-8
+-6
+Norm. trans., dB
+Port 1
+Port 2
+Port 1 + 2
+Reference
+<1 dB
+Figure 3. Adiabatic mode transitions and hybrid optical splitters. (a) Colored SEM image of a LiNbO3 taper fabricated
+to make a smooth optical mode transition. (b) Optical microscope image of a chip used to estimate the performance of interface
+tapers. Horizontal dotted lines mark waveguides with two interface transitions (blue), four interface transitions (red), and six
+interface transitions (green). The inset shows a zoom-in of a breakout region. (c) Schematic of a tapered (adiabatic) interface
+transition. (d) Transmission measurements of breakout waveguides described in (b) as well as a typical straight (non-adiabatic)
+transition for comparison (orange line).
+(e) Schematic of a straight (non-adiabatic) interface transition.
+(f) Transmission
+measurements of waveguides with straight transition breakouts.
+(g) Optical image, FDTD simulation, and schematic of a
+W-type 3-dB splitter. The geometry is deﬁned by the underlying Si3N4 layer. (h) Transmission measurements of two ports of
+the splitter together with the transmission of a straight waveguide as reference.
+pers lead to ﬁber-chip edge-coupling losses of around
+10 dB per facet unless complicated multi-layer etching is
+used[41, 61, 62]. This is due to the signiﬁcant mode mismatch between the lensed ﬁber mode (typically circular
+with about 2.5 µm diameter) and the asymmetric mode
+of partially etched air-cladded ridge waveguide structures. Some recent work on integrated LiNbO3 devices
+demonstrated the possibility of using embedded silicon
+edge-couplers to overcome this challenge[6]. In our case,
+the relative indices of refraction of the materials would
+lead to signiﬁcant coupling loss if the LiNbO3 layer remained on top of underlying Si3N4 inverse tapers. Hence,
+we remove the LiNbO3 from the coupling regions and rely
+on standard Damascene Si3N4 inverse tapers[53]. While
+this provides an eﬃcient input coupling, there remains
+the challenge of the transition between the regions with
+and without LiNbO3. To address this issue, we designed
+and implemented adiabatic tapers in the LiNbO3 layer,
+as shown in Fig.3(c). The tapers are 100 µm long with
+a tip width of 500 nm and a ﬁnal width of 10 µm. Both
+ﬁlm removal and etching of the tapers are done in a single fabrication step using argon ion-beam etching with a
+photoresist etch mask (see the Supplementary Information for details on taper fabrication). All the functional
+photonic components do not depend on the etching of
+the chip interface, which is employed only at mode transition regions and, due to the short taper length, does not
+require low roughness. We thus keep the LiNbO3 layer
+unprocessed for all the photonic components, where both
+roughness and precise alignment are critical to achieving
+low optical losses.
+To measure the eﬃciency of the adiabatic transitions
+
+===== Page 6 =====
+
+6
+1630 nm
+Wavelength, nm
+1345 nm
+1500
+1501
+1502
+1500 nm
+Wavelength, nm
+20 dB/div
+1289
+1290
+1291
+1290 nm
+20 dB/div
+ω
+ω
+ω
+ω
+ω
+Ω
+Ω
+Ω
+Ω
+1546
+1548
+1550
+1552
+1554
+1556
+1558
+Wavelength, nm
+-60
+-50
+-40
+-30
+-20
+-10
+0
+Power, dBm
+ 
+Ω = 20.97 GHz
+β = 0.14π
+a
+b
+c
+d
+f
+e
+Norm. transmission
+1.00
+0.96
+0.92
+0.88
+Frequency - 193 THz, GHz
+0
+-2
+-4
+4
+2
+QS=2.26 x 10
+QAS=3.97 x 10
+∆ω/2π = 4.6 GHz
+g
+V
+h
+Norm. trans.
+0.7
+1
+Frequency, THz
+190
+185
+195
+200
+Dint/2π, GHz
+-1
+0
+-2
+No voltage applied
+No voltage applied
+g
+ω
+ω
+δ(V)
+∆ω(V)
+1300
+1350
+1400
+1450
+1500
+1550
+1600
+-10
+-5
+0
+5
+Wavelength, nm
+Dint/2π, GHz
+CW pump
+FPC
+MWA
+MWG
+2 mm
+OSA
+30 MHz ⁄ V
+Norm. trans.
+1.0
+0.7
+0
+-100
+100
+DC voltage, V
+0
+-2
+-4
+-6
+2
+4
+Laser detuning, GHz
+1
+S
+AS
+S-mode
+AS-mode
+Figure 4.
+Electro-optic frequency comb generation and tunable dimers using heterogenously integrated LiNbO3
+photonic circuits. (a) Experimental setup for electro-optic frequency comb generation. MWG - microwave generator, MWA -
+microwave ampliﬁer, OSA - optical spectrum analyser. (b) Mode coupling schematics and integrated dispersion of the measured
+device.(c) Measured optical spectrum of the generated EO comb at 1552 nm central frequency. Dashed line corresponds to
+numerical simulations with phase modulation amplitude β = 0.14 π. (d) Examples of EO frequency combs generated at 4 other
+pump wavelength. (e) Photonic dimer image and mode hybridization illustration. (f) High-Q resonance splitting of a photonic
+dimer without additional biasing. S - symmetric supermode, AS - antisymmetric. (g) DC tuning of the photonic dimer mode
+hybridization, corresponding to linear tuning of around 30 MHz/V for a single mode. (h) Echelle plot of the photonic dimer
+transmission, showing mode hybridization over a broadband scanning range.
+and remove the ambiguity associated with the ﬁber-chip
+coupling loss from the measurement, we designed an experiment in which we introduce multiple breakouts on
+straight waveguides, where the optical mode experiences
+transitions from Si3N4 waveguides into the hybridized
+mode and back as depicted in Fig. 3(b). We fabricated
+waveguides with 2, 4, 6, and 10 transitions (input/output
+tapers and 0, 1, 2, and 4 breakouts, respectively) to determine the increase in loss due to each transition. Figure 3(d) shows the results of these measurements.
+As
+a reference, we compare them with straight interfaces
+(schematic in Fig.3(e)). As can be seen in Figure 3(f),
+each straight transition leads to approximately 1 dB loss,
+whereas the tapered input/output behaves in this measurement as a virtually lossless transition. Strikingly, for
+the case of the tapered transitions, we observe hardly
+any diﬀerence between 2, 4 and 6 interfaces, as shown
+in Figure 3(d) and approximately only 0.8 dB additional
+loss for ten interfaces. Considering the statistical uncertainty in the measurements, we deduce a transition loss
+of <0.1 dB per taper. Calibration of the transmission
+measurements is discussed in the Supplementary Information.
+The lithographic precision of the Si3N4 photonic circuit
+layer provides our heterogeneous integration approach
+with versatiliy and robustness, as conﬁrmed by the imple-
+
+===== Page 7 =====
+
+7
+mentation of a W-shaped 3-dB splitter/coupler[63] (see
+Fig.
+3(g)) that uses the hybrid Si3N4-LiNbO3 mode
+but is deﬁned solely by underlying Si3N4 inverse tapers.
+Splitters are important components for many optical devices, such as electro-optic modulators, optical networks,
+and lasers based on reﬂective semiconductor optical ampliﬁers. The elegance of this type of splitter is in its simplicity of design. Due to the presence of the LiNbO3 slab
+and the single-mode nature of our hybrid waveguides,
+the optical mode is adiabatically transferred from the
+input arm to the output arms.
+We make the tapered
+sections 100 µm long, ensuring a small footprint for integrated components exploiting this design. Transmission
+measurements of the device reveal a ﬂat response, with
+power asymmetry between the two arms not exceeding
+1.7 dB and on-chip insertion loss not exceeding 1 dB in
+the 1500-1620 nm wavelength range (Fig.3(h)).
+Electro-optic devices. To demonstrate the electrooptic performance achievable with our high-quality factor, hybrid LiNbO3 microresonators, we generate electrooptic frequency combs in the 21 GHz resonators pumped
+resonantly in the telecommunications C-band. We apply a high-power microwave signal with a frequency
+20.97 GHz across the integrated electrodes such that
+microwave-induced sidebands are resonantly enhanced
+(Fig 4(a)-(b)).
+Even though only 12% of the optical
+mode is conﬁned inside the lithium niobate, it is enough
+to achieve strong modulation of the optical phase. We
+observe around 60 sidebands within a 25 dB span for an
+injected RF power of 40 dBm, as depicted in Fig 4(c).
+In this experiment, the phase modulation amplitude corresponds to approximately 0.14π (see Supplementary Information). The electro-optic coupling is enhanced due
+to the device’s high quality factor and ﬂat dispersion. We
+also make use of the previously mentioned homogeneous
+coupling of our hybrid devices at optical wavelengths
+ranging from 1260 nm to 1630 nm to generate electrooptic comb at ﬁve diﬀerent pump wavelengths (1290 nm,
+1345 nm, 1500 nm, 1550 nm, and 1625 nm) on a single device (Fig 4(d)). Moreover, according to the simulations, the geometry can be optimized for maximum
+electro-optic eﬃciency with a characteristic Vπ · L product comparable to (2x larger than) the performance of Xcut ridge-waveguide platforms[5]. The reason is that, in
+ridge waveguides, most of the electro-optic interaction occurs not in the ridge itself, but in the slab layer, where the
+modulating electric ﬁeld is a factor of magnitude stronger
+(see Supplementary Information). Therefore, the ridge
+waveguides and hybrid waveguides are conceptually similar in terms of electro-optic interactions (i.e., the role
+of the slab in ridge waveguides is being taken over by
+the bonded LiNbO3 layer in our hybrid structure). Similar studies on optimization of electro-optic performance
+of heterogeneously integrated LiNbO3 devices can also
+be found elsewhere[46].
+As a further example of the
+electro-optic capabilities, we fabricate photonic dimers,
+which are known building blocks for quantum coherent
+transducers based on cavity electro-optics[9, 34, 64–66].
+Figure 4(g) shows the mode hybridization in the system
+as a function of the applied DC voltage.
+We observe
+frequency tuning of 30 MHz/V when a DC voltage is
+applied to one of the rings. Moreover, the precise and
+mature fabrication of the Si3N4 waveguides enables the
+creation of high-Q photonic dimers exhibiting broadband
+normal mode splitting even at zero-bias (cf Figure 4(f)-
+(h)).
+The presence of avoided mode crossings for the
+symmetric supermode (lower frequency) is common with
+the photonic dimer conﬁguration[67]. In one last experiment exploiting the χ(2) nonlinearity of the LiNbO3, we
+perform supercontinuum generation in the hybrid waveguides. We observe octave-spanning supercontinuum generation mediated by the χ(3) nonlinearity, together with
+simultaneous second-harmonic generation due to the optical ﬁeld in the LiNbO3, allowing direct measurement of
+the carrier-envelope oﬀset frequency of the femtosecond
+pulse laser used as a pump. The details of this experiment can be found in the Supplementary Information.
+Summary.
+To conclude, we have demonstrated a
+hybrid Si3N4-LiNbO3 platform for photonic integrated
+circuits using direct wafer-scale bonding that endows
+the mature Si3N4
+Damascene technology with the
+second-order nonlinearity (χ(2)
+/ Pockels eﬀect) of
+LiNbO3.
+The heterogeneous integration preserves the
+precise lithographic control, low propagation loss, and
+eﬃcient ﬁber-to-chip coupling of the underlying Si3N4
+waveguides for use in a variety of important photonic
+building blocks.
+We have also presented a design for
+the transition from Si3N4 waveguides to hybrid Si3N4LiNbO3 waveguides with a measured insertion loss not
+exceeding 0.1 dB per interface. The ability to achieve
+low-loss transitions is essential for the realization of complex devices, providing a bridge between passive silicon
+nitride photonics and electro-optic devices. To the best
+of our knowledge, this is the ﬁrst time a heterogeneously
+integrated LiNbO3 photonic platform combines all the
+beneﬁcial features of Si3N4 PICs at wafer scale.
+A
+comparison of the simultaneously achieved desirable
+features is given in Supplementary Table 1. With further
+geometry optimization, the electro-optic performance
+can reach levels comparable to that of ridge waveguide
+structures while keeping propagation losses independent of the quality of the LiNbO3 etching.
+Possible
+applications of our platform include photonic switching
+networks for neuromorphic or quantum computing,
+devices for quantum state transduction from microwave
+to optical photons, integrated electro-optic frequency
+comb sources, on-chip generation of second-harmonic
+and squeezed light, as well as high-speed electro-optic
+devices for optical communications or rapidly tunable,
+low-noise lasers.
+Acknowledgments: We thank the Operations Team of the Binnig and Rohrer Nanotechnology Center (BRNC), and especially
+Diana Davila Pineda and Ronald Grundbacher, for their help and
+support.
+Silicon nitride substrates were fabricated in the EPFL
+center of MicroNanoTechnology (CMi). We also thank Aleksandr
+Tusnin for his help in numerical simulations.
+
+===== Page 8 =====
+
+8
+Funding Information:
+This work was supported by funding
+from the European Union Horizon 2020 Research and Innovation
+Program under the Marie Skłodowska-Curie grant agreement No.
+722923 (OMT) and No. 812818 (MICROCOMB), as well as under
+the FET-Proactive grant agreement No. 732894 (HOT). This work
+was also supported by the Swiss National Science Foundation under grant agreement No. 176563 (BRIDGE) and 186364 (Sinergia).
+Data Availability: The code and data used to produce the plots
+are available from Zenodo.
+[1] D. Zhu, L. Shao, M. Yu, R. Cheng, B. Desiatov,
+C. J. Xin, Y. Hu, J. Holzgrafe, S. Ghosh, A. ShamsAnsari, E. Puma, N. Sinclair, C. Reimer, M. Zhang, and
+M. Lončar, Adv. Opt. Photon. 13, 242 (2021).
+[2] C. Wang, M. Zhang, M. Yu, R. Zhu, H. Hu, and M. Loncar, Nature Communications 10, 978 (2019).
+[3] B. Desiatov, A. Shams-Ansari, M. Zhang, C. Wang, and
+M. Lončar, Optica 6, 380 (2019).
+[4] M. Bahadori, Y. Yang, A. E. Hassanien, L. L. Goddard,
+and S. Gong, Opt. Express 28, 29644 (2020).
+[5] C. Wang, M. , X. Chen, M. Bertrand, A. Shams-Ansari,
+S. Chandrasekhar, P. Winzer, and M. Lončar, Nature
+562, 101 (2018).
+[6] M. He, M. Xu, Y. Ren, J. Jian, Z. Ruan, Y. Xu, S. Gao,
+S. Sun, X. Wen, L. Zhou, L. Liu, C. Guo, H. Chen, S. Yu,
+L. Liu, and X. Cai, Nature Photonics 13, 359 (2019),
+arXiv:1807.10362.
+[7] M. Zhang, B. Buscaino, C. Wang, A. Shams-Ansari,
+C. Reimer, R. Zhu, J. M. Kahn, and M. Lončar, Nature
+568, 373 (2019), arXiv:1809.08636.
+[8] J. Holzgrafe, N. Sinclair, D. Zhu, A. Shams-Ansari,
+M. Colangelo, Y. Hu, M. Zhang, K. K. Berggren, and
+M. Lončar, Optica 7, 1714 (2020).
+[9] T. P. McKenna, J. D. Witmer, R. N. Patel, W. Jiang,
+R. V. Laer, P. Arrangoiz-Arriola, E. A. Wollack, J. F.
+Herrmann, and A. H. Safavi-Naeini, Optica 7, 1737
+(2020).
+[10] J. Liu, G. Huang, R. N. Wang, J. He, A. S. Raja, T. Liu,
+N. J. Engelsen, and T. J. Kippenberg, Nature Communications 12, 2236 (2021).
+[11] E. Agrell, M. Karlsson, A. R. Chraplyvy, D. J. Richardson, P. M. Krummrich, P. Winzer, K. Roberts, J. K.
+Fischer, S. J. Savory, B. J. Eggleton, M. Secondini,
+F. R. Kschischang, A. Lord, J. Prat, I. Tomkos, J. E.
+Bowers, S. Srinivasan, M. Brandt-Pearce, and N. Gisin,
+Journal of Optics (United Kingdom) 18, 10.1088/20408978/18/6/063002 (2016).
+[12] K.
+I.
+Kitayama,
+M.
+Notomi,
+M.
+Naruse,
+K.
+Inoue, S. Kawakami, and A. Uchida, APL Photonics 4,
+10.1063/1.5108912 (2019).
+[13] H. J. Caulﬁeld and S. Dolev, Nature Photonics 4, 261
+(2010).
+[14] D. Thomson, A. Zilkie, J. E. Bowers, T. Komljenovic,
+G. T. Reed, L. Vivien, D. Marris-Morini, E. Cassan,
+L. Virot, J.-M. Fédéli, J.-M. Hartmann, J. H. Schmid,
+D.-X. Xu, F. Boeuf, P. O’Brien, G. Z. Mashanovich, and
+M. Nedeljkovic, Journal of Optics 18, 073003 (2016).
+[15] Q. Xu, B. Schmidt, S. Pradhan, and M. Lipson, Nature
+435, 325 (2005).
+[16] R. Maram, S. Kaushal, J. Azaña, and L. R. Chen, Photonics, Vol. 6 (2019).
+[17] Y. Ogiso, J. Ozaki, Y. Ueda, N. Kashio, N. Kikuchi,
+E. Yamada, H. Tanobe, S. Kanazawa, H. Yamazaki,
+Y. Ohiso, T. Fujii, and M. Kohtoku, Journal of Lightwave Technology 35, 1450 (2017).
+[18] J. Witzens, Proceedings of the IEEE 106, 2158 (2018).
+[19] M. Lee, H. E. Katz, C. Erben, D. M. Gill, P. Gopalan,
+J. D. Heber, and D. J. McGee, Science 298, 1401 (2002).
+[20] L. Alloatti, R. Palmer, S. Diebold, K. P. Pahl, B. Chen,
+R. Dinu, M. Fournier, J. M. Fedeli, T. Zwick, W. Freude,
+C. Koos, and J. Leuthold, Light: Science and Applications 3, 5 (2014).
+[21] C. Haﬀner, W. Heni, Y. Fedoryshyn, J. Niegemann,
+A. Melikyan, D. L. Elder, B. Baeuerle, Y. Salamin,
+A. Josten, U. Koch, C. Hoessbacher, F. Ducry, L. Juchli,
+A. Emboras, D. Hillerkuss, M. Kohl, L. R. Dalton,
+C. Hafner, and J. Leuthold, Nature Photonics 9, 525
+(2015).
+[22] M. Liu, X. Yin, E. Ulin-Avila, B. Geng, T. Zentgraf,
+L. Ju, F. Wang, and X. Zhang, Nature 474, 64 (2011).
+[23] N. Gruhler, C. Benz, H. Jang, J.-H. Ahn, R. Danneau,
+and W. H. P. Pernice, Opt. Express 21, 31678 (2013).
+[24] C. T. Phare, Y.-H. Daniel Lee, J. Cardenas, and M. Lipson, Nature Photonics 9, 511 (2015).
+[25] I. Datta, S. H. Chae, G. R. Bhatt, M. A. Tadayon, B. Li,
+Y. Yu, C. Park, J. Park, L. Cao, D. N. Basov, J. Hone,
+and M. Lipson, Nature Photonics 14, 256 (2020).
+[26] G.
+Poberaj,
+H.
+Hu,
+W.
+Sohler,
+and
+P.
+Günter,
+Laser
+&
+Photonics
+Reviews
+6,
+488
+(2012),
+https://onlinelibrary.wiley.com/doi/pdf/10.1002/lpor.201100035.
+[27] I. Krasnokutska, J.-L. J. Tambasco, X. Li, and A. Peruzzo, Optics Express 26, 897 (2018).
+[28] M. Zhang, C. Wang, R. Cheng, A. Shams-Ansari, and
+M. Lončar, Optica 4, 1536 (2017).
+[29] K. Luke, P. Kharel, C. Reimer, L. He, M. Loncar, and
+M. Zhang, Optics Express 28, 24452 (2020).
+[30] Y. Hu, M. Yu, D. Zhu, N. Sinclair, A. Shams-Ansari,
+L. Shao, J. Holzgrafe, E. Puma, M. Zhang, and M. Loncar, Arxiv (2020), arXiv:2005.09621.
+[31] L. Shao, W. Mao, S. Maity, N. Sinclair, Y. Hu, L. Yang,
+and M. Lončar, Nature Electronics 3, 267 (2020).
+[32] D. Sohn, O. E. Örsel, and G. Bahl, arXiv preprint
+arXiv:2104.04803 (2021).
+[33] N. J. Lambert, A. Rueda, F. Sedlmeir, and H. G. L.
+Schwefel, Advanced Quantum Technologies 3, 1900077
+(2020), arXiv:1906.10255.
+[34] C. Javerzac-Galy, K. Plekhanov, N. R. Bernier, L. D.
+Toth, A. K. Feofanov, and T. J. Kippenberg, Physical
+Review A 94, 1 (2016), arXiv:1512.06442.
+[35] J. Wang, F. Sciarrino, A. Laing, and M. G. Thompson,
+Nature Photonics 10.1038/s41566-019-0532-1 (2019).
+[36] L. Yuan, Q. Lin, M. Xiao, and S. Fan, Optica 5, 1396
+(2018), arXiv:1807.11468.
+[37] Y. Hu, C. Reimer, A. Shams-Ansari, M. Zhang, and
+M. Loncar, Optica 7, 1189 (2020).
+[38] M. Yu, B. Desiatov, Y. Okawachi, A. L. Gaeta, and
+M. Lončar, Optics Letters 44, 1222 (2019).
+[39] G.
+Kanter,
+P.
+Kumar,
+R.
+Roussev,
+J.
+Kurz,
+
+===== Page 9 =====
+
+9
+K.
+Parameswaran,
+and
+M.
+Fejer,
+Optics
+Express
+10, 177 (2002).
+[40] J. Lu, A. Al Sayem, Z. Gong, J. B. Surya, C.-L. Zou, and
+H. X. Tang, Optica 8, 539 (2021).
+[41] L. He, M. Zhang, A. Shams-Ansari, R. Zhu, C. Wang,
+and
+L.
+Marko,
+Optics
+Letters
+44,
+2314
+(2019),
+arXiv:1902.08969.
+[42] P. Ying, H. Tan, J. Zhang, M. He, M. Xu, X. Liu, R. Ge,
+Y. Zhu, C. Liu, and X. Cai, Optics Letters 46, 1478
+(2021).
+[43] P. O. Weigel, F. Valdez, J. Zhao, H. Li, and S. Mookherjea, Scientiﬁc Reports 6, 012001 (2016).
+[44] A. Rao, A. Patil, P. Rabiei, A. Honardoost, R. DeSalvo,
+A. Paolella, and S. Fathpour, Opt. Lett. 41, 5700 (2016).
+[45] S. Jin, L. Xu, H. Zhang, and Y. Li, IEEE Photonics Technology Letters 28, 736 (2016).
+[46] P. O. Weigel, F. Valdez, J. Zhao, H. Li, and S. Mookherjea, Journal of Physics: Photonics 3, 012001 (2020).
+[47] N. Boynton, H. Cai, M. Gehl, S. Arterburn, C. Dallo,
+A. Pomerene, A. Starbuck, D. Hood, D. C. Trotter,
+T. Friedmann, C. T. DeRose, and A. Lentine, Optics Express 28, 1868 (2020).
+[48] L. Chang, M. H. P. Pfeiﬀer, N. Volet, M. Zervas, J. D.
+Peters, C. L. Manganelli, E. J. Stanton, Y. Li, T. J. Kippenberg, and J. E. Bowers, Opt. Lett. 42, 803 (2017).
+[49] A. N. R. Ahmed, S. Shi, M. Zablocki, P. Yao, and D. W.
+Prather, Opt. Lett. 44, 618 (2019).
+[50] T. Komljenovic, D. Huang, P. Pintus, M. A. Tran, M. L.
+Davenport, and J. E. Bowers, Proceedings of the IEEE
+106, 2246 (2018).
+[51] A. Plößl and G. Kräuter, Materials Science and Engineering: R: Reports 25, 1 (1999).
+[52] M. H. P. Pfeiﬀer, C. Herkommer, J. Liu, T. Morais,
+M. Zervas, M. Geiselmann, and T. J. Kippenberg, IEEE
+Journal of Selected Topics in Quantum Electronics 24, 1
+(2018).
+[53] J. Liu, A. S. Raja, M. H. P. Pfeiﬀer, C. Herkommer,
+H. Guo, M. Zervas, M. Geiselmann, and T. J. Kippenberg, Opt. Lett. 43, 3200 (2018).
+[54] P. Marin-Palomo, J. N. Kemal, M. Karpov, A. Kordts,
+J. Pfeiﬂe, M. H. P. Pfeiﬀer, P. Trocha, S. Wolf, V. Brasch,
+M. H. Anderson, R. Rosenberger, K. Vijayan, W. Freude,
+T. J. Kippenberg, and C. Koos, Nature 546, 274 (2017).
+[55] E. Obrzud, M. Rainer, A. Harutyunyan, M. H. Anderson, J. Liu, M. Geiselmann, B. Chazelas, S. Kundermann, S. Lecomte, M. Cecconi, A. Ghedina, E. Molinari,
+F. Pepe, F. Wildi, F. Bouchy, T. J. Kippenberg, and
+T. Herr, Nature Photonics 13, 31 (2019).
+[56] H. Guo, C. Herkommer, A. Billat, D. Grassani, C. Zhang,
+M. H. P. Pfeiﬀer, W. Weng, C.-S. Brès, and T. J. Kippenberg, Nat. Photonics 12, 330 (2018).
+[57] B. Shen, L. Chang, J. Liu, H. Wang, Q.-F. Yang, C. Xiang, R. N. Wang, J. He, T. Liu, W. Xie, J. Guo,
+D. Kinghorn, L. Wu, Q.-X. Ji, T. J. Kippenberg, K. Vahala, and J. E. Bowers, Nature 582, 365 (2020).
+[58] J. Liu, V. Brasch, M. H. P. Pfeiﬀer, A. Kordts, A. N.
+Kamel, H. Guo, M. Geiselmann, and T. J. Kippenberg,
+Optics Letters 41, 3134 (2016), arXiv:1604.05149.
+[59] J. R. Schwesyg, C. R. Phillips, K. Ioakeimidi, M. C. C.
+Kajiyama, M. Falk, D. H. Jundt, K. Buse, and M. M.
+Fejer, Opt. Lett. 35, 1070 (2010).
+[60] U. Heinemeyer, M. C. Wengler, and K. Buse, Applied
+Physics Letters 89, 13 (2006).
+[61] A. J. Mercante, P. Yao, S. Shi, G. Schneider, J. Murakowski, and D. W. Prather, Optics Express 24, 15590
+(2016).
+[62] C. Hu, A. Pan, T. Li, X. Wang, Y. Liu, S. Tao, C. Zeng,
+and J. Xia, Opt. Express 29, 5397 (2021).
+[63] Y. Wang, S. Gao, K. Wang, and E. Skaﬁdas, Opt. Lett.
+41, 2053 (2016).
+[64] M. T. Wade, X. Zeng, and M. A. Popović, Optics Letters
+40, 107 (2015).
+[65] M. Zhang, C. Wang, Y. Hu, A. Shams-Ansari, T. Ren,
+S. Fan, and M. Lončar, Nature Photonics 13, 36 (2019),
+arXiv:1809.08638.
+[66] A. Yousseﬁ, I. Shomroni, Y. J. Joshi, N. R. Bernier,
+A. Lukashchuk, P. Uhrich, L. Qiu, and T. J. Kippenberg,
+Nature Electronics 4, 326 (2021), arXiv:2004.04705.
+[67] A. Tikan, A. Tusnin, J. Riemensberger, M. Churaev,
+X. Ji, K. N. Komagata, R. N. Wang, J. Liu, and T. J.
+Kippenberg, Science Advances 8, eabm6982 (2022).

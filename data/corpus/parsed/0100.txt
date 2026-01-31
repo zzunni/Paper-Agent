@@ -1,0 +1,1300 @@
+
+
+===== Page 1 =====
+
+Native-oxide-passivated trilayer junctions for superconducting qubits
+Pankaj Sethi,1, ∗Om Prakash,1, † Jukka-Pekka Kaikkonen,1 Mikael Kervinen,1 Elsa
+T. Mannila,1 M´ario Ribeiro,1, ‡ Debopam Datta,1 Christopher W. F¨orbom,1 Jorden
+Senior,1 Renan P. Loreto,1 Joel H¨atinen,1 Klaara Viisanen,1 Jukka I. V¨ayrynen,2 Alberto
+Ronzani,1 Antti Kemppinen,1 Visa Vesterinen,1, ‡ Mika Prunnila,1 and Joonas Govenius1, §
+1VTT Technical Research Centre of Finland Ltd,
+QTF Centre of Excellence, P.O. Box 1000, FI-02044 VTT, Finland
+2Department of Physics and Astronomy, Purdue University, West Lafayette, Indiana 47907, USA
+(Dated: December 1, 2025)
+Superconducting qubits in today’s quantum processing units are typically fabricated with angleevaporated aluminum–aluminum-oxide–aluminum Josephson junctions. However, there is a need
+for higher yield and tighter parameter control when scaling up the number of qubits and junctions into tens of thousands and beyond.
+Fabrication methods based on subtractive patterning
+of superconductor–insulator–superconductor trilayers, used for more classical large-scale Josephson
+junction circuits, could provide the solution but they in turn often suffer from lossy dielectrics incompatible with high qubit coherence. In this work, we utilize native aluminum oxide as a sidewall
+passivation layer for junctions based on aluminum–aluminum-oxide–niobium trilayers, and use such
+junctions in qubits. We design the fabrication process such that the few-nanometer-thin native oxide
+is not exposed to oxide removal steps that could increase its defect density or hinder its ability to
+prevent shorting between the leads of the junction. With these junctions, we design and fabricate
+transmon-like qubits and measure time-averaged coherence times up to 30 µs at a qubit frequency
+of 5 GHz, corresponding to a qubit quality factor of one million.
+Our process uses subtractive
+patterning and optical lithography on wafer scale, enabling high throughput in patterning. This approach provides a scalable path toward fabrication of superconducting qubits on industry-standard
+platforms.
+I.
+INTRODUCTION
+Superconducting tunnel junctions are a key element
+providing non-linearity to many circuits in the field of
+low-temperature sensors and electronics.
+Several approaches to their fabrication exist, optimized for different
+applications. Most of the approaches fall into the category of angle-evaporation combined with lift-off [1, 2] or
+superconductor–insulator–superconductor trilayers combined with subtractive patterning [3–5]. Superconducting qubits use the former almost exclusively because,
+so far, approaches based on lift-off and electron-beam
+lithography have produced more ideal low-loss junctions
+in the sense of introducing less material capable of absorbing energy at the qubit frequency. Furthermore, so
+far, high-gate-fidelity superconducting quantum processing units have contained at most a few hundred junctions, such that parameter control achieved with angleevaporation and lift-off has been acceptable.
+To our
+knowledge, the best reported wafer-level failure rates are
+in the range of 0.1 to 1%, when defining only short and
+open circuits as failures [6, 7].
+The trilayer-based approach is, on the other hand, prevalent in more classical
+∗pankaj.sethi@vtt.fi
+† Present address: Department of Physics and Astrophysics, University of Delhi, New Delhi 110007, India
+‡ Present address: Arctic Instruments, Tekniikantie 14, FI-02150
+Espoo, Finland
+§ Present address: Arctic Instruments, Tekniikantie 14, FI-02150
+Espoo, Finland; joonas@arcticinst.io
+applications of superconducting junctions, such as magnetometers, current amplifiers, and single-flux quantum
+circuits.
+These applications often require a very large
+number of junctions and tight parameter tolerances [5],
+and therefore the superior yield, reproducibility, and lack
+of aging in the approach based on trilayers and subtractive patterning are essential. Superconducting quantum
+processors are expected to reach a similar scale in terms
+of number of junctions in the next years, therefore making it a pressing problem to develop trilayer-based junctions with qubit-compatible level of microwave loss [8–
+12]. There are also other ways of eliminating lift-off from
+the conventional qubit junction process, such as the twostep angle-evaporation-free approach [13], which can also
+be adapted to subtractive patterning compatible with
+large-scale fabrication [14, 15].
+The conventional pillar-junction approach to trilayerbased junctions [3, 4] results in a large volume of passivation material in the vicinity of the junction, and
+the materials conventionally used for the passivation are
+anodized niobium pentoxide [16] and deposited amorphous insulators with poor microwave loss tangent tan δ.
+For example, typical silicon dioxide, SiO2, deposited by
+plasma-enhanced chemical vapor deposition has a tan δ
+no better than 10−3 at few-gigahertz frequencies, especially when deposited at low enough temperatures to
+not damage aluminum oxide tunnel barriers [17]. This
+implies that no reasonable superconducting qubits can
+be fabricated with the conventional pillar-junction approach.
+A more recent approach, the side-wall spacer
+passivated sub-µm Josephson junction fabrication proarXiv:2504.03481v2  [quant-ph]  28 Nov 2025
+
+===== Page 2 =====
+
+2
+cess (SWAPS) differs from the pillar-junction approach
+in that the passivation layer is etched away almost completely and only remains on the sidewalls of the patterned
+trilayer [18].
+Similar junctions with anodized niobium
+pentoxide on the sidewalls can also be created with anodization [16]. Nevertheless, because the remaining sliver
+of passivation on the sidewalls is located at a point of high
+electric field and is made of an amorphous insulator with
+poor tan δ, the microwave loss introduced by the spacer
+in the SWAPS and anodized solutions is still too large
+to build state-of-the-art superconducting qubits. The removal of spacer oxide from SWAPS junctions has been
+demonstrated [12]. However, in our experience, it is difficult to remove the spacer oxide reliably without causing
+undesirable degradation of the aluminum-based tunnel
+barrier or the surrounding niobium parts. These potential side-effects tend to lead to poor critical-current control and excess microwave loss, in addition to a suspended
+structure which may ultimately limit post-processability
+and yield. Other trilayer-based approaches resulting in
+suspended structures include junctions made from fully
+epitaxial NbN/AlN/NbN trilayers, including demonstration of T1 ≈0.3–0.5 µs already in Ref. [8] and later 16 µs
+in Ref. [10].
+Therefore, for qubit-compatible trilayer-type junctions, the key challenge is to passivate the bottom metal
+of the trilayer such that a top contact can be reliably
+formed, while simultaneously minimizing the volume of
+material with poor loss tangent in areas of high electric
+field. More quantitatively, in order for the passivation
+to not limit the overall qubit performance, the product
+ppass. tan δ should be small in comparison to the inverse
+of the effective qubit quality factor Q = 2πfqT1, where
+ppass. is the participation ratio of the passivation, fq is
+qubit frequency, and T1 is the energy relaxation time of
+the qubit. For state-of-the-art superconducting qubits,
+1/Q is of order 10−7 [19, 20]. For the SWAPS process
+and typical transmon qubit parameters, ppass. is of order
+10−4 or greater and tan δ is 10−2 or greater, and therefore
+ppass. tan δ is limited to no better than 10−6.
+In this work, we introduce a native-oxide-passivated
+trilayer junction (NAPA junction) that can be fabricated reliably and in which the contribution of passivation to 1/Q is negligible under reasonable assumptions.
+Specifically, we use a SWAPS-like structure based on
+an Al-AlOx-Nb trilayer with native aluminum oxide as
+the sidewall passivation, which remains intact thanks to
+the introduction of an additional via into the structure.
+The contribution of the passivation layer to ppass. tan δ is
+small, as long as we assume that the loss-tangent of the
+native-oxide passivation is not significantly worse than
+that of the tunnel barrier. Recently, an approach with
+a native aluminum oxide passivation layer has been used
+to fabricate junctions patterned into an Al-AlOx-Al trilayer [21] that also use aluminum native oxide as passivation. However, NAPA junctions differ in crucial details of
+how electrical contact is made between the counter electrode of the trilayer and the top wiring layer. In particular, thanks to an additional via described in more detail
+below, the NAPA junction fabrication process avoids exposing the native-oxide sidewall passivation to ion milling
+or other aggressive oxide removal steps during the fabrication process.
+Using optically-patterned NAPA junctions with a lateral size of approximately 600 nm, we fabricate superconducting transmon qubits and demonstrate time-averaged
+T1 time up to 30 µs, and average qubit quality factors of
+0.5 million over several chips and wafers, with the best
+devices achieving quality factors close to one million. We
+also discuss the implications of these results to the question of the role of subgap leakage in qubits with Nb-based
+tunnel junctions.
+II.
+JUNCTION STRUCTURE AND
+FABRICATION
+Figure 1(a) and (b) show the conceptual structure and
+a cross-sectional transmission electron micrograph of a
+typical NAPA junction.
+Let us first describe the final
+structure, before describing how it is fabricated: The
+tunnel barrier of the junction is defined by a trilayer of
+aluminum base electrode (Al-BE), aluminum oxide tunnel barrier and a niobium counter electrode (Nb-CE).
+The trilayer lies directly on a high-resistivity silicon substrate, without silicon oxide or other lossy dielectric layers in between. The sidewalls of the patterned trilayer
+are covered by a native-oxide spacer, which is a relatively low-loss dielectric and electrically insulates Al-BE
+from the Nb wiring layer (Nb2). The aluminum bottom
+electrode Al-BE acts as one of the leads for connecting
+the junction to other circuit elements. The wiring layer
+Nb2 acts as the second lead and consists of two sublayers (Nb2a, Nb2b), with a via etched through Nb2a and
+partially into the counter electrode (Nb-CE), in order to
+provide electrical contact from Nb2 to Nb-CE. The sublayers Nb2a and Nb2b are galvanically connected to each
+other almost everywhere. Along the vertical sidewalls of
+the junction a layer of native niobium oxide separates
+Nb2a and Nb2b [Fig. 1(b), Fig. 2(c)] but that separation
+serves no functional purpose.
+The advantage of this additional complexity in forming Nb2 is that it is possible to avoid exposing the thin
+native-oxide passivation of the sidewalls to oxide removal
+steps, such as ion milling. More specifically, the main
+steps of the fabrication process are: First, we deposit
+the unpatterned trilayer on a high-resistivity silicon substrate, using a single tool and without breaking vacuum
+between deposition of the constituent layers, except for
+in-situ oxidization of the tunnel barrier at a controlled
+oxygen pressure. Second, we pattern the trilayer using
+optical lithography and reactive ion etching, after which
+the native-oxide passivation grows on the patterned AlBE and Nb-CE, upon exposure to oxygen when the wafer
+is removed from the loadlock of the etching tool.
+We
+make no effort to control the wafer temperature or the
+
+===== Page 3 =====
+
+3
+200 nm
+200 nm
+Native Oxide
+Tunnel Barrier
+Nb2b
+Nb2a
+Nb-CE
+Al-BE
+AlOx
+Native oxide
+Al-BE
+Al-BE
+Nb-CE
+Nb-CE
+Nb2b
+Nb-2b
+Nb2a
+Nb-2a
+(a)
+(b)
+(c)
+(d)
+(e)
+FIG. 1. (a) Schematic illustration of a NAPA junction and (b) false-colored cross-sectional transmission electron micrograph
+of a typical fabricated NAPA junction along the dashed black line shown in panel (a). The aluminum base electrode (Al-BE,
+orange), tunnel barrier (white dashed line) and niobium counter electrode (Nb-CE, light green) are insulated from the Nb
+wiring layer (Nb2a and Nb2b) by a native oxide passivation layer (red dashed line). The via providing galvanic contact between
+Nb2 and Nb-CE is on top of the junction.(c) False-color scanning electron micrograph of fabricated Xmon-type shunt capacitor
+patterned into Nb2, capacitively coupled to a readout resonator (partially visible at the top). (d) Close-up of two NAPA
+junctions in series, with a small island of Al-BE in between. (e) Further zoomed in close-up of the junction in panel (d).
+the introduction of oxygen and humidity at that point,
+which may impact the quality of the native oxide that
+forms. There are no major hurdles to controlling these
+aspects of the oxidization process in the future. Third,
+we deposit Nb2a, without ion milling or other oxide removal steps. Therefore, Nb2a is not at this point electrically connected to the trilayer counter electrode Nb-CE.
+Fourth, we optically pattern and reactively etch a via
+through Nb2a and partially into the counter electrode
+(Nb-CE). Once the wafer is removed from the etching
+tool, a native oxide forms on the part of Nb-CE exposed
+through the via, but is removed in the next step. Fifth,
+we deposit Nb2b, this time with in-situ ion milling preceding the deposition to remove oxides from all exposed
+surfaces. Thus, inside the via, we form a galvanic connection between Nb2b and Nb-CE, and also connect Nb2b
+to Nb2a almost everywhere, without native niobium oxide in between. Finally, we optically pattern and etch
+both Nb2 sublayers, and the remaining Nb-CE outside
+the junction area, the same way as in the conventional
+SWAPS process [3]. See Appendix A for more details on
+fabrication.
+The introduction of a via and splitting of the deposition of Nb2 into two sublayers allow avoiding oxide removal steps when the native-oxide passivated sidewalls
+of the trilayer are exposed.
+Instead, surface oxide removal using ion milling is delayed until the sidewalls of
+the trilayer are protected by Nb2a. Similarly, depositing Nb2a first protects the silicon substrate surface from
+ion milling. This is a key difference to the method described in Ref. [21]. In fact, no surfaces are ion milled
+in our approach, except Nb surfaces that are later covered by another Nb layer. All other surfaces are exposed
+to only reactive ion etching, which operates at lower ion
+energies than physical ion milling due to its chemical nature. Consistent with this, quarter wave resonators on
+the same wafers as the qubits reach internal quality factors above ca. half a million, as discussed later.
+Figure 1(c) shows a false-colored scanning electron micrograph of NAPA junctions used in a transmon-like
+qubit, with a large shunt capacitor in the Xmon geometry [22]. Panels (d) and (e) show detailed close-ups of
+the junctions. The qubit is capacitively coupled by the
+claw-shaped coplanar capacitor to a readout resonator
+
+===== Page 4 =====
+
+4
+(partially visible towards the top). Here, we have used
+two NAPA junctions in series, in contrast to conventional
+transmons.
+The double-junction design allows keeping
+the material left in Al-BE small. It also enables the use
+of the same material (the Nb2 wiring layer for the device
+in Fig. 1) for both the X-shaped island electrode and the
+ground electrode, without requiring large parasitic junctions to connect the qubit junction to the ground plane.
+The circuit model for the double-junction qubit is discussed in the next section.
+We utilize the native aluminum oxide, that forms on
+the etched Al-BE sidewalls to passivate the bottom electrode and prevent leakage currents between the bottom electrode and top electrode.
+An unavoidable native niobium oxide layer also grows on the Nb counterelectrode but is surrounded on both sides by galvanicallyconnected top electrode metal (Nb-CE and Nb2a). By
+using native aluminum oxide as passivation, we expect to
+construct higher-coherence-time superconducting qubits
+than with other trilayer-type junctions, such as SWAPS
+or pillar-type junctions. In more exact terms, p tan δ can
+be reduced, despite the tendency of p to increase with
+decreasing thickness of the sidewall passivation. In the
+case of aluminum oxide, tan δ of approximately 2 × 10−6
+has been reported [23–25].
+We also argue that the native oxide of any material
+suitable for forming high-quality tunnel barriers is likely
+to work well as sidewall passivation, assuming that the
+native oxide formation is controlled such that its microwave loss tangent is similar to that of the tunnel barrier.
+Microwave losses in the tunnel barrier will then
+dominate because the participation ratio of the sidewall
+passivation is always smaller than that of the tunnel barrier, if lateral dimensions are larger than film thicknesses.
+Quantitatively, we estimate a ratio of 4:1 between the
+tunnel barrier capacitance and the sidewall passivation
+capacitance, for our specific geometry. Given the thin
+dielectric thicknesses and large aspect ratios, we can estimate the capacitances using parallel-plate capacitor approximations: εAlOx × (600 nm)2/1.5 nm for the tunnel
+barrier and εAlOx × 2(600 nm)(100 nm)/2 nm for the
+sidewall passivation, with εAlOx the dielectic constant of
+aluminum oxide. In the future, the lateral dimensions are
+likely to be scaled down but so is the thickness of Al-CE,
+so the overall ratio of these capacitances is not likely to
+change dramatically.
+III.
+JUNCTION CHARACTERIZATION
+To characterize the fabricated junctions in more detail, we perform energy dispersive spectroscopy analysis (EDS) on the junction cross-section shown in Fig. 1.
+Fig. 2(a) shows a TEM image along with EDS maps of
+the Nb, Al and O content. The native oxide layers are
+visible as layers with bright contrast in the O map and
+dark contrast in the Nb map.
+The native Al oxide is
+visible between Al-BE and Nb2a. In contrast, native ox-
+(a)
+(b)
+(c)
+(d)
+(e)
+(f)
+Al
+O
+Nb
+Al-BE
+Nb-CE
+Nb2b
+Nb2b
+Nb2a
+1
+100 nm
+100 nm
+FIG. 2.
+(a)-(d) TEM image and EDS analysis spectra on
+the junction cross-section shown in Fig. 1, with the relative
+concentrations (b) aluminum, (c) niobium, and (d) oxygen.
+Native oxide layers, indicated by red arrows, are visible as areas with light contrast in panels (a) and (d) and dark contrast
+in panel (b). Note the absence of oxide between Nb-CE and
+Nb2b on the left and between Nb2a and Nb2b on the right,
+indicated by blue arrows, implying a galvanic contact.
+(e)
+The resistances of test junctions versus nominal junction size
+d, along with a fit showing the expected scaling with junction
+area (solid orange line). (f) Low-temperature current-voltage
+characteristics of a test junction with d = 629 nm measured
+at 40 mK, showing a supercurrent branch at zero voltage and
+a sharp current rise at a voltage 1.6 mV indicated by arrows,
+corresponding to the sum of the superconducting gaps of Nb
+and Al, confirming the Josephson behaviour of NAPA junctions.
+ides are removed between Nb-CE and Nb2b on top of
+the junction, and between Nb2a and Nb2b in the part
+of wiring layer laying directly on the substrate. In addition, vertical native Nb oxide is visible between Nb2a
+and Nb2b in both the O and Nb maps, as expected due
+to directionality of the argon milling before deposition
+of Nb2b. The tunnel barrier between Al-BE and Nb-CE
+is less than 2 nm thick and not clearly visible in these
+images.
+We also find that the microstructure of Al-BE near the
+sidewalls differs significantly from the bulk, as indicated
+by the bright contrast at the edge of Al-BE in Fig. 2(a),
+and by the mix of aluminum and oxygen in panels (b)
+
+===== Page 5 =====
+
+5
+and (d). This change of microstructure is likely caused
+by the reactive ion etching step used to pattern the trilayer, or corrosion due to residual chlorine or fluorine left
+over from the etching process. Due to these changes in
+Al-BE sidewall microstructure, we cannot quantitatively
+estimate the thickness of the passivation layer, and thus
+we cannot meaningfully estimate the loss tangent of the
+sidewall passivation alone, even though qubit lifetimes
+allow us to give an upper bound for the losses caused by
+the junction as a whole. We also note that the oxygen
+concentration in the Nb layers is visibly higher than the
+oxygen content in Al.
+We fabricate square test junctions with nominal lateral dimension d between 500 nm and 5 µm and measure their resistance at room temperature with an automated wafer prober in a four-probe configuration. Details of wafers are provided in Appendix E. The measured resistance R, shown for a test chip on wafer A in
+Fig. 2(e), scales as expected with the junction area as
+R = RA/(d −l)2, where RA = 1100 Ωµm2 is the mean
+resistance-area product across the wafer and l = 90 nm
+describes the reduction of the effective junction dimension from the nominal value on the photomasks. Direct
+proportionality of the junction conductance with the effective junction area confirms that the measured conductance arises from the tunnel barrier itself, and not from
+leakage through the sidewalls.
+For nominally identical
+junctions with a design diameter of 600 nm on wafer A,
+SEM measurements on 50 junctions distributed over the
+wafer give d = 600 ± 20 nm (1σ). The corresponding
+normal state RA = 1100 ± 100 Ωµm2. The room temperature junction resistance varies by ±5% (±10% full
+range) across the wafer, consistent with the observed dimensional spread due to lithography.
+In Fig. 2(f), we show low-temperature current-voltage
+(IV) characteristics of a single test junction with d =
+629 nm and normal-state resistance of 10 kΩfrom wafer
+B, measured in a dilution refrigerator at 40 mK. We observe a supercurrent branch at zero voltage with a switching current of 30 nA, and a sharp rise in current at a
+voltage bias of (∆Nb + ∆Al)/e =1.6 mV, where e is the
+electron charge and ∆Nb (∆Al) is the superconducting
+gap in the niobium (aluminum) layer.
+These findings
+confirm that the device operates as a Josephson junction
+between Al and Nb. We discuss the subgap IV characteristics and their relation to qubit coherence below and
+in Appendix F.
+IV.
+QUBITS WITH NAPA JUNCTIONS
+In this work, we mainly study transmon-like qubits
+with two Josephson junctions in series, which allows us to
+avoid large parasitic junctions without introducing additional processing steps. For comparison, we also fabricate
+conventional fixed-frequency transmons, where large parasitic junctions are required to connect the small-criticalcurrent transmon junction to the ground plane, since we
+wish to pattern both electrodes of the qubit shunt capacitor into the same metal layer.
+Due to our relatively large 10 fF junction capacitance,
+the two-junction qubits have extremely low charge sensitivity of only a few hertz (see Appendix B), despite
+having a small (<∼2 µm) superconducting island between
+the junctions. The lowest-energy excitations of this qubit
+type are transmon-like, with energy oscillating between
+the main shunt capacitor CS and the effective inductor formed by the two junctions in series. We estimate
+CS ≈100 fF using electrostatic simulations. In the hypothetical case of small junction capacitances ∼1 fF, typical for Al–AlOx–Al junctions with lateral dimensions on
+the order of 100 nm, the charging energy of the island
+would be high and the two junctions would form a single
+Cooper pair transistor [26], making the effective inductance highly dependent on offset charge. Even in that
+case, however, coplanar shunt capacitance could be added
+to restore excellent charge insensitivity.
+We also fabricate devices where the roles of Al-BE and
+Nb2 in the design are inverted (”Al qubits”): That is, the
+qubit shunt capacitor, ground plane and resonators are
+patterened into Al-BE, while the small island between
+two junctions is Nb. We emphasize that this is a layout difference in the lithographic patterns only, and does
+not imply any changes in the processing steps. The individual junctions themselves and their native aluminum
+oxide passivation in particular remain nominally identical
+for the ”Al qubits” and the ”Nb qubits”, except for uncorrelated minor fabrication differences between wafers
+(Appendix E). Regardless of qubit type, each qubit is
+capacitively coupled to a λ/4 coplanar waveguide readout resonator with resonant frequency between 6 GHz
+and 7 GHz. Each chip contains three to seven individual qubits, with readout resonators inductively coupled
+to a common feedline for frequency-multiplexed readout
+and qubit drive. Appendix E gives more details on the
+characterized devices and wafers.
+We characterize qubits using standard pulse sequences
+in a dilution refrigerator setup at 10 mK (see Appendix D
+for details). In Fig. 3, we show one of the best lifetime
+measurements, for a double-junction Nb qubit with nominal junction size d = (600 nm)2 and qubit frequency
+equal to 5.17 GHz. The decay as a function of delay between excitation and readout is exponential with a time
+constant T1 = 36 µs. Figures 3(b) and (c) show results of
+Ramsey and Hahn echo experiments, respectively, which
+are well described by exponentially decaying sinusoids
+with time constants T ∗
+2 = 17 µs and T2,echo = 42 µs,
+respectively. The y-axis, ranging from 0 to 1, approximately represents the excited-state population of the
+qubit but is not precisely calibrated. When monitored
+repeatedly over several hours, we find that T1, T ∗
+2 , and
+T2,echo fluctuate in time, as shown in Fig. 3(d).
+The
+fluctuations are qualitatively similar to those commonly
+observed in angle-evaporated aluminum qubits [27–29].
+The time-averaged T1 = 30 µs corresponds to a qubit
+quality factor Q = 2πfT1 of one million.
+
+===== Page 6 =====
+
+6
+R
+D
+F
+H
+fef
+fgf /2
+fge
+R
+R
+R
+FIG. 3. (a) Decay of a qubit at frequency fge = 5.17 GHz
+from the excited state, measured data (points) fit to exponential decay with T1 = 36 µs (solid line), corresponding to
+a qubit quality factor Q = 2πfT1 ≈1 million. (b) Ramsey
+and (c) Hahn echo experiments fit to a decaying sinusoid and
+exponential decay, respectively. (d) T1, T ∗
+2 , T2,echo fluctuate
+over time when monitored for several hours.
+(e) Two-tone
+spectroscopy experiment, with qubit transitions at frequencies fge, fef and fgf/2 indicated by arrows. We extract an
+anharmonicity of −56 MHz.
+Figure 3(e) shows the qubit level structure probed by
+microwave spectroscopy. At low drive powers, we observe
+a response at fge = 5.17 GHz corresponding to the transition from the ground to the excited state. When increasing the drive power, we see two further peaks appear, corresponding to the transition between the first and second
+excited states at fef = 5.114 GHz and the two-photon
+transition from the ground to the second excited state
+at fgf/2 = 5.142 GHz. This confirms the transmon-like
+level structure of our double-junction qubit, with an extracted anharmonicity of −56 MHz.
+The anharmonicity is approximately four times smaller than that of a
+conventional single-junction transmon with the same frequency and the same 100 fF shunt capacitance.
+This
+is consistent with the intuition that the excitations remain transmon-like but now the phase drop is split over
+two junctions.
+Numerical simulations in Appendix B
+confirm that the measured anharmonicity is consistent
+with CS = 100 fF and junction capacitance on the order
+of 10 fF. Ten femtofarads in turn matches the capacitance expected for a junction with an effective area of
+(600 nm −90 nm)2, with specific capacitance of roughly
+40 fF/µm2 corresponding to a very low-transparency aluminum oxide tunnel barrier [25, 30]. In the appendix, we
+also numerically investigate another compromise between
+anharmonicity and charge dispersion and find that an anharmonicity of -102 MHz with charge dispersion of 4 kHz
+Nb qubit
+Al qubit
+(a)
+(b)
+FIG. 4. (a) Time-averaged qubit quality factors Q. Qubits
+with ground planes and the qubit island (filled markers) patterned into Nb2 produce on average Q ∼0.5 million, while
+qubits with Al-BE (open markers) produce an average Q of 0.2
+million. Symbols indicate devices from different wafers.Inset
+shows two types of qubit variants with shunt capacitor and
+ground places patterned into Nb2 (top) or Al-BE (bottom).
+(b) Qubit frequency versus nominal junctions size d. Dashed
+gray lines are guides to the eye.
+is possible, while keeping the qubit frequency similar.
+Figure 4(a) shows time-averaged qubit quality factors
+of double-junction NAPA qubits from several chips on
+multiple wafers. The wafers have different tunnel barrier
+oxidation parameters (see Appendix E) and the nominal
+junction sizes range from 600 nm to 720 nm. Qubits with
+larger junctions are excluded because they have frequencies close to their readout resonators, and are thus limited
+by Purcell decay. On devices with qubit capacitors and
+ground planes patterned into Nb, we find relatively few
+outliers and an average quality factor of 0.5 million, with
+the best measured devices having a quality factor close
+to one million.
+Quality factors of Nb qubits show no
+correlation to junction size d (see Fig. 8 in Appendix C).
+Al qubits, with capacitors patterned into Al and the
+small island between the two junctions made of Nb, on
+the other hand show a noticeably worse average quality factor of 0.2 million. Furthermore, there appears to
+be a trend in qubit lifetime decreasing rapidly as nominal junction size decreases below 650 nm (Fig. 8 in Appendix C), although the range of junction sizes and the
+number of data points are too small for a definite con-
+
+===== Page 7 =====
+
+7
+clusion.
+We have also measured single-junction qubits
+with equivalent nominal junction sizes from 600 nm to 1
+µm, where we achieve quality factors of 0.3 million for
+the best device and an average Q of 0.2 million, again
+with no clear dependence on junction size (Appendix C).
+The single-junction qubits have a large parasitic series
+junction, with dimensions 6.4 µm × 3 µm, connecting
+the Josephson junction to the ground plane, which may
+limit qubit lifetimes [31].
+The lack of increased microwave loss with increased
+junction size would at first suggest that our qubit coherence is not limited by the tunnel junction itself or
+the spacer material, whose volume scales with the linear
+junction dimension. One would instead hypothesize that
+microwave losses in capacitors patterned into Al-BE are
+higher than in capacitors patterned into Nb2. However,
+we find similar low-power microwave loss in λ/4 coplanar
+waveguide resonators when comparing resonators patterned into Nb2 and Al-BE. We measure such reference
+resonators on separate test chips from wafers A and C. In
+the low-photon-number limit, the internal quality factors
+are approximately 0.5 to 0.8 million regardless of layer,
+for resonators with 20 µm (10 µm) center pin (gap) width
+(Appendix C).
+Fig. 4(b) shows that qubit frequencies within a single
+chip scale approximately linearly with the nominal junction dimension, as expected, with the frequencies mostly
+falling within ±100 MHz of the linear trend. However, we
+find additional variation of roughly ±500 MHz from chip
+to chip, in particular in the data for wafer A that we have
+most data for. We attribute this chip-to-chip scatter to
+nonuniformity of our deposition and etching processes on
+the full-wafer scale, as well as a strong local loading effect
+during etching. The loading effect in reactive etching processes can lead to a large reduction in the etch rate when
+a large amount of material is etched in a given location.
+We see this loading effect most clearly in wafer B, where
+we fabricate both Nb qubits and Al qubits on the same
+wafer, with a checker pattern of 20 mm × 20 mm shots
+that alternate between Nb qubits and Al qubits.
+The
+challenge with this checker pattern is that almost all aluminum is etched away in the first patterning step from
+the Nb qubit shots, while almost no aluminum is etched
+from the Al qubit shots. This implies that the etch rate
+for the Al qubit shots is far higher than for the Nb qubit
+shots, due to the loading effect. We believe this leads
+to heavy overetching in the Al qubit shots and explains
+why wafer B Al qubit frequencies in Fig. 4 are nearly a
+factor of two lower than Nb qubit frequencies, and the
+effective linewidth reduction indicated by the crossing of
+the dashed gray line is roughly 450 nm for those data
+points.
+The loading effect could also lead to different amounts
+of etch residues in the vicinity of the qubit junctions in
+comparison to the reference resonators. This is one hypothesis for the difference in Nb and Al qubit performance despite similar reference resonator performance.
+However, this is speculative and we have not been able
+directly observe such residues. Despite lacking a satisfactory explanation for the dominant T1-limiting mechanism, if we assume pessimistically that all losses are
+related to the junctions, we can give an upper bound of
+order 10−5 for the effective loss tangent of the NAPA
+junctions, based on 1/Q ∼10−6 and junction participation ratio pJ ≈CJ/2CS, which is approximately 5%
+for the double-junction qubits. The factor of two in the
+denominator is due to the junction capacitances being
+in series, and can also be seen in the definition of the
+effective shunt capacitance CΣ in Appendix B.
+In dc measurements shown in Appendix F, we observe
+a subgap leakage conductance of roughly 1/2.5 MΩ≈
+4 × 10−3 × R−1
+N
+above critical temperature of Al, hinting
+at possible subgap states present in the Nb electrode of
+the tunnel junction. The appendix also shows that the
+subgap conductance does not necessarily improve when
+moving to millikelvin temperatures, although peaks of
+subgap current only allow to estimate an upper bound
+for the true leakage relevant to qubits from the dc data.
+Resonances of the uncontrolled electromagnetic environment of our test junctions are the most plausible explanation for such peaks [32]. High subgap leakage is often
+observed in Nb-based tunnel junctions, while Al-based
+junctions can exhibit much lower values of leakage current [33]. In Ref. [34], dc measurements of much more
+transparent Al-Nb junctions, fabricated with the SWAPS
+process, exhibit a much lower ratio of subgap leakage conductance to normal-state conductance. While the absolute leakage conductance demonstrated in Ref. [34] is not
+lower, the lower ratio hints at the possibility of obtaining
+even lower leakage currents for NAPA junctions in the
+future.
+At
+first
+sight,
+a
+parallel
+real
+conductance
+of
+1/2.5 MΩshould limit qubit quality factor to just
+2.5 MΩ/Zc,trans. ∼104, where Zc,trans. ≈320 Ωis the
+characteristic impedance of our transmon-like qubits.
+However, the relevant energy scale for qubit T1 is
+h(5 GHz) ≈20 µeV, which is only one tenth of the superconducting gap of Al. If Al-BE has a good superconducting gap with no subgap states, there are no states for
+electrons in the possible subgap states of Nb2 to tunnel
+into, and they cannot exchange energy with the qubit degree of freedom. In future experiments, this relationship
+between qubit coherence and zero-bias conductance could
+be studied in more detail by carefully designing the microwave environment of the dc test structures to suppress
+resonances with the environment, while further theoretical work could provide quantitative predictions for the
+relation between subgap states, quasiparticles and qubit
+coherence [35–37].
+V.
+CONCLUSIONS
+In conclusion, we introduced a method for creating native-oxide-passivated (NAPA) Josephson junctions
+where the tunnel barrier is defined by an Al-AlOx-Nb
+
+===== Page 8 =====
+
+8
+trilayer and patterning is done subtractively, without at
+any point exposing the sidewall passivation to aggressive oxide removal steps.
+We demonstrated hallmarks
+of Josephson junction behavior in both dc characteristics and by showing that qubits utilizing NAPA junctions
+have transmon-like level structure. For our best qubits,
+we find quality factors up to one million, slightly above
+the best reported for trilayer-type qubits, or any qubit
+utilizing Nb as a junction material.
+The limiting factor for qubit quality factor is not clear based on these
+proof-of-principle results, but it is likely that improved
+coherence times can be achieved in the future by optimizing the etch recipes, by creating the shunt capacitors
+in separate processing steps, or by reducing junction dimensions. To further elucidate the origin of decoherence,
+Ramsey noise spectroscopy [38] could be employed to
+disentangle low frequency noise from the high frequency
+dielectric loss inferred from T1. Furthermore, since the
+processing steps for NAPA junctions are compatible with
+modern fabrication tools and processes, we believe that
+frequency targeting can be dramatically improved in the
+future by following standard industry practices. Therefore, our results pave the way forward toward manufacturing superconducting qubits at scale. Finally, NAPA
+junctions may also offer an interesting platform for future studies of the impact of extreme gap asymmetry on
+quasiparticle tunneling.
+ACKNOWLEDGMENTS
+We acknowledge Tuomo Honkaharju and Jarmo Roine
+for technical help in the sample fabrication in VTT and
+OtaNano Micronova cleanroom facilities, and Harri Pohjonen and Isabel Gueissaz-Mattelm¨aki for technical assistance. We also thank Tero Heikkil¨a for valuable discussions.
+The research was funded by the European
+Union’s Horizon RIA, EIC and ECSEL programmes under Grants No. 824109 European Microkelvin Platform
+(EMP), No. 101113086 SoCool, No. 101007322 MatQu,
+No. 899558 aCryComm and No. 101113983 Qu-Pilot.
+We also acknowledge financial support of Research Council of Finland through projects No. 322580 ETHEC, No.
+356542 SUPSI, the QTF Centre of Excellence project No.
+336817, and Business Finland through Quantum Technologies Industrial (QuTI) No. 128291 and Technology
+Industries of Finland Centennial Foundation and Chips
+JU project Arctic No. 101139908.
+Appendix A: Fabrication details
+The fabrication proceeds as follows: First, we deposit
+the Al-AlOx-Nb trilayer by dc magnetron sputtering on
+a 150 mm high-resistivity silicon wafer, with a thickness
+of 100 nm for the bottom Al electrode and 100 nm for
+the Nb counter electrode. The aluminum oxide tunnel
+barrier is formed in situ by exposing the bottom aluminum electrode to 30 to 150 Torr of pure oxygen for 15
+to 30 minutes, depending on the wafer. Relative to typical Manhattan-style qubit junctions, the oxygen pressure
+is high because of the large junction size and the larger
+superconducting gap of the niobium counter electrode.
+Next, we pattern the trilayer using optical lithography
+and fluorine-based reactive ion etching (RIE) to etch NbCE followed by chlorine-based RIE to etch Al-BE, timed
+such that overetch into silicon remains small (∼20 nm).
+A native oxide forms on the etched sidewalls of both AlBE and Nb-CE upon exposure to ambient conditions.
+After resist removal, we sputter Nb2a, without any oxide removal steps. We then spin photoresist and optically pattern a 200 nm × 500 nm mask opening on top
+of the junction and use fluorine-based RIE to create a
+via that goes through Nb2a and penetrates partially into
+Nb-CE. Preceding sputtering of Nb2b, we use in-situ Arbased ion milling to remove the native oxides from Nb2a
+and the part of Nb-CE exposed through the via.
+Finally, we use optical lithography to pattern the top electrode and etch through Nb2b, Nb2a and Nb-CE using
+fluorine-based RIE, following the same approach as in
+conventional SWAPS junction fabrication [3]. This last
+(fluorine based) etch is selective to Al-BE due to the formation of non-volatile AlF3, thus effectively stopping at
+Al-BE. However, it is not selective between niobium and
+silicon, and thus etches into the substrate by a significant
+amount (∼120 nm) in areas not covered by Al-BE. All
+structures are patterned optically using an i-line stepper,
+and thus we limit the minimum nominal junction size to
+500 nm × 500 nm. There is, however, no great barrier
+to going to smaller junction sizes in the future, with either more advanced optical lithography or electron beam
+lithography.
+Appendix B: Double-junction qubit
+Figure 5 shows an electrical circuit representation of
+the double-junction qubits studied here. Mathematically,
+it is convenient to define the island between the two junctions as having (ϕ = 0) and define ϕ± = (ϕ2 ± ϕ1)/2,
+where ϕ1 (ϕ2) is the phase drop across the junction from
+the small island to the lower (upper) node. Under the
+simplifying assumption of identical junctions, one can
+then show that the Hamiltonian is
+H = e2
+2CΣ
+(n−−ng,−)2 +
+e2
+2C∆
+(n+ −ng,+)2
+−2EJ,1 cos(2πϕ+
+ϕ0
+) cos(2πϕ−
+ϕ0
+),
+(B1)
+where ϕ0 = 2e/h, C∆= CJ,1 + CJ,2 + Cg,1 + Cg,2,
+CΣ = 4CS + C∆, n± = n2 ± n1 are Cooper pair number operators, and ng,± parametrize offset charges arising from Vg,1 and Vg,2. We have chosen to use CΣ for
+the capacitance associated with the difference operator,
+
+===== Page 9 =====
+
+9
+because we wish to highlight the similarity of ϕ−excitations to those of a conventional transmon qubit, where
+the same symbol is commonly used to parametrize the
+effective shunt capacitance.
+ϕ=0
+ϕ2
+Cg,2
+Vg,2
+Cg,1
+Vg,1
+EJ,1
+CJ,1
+EJ,2
+CJ,2
+ϕ1
+CS
+FIG. 5. Electrical circuit representation of a double-junction
+qubit.
+There are multiple ways to view this circuit: a transmon qubit with the junction replaced by a single Cooper
+pair transistor, two frequency-degenerate fixed-frequency
+transmons ultrastrongly coupled to each other by CS, a
+flux qubit in the limit of vanishing small-junction critical
+current but large shunt capacitance, or a quantronium
+circut in the limit of a vanishingly small inductive shunt
+element [39]. Note that neither ϕ+ nor ϕ−can be considered to be effectively classical for the parameters relevant
+here. Rather, the first excited states correspond to excitations along ϕ−for the experimental parameters here,
+but already the fifth excited state corresponds to an excitation along ϕ+, as shown below.
+Numerically, it is straightforward to simulate the circuit, directly in the basis of ϕ1 and ϕ2, using the flux
+qubit circuit model built into the scQubits Python package [40, 41], with the small junction Josephson energy
+set to a vanishingly small value. Below, we express capacitances in femtofarads and convert them in the simulations to charging energies by dividing e2/2 by the capacitance in question.
+Figure 6 shows the wavefunctions of the first eigenstates and lists their energies, for the experimentally
+relevant parameters.
+The simulated anharmonicity is
+−54 MHz for a qubit frequency of 5.165 GHz, in line
+with the measured anharmonicity of −56 MHz for the
+5.17 GHz qubit discussed in the main text.
+The numerical simulations show that the doublejunction qubits studied here are extremely charge insensitive, with the first transition frequency having a variation of only 2 Hz over ng,±. This extreme charge insensitivity can be understood by observing that the lowest
+energy states in Fig. 6 correspond to the transmon-like
+ϕ−excitations and comparing the Hamiltonian to that
+of a standard transmon [42] with Josephson energy EJ
+and charging energy EC.
+Under the heavily-simplified
+approximation ϕ+ ≈0, the Hamiltonian here looks like
+that of a conventional transmon but with 2EJ,1 in place
+of EJ and approximately (e2/2CS)/4 in place of EC. Note
+the factor of four in the effective charging energy, aris2.5
+0.0
+2.5
+ (rad)
+(a)
+(b)
+(c)
+2.5 0.0
+2.5
+ (rad)
+2.5
+0.0
+2.5
+ (rad)
+(d)
+2.5 0.0
+2.5
+ (rad)
+(e)
+2.5 0.0
+2.5
+ (rad)
+(f)
+FIG. 6.
+Wavefunctions of the six lowest eigenstates of the
+double-junction qubit circuit in Fig. 5, with CS = 100 fF,
+CJ,1 = CJ,2 = 10 fF, EJ,1 = EJ,2 = 40 GHz × h and zero
+gate charges. Here, φi = 2πϕj/ϕ0. The intensity of the green
+color corresponds to the wavefunction squared, in arbitrary
+units. The transition frequencies, from the ground state, are
+(b) 5.165 GHz, (c) 10.276 GHz, (d) 15.331 GHz, (e) 20.331
+GHz, (f) 23.436 GHz.
+ing from the additional factor of four in the definition
+of CΣ ≈4CS for the double-junction qubit. In order to
+maintain comparable qubit frequency for the same CS,
+2EJ,1 must therefore be chosen as 4EJ. The simulated
+qubit frequency of 5.15 GHz is indeed relatively close to
+p
+8(2EJ,1)(e2/2CS)/4 ≈5.57 GHz, as you would expect
+for a transmon. The low charging energy explains the
+low anharmonicity, but also note that the ratio of the effective Josephson energy 2EJ,1 = 4EJ to charging energy
+(e2/2CS)/4 = EC/4 is sixteen times larger than EJ/EC
+of the conventional transmon, with the same CS and comparable frequency. This explains the extremely low value
+of simulated charge sensitivity.
+Unfortunately, approximating ϕ+ as zero is too simplistic and in reality sensitivity to ng,+ dominates charge
+dispersion.
+Nevertheless, we can partially recover anharmonicity by sacrificing some charge insensitivity. In
+particular, if we decrease CS, EJ,1 and EJ,2 by 45%, we
+achieve an anharmonicity of -102 MHz and a charge dispersion of 4 kHz, with the qubit frequency changing only
+little to 4.94 GHz. For these parameters, it is the fourth,
+rather than the fifth, excited state at 16.957 GHz that
+corresponds to the first ϕ+ excitation.
+Appendix C: Additional data
+Figure 7 shows the measured internal quality factors
+of λ/4 coplanar waveguide resonators patterned in AlBE or Nb2, measured on separate test chips on wafers
+A and C (wafer details are in Appendix E). The test
+chips have eight resonators with frequencies between 4.5
+GHz and 7.7 GHz coupled to a common feedline. The
+CPW center trace has a width of 20 µm and the gap
+between the center trace and the ground plane is 10
+
+===== Page 10 =====
+
+10
+10
+0
+10
+2
+10
+4
+10
+6
+Photon number
+10
+5
+10
+6
+10
+7
+Internal quality factor
+(a)
+Nb resonators
+Wafer A
+10
+0
+10
+2
+10
+4
+10
+6
+Photon number
+10
+5
+10
+6
+10
+7 (b)
+Al resonators
+Wafer C
+FIG. 7. Resonator internal quality factors as functions of circulating photon number for (a) resonators patterned into Nb2
+on wafer A and (b) into Al-BE on wafer C. Markers indicate
+resonators with different frequencies on the same chip.
+µm. For the Nb resonators, both the low-power internal quality factors and their photon-number dependence
+are typical of Nb resonators, as you can see by comparing Fig. 7(a) to, e.g., the planar Nb reference shown in
+Fig. 2(a) of Ref. [43], which also shows internal quality
+factor of four million at 106 photons, for the same CPW
+gap and width. It is perhaps even surprising that the resonators patterned into Nb2 perform so well, even though
+both the substrate-metal and the substrate-air interfaces
+have seen significant additional processing due to deposition and removal of a trilayer, before Nb2 deposition
+and its patterning. The Al resonators show similar low
+power quality factors but much weaker power dependence
+and considerable scatter in the power-independent highpower quality-factor. It is typical for Al resonators for
+the high-power quality factor to saturate to lower values
+than for Nb resonators (e.g. 3 million in Ref. [44], but
+the scatter suggests that there is room to improve and is,
+qualitatively, in line with the hypothesis of non-uniform
+etch residues. Nevertheless, the high low-power internal
+quality factors (≥0.4 million) do not straightforwardly
+explain the observed T1 times.
+In Figure 8, we plot measured quality factors versus
+nominal Josephson junction size d. The data points in
+panel (a) are the same as in Fig. 4, except for the horizontal axis. The qubit frequencies for the single-junction
+transmons in panel (b) range from 4 GHz to 9 GHz, which
+means that some qubits have their frequency above the
+corresponding readout resonator. The devices with nominal dimension above 0.9 µm are flux-tunable transmons
+with two junctions in parallel forming a SQUID loop, and
+the given dimension is the size of an effective single junction with the same nominal area. The flux-tunable transmons were characterized at nominally zero flux threading
+the SQUID loop. We find average qubit Q of 0.3 million
+(a)
+(b)
+FIG. 8. Qubit quality factors of (a) double-junction qubits
+and (b) single-junction transmons, as functions of nominal
+Josephson junction size d. Green (orange) markers indicate
+devices with qubit electrodes patterned into Nb2 (Al-BE).
+Different symbols correspond to different wafers.
+2
+3
+4
+5
+6
+7
+0
+20
+40
+T *
+2  (µs)
+(a)
+Nb, wafer A
+Nb, wafer B
+Al, wafer B
+Al, wafer C
+2
+3
+4
+5
+6
+7
+Qubit frequency (GHz)
+0
+20
+40
+T2, echo (µs)
+(b)
+FIG. 9. (a) Ramsey decoherence time T ∗
+2 and (b) Hahn echo
+decoherence times T2,echo for the devices shown in Fig. 4 of
+the main text. Filled markers indicate devices with qubit electrodes in the Nb2 layer and open markers in Al-BE. Symbols
+indicate devices from different wafers.
+for single-junction Nb qubits and 0.2 million for singlejunction Al qubits, with no clear dependence on d in case
+of Nb qubits. Al qubits on the other hand show a trend
+of decreasing quality factor with decreasing d below 650
+nm, more clearly so in case of wafer B and less clearly in
+case of wafer C.
+In Figure 9, we show the time-averaged T2 times of the
+same devices for which qubit quality factors are shown in
+Fig. 4 in the main text. We find T ∗
+2 up to 25 µs and T2,echo
+up to nearly 40 µs, with T2,echo typically higher than T ∗
+2
+by up to a factor of two. Note that the T2 times were
+
+===== Page 11 =====
+
+11
+not characterized for all devices. The somewhat lower
+T2 times observed in Al qubits are most likely explained
+by their lower T1 compared to Nb qubits, although we
+believe that the T2 times in general may be limited by
+the measurement setup.
+Appendix D: Measurement setup
+We measure qubits in a dilution refrigerator setup similar to that used in Ref. [43]. The input line, used for both
+qubit drive and readout pulses, is attenuated by nominally 61 dB distributed among the different temperature
+stages, and filtered with low-pass filters and infrared filters at the base temperature stage.
+The qubit chips
+are wire-bonded to gold-plated copper sample holders,
+mounted inside magnetic shields. We use a a pair of microwave switches at the base temperature stage to allow
+for characterizing up to five chips in a single cooldown.
+There are minor changes in the filtering configuration
+between cooldowns, but we have not observed significant
+changes in qubit performance. The output signal is amplified by a traveling-wave parametric amplifier at base
+temperature and a high-electron-mobility transistor at 4
+K, followed by further amplification at room temperature. At room temperature, we use a Zurich Instruments
+SHFQC for generating the readout and drive pulses and
+digitizing the readout signals.
+Appendix E: Devices and wafers
+We have characterized devices from five different
+wafers, A, B, C, D, and E. The main difference between
+the processing is the tunnel barrier oxidation parameters:
+Most wafers were oxidized for 15 minutes at 30 Torr,
+while wafer D was oxidized for 30 minutes at 150 Torr.
+The SEM and TEM images shown in Figures 1 and 2
+are taken from wafer A. The room temperature junction
+resistance data in Fig. 2 is from wafer A, as is the qubit
+device characterized in Figure 3. The low-temperature dc
+measurements shown in Fig. 2 and Appendix F are from
+wafer B. Wafers A and E have only Nb qubits, wafer C
+has only Al qubits, and wafers B and D have both in the
+checker pattern mentioned in the main text.
+All characterized qubits have a simulated shunt capacitance of approximately 100 fF. The measured qubitreadout resonator couplings g/2π are between 50 MHz
+and 90 MHz, while the coupling between the readout resonator and the feedline κ/2π varier from 100 kHz to 300
+kHz. Most measured qubits use capacitors in the Xmon
+geometry with 20 µm arm width and 20 µm gap between
+the qubit island and the ground plane, although a few
+devices have arm widths and gaps ranging from 10 µm to
+80 µm. Our best-performing device, shown in Fig. 3 of
+the main text, has a 10 µm arm width and gap. We have
+not observed a consistent dependence between the Xmon
+geometry and qubit performance.
+The summary plots
+shown in Fig. 4 of the main text as well as Appendix C
+include all characterized fixed-frequency qubits.
+To estimate the junction capacitance, we measure anharmonicities from single-junction qubits with different
+nominal junction sizes, shown in Table I. For reference,
+we also include a device with angle-evaporated Al-AlOxAl junctions and Nb electrodes, with the same Xmon geometry. We then find the charging energies EC matching
+measured anharmonicities and qubit frequencies using
+the scQubits package, calculate the corresponding total
+capacitance, and subtract the simulated external shunt
+capacitance to obtain the capacitance contributed by the
+junction. The contribution of the junction capacitance
+in the Al-AlOx-Al reference qubit is near-negligible. We
+find junction capacitances of 7 fF for a nominally 612 nm
+wide junction (22 fF for 800 nm wide junctions). These
+values are consistent with an expected capacitance per
+area of roughly 40 fF/µm2, considering that devices from
+different wafers likely have different true junction areas
+for a given nominal size due to variations in lithography and etching. For the simulations of double-junction
+qubits described in Appendix B, we use 10 fF as an estimate for the typical capacitance per junction in measured
+devices.
+Appendix F: Low-temperature dc measurements
+We performed low-temperature dc measurements on
+separate test structures from wafer B. The devices are
+mounted at the mixing chamber stage of a dry dilution
+refrigerator equipped with radiation shielding and filtering [33, 45]. We apply a voltage bias at room temperature
+and measure both the current and voltage across the device in a four-probe configuration with room-temperature
+transimpedance and voltage amplifiers.
+The measurement lines have a resistance of approximately 2 kΩper
+line.
+(a)
+(b)
+(c)
+FIG. 10. (a) Current-voltage characteristics of a test junction
+at 1.3 K (markers), as well theory prediction for a normal–
+insulator–superconductor junction (dashed orange line). (b)
+Zoom of the data shown in panel (a), along with a linear slope
+with Rsubgap = 2.5 MΩ(solid green line). (c) Data measured
+at 40 mK (markers) with the same voltage range as in panel
+(b), with the same linear slope (solid green line) as a guide to
+the eye.
+
+===== Page 12 =====
+
+12
+TABLE I. Measured qubit frequencies, anharmonicities and extracted junction capacitances for single-junction transmon qubits
+with different junction sizes but similar Xmon geometry. The T1 coherence data is time-averaged over 4-8 hours.
+Nominal junction
+size (µm)
+Wafer
+Qubit
+frequency
+(GHz)
+T1 (µs)
+Anharmonicity
+(MHz)
+EC/h (MHz)
+Junction
+capacitance (fF)
+0.8
+D
+4.389
+12.6
+-176
+162
+22
+0.612
+E
+4.848
+15.2
+-208
+185
+7
+0.2
+Al-AlOx-Al
+reference
+4.294
+140
+-220
+196
+1
+In Figure 10(a), we show measured current-voltage
+characteristics of a junction with nominal d = 629 nm
+at 1.3 K, where the Al bottom electrode is in the normal state. We find approximately zero current up to a
+voltage of approximately 1.4 mV, as expected for tunneling in a normal–insulator–superconductor (NIS) junction [46]. On this scale, we find good agreement with
+simulations with normal-state resistance RN =10 kΩ,
+measured at 10 K, and niobium superconducting gap
+∆Nb = 1.42 mV, extracted as shown below. On a smaller
+scale [Fig. 10(b)], however, we find a linear-in-V subgap
+slope corresponding to a resistance Rsubgap = 2.5 MΩ,
+with a far larger conductance than expected from thermal excitations alone.
+The subgap current in a NIS
+junction is often characterized with the phenomenological Dynes parameter γ [47], and here we can estimate
+γ = RN/Rsubgap = 4 × 10−3.
+At 40 mK [Fig. 10(c)], we observe a supercurrent
+branch, as shown in Fig. 2(f) of the main text, features
+corresponding to the sum and difference of the superconducting gaps of Nb and Al (shown in Fig. 11), as well
+as additional subgap structure. Outside the supercurrent
+branch, the IV is not hysteretic. The features at |V | < 0.5
+mV are likely due to resonances in the microwave environment of the junction [32], impeding characterization
+of the subgap in the region |V | < ∆Al/e = 0.2 mV relevant for qubit operation. We observe qualitatively similar
+behavior in another device with d = 629 nm and RN = 20
+kΩ, finding Rsubgap = 3.5 MΩat 1.3 K, corresponding to
+γ = 6 × 10−3.
+(a)
+(c)
+(b)
+(d)
+FIG. 11. (a) Measured current-voltage characteristics and for
+the same test junction as in Fig. 10 at several temperatures.
+(b) Numerical differential conductance calculated from the
+data in panel (a), with arrows indicating peaks occurring at
+|V | = ∆Nb ± ∆Al.
+(c) Extracted superconducting gaps of
+niobium ∆Nb and (d) aluminum versus the bath temperature.
+
+===== Page 13 =====
+
+13
+To extract the superconducting gaps of Nb and Al,
+∆Nb and ∆Al, respectively, we numerically calculate the
+differential conductance dI/dV from the measured current I and voltage V and extract the voltage at which
+peaks occur in the differential conductance, as shown
+in Fig. 11(a–b).
+We identify the peaks occurring at
+|V | > 1.4 mV as corresponding to (∆Nb + ∆Al)/e and
+those at 1.0 mV< |V | < 1.4 mV as corresponding to
+(∆Nb −∆Al)/e. The peaks at (∆Nb −∆Al)/e arise from
+aligning the energy levels of thermally excited quasiparticles in Al with the gap edge of Nb [48]. We average the
+peak positions found at positive and negative voltages
+for a given bath temperature and extract the gaps versus
+bath temperature, as shown in Fig. 11(c–d). Below 0.4
+K, the peaks at ∆Nb−∆Al are no longer visible due to the
+small number of quasiparticles in Al. However, we can
+still extract the peaks at ∆Nb + ∆Al and extract ∆Al by
+assuming that ∆Nb stays constant at low temperatures.
+We find ∆Nb ≈1.4 mV for both devices. For aluminum,
+we find ∆Al = 200 µeV at the lowest measured temperatures, with little variation below 0.5 K.
+[1] G. J. Dolan, Applied Physics Letters 31, 337 (1977).
+[2] A. Potts, P. R. Routley, G. J. Parker, J. J. Baumberg,
+and P. A. J. De Groot, Journal of Materials Science: Materials in Electronics 12, 289 (2001).
+[3] L. Gronberg, J. Hassel, P. Helisto, and M. Ylilammi,
+IEEE Transactions on Applied Superconductivity 17,
+952 (2007).
+[4] S. K. Tolpygo, V. Bolkhovsky, R. Rastogi, S. Zarr, A. L.
+Day, E. Golden, T. J. Weir, A. Wynn, and L. M. Johnson,
+IEEE Transactions on Applied Superconductivity 29, 1
+(2019).
+[5] M. Dorojevets, C. L. Ayala, N. Yoshikawa, and A. Fujimaki, IEEE Transactions on Applied Superconductivity
+23, 1700605 (2013).
+[6] J. M. Kreikebaum, K. P. O’Brien, A. Morvan, and I. Siddiqi, Superconductor Science and Technology 33, 06LT02
+(2020).
+[7] N.
+Muthusubramanian,
+M.
+Finkel,
+P.
+Duivestein,
+C. Zachariadis, S. L. M. van der Meer, H. M. Veen, M. W.
+Beekman, T. Stavenga, A. Bruno, and L. DiCarlo, Quantum Science and Technology 9, 025006 (2024).
+[8] Y. Nakamura, H. Terai, K. Inomata, T. Yamamoto,
+W. Qiu, and Z. Wang, Appl. Phys. Lett. 99, 212502
+(2011).
+[9] M. Weides, R. C. Bialczak, M. Lenander, E. Lucero,
+M. Mariantoni, M. Neeley, A. D. O’Connell, D. Sank,
+H. Wang, J. Wenner, T. Yamamoto, Y. Yin, A. N. Cleland, and J. Martinis, Superconductor Science and Technology 24, 055005 (2011).
+[10] S. Kim, H. Terai, T. Yamashita, W. Qiu, T. Fuse,
+F. Yoshihara, S. Ashhab, K. Inomata, and K. Semba,
+Communications Materials 2, 98 (2021).
+[11] D. Wan,
+S. Couet,
+X. Piao,
+L. Souriau,
+Y. Canvel, D. Tsvetanova, D. Vangoidsenhoven, A. Thiam,
+A. Pacco, A. Potoˇcnik, M. Mongillo, T. Ivanov, J. Jussot, J. Verjauw, R. Acharya, F. Lazzarino, B. Govoreanu,
+and I. P. Radu, Japanese Journal of Applied Physics 60,
+SBBI04 (2021).
+[12] A. Anferov, K.-H. Lee, F. Zhao, J. Simon, and D. I.
+Schuster, Physical Review Applied 21, 024047 (2024).
+[13] X. Wu, J. L. Long, H. S. Ku, R. E. Lake, M. Bal,
+and D. P. Pappas, Applied Physics Letters 111, 032602
+(2017).
+[14] A. Stehli, J. D. Brehm, T. Wolz, P. Baity, S. Danilin,
+V. Seferai, H. Rotzinger, A. V. Ustinov, and M. Weides,
+Applied Physics Letters 117, 124005 (2020).
+[15] J. Van Damme, S. Massar, R. Acharya, T. Ivanov,
+D. Perez Lozano, Y. Canvel, M. Demarets, D. Vangoidsenhoven, Y. Hermans, J. G. Lai, A. M. Vadiraj,
+M. Mongillo, D. Wan, J. De Boeck, A. Potoˇcnik, and
+K. De Greve, Nature 634, 74 (2024).
+[16] R. Dolata, T. Weimann, H.-J. Scherer, and J. Niemeyer,
+IEEE Transactions on Applied Superconductivity 9, 3255
+(1999).
+[17] D. Li, J. Gao, J. E. Austermann, J. A. Beall, D. Becker,
+H. Cho, A. E. Fox, N. Halverson, J. Henning, G. C.
+Hilton, J. Hubmayr, K. D. Irwin, J. Van Lanen, J. Nibarger, and M. Niemack, IEEE Transactions on Applied
+Superconductivity 23, 1501204 (2013).
+[18] L. Gr¨onberg, M. Kiviranta, V. Vesterinen, J. Lehtinen, S. Simbierowicz, J. Luomahaara, M. Prunnila, and
+J. Hassel, Superconductor Science and Technology 30,
+125016 (2017).
+[19] H. Deng, Z. Song, R. Gao, T. Xia, F. Bao, X. Jiang, H.-
+S. Ku, Z. Li, X. Ma, J. Qin, H. Sun, C. Tang, T. Wang,
+F. Wu, W. Yu, G. Zhang, X. Zhang, J. Zhou, X. Zhu,
+Y. Shi, H.-H. Zhao, and C. Deng, Physical Review Applied 19, 024013 (2023).
+[20] M.
+Tuokkola,
+Y.
+Sunada,
+H.
+Kivij¨arvi,
+J.
+Albanese,
+L. Gr¨onberg,
+J.-P. Kaikkonen,
+V. Vesterinen,
+J.
+Govenius,
+and
+M.
+M¨ott¨onen,
+Methods
+to
+achieve near-millisecond energy relaxation and dephasing times for a superconducting transmon qubit (2025),
+arXiv:2407.18778 [quant-ph].
+[21] S.
+Mechold,
+K.
+Peiselt,
+M.
+Schmelz,
+G.
+Oelsner,
+M. Ziegler, U. H¨ubner, J. Kunert, and R. Stolz, IEEE
+Transactions on Applied Superconductivity 34, 1 (2024).
+[22] R. Barends, J. Kelly, A. Megrant, D. Sank, E. Jeffrey, Y. Chen, Y. Yin, B. Chiaro, J. Mutus, C. Neill,
+P. O’Malley, P. Roushan, J. Wenner, T. C. White, A. N.
+Cleland, and J. M. Martinis, Physical Review Letters
+111, 080502 (2013).
+[23] K. Sliwa, A. Melville, W. Woods, K. Serniak, T. Hazard,
+E. Golden, D. Kim, B. Niedzielski, M. Gingras, K. Peng,
+K. O’Brien, J. Yoder, M. Schwartz, and W. Oliver, 2023,
+S73.014 (2023), conference Name: APS March Meeting
+Abstracts, ADS Bibcode: 2023APS..MARS73014S.
+[24] C. E. Murray, Materials Science and Engineering: R: Reports 146, 100646 (2021).
+[25] H. J. Mamin, E. Huang, S. Carnevale, C. T. Rettner,
+N. Arellano, M. H. Sherwood, C. Kurter, B. Trimm,
+M. Sandberg, R. M. Shelby, M. A. Mueed, B. A. Madon,
+A. Pushp, M. Steffen, and D. Rugar, Physical Review
+Applied 16, 024023 (2021).
+
+===== Page 14 =====
+
+14
+[26] J. A. Schreier, A. A. Houck, J. Koch, D. I. Schuster,
+B. R. Johnson, J. M. Chow, J. M. Gambetta, J. Majer, L. Frunzio, M. H. Devoret, S. M. Girvin, and R. J.
+Schoelkopf, Physical Review B 77, 180502 (2008).
+[27] D. J. Van Harlingen, T. L. Robertson, B. L. T. Plourde,
+P. A. Reichardt, T. A. Crane, and J. Clarke, Physical
+Review B 70, 064517 (2004).
+[28] P. V. Klimov, J. Kelly, Z. Chen, M. Neeley, A. Megrant,
+B. Burkett, R. Barends, K. Arya, B. Chiaro, Y. Chen,
+A.
+Dunsworth,
+A.
+Fowler,
+B.
+Foxen,
+C.
+Gidney,
+M. Giustina, R. Graff, T. Huang, E. Jeffrey, E. Lucero,
+J. Y. Mutus,
+O. Naaman,
+C. Neill,
+C. Quintana,
+P. Roushan, D. Sank, A. Vainsencher, J. Wenner, T. C.
+White,
+S. Boixo,
+R. Babbush,
+V. N. Smelyanskiy,
+H. Neven, and J. M. Martinis, Physical Review Letters
+121, 090502 (2018).
+[29] J. J. Burnett, A. Bengtsson, M. Scigliuzzo, D. Niepce,
+M. Kudra, P. Delsing, and J. Bylander, npj Quantum
+Information 5, 54 (2019).
+[30] A. W. Lichtenberger, C. P. McClay, R. J. Mattauch, M. J.
+Feldman, S. Pan, and A. R. Kerr, IEEE Transactions on
+Magnetics 25, 1247 (1989).
+[31] J. Lisenfeld, A. Bilmes, A. Megrant, R. Barends, J. Kelly,
+P. Klimov, G. Weiss, J. M. Martinis, and A. V. Ustinov,
+npj Quantum Information 5, 105 (2019).
+[32] T. Holst, D. Esteve, C. Urbina, and M. H. Devoret, Phys.
+Rev. Lett. 73, 3455 (1994).
+[33] O.-P. Saira, A. Kemppinen, V. F. Maisi, and J. P. Pekola,
+Physical Review B 85, 012504 (2012).
+[34] J. H¨atinen, A. Ronzani, R. P. Loreto, E. Mykk¨anen,
+A. Kemppinen, K. Viisanen, T. Rantanen, J. Geisor,
+J. S. Lehtinen, M. Ribeiro, J.-P. Kaikkonen, O. Prakash,
+V. Vesterinen, C. F¨orbom, E. T. Mannila, M. Kervinen,
+J. Govenius, and M. Prunnila, Physical Review Applied
+22, 064048 (2024).
+[35] S. Gustavsson, F. Yan, G. Catelani, J. Bylander, A. Kamal, J. Birenbaum, D. Hover, D. Rosenberg, G. Samach,
+A. P. Sears, S. J. Weber, J. L. Yoder, J. Clarke, Y. Nakamura, T. P. Orlando, A. J. Kerman, and W. D. Oliver,
+Science 354, 1573 (2016).
+[36] L. Bretheau, C¸. Girit, H. Pothier, D. Esteve, and
+C. Urbina, Nature 499, 312 (2013).
+[37] M. Zgirski, L. Bretheau, Q. Le Masne, H. Pothier, D. Esteve, and C. Urbina, Phys. Rev. Lett. 106, 257003 (2011).
+[38] J. Bylander, S. Gustavsson, F. Yan, F. Yoshihara,
+K. Harrabi, G. Fitch, D. G. Cory, Y. Nakamura, J.-S.
+Tsai, and W. D. Oliver, Nature Physics 7, 565 (2011).
+[39] D. Vion, A. Aassime, A. Cottet, P. Joyez, H. Pothier,
+C. Urbina, D. Esteve, and M. H. Devoret, Science 296,
+886 (2002).
+[40] P. Groszkowski and J. Koch, Quantum 5, 583 (2021).
+[41] S. P. Chitta, T. Zhao, Z. Huang, I. Mondragon-Shem,
+and J. Koch, New Journal of Physics 24, 103020 (2022).
+[42] J. Koch, T. M. Yu, J. Gambetta, A. A. Houck, D. I.
+Schuster, J. Majer, A. Blais, M. H. Devoret, S. M. Girvin,
+and R. J. Schoelkopf, Physical Review A 76, 042319
+(2007).
+[43] K. Grigoras, N. Yurttagul, J.-P. Kaikkonen, E. T. Mannila, P. Eskelinen, D. P. Lozano, H.-X. Li, M. Rommel, D. Shiri, N. Tiencken, S. Simbierowicz, A. Ronzani, J. Hatinen, D. Datta, V. Vesterinen, L. Gronberg, J. Biznarova, A. F. Roudsari, S. Kosen, A. Osman,
+M. Prunnila, J. Hassel, J. Bylander, and J. Govenius,
+IEEE Transactions on Quantum Engineering 3, 1 (2022).
+[44] J. Bizn´arov´a, A. Osman, E. Rehnman, L. Chayanun,
+C. Kriˇzan, P. Malmberg, M. Rommel, C. Warren, P. Delsing, A. Yurgens, et al., npj Quantum Information 10, 78
+(2024).
+[45] A. Kemppinen, S. V. Lotkhov, O.-P. Saira, A. B. Zorin,
+J. P. Pekola, and A. J. Manninen, Applied Physics Letters 99, 142106 (2011).
+[46] F. Giazotto, T. T. Heikkil¨a, A. Luukanen, A. M. Savin,
+and J. P. Pekola, Rev. Mod. Phys. 78, 217 (2006).
+[47] R. C. Dynes, V. Narayanamurti, and J. P. Garno, Physical Review Letters 41, 1509 (1978).
+[48] J. T. Muhonen, M. Meschke, and J. P. Pekola, Reports
+on Progress in Physics 75, 046501 (2012).

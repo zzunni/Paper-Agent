@@ -1,0 +1,640 @@
+
+
+===== Page 1 =====
+
+SELECTIVE UNDERCUT OF UNDOPED OPTICAL MEMBRANES FOR
+SPIN-ACTIVE COLOR CENTERS IN 4H-SIC
+Jonathan Dietz, Amberly Xie, Aaron M. Day, Evelyn L. Hu
+John A. Paulson School of Engineering and Applied Sciences
+Harvard University, Cambridge, MA. 02138, USA
+Abstract. Silicon carbide (SiC) is a semiconductor used in quantum information processing, microelectromechanical systems, photonics, power electronics, and harsh environment sensors. However,
+its high temperature stability, high breakdown voltage, wide bandgap, and high mechanical strength
+are accompanied by a chemical inertness which makes complex micromachining difficult. Photoelectrochemical etching is a simple, rapid means of wet processing SiC, including the use of dopant
+selective etch stops that take advantage of mature SiC homoepitaxy. However, dopant selective
+photoelectrochemical etching typically relies on highly doped material, which poses challenges for
+device applications such as quantum defects and photonics that benefit from low doping to produce
+robust emitter properties and high optical transparency. In this work, we develop a new, selective
+photoelectrochemical etching process that relies not on high doping but on the electrical depletion
+of a fabricated diode structure, allowing the selective etching of an n-doped substrate wafer versus
+an undoped epitaxial (Na = 1(10)14cm−3) device layer. We characterize the photo-response and
+photoelectrochemical etching behavior of the diode under bias and use those insights to suspend
+large (> 100µm2) undoped membranes of SiC. We further characterize the compatibility of membranes with quantum emitters, performing comparative spin spectroscopy between undoped and
+highly doped membrane structures, finding the use of undoped material improves ensemble spin
+lifetime by > 3x. This work enables the fabrication of high-purity suspended thin films suitable for
+scalable photonics, mechanics, and quantum technologies in SiC.
+1. Introduction
+A high-yield, systematic means of producing high-quality thin-films is an outstanding challenge in
+realizing scalable quantum and classical technology. The availability of single crystal thin films with
+high purity and optical quality has led to large advances in miniaturizing typically bulk optical components with equivalent integrated photonic devices and the development of micro-electromechanical
+circuits.[1–4] One such approach to creating thin films in semiconductor materials with effective p
+and n-type doping, is dopant selective photoelectrochemical (PEC) or electrochemical etching of one
+1
+arXiv:2406.07768v1  [physics.app-ph]  11 Jun 2024
+
+===== Page 2 =====
+
+2SELECTIVE UNDERCUT OF UNDOPED OPTICAL MEMBRANES FOR SPIN-ACTIVE COLOR CENTERS IN 4H-SIC
+doping type over the other in an epitaxial or implanted homojunction.[5] Such etching strategies have
+been designed in silicon, gallium nitride, gallium arsenide, and silicon carbide homojunctions.[6–9]
+However, these approaches rely on heavily doped device layers, as lowering the doping of the device
+layer reduces etching selectivity.[9] A dopant selective electrochemical etch that does not require
+high device layer doping is desirable in applications where high doping degrades performance or design flexibility, such as electronics, photonics, and mechanics or in material systems where effective
+doping is not available for either p-type or n-type, such as zinc oxide or diamond respectively.[10–13]
+This work presents such a process, with a particular application to Silicon Carbide (SiC), a wide
+band-gap semiconductor widely studied for use in photonics, mechanics, and quantum information[14–17]. Consequently, SiC is such a material that could benefit from a PEC etching process
+that results in a low doped thin film. For example, SiC hosts several solid-state quantum defect
+qubits which show lifetime limited optical linewidths, long spin coherence, and high initialization
+fidelity which could form the basis of quantum memory nodes in a quantum network.[18, 19] Dopantselective PEC has successfully created suspended photonics in SiC with integrated defects, yet these
+devices and defects demonstrate degraded optical and spin performance, respectively due to the
+required use of high doping concentration.[20–22] This requirement is predicated on the ability to
+independently control band bending in each material doping type with respect to the chemical
+potential of decomposition in the etching electrolyte, which is more favorable in layers with large
+differences in doping.[23]
+We present a modified PEC process, that uses the bias of a simple transparent Shottky barrier
+diode to enable independent electrochemical control of each material layer.
+We show selective
+etching between an undoped layer of 4H-SiC and a highly doped substrate, demonstrating high
+etch rates (> 4µm/hr), low surface roughness (∼1nm RMS), and large areas (> 100µm2) of
+undercut material. We further demonstrate the immediate device performance advantages of this
+process over a process that relies high doping of the device layer alone, comparing the quantum spin
+performance of ensembles of silicon monovacancies in doped and undoped layers . When an undoped
+layer is used, lower strain, longer spin coherence, and lower inhomogeneous broadening is observed.
+The reliance of this technique on an externally fabricated diode device rather than solely on material
+properties indicates that this technique could be adapted to other material systems where junctions
+can be fabricated.
+
+===== Page 3 =====
+
+SELECTIVE UNDERCUT OF UNDOPED OPTICAL MEMBRANES FOR SPIN-ACTIVE COLOR CENTERS IN 4H-SIC3
+NA=1.3(10)14
+ND=2.5(10)13
+30μm
+15μm
+(a)
+(b)
+(c)
+(d)
+(e)
+Dark
+1.0%
+2.5%
+18%
+45%
+100%
+Figure 1. (a) Scanning electron microscope (SEM) image of a 100µm2 membrane with support structures
+imaged at 30keV to reveal substrate structure.
+(b) focused ion beam (FIB) cross section of membrane
+showing uniform membrane thickness. (c) Electrochemical impedance spectroscopy of an undoped, 500nm
+thick epilayer of SiC showing low p-type conductivity, determined from linear fitting (1/C2) and measured
+using an Al contact. (d) configuration of the PEC cell used to perform CV and etching of 4H-SiC structures.
+C, R, and W are the Pt counter, Ag/AgCl reference, and SiC working electrodes respectively. u-SiC denotes
+the undoped nature of the p- layer (e) I-V curves of the photodiode formed by the ITO contacted undoped
+layer and Ni contacted substrate. Inset: illumination dependent photo-biasing of the diode.
+2. Main
+Due to its highly chemically inert nature, suspended SiC photonic and mechanical devices are often created using SmartCut, grind-and-polish, deep backside etching, or via dopant selective photoelectro-chemical etching (PEC).[2, 24–27] These techniques have enabled fabrication of high-quality
+devices, but performance is typically limited by wafer non-uniformity, yield, excess strain and charge
+noise. PEC usually relies on high doping contrast between epitaxial layers to selectively etch, for
+example, a highly n-doped substrate from a comparably p-doped epilayer, with the epilayer as the
+ultimate host of both photonic devices and quantum defects. However, free carrier absorption from
+highly doped material and charge noise creates optical propagation loss and limits qubit spin coherence.[22] Previously fabricated devices demonstrated high quality optical resonances, but suffered
+from high strain, roughened surfaces and poor defect coherence.[22, 28]
+
+===== Page 4 =====
+
+4SELECTIVE UNDERCUT OF UNDOPED OPTICAL MEMBRANES FOR SPIN-ACTIVE COLOR CENTERS IN 4H-SIC
+The photoelectrochemical etching of single crystal SiC is well understood for both n and p doping
+types in alkaline solutions. In both cases, etching occurs through the elimination of silicon through
+the formation of a soluble silicate product and carbon monoxide via the charge exchange of holes
+with hydroxide ions in solution[29]:
+(1)
+SiC + 8OH−+ 6h+ →[Si(OH)2O2]2−+ CO + 3H2O
+In p-type material, electrochemical etching can occur without illumination, because holes are a
+majority carrier in the material.[30] Because the valence band in p-type material typically bends
+in energy downwards towards the chemical potential of the electrolyte, the onset of etching occurs
+when the cell bias lowers the barrier holes experience in reaching this interface. By contrast, in
+n-type material, etching does not occur unless the SiC is illuminated to generate the requisite holes,
+and though the onset of etching can occur without cell bias, it is often beneficially controlled by the
+application of such a bias.[29] Etching rate is limited by the rate of reaction at the semiconductorelectrolyte interface, controlled by the quantity and diffusion rate of ions in solution and holes in
+the semiconductor towards the interface. The diffusion rate of ions to the interface is controlled
+by mass transport in the bulk of the solution and the potential drop that ions experience at the
+Helmholtz double layer. In the semiconductor, the diffusion of holes to the interface is controlled
+by the built-in voltage of the semiconductor-electrolyte junction and the voltage difference between
+the semiconductor (working) electrode and the counter electrode. The number of holes is largely
+determined by the intensity of illumination. Photoelectrochemical etching of silicon carbide is stable
+if anodic oxidation does not outpace the dissolution by charge exchange, in which case the etch
+is passivated by an insulating layer of SiO2.[29] Additionally, the etching rate can be controlled
+by crystallography. In hexagonal polytypes of SiC, the carbon-face of the material is known to be
+significantly more reactive than the silicon-face of the material and consequently has a significantly
+faster PEC etch.[31] p-type (n-type) material may be selectively etched against relatively n-type
+(p-type) material by appropriate selection of cell bias by setting a more negative (positive) cell bias
+which fixes the energy position of the valence band relative to the electrolyte‘s chemical potential,
+potentially yielding suspended structures if the substrate is targetted in the etch (Figure 1a-b).
+In a homojunction that combines both doping types this relies on a high doping difference (e.g.
+Na = 1(10)14cm−3 vs.
+Nd = 1(10)14cm−3) and allows a 0.5V potential window for selectively
+etching relatively thick layers of SiC.[23]
+
+===== Page 5 =====
+
+SELECTIVE UNDERCUT OF UNDOPED OPTICAL MEMBRANES FOR SPIN-ACTIVE COLOR CENTERS IN 4H-SIC5
+(a)
+p,40mM
+n,40mM
+p,0.2M
+n,0.2M
+(b)
+Open-Circuit
+VRB=-1.5
+VRB= 0.0
+VRB=-0.5
+VRB=-1.0
+i
+ii
+iii
+iv
+v
+1μm
+Unetched
+-0.75V
+-1.50V
+(c)
+n
+p
+n
+p
+Figure 2. (a) Cyclic voltamograms (20mV s−1) of etched mesa structures under open circuit and various
+diode reverse biases, measured on the n-type contact (red, orange, and yellow) or p-type contact (indigo,
+purple). (b) Etch rates for different KOH concentrations as a function of diode reverse bias. (c) FIB cross
+section of mesa structures before PEC etching and after 2 hours of PEC etching with a working electrode
+bias of 0.2V and an partially depleted (−0.75V ) and fully depleted (−1.5V ) reverse bias.
+Unfortunately, in addition to the constraints on applications imposed by the high doping spread
+necessary for selective etching, doping selectivity in a homojunction depends on the ability to mutually bias both doping types in the cell. While this assumption is reasonable in thick layers or under
+low illumination conditions, it breaks down in epilayer thicknesses approaching useful thicknesses
+in photonic devices because of strong photo-biasing of the homojunction. To assess this effect, we
+construct a junction from a thin, 500nm undoped layer of 4H-SiC epitaxially deposited onto an
+n-type (3(10)18 nitrogen doped) substrate wafer. Contact is made to the n-type substrate by thermally evaporating 200nm of nickel on the substrate backside followed by subsequent rapid thermal
+annealing for 5 minutes at 950◦C in an argon atmosphere. Contact is made to the unintentional
+doped layer by thermally evaporating 200nm of aluminum onto the epilayer, with a circular aperture
+in the center of the sample left masked. The mask is then stripped, and contact is made by rapid
+thermal annealing for 5 minutes at 950◦C in an argon atmosphere. The sample is then immersed
+
+===== Page 6 =====
+
+6SELECTIVE UNDERCUT OF UNDOPED OPTICAL MEMBRANES FOR SPIN-ACTIVE COLOR CENTERS IN 4H-SIC
+in 2M KCl solution with the Al contact covered by a silicone o-ring. The carrier concentration and
+conductivity type of the epilayer is determined using electrochemical impedance spectroscopy-based
+Mott Schottky analysis[32]:
+(2)
+1
+C2
+SC
+=
+2
+ϵ0ϵrNa,de(V −VFB −kBT
+e
+)
+where CSC is the capacitance of the space charge region, ϵ0 and ϵr are the vacuum and relative (9.6
+for 4H-SiC) permittivities, Na,d is the acceptor or donor concentration, respectively. e is the electron
+charge, kB is the Boltzmann constant and T is the temperature in degrees Kelvin. By linear fitting
+to the slope of the measured capacitance in cathodic and anodic sweeps, it is possible to determine
+the acceptor and donor concentrations, respectively. The net doping is found to be 1.15(10)14cm−3,
+as shown in Figure 1c, hereafter referred to as the "p-type" layer.
+For PEC-enabled release of etched structures, indium tin oxide (ITO) is adopted as an optically
+transparent contact to the p-type layer through which the underlying SiC can be illuminated while
+still providing uniform electrical connectivity across the cell.
+For diode characterization, cyclic
+voltammetry, and PEC etching, ITO is sputtered at a rate of 3nm/min to form a 100nm layer,
+ramping the substrate to 600◦C over the course of deposition.
+Substrate heating was found to
+be necessary to form a suitably conductive contact to the p-type epilayer.
+Illumination for all
+measurements and etching is provided by a 500W Xe-Hg Arc lamp with its visible spectrum filtered
+by a 400nm short-pass filter to reduce excess heating of the sample, producing a peak intensity
+of 1W ˙cm−2. Before fabricating membrane devices we first characterize the photo-response of the
+diode structure, to determine the degree to which the epilayer is photo-biased as the lamp intensity
+is varied.
+In the dark, the current-voltage (IV) curve shows a turn-on voltage of 0.5V .
+Under
+increasing illumination, the diode shows a typical photodiode response, with a peak photo-bias of
+490mV measured at a lamp intensity of 1W ˙cm−2 (Figure 1e).
+To characterize the dopant-selective undercut process, mesas are first defined by patterning the
+ITO layer using positive tone (PMMA495 C6) electron-beam lithography. The pattern is transferred
+to the ITO by inductively coupled plasma reactive ion etching in H2/CF4, and then subsequently
+transferred into the SiC to a depth of 2µm using dry etching in SF6/O2. ITO is found to be a highly
+selective hard mask, as oxide reduction is continually countered by plasma oxidation via the oxygen
+present in the SiC etching gas mixture, yielding a selectivity of 50:1. PEC etching is performed
+
+===== Page 7 =====
+
+SELECTIVE UNDERCUT OF UNDOPED OPTICAL MEMBRANES FOR SPIN-ACTIVE COLOR CENTERS IN 4H-SIC7
+in 40 −500mM potassium hydroxide (KOH) electrolyte which is continuously circulated from a
+10◦C reservoir to ensure a constant electrolyte concentration and to extract waste heat, with no
+supporting electrolyte added. The counter electrode is a wound Pt wire and the reference electrode
+is an Ag/AgCl electrode in 3M KCl. The membranes are undercut using a PEC cell, with two
+separate electrical circuits present. The first is the potentiostat, used to bias either the n-type or
+p-type SiC as a working electrode against the Pt counter electrode. The second is the junction bias,
+controlled by attaching a voltage source to the p-type and n-type contacts. To assess the impact of
+photo-biasing on the etching kinetics of the junction, cyclic voltammetry (CV) is performed under
+various junction bias conditions with a sweep rate of 20mV s−1 (Figure 2a). Under full-illumination
+(1W ˙cm−2) and no external bias applied to the junction, the p-type and n-type CV curves recorded
+are similar except that the p-type curve is shifted anodic relative to the n-type curve (Figure 2a.i).
+This is contrary to rigorous studies of thick layers of 4H-SiC which found that n-type curves should
+be anodic relative to p-type curves.[23] Furthermore, no distinct oxidation or reduction peaks are
+observed corresponding to p-type or n-type etching, confirming that the strong photo-biasing of the
+cell has eliminated etch selectivity. However, by noting that the photo-biasing occurs because of
+the presence of the junction formed by the epilayer and substrate, it can be concluded that the
+photo-biasing can be completely suppressed by reverse biasing the junction to correct for the photogenerated voltage. By closing the junction circuit between the ITO and Ni junction contacts, the CV
+curves converge (Figure 2a.ii). While closing the junction circuit may restore selectivity in highly
+doped material, we must further increase the junction bias in our case of an undoped epilayer. The
+junction bias depletes the epilayer of carriers and creates selectivity between regions of different
+doping where it is not possible to achieve rapid selective etching without diode biasing. As greater
+reverse bias is progressively applied, the quasi-Fermi level in the valence band of the p-type layer
+rises relative to that in the n-type layer and the dissolution potential into the electrolyte, and the
+p-type CV curve shifts cathodic (Figure 2a.iii-v). At the same time, the characteristic oxidation and
+reduction peaks associated with controlled etching reappear, now at cell biases significantly different
+enough to support selective etching.
+To assess doping selectivity in realistic structures, a series of 4µm wide mesas are undercut in
+40mM and 200mM KOH at different junction reverse biases (Figure 2), with a cell bias of 0.2V ,
+selected to ensure that the n-type electrode is not passivated.[29] Lateral etching rates and membrane
+morphology are determined using focused-ion-beam (FIB) cross sectioning.
+In both electrolyte
+
+===== Page 8 =====
+
+8SELECTIVE UNDERCUT OF UNDOPED OPTICAL MEMBRANES FOR SPIN-ACTIVE COLOR CENTERS IN 4H-SIC
+concentrations, as the reverse bias increases, p-type etching is suppressed before becoming fully
+passivated, past a reverse bias of −1.3V (Figure 2b). Cross sectional images corroborate this finding,
+showing partial undercutting of the p-type layer at moderate reverse biases (−0.75V ), and full
+passivation at high reverse biases(−1.5V ) (Figure 2c). This result demonstrates that at sufficient
+reverse bias, diffusion of photo-generated carriers can be predominantly controlled not by differences
+in doping but by external biasing.
+Smoothly-etched surfaces are highly desirable for photonic and mechanical structures, as scattering loss and surface damping are therefore reduced. We investigate the impact that electrolyte
+concentration has on the surface roughness of the underside of our membranes. The membranes
+shown in Figure 2c are fully suspended and then lifted out using polydimethylsiloxane (PDMS)
+stamping (Figure 3a). The surface roughness of the membrane underside is then measured by tapping mode atomic force microscopy. We find that the concentration of electrolyte strongly controls
+the surface quality of the underside of the membranes, with lower concentration (40mM KOH)
+yielding a RMS surface roughness value of 1.43nm (Figure 3b-d), whereas higher concentrations of
+KOH yield rougher surfaces (5.51nm for 500mM KOH). Previous work suggests that roughness increases in a regime where oxide formation exceeds the rate of oxide removal, indicating this balance
+may be more difficult to establish at high electrolyte concentrations.[23] Similar work also showed
+that above 500mM concentrations, only porous SiC is formed by PEC.[31]
+PDMS
+PDMS
+PDMS
+(a)
+(b)
+40mM,
+Rq=1.43nm
+200mM,
+Rq=4.26nm
+500mM,
+Rq=5.51nm
+Figure 3. (a) PDMS membrane release process for AFM characterization (b) AFM height maps for different
+electrolyte concentrations with corresponding root mean squared roughness values (Rq) after a 2 hour release
+process with 0.2V cell bias and 1W ˙cm2 illumination.
+
+===== Page 9 =====
+
+SELECTIVE UNDERCUT OF UNDOPED OPTICAL MEMBRANES FOR SPIN-ACTIVE COLOR CENTERS IN 4H-SIC9
+• -15dBm
+• 5dBm
+• 0dBm
+• -5dBm
+• -10dBm
+i
+n
+i
+n
+p
+p
+• -15dBm
+• 5dBm
+• 0dBm
+• -5dBm
+• -10dBm
+T2*=1.64±0.02
+T2=7.36±0.02
+T2*=0.54±0.09
+T2=6.83±0.05
+Charge Init.
+v
+Readout
+RF
+t
+Charge Init.
+τ
+Readout
+RF
+t
+π
+2
+π
+2
+π
+2
+π
+2
+π
+Charge Init.
+τ
+τ
+Readout
+RF
+t
+(a)
+(d)
+(e)
+(b)
+i.
+ii.
+(c)
+iii.
+Figure 4. Spin spectroscopy of weak ensembles of V −
+Si in (red) undoped epilayer and (blue) p-i-p doped
+structures. (a) Pulse sequences used for (i.) ODMR, (ii.) FID and (iii.) spin dephasing measurements. (b-c)
+ODMR spectrums with fitted triple Lorentzian spectrum based on natural 29Si concentration in the nearest
+neighbouring site of the defects. Inset: Fitted power dependent line-width of the central peak. (d-e) Free
+induction decay (T ∗
+2 ) fitted to a decaying sinusoid with an envelope of exp((−t/T ∗
+2 )2) measured via a Ramsey
+sequence 2MHz off-resonance and spin dephasing time (T2) fitted to an exponential decay of exp((−t/T2)2)
+by Hahn echo sequence on-resonance. All measurements performed at 6K.
+To assess the potential for the material to host quantum spin registers, the reverse bias undercut
+process is paired with spin resonance and spin lifetime measurements. A suspended, 500nm thick
+undoped membrane formed using the process described, etched in 40mM KOH, is compared to
+another,
+500nm thick suspended membrane comprised of p-i-p-n (150nm p-type, 200nm undoped, 150nm
+p-type, n-type substrate) material used in previous work, that is undercut under identical conditions.[28] Prior work found that slight shifts in the ZPL, ODMR and spin coherence times in
+photoelectrochemical etched structures was a result of high doping, porosity and strain induced by
+the PEC process.[22] We select the silicon monovacancy for study as it can be flexibly introduced
+and has been shown to have high quality optical and spin properties in nanostructures.[33, 34] Each
+sample is identically implanted with He ions of energy 45keV at a dose of 1011 ions · cm−2 followed
+by quenching from 650◦C after annealing in air for 30 minutes, to form a weak ensemble of silicon monovacancies (V −
+Si). The samples are then loaded into a 4K flow cryostat and fitted with a
+
+===== Page 10 =====
+
+10
+SELECTIVE UNDERCUT OF UNDOPED OPTICAL MEMBRANES FOR SPIN-ACTIVE COLOR CENTERS IN 4H-SIC
+microwave wire antenna to excite ground state spin resonances. The charge state of the defects is
+initialized by an off resonant helium neon laser with a power of 3mW, probed by 28dbm of input RF
+power, and photoluminescence is measured on the phonon sideband (>925nm) of the defects using
+near resonant excitation with a 916nm external cavity diode laser with a power of 100µW.(Figure
+4a)
+To compare the spin performance of emitters in both the heavily doped and undoped material,
+power dependent optically detected magnetic resonance
+(ODMR), free induction decay times (T ∗
+2 ), and spin dephasing times (T2) are measured for each
+ensemble (Figure 4a). The ground state (S = 3/2) spin levels, which are typically separated by
+a zero-field splitting of 70MHz are separated further by a moderate magnetic field of 60G to a
+final splitting of 240MHz to reduce the effect of heteronuclear spin flip processes that limit the
+T2 and T ∗
+2 times of ensemble of emitters. Assessing the ms = −1
+2 to ms = −3
+2 transition, ODMR
+studies in Figure 4b,c show similar performance, with emitters in both material types demonstrating
+narrow inhomogeneous broadening that saturate to a minimum at similar drive powers. The T ∗
+2
+time of 1.64 ± 0.02µs measured in the undoped material (Figure 4d) is longer than that in the
+doped material (Figure 4e), approaching the theoretically predicted low field limit of (1.9µs) for
+monovacancy spins in a naturally abundant 29Si,13C nuclear bath.[35] This demonstrates that the
+use of undoped material reduces the presence of influences that induce fast dephasing of the spins,
+which previously limited PEC-etched device performance [22]. In contrast, the T2 time is similar
+between the two samples, showing that in both cases on longer timescales the defects are limited by
+similar slow, dephasing processes. This implies that doping or material defects, and not material
+porosity or fabrication damage, primarily drives the degradation of V −
+Si spin properties in PEC
+processed material.
+3. Conclusion
+We have demonstrated a means of dopant-selective PEC etching that significantly relaxes constraints placed on doping density to achieve etch selectivity–thereby enabling the suspension of lowsurface roughness, large-area membranes with an improved charge-noise environment to host quantum emitters. This approach reduces the epitaxial steps necessary for high purity, PEC-suspended
+photonics and mechanics in SiC to one step with the addition of a commonly used hard-mask (ITO)
+and a circuit to bias the junction formed between the epilayer and substrate. We investigate the
+
+===== Page 11 =====
+
+SELECTIVE UNDERCUT OF UNDOPED OPTICAL MEMBRANES FOR SPIN-ACTIVE COLOR CENTERS IN 4H-SIC
+11
+photo-electrochemical attributes of SiC diodes under external biasing and show that smooth membranes of undoped silicon carbide can be suspended at rates exceeding 4um/hr. We additionally
+note that the demonstrated 500nm device layer is defined by epitaxial growth and can therefore
+be flexibly changed to suit application. Finally, we perform comparative spin spectroscopy on suspended doped and undoped materials, demonstrating that undoped material beneficially reduces the
+effect of fast spin noise on quantum defects and is compatible with PEC processing. The development of a means of reliably suspending large undoped membranes of SiC opens up new opportunities
+leveraging 4H-SiC’s high yield strength for nanomechanical oscillators and applications that integrate quantum emitters into electronic and photonic devices.[36] Beyond SiC, this technique relaxes
+the material constraints for dopant selective etching, suggesting a means of selectively etching other
+inert material where only a single doping type can be reliably created, such as diamond.
+4. Methods
+PEC etching is performed in 40 −500mM potassium hydroxide (KOH) electrolyte which is continuously circulated from a 10◦C reservoir to ensure a constant electrolyte concentration and to
+extract waste heat, with no supporting electrolyte added. The counter electrode is a wound Pt
+wire and the reference electrode is an Ag/AgCl electrode in 3M KCl. For spin measurements, each
+sample is identically implanted with He ions of energy 37keV at a dose of 1011 ions · cm−2 followed
+by quenching from 650◦C after annealing in air for 30 minutes, to form a weak ensemble of silicon monovacancies (V −
+Si). The samples are then loaded into a 4K flow cryostat and fitted with a
+microwave wire antenna to excite ground state spin resonances. The charge state of the defects is
+initialized by an off resonant helium neon laser with a power of 3mW, and photoluminescence is
+measured on the phonon sideband (>925nm) of the defects using near resonant excitation with a
+916nm external cavity diode laser with a power of 100µW.
+5. Acknowledgements
+Research reported in this publication was supported as part of the AWS Center for Quantum
+Networking’s research alliance with the Harvard Quantum Initiative (or HQI). Portions of this work
+were performed at the Harvard University Center for Nanoscale Systems (CNS); a member of the
+National Nanotechnology Coordinated Infrastructure Network (NNCI), which is supported by the
+National Science Foundation under NSF award no. ECCS-2025158. A.M.D. acknowledges funding
+
+===== Page 12 =====
+
+12
+SELECTIVE UNDERCUT OF UNDOPED OPTICAL MEMBRANES FOR SPIN-ACTIVE COLOR CENTERS IN 4H-SIC
+from the Science and Technology Center for Integrated Quantum Materials, NSF Grant No. DMR1231319. J.R.D acknowledges funding from NSF RAISE-TAQS Award 1839164.
+
+===== Page 13 =====
+
+REFERENCES
+13
+References
+[1]
+Hongwei Qu. “CMOS MEMS Fabrication Technologies and Devices”. en. In: Micromachines
+7.1 (Jan. 2016). Number: 1 Publisher: Multidisciplinary Digital Publishing Institute, p. 14.
+issn: 2072-666X. doi: 10.3390/mi7010014. url: https://www.mdpi.com/2072-666X/7/1/14
+(visited on 05/06/2024).
+[2]
+Yi Zheng et al. “High-quality factor, high-confinement microring resonators in 4H-silicon
+carbide-on-insulator”. EN. In: Optics Express 27.9 (Apr. 2019). Publisher: Optica Publishing Group, pp. 13053–13060. issn: 1094-4087. doi: 10.1364/OE.27.013053. url: https:
+//opg.optica.org/oe/abstract.cfm?uri=oe-27-9-13053 (visited on 10/12/2023).
+[3]
+Di Zhu et al. “Integrated photonics on thin-film lithium niobate”. EN. In: Advances in Optics
+and Photonics 13.2 (June 2021). Publisher: Optica Publishing Group, pp. 242–352. issn: 19438206. doi: 10.1364/AOP.411024. url: https://opg.optica.org/aop/abstract.cfm?uri=
+aop-13-2-242 (visited on 05/06/2024).
+[4]
+Xinghan Guo et al. “Tunable and Transferable Diamond Membranes for Integrated Quantum
+Technologies”. In: Nano Letters 21.24 (Dec. 2021). Publisher: American Chemical Society,
+pp. 10392–10399. issn: 1530-6984. doi: 10.1021/acs.nanolett.1c03703. url: https://doi.
+org/10.1021/acs.nanolett.1c03703 (visited on 05/06/2024).
+[5]
+Y. Lindén et al. “Fabrication of three-dimensional silicon structures by means of dopingselective etching (DSE)”. In: Sensors and Actuators 16.1 (Jan. 1989), pp. 67–82. issn: 02506874. doi: 10.1016/0250- 6874(89)80006- X. url: https://www.sciencedirect.com/
+science/article/pii/025068748980006X (visited on 05/06/2024).
+[6]
+C.J.M. Eijkel et al. “A new technology for micromachining of silicon: dopant selective HF
+anodic etching for the realization of low-doped monocrystalline silicon structures”. In: IEEE
+Electron Device Letters 11.12 (Dec. 1990). Conference Name: IEEE Electron Device Letters,
+pp. 588–589. issn: 1558-0563. doi: 10.1109/55.63048. url: https://ieeexplore.ieee.
+org/abstract/document/63048 (visited on 05/06/2024).
+[7]
+J. S. Shor et al. “Dopant-selective etch stops in 6H and 3C SiC”. In: Journal of Applied Physics
+81.3 (Feb. 1997), pp. 1546–1551. issn: 0021-8979. doi: 10.1063/1.363890. url: https:
+//doi.org/10.1063/1.363890 (visited on 05/06/2024).
+[8]
+C. Youtsey, G. Bulman, and I. Adesida. “Dopant-selective photoenhanced wet etching of GaN”.
+en. In: Journal of Electronic Materials 27.4 (Apr. 1998), pp. 282–287. issn: 1543-186X. doi:
+
+===== Page 14 =====
+
+14
+REFERENCES
+10.1007/s11664- 998- 0400- 0. url: https://doi.org/10.1007/s11664- 998- 0400- 0
+(visited on 05/06/2024).
+[9]
+Reena Khare and Evelyn L. Hu. “Dopant Selective Photoelectrochemical Etching of GaAs
+Homostructures”. en. In: Journal of The Electrochemical Society 138.5 (May 1991). Publisher: IOP Publishing, p. 1516. issn: 1945-7111. doi: 10.1149/1.2085818. url: https:
+//iopscience.iop.org/article/10.1149/1.2085818/meta (visited on 05/06/2024).
+[10]
+R. Soref and B. Bennett. “Electrooptical effects in silicon”. In: IEEE Journal of Quantum Electronics 23.1 (Jan. 1987). Conference Name: IEEE Journal of Quantum Electronics, pp. 123–
+129. issn: 1558-1713. doi: 10.1109/JQE.1987.1073206. url: https://ieeexplore.ieee.
+org/document/1073206 (visited on 05/06/2024).
+[11]
+R. E. Mihailovich and J. M. Parpia. “Low temperature mechanical properties of boron-doped
+silicon”. In: Physical Review Letters 68.20 (May 1992). Publisher: American Physical Society,
+pp. 3052–3055. doi: 10.1103/PhysRevLett.68.3052. url: https://link.aps.org/doi/10.
+1103/PhysRevLett.68.3052 (visited on 05/06/2024).
+[12]
+Anderson Janotti and Chris G. Van de Walle. “Fundamentals of zinc oxide as a semiconductor”.
+en. In: Reports on Progress in Physics 72.12 (Oct. 2009), p. 126501. issn: 0034-4885. doi:
+10.1088/0034-4885/72/12/126501. url: https://dx.doi.org/10.1088/0034-4885/72/
+12/126501 (visited on 05/06/2024).
+[13]
+Hongchao Yang, Yandong Ma, and Ying Dai. “Progress of structural and electronic properties of
+diamond: a mini review”. In: Functional Diamond 1.1 (Jan. 2022). Publisher: Taylor & Francis
+_eprint: https://doi.org/10.1080/26941112.2021.1956287, pp. 150–159. issn: 2694-1112. doi:
+10.1080/26941112.2021.1956287. url: https://doi.org/10.1080/26941112.2021.
+1956287 (visited on 05/06/2024).
+[14]
+Daniil M. Lukin, Melissa A. Guidry, and Jelena Vučković. “Integrated Quantum Photonics with
+Silicon Carbide: Challenges and Prospects”. In: PRX Quantum 1.2 (Dec. 2020). Publisher:
+American Physical Society, p. 020102. doi: 10.1103/PRXQuantum.1.020102. url: https:
+//link.aps.org/doi/10.1103/PRXQuantum.1.020102 (visited on 01/31/2023).
+[15]
+Yaoyao Long, Zhenming Liu, and Farrokh Ayazi. “4H-Silicon Carbide as an Acoustic Material for MEMS”. In: IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control
+70.10 (Oct. 2023). Conference Name: IEEE Transactions on Ultrasonics, Ferroelectrics, and
+
+===== Page 15 =====
+
+REFERENCES
+15
+Frequency Control, pp. 1189–1200. issn: 1525-8955. doi: 10.1109/TUFFC.2023.3282920. url:
+https://ieeexplore.ieee.org/abstract/document/10144254 (visited on 03/25/2024).
+[16]
+Gang Zhang et al. “Material platforms for defect qubits and single-photon emitters”. In: Applied
+Physics Reviews 7.3 (Sept. 2020), p. 031308. issn: 1931-9401. doi: 10.1063/5.0006075. url:
+https://doi.org/10.1063/5.0006075 (visited on 10/30/2023).
+[17]
+Jonathan R. Dietz et al. “Spin-acoustic control of silicon vacancies in 4H silicon carbide”.
+en. In: Nature Electronics 6.10 (Oct. 2023). Number: 10 Publisher: Nature Publishing Group,
+pp. 739–745. issn: 2520-1131. doi: 10.1038/s41928- 023- 01029- 4. url: https://www.
+nature.com/articles/s41928-023-01029-4 (visited on 02/01/2024).
+[18]
+Roland Nagy et al. “High-fidelity spin and optical control of single silicon-vacancy centres
+in silicon carbide”. en. In: Nature Communications 10.1 (Apr. 2019). Number: 1 Publisher:
+Nature Publishing Group, p. 1954. issn: 2041-1723. doi: 10.1038/s41467-019-09873-9.
+url: https://www.nature.com/articles/s41467-019-09873-9 (visited on 10/12/2023).
+[19]
+Christopher P. Anderson et al. “Electrical and optical control of single spins integrated in
+scalable semiconductor devices”. In: Science 366.6470 (Dec. 2019). Publisher: American Association for the Advancement of Science, pp. 1225–1230. doi: 10.1126/science.aax9406. url:
+https://www.science.org/doi/10.1126/science.aax9406 (visited on 10/12/2023).
+[20]
+Andrew P. Magyar et al. “High quality SiC microdisk resonators fabricated from monolithic
+epilayer wafers”. In: Applied Physics Letters 104.5 (Feb. 2014), p. 051109. issn: 0003-6951. doi:
+10.1063/1.4863932. url: https://doi.org/10.1063/1.4863932 (visited on 08/15/2023).
+[21]
+David O. Bracher, Xingyu Zhang, and Evelyn L. Hu. “Selective Purcell enhancement of two
+closely linked zero-phonon transitions of a silicon carbide color center”. In: Proceedings of the
+National Academy of Sciences 114.16 (Apr. 2017). Publisher: Proceedings of the National
+Academy of Sciences, pp. 4060–4065. doi: 10.1073/pnas.1704219114. url: https://www.
+pnas.org/doi/abs/10.1073/pnas.1704219114 (visited on 10/12/2023).
+[22]
+Alexander L. Crook et al. “Purcell Enhancement of a Single Silicon Carbide Color Center with
+Coherent Spin Control”. In: Nano Letters 20.5 (May 2020). Publisher: American Chemical
+Society, pp. 3427–3434. issn: 1530-6984. doi: 10.1021/acs.nanolett.0c00339. url: https:
+//doi.org/10.1021/acs.nanolett.0c00339 (visited on 07/25/2021).
+[23]
+Shojan P. Pavunny et al. “On the doping concentration dependence and dopant selectivity
+of photogenerated carrier assisted etching of 4H–SiC epilayers”. In: Electrochimica Acta 323
+
+===== Page 16 =====
+
+16
+REFERENCES
+(Nov. 2019), p. 134778. issn: 0013-4686. doi: 10.1016/j.electacta.2019.134778. url:
+https://www.sciencedirect.com/science/article/pii/S0013468619316494 (visited on
+08/15/2023).
+[24]
+David O. Bracher and Evelyn L. Hu. “Fabrication of High-Q Nanobeam Photonic Crystals in
+Epitaxially Grown 4H-SiC”. In: Nano Letters 15.9 (Sept. 2015). Publisher: American Chemical
+Society, pp. 6202–6207. issn: 1530-6984. doi: 10.1021/acs.nanolett.5b02542. url: https:
+//doi.org/10.1021/acs.nanolett.5b02542 (visited on 07/25/2021).
+[25]
+B. Jiang, N. P. Opondo, and S. A. Bhave. “Semi-insulating 4H-SiC lateral bulk acoustic wave
+resonators”. In: Applied Physics Letters 118.11 (Mar. 2021). Number: 11 Publisher: American
+Institute of Physics, p. 114002. issn: 0003-6951. doi: 10.1063/5.0045232. url: https:
+//aip.scitation.org/doi/full/10.1063/5.0045232 (visited on 05/27/2022).
+[26]
+Daniil M. Lukin et al. “4H-silicon-carbide-on-insulator for integrated quantum and nonlinear
+photonics”. en. In: Nature Photonics 14.5 (May 2020). Number: 5 Publisher: Nature Publishing
+Group, pp. 330–334. issn: 1749-4893. doi: 10.1038/s41566-019-0556-6. url: http://www.
+nature.com/articles/s41566-019-0556-6 (visited on 05/27/2022).
+[27]
+Jonah Heiler et al. “Spectral stability of V2 centres in sub-micron 4H-SiC membranes”. en. In:
+npj Quantum Materials 9.1 (Apr. 2024). Publisher: Nature Publishing Group, pp. 1–8. issn:
+2397-4648. doi: 10.1038/s41535-024-00644-4. url: https://www.nature.com/articles/
+s41535-024-00644-4 (visited on 06/05/2024).
+[28]
+Jonathan R. Dietz and Evelyn L. Hu. “Optical and strain stabilization of point defects in
+silicon carbide”. In: Applied Physics Letters 120.18 (May 2022), p. 184001. issn: 0003-6951. doi:
+10.1063/5.0087805. url: https://doi.org/10.1063/5.0087805 (visited on 10/30/2023).
+[29]
+D. H. van Dorp, J. L. Weyher, and J. J. Kelly. “Anodic etching of SiC in alkaline solutions”.
+en. In: Journal of Micromechanics and Microengineering 17.4 (Mar. 2007), S50. issn: 09601317. doi: 10.1088/0960-1317/17/4/S04. url: https://dx.doi.org/10.1088/09601317/17/4/S04 (visited on 08/15/2023).
+[30]
+Kohei Adachi et al. “Single-crystalline 4H-SiC micro cantilevers with a high quality factor”.
+In: Sensors and Actuators A: Physical 197 (Aug. 2013), pp. 122–125. issn: 0924-4247. doi:
+10.1016/j.sna.2013.04.014. url: https://www.sciencedirect.com/science/article/
+pii/S0924424713001787 (visited on 03/14/2024).
+
+===== Page 17 =====
+
+REFERENCES
+17
+[31]
+Masashi Kato et al. “Electrochemical Etching of 6H-SiC Using Aqueous KOH Solutions with
+Low Surface Roughness”. en. In: Japanese Journal of Applied Physics 42.7R (July 2003). Publisher: IOP Publishing, p. 4233. issn: 1347-4065. doi: 10.1143/JJAP.42.4233. url: https:
+//iopscience.iop.org/article/10.1143/JJAP.42.4233/meta (visited on 08/15/2023).
+[32]
+Kevin Sivula. “Mott–Schottky Analysis of Photoelectrodes: Sanity Checks Are Needed”. In:
+ACS Energy Letters 6.7 (July 2021). Publisher: American Chemical Society, pp. 2549–2551.
+doi: 10.1021/acsenergylett.1c01245. url: https://doi.org/10.1021/acsenergylett.
+1c01245 (visited on 03/14/2024).
+[33]
+Aaron M. Day et al. “Laser writing of spin defects in nanophotonic cavities”. en. In: Nature
+Materials 22.6 (June 2023). Number: 6 Publisher: Nature Publishing Group, pp. 696–702. issn:
+1476-4660. doi: 10.1038/s41563-023-01544-x. url: https://www.nature.com/articles/
+s41563-023-01544-x (visited on 02/01/2024).
+[34]
+Charles Babin et al. “Fabrication and nanophotonic waveguide integration of silicon carbide
+colour centres with preserved spin-optical coherence”. en. In: Nature Materials 21.1 (Jan. 2022).
+Publisher: Nature Publishing Group, pp. 67–73. issn: 1476-4660. doi: 10.1038/s41563-02101148- 3. url: https://www.nature.com/articles/s41563- 021- 01148- 3 (visited on
+03/19/2024).
+[35]
+Li-Ping Yang et al. “Electron spin decoherence in silicon carbide nuclear spin bath”. In: Physical
+Review B 90.24 (Dec. 2014). Publisher: American Physical Society, p. 241203. doi: 10.1103/
+PhysRevB.90.241203. url: https://link.aps.org/doi/10.1103/PhysRevB.90.241203
+(visited on 03/19/2024).
+[36]
+Leo Sementilli et al. Ultralow Dissipation Nanomechanical Devices from Monocrystalline Silicon
+Carbide. arXiv:2404.13893 [cond-mat, physics:physics]. Apr. 2024. doi: 10.48550/arXiv.
+2404.13893. url: http://arxiv.org/abs/2404.13893 (visited on 06/05/2024).

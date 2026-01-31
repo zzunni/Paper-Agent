@@ -1,0 +1,1430 @@
+
+
+===== Page 1 =====
+
+Management Decisions in Manufacturing using Causal Machine
+Learning – To Rework, or not to Rework?
+Philipp Schwarz∗
+University of Hamburg
+ams Osram
+philipp.schwarz@ams-osram.com
+Oliver Schacht∗
+University of Hamburg
+oliver.schacht@uni-hamburg.de
+Sven Klaassen∗
+University of Hamburg
+Economic AI
+Daniel Grünbaum
+ams Osram
+Sebastian Imhof
+ams Osram
+Martin Spindler
+University of Hamburg
+Economic AI
+Abstract
+In this paper, we present a data-driven model for estimating optimal rework policies in manufacturing
+systems. We consider a single production stage within a multistage, lot-based system that allows for
+optional rework steps. While the rework decision depends on an intermediate state of the lot and system,
+the final product inspection, and thus the assessment of the actual yield, is delayed until production is
+complete. Repair steps are applied uniformly to the lot, potentially improving some of the individual
+items while degrading others. The challenge is thus to balance potential yield improvement with the
+rework costs incurred. Given the inherently causal nature of this decision problem, we propose a causal
+model to estimate yield improvement. We apply methods from causal machine learning, in particular
+double/debiased machine learning (DML) techniques, to estimate conditional treatment effects from
+data and derive policies for rework decisions. We validate our decision model using real-world data
+from opto-electronic semiconductor manufacturing, achieving a yield improvement of 2 −3% during the
+color-conversion process of white light-emitting diodes (LEDs).
+Keywords: Causal Machine Learning, Heterogeneous Treatment Effects, Double Machine Learning, Policy
+Learning, Rework, Multistage Manufacturing, Production Optimization, Phosphor-converted White LEDs
+1
+Introduction
+Cost considerations and the increasing importance of sustainability require efficient manufacturing systems
+that produce high-quality items. However, in complex value chains, such as semiconductor manufacturing,
+imperfect processes can lead to products that fail to meet the required quality targets. Several strategies have
+been proposed to avoid, reduce the number of, or cope with defective products with the goal of minimizing
+∗Equal Contribution.
+1
+arXiv:2406.11308v1  [cs.LG]  17 Jun 2024
+
+===== Page 2 =====
+
+costs. While preventing defects is preferable to mitigating them, doing so usually assumes an in-depth
+knowledge of the processes involved (see Powell et al. [2022]). In cases where this assumption does not hold,
+defect compensation techniques, such as inline rework, seem more desirable than discard strategies. We argue
+that in the case of rework, a well-informed economic decision should be made regarding whether to repair a
+specific item. When dealing with an imperfect rework process in lot-based production systems, the trade-off
+between the additional costs of and the savings from the repair step is even more apparent. Indeed, depending
+on their state, some items in the production lot might benefit from the repair while others deteriorate. Thus,
+a decision model is needed that minimizes the yield loss incurred through the optional repair steps.
+In the field of production planning and inventory control, rework has been intensively studied, with a
+primary focus on improving the logistical decision-making associated with the rework process (e.g., Wein
+[1992], So and Tang [1995], Alsawafy and Selim [2022]). Although logistical process properties such as lot
+size, production, and inspection cycles affect the number of defectives (e.g., Lee and Rosenblatt [1987]), the
+actual impact of rework on the product has not been a major concern in this branch of research. Except for
+Colledani and Angius [2020], the product state has usually been ignored, leading to simplifications that do
+not allow for individual repair decisions.
+Statistical quality control and improvement are more focused on defect avoidance. The aim of research
+in this area is to increase quality by reducing process and product variability. This, in turn, is intended to
+decrease the number of defective items and the amount of rework [Zantek et al., 2002]. Recent quality models
+have jointly estimated the effect of process parameters and (intermediate) product measurements on process
+quality (e.g., Zantek et al. [2002], Senoner et al. [2022], Busch et al. [2022]). However, policies derived from
+these models are usually of a global nature and thus do not allow for single-item decisions.
+A direct approach to preventing and mitigating defects is taken in zero defect manufacturing (ZDM). Inline
+data-gathering techniques and analytics enable short feedforward cycles that inform the next production step
+to compensate for variations introduced in the current step [Powell et al., 2022]. This approach allows for
+decision-making based on the current state of the item and system. While the goal of ZDM is to avoid the
+production of scrap and thus the need to rework in the first place, inline rework setups have been studied as
+defect mitigation measures [Eger et al., 2018, Colledani et al., 2014]. This relates well to our work, in which
+defect detection and mitigation take place within a single process stage.
+In all the abovementioned branches of research, the objective is to minimize the negative impact of
+imperfect production systems by taking actions upon some observed state. Since any kind of control problem
+fundamentally involves identifying cause and effect relations, this principle is relevant to our study as well, or
+as stated in Shewhart [1926]:
+2
+
+===== Page 3 =====
+
+“The reason for trying to find assignable causes is obvious – it is only through the control of
+such factors that we are able to improve the product without changing the whole manufacturing
+process.”
+Despite this intrinsic causal reasoning, the predominant models in the rework literature do not emphasize
+it. Modern correlation-based predictors excel at finding patterns in data but falter when the underlying
+data-generating mechanisms change [D’Amour et al., 2020]. Because optimizing a decision policy implies an
+imagined change in mechanism, we argue that robust causal methods should be used. 1 We show that rework
+decisions are prone to confounding, which can lead to spurious associations and a subsequent underestimation
+of their effect. To overcome these drawbacks, we develop a data-driven framework for optimizing rework
+policies based on methods from causal machine learning.
+In particular, we rely on the double/debiased machine learning (DML) framework [Chernozhukov et al.,
+2018] to estimate the causal effect of rework on individual production lots. Based on the estimate, we derive
+a counterfactual assignment policy for the rework step using conditional average treatment effects [Semenova
+and Chernozhukov, 2021] and policy trees [Athey and Wager, 2021]. In our setting, decision-making and
+treatment effect estimation target the direct costs related to the final production yield instead of intermediate
+proxies of quality. As argued by Fernández-Loría and Provost [2022], this match in the outcome of interest is
+a precondition for deriving optimal policies based on effect estimates. Importantly, we are able to assess the
+influence of potential unobserved characteristics using bounds for omitted variable bias [Chernozhukov et al.,
+2023].
+We gather empirical evidence of the effectiveness of our method by applying it to a real-world setting at
+AMS-Osram, a leading manufacturer in the opto-semiconductor industry. We investigate large-scale historic
+data of the inline rework process during the phosphor conversion of white light-emitting diodes (LEDs).
+Our main contributions are (1) the development of a data-driven framework for optimizing rework policies
+in lot-based manufacturing systems using methods from causal machine learning and (2) the empirical
+application of this framework to a challenging problem in opto-semiconductor manufacturing.
+2
+Related Literature
+In this section, we provide an overview of the three main bodies of research relevant to our work. First, we
+place rework in the general context of production planning, inventory control, and quality management, and
+we relate it to ZDM approaches. Second, we offer a short overview of the literature on causal approaches
+1In a broad sense, causal (machine learning) methods refer to (machine learning) methods that utilize knowledge about the
+causal structure of the problem [Kaddour et al., 2022].
+3
+
+===== Page 4 =====
+
+in manufacturing. Lastly, we provide a brief introduction to the literature on the color-conversion process
+during the manufacturing of white LEDs.
+2.1
+Rework
+In the literature there are three dominant strategies for dealing with imperfect items in production: avoiding
+defects, repairing defects, and managing imperfect production. Early accounts of production planning and
+inventory control that acknowledge the creation of defective items are extensions of the classical EOQ/EPQ
+Model from Harris [1913], such as those by Rosenblatt and Lee [1986], Lee and Rosenblatt [1987] and Porteus
+[1986]. Rosenblatt and Lee [1986] assume that the production process deteriorates over time, transitioning
+from an “in-control” to an “out-of-control” state in which non-conforming items are produced. Maintenance
+at the end of a production cycle resets the machine at some cost. The challenge is to find a cost-optimal
+production cycle time and corresponding lot size. While this has some influence on the number of defective
+items, the overall goal is a logistical one: managing the consequences of imperfect processes. Several variations
+of and extensions to this model have been proposed, some of which deal with rework. Wein [1992] formulates
+a Markov decision process for finding optimal lot sizes in a make-to-order scenario with rework. The repair
+step is assumed to eventually succeed, such that the desired number of good items is delivered to the next
+stage while the rest are scrapped. So and Tang [1995] develop a policy for switching between regular and
+rework operations at a bottleneck stage based on the buffer levels of the preceding rework and regular job
+queues. Alsawafy and Selim [2022] focus on single-item production with repeated rework and an imperfect
+repair process, aiming to find the optimal production time for a single item. If this time is depleted, the
+continuous rework is stopped and the current item is scrapped in favor of starting the production of a new
+one. Colledani and Angius [2020] propose a discrete-state Markov chain that models transitions in item and
+system states in a multi-stage production system with rework. While the rework decision can be based on
+the item state, it is not the main objective of optimization. Similar to the other research described above,
+the focus is on the logistics related to the rework process rather than the actual rework decision. Details on
+the occurrence of defectives and their repair are vastly simplified in these models. Except for Colledani and
+Angius [2020], the state of an individual production lot is not considered.
+An indirect but more process-centric strategy for avoiding defects is used in statistical quality control
+and improvement. Although the primary goal of this strategy is to increase output quality by decreasing
+process and product variability, it is assumed that doing so decreases the number of defective items as well
+(e.g., Zantek et al. [2002]). As early as Shewhart [1926], the causal nature of this endeavor was understood,
+with the aim being to find assignable causes that explain variations in output quality and subsequently to
+4
+
+===== Page 5 =====
+
+control them. Since then, various data-driven models have been developed to (1) predict quality variation
+given process and product parameters, and (2) exploit the learned models to minimize quality variation.
+Zantek et al. [2002] develop a linear model to estimate the variation in production induced by a single
+production stage on the final product in a multi-stage manufacturing system. The model is used to guide the
+management investment in process improvement. Senoner et al. [2022] learn a metamodel to predict variation
+in yield in a multi-stage system given a set of production parameters. They use techniques from explainable
+AI to decompose the learned model and identify actions on the production parameters that minimize yield
+variation. Busch et al. [2022] similarly derive limits for production parameters to increase yield, employing
+different machine learning models. Although the models in this line of work are conditional on the product
+and system state, the decision-making is usually at the system level and thus affects multiple lots at once.
+For example, Senoner et al. [2022] achieve a decrease in yield variation through a change in machine routing,
+which simultaneously affects several production lots. Moreover, non-causal machine learning models are
+usually employed to estimate the effect of causal interventions on process parameters. Remarkably, the model
+assumptions in Zantek et al. [2002] resemble those of linear structural causal models (SCMs) (see e.g., Peters
+[2017]).
+More direct approaches to defect avoidance and mitigation can be found in ZDM literature. ZDM is
+a production paradigm that aims to eliminate scrap completely through defect prediction and prevention
+measures [Powell et al., 2022]. Short feedforward cycles are used to issue corrective measures, adjusting the
+next production steps to prevent defective items. The correction decisions are usually based on the current
+product and system state, which is inferred through inline inspection techniques. Although rework in general
+is not in accordance with the overall goal of ZDM to prevent defects from the outset, inline rework has been
+studied as a defect compensation measure (e.g., Colledani et al. [2014], Eger et al. [2018]). It involves defect
+detection and mitigation measures in the same manufacturing stage without the expense of a setup apart
+from the main line [Colledani et al., 2014]. In our setup as well, the downstream compensation of defects
+takes place in the same stage and involves adjusted processing parameters. Eger et al. [2018] developed a
+system that combines different data sources capturing system and product states and carries out inline rework
+as a defect compensation measure, among other ZDM techniques. Colledani et al. [2014] apply inline rework
+during the manufacturing of electrical drives, as part of which magnetic field deviations are compensated
+through the realignment of parts of the rotor. Most ZDM approaches are process- or product-centric, whereas
+human-centric ZDM systems have hardly been researched [Powell et al., 2022]. Although we do not regard
+our approach to rework as human-centric, in the application part of our paper we aim to reverse-engineer and
+improve the decision policy of operators to aid future rework decisions. In fact, without the human-made
+variation in the data, improving the in-sample policy would not be possible. While Powell et al. [2022] list
+5
+
+===== Page 6 =====
+
+artificial intelligence (AI) for automated decision-making as a key enabling technology in ZDM, the emerging
+trend in AI towards causality is insufficiently reflected in this field.
+2.2
+Causal Machine Learning in Manufacturing
+Since the popularization of consistent causal reasoning through Rubin [2005] and Pearl [1995], both the
+potential outcomes framework and graph-based approaches have influenced various areas of research. The
+recent combination of causality with machine learning aims to circumvent shortcomings in traditional ML
+methods, such as biased estimates due to confounding. For a thorough overview, see Kaddour et al. [2022].
+Causal machine learning has been applied to a broad variety of settings, ranging from physical (e.g.,
+Schölkopf et al. [2015]) to marketing science problems (e.g., Ellickson et al. [2023]). In manufacturing,
+several survey articles have referenced causal methodology. Diedrich et al. [2020] propose a concept for
+automated fault diagnosis and reconfiguration for hybrid cyber-physical production systems based on a causal
+dependency model. Hua et al. [2022] develop a combined framework of deep convolutional learning and
+causal representation learning, which they apply to the prediction of tool wear under non-stationary working
+conditions. More generally, Hünermund et al. [2021] provide an overview of opportunities for using causality
+in business decision-making. Lastly, Ho et al. [2017] give an overview of multiple causal methods and propose
+their application in operations management. However, to the best of our knowledge, there is no application
+of heterogeneous treatment effect estimation and policy learning in a manufacturing context. Furthermore,
+there is no work on the application of causal machine learning to rework decision-making in manufacturing
+beyond preliminary studies conducted by Schacht et al. [2023], Grünbaum [2023].
+2.3
+Color Conversion
+For the interested reader, we provide a short introduction to the literature regarding the physics of colorconverted LEDs. Although the development of LEDs is an interesting and active area of research in its
+own right (e.g., Wankerl et al. [2022]), it is relevant here only for the application part of our work. Cho
+et al. [2017] provide a thorough account of the history of polychromatic LEDs. The work of Schubert
+[2014] can be regarded as a standard reference for general LEDs. According to Cho et al. [2017], the
+prerequisites for polychromatic white LEDs were established in the mid-1990s with the development of
+LEDs covering the entire monochromatic spectrum. Since then, different approaches to polychromatic white
+LEDs have been developed. One commercially successful method involves dispensing a phosphor conversion
+layer on monochromatic blue LEDs. Although this process step is crucial for the optical performance of
+the LEDs [Wang et al., 2014, Lo et al., 2014], it is difficult to control in large-scale manufacturing due to
+6
+
+===== Page 7 =====
+
+various interrelated physical mechanisms. For example, layer thickness influences perceived color, and affects
+temperature and thermodynamic stress in the LED [Tan et al., 2018]. Furthermore, the sedimentation of
+phosphor particles in the dispensed slurry influences luminous efficiency and color homogeneity (e.g., Wang
+et al. [2014]). Various dispensing setups have been studied in physics-orientated literature (e.g., Lo et al.
+[2014], Huang et al. [2010], You et al. [2010]). In contrast, we adopt a high-level, data-driven perspective that
+is more suitable for manufacturing. Put differently, we assume that the setup of the physical process and the
+corresponding parameters are fixed and reasonably refined.
+3
+Model
+The problem setup discussed in the following is derived from an application in opto-semiconductor production.
+For clarity of presentation and to highlight the broad applicability of our framework, we first describe the
+abstract manufacturing setting and the applied data-driven methods before presenting the empirical results.
+3.1
+Manufacturing Setting
+We assume that the observed value chain consists of multiple manufacturing stages (Figure 1).
+Each
+stage S1, . . . , Sn is composed of several process steps, including inline inspection of manufactured products.
+Furthermore, we assume that the production is lot-based, meaning that multiple items are grouped together
+and receive the same treatment while traversing the production stages. Any decision or parameter adjustment
+at a specific process step affects the current lot as a whole, and no item-level decisions can be made. After a
+lot has passed the final production stage Sn, a conformity check (FI) is performed, which determines the
+fraction Y of acceptable items.
+For decision-making, we focus on an intermediate stage Sk, at which we have access to a set of values Xp
+and Xs derived from the actual but unknown product state P and system state S. The observed product
+state Xp is measured through inline inspections performed at the current and previous stages. It captures
+measurements of individual items in the current lot, whereas the observed system state Xs consists of features
+related to the state of the human operators (e.g., time until break) and the production equipment (e.g.,
+overall load, contamination, time until next maintenance). Although both parts comprise the observed
+state X = (Xp, Xs), Xs cannot be influenced through any decision-making at Sk. Of course, in reality, the
+observed state depends on the decision-maker. For example, the human decision-maker might implicitly
+be aware of and affected by the system load. This is in contrast to fully automated environments, where
+process steps are exactly repeated in strict timing. Sk is supposed to admit the possibility of inline rework
+(see Figure 2). A process step M is followed by an inline inspection I, which updates the observed product
+7
+
+===== Page 8 =====
+
+S1
+. . .
+Sk−1
+Sk
+. . .
+Sn
+Xp
+. . .
+Xs
+. . .
+. . .
+FI
+Figure 1:
+Exemplary linear setup with manufacturing stages S1, . . . , Sn and a final inspection stage FI.
+Decisions at Sk may depend on previously observed product state Xp and the overall system state Xs.
+Sk
+. . .
+M
+I
+OR
+. . .
+Xp
+Xs
+Figure 2:
+Manufacturing M, inline inspection I and decision step OR at stage Sk.
+state Xp. Subsequently, a decision A ∈{0, 1} is made whether to repeat M with adjusted process parameters
+or to continue with the next production stage. Parameter settings for the initial regular step and the possible
+repeated rework steps are assumed to be fixed.
+While each defective item in a lot implies a certain cost, so does the additional rework step. Because the
+rework step is done inline, we assume that the setup costs for switching back and forth between regular and
+rework operation modes are negligible compared to the process costs for a single rework step. Further we
+suppose that the cost of imperfect production is linear with respect to the number of defectives. This allows
+us to express the total costs c for a rework step in units of yield percent.
+3.2
+Causal Setting
+The above setup implies the causal relations shown in Figure 3. Both the product state P and system state
+S before decision-making affect the yield Y and the rework decision A – the latter indirectly through the
+observed states Xp and Xs. The action A, in turn, affects the yield Y ; otherwise, the rework step would be
+superfluous. This makes (P, S) a confounder of A and Y , meaning there is an open backdoor path between
+A and Y [Pearl, 1995]. It is likely that lots with severe defects – i.e., those beyond any repair – tend to
+receive rework treatment more often compared to those that have a chance of improvement but seem quite
+good to begin with. Causal methods can exploit this knowledge to adjust for these kinds of confounding
+biases. However, not all relevant parts of (P, S) might be observed, potentially disregarding some unobserved
+8
+
+===== Page 9 =====
+
+S
+P
+XS
+XP
+A
+Y
+Figure 3:
+Graphical Causal Model: Yield Y and rework decision A are confounded by lot state P and system
+sate S.
+confounding influence U.
+3.3
+Problem Formulation
+Our goal is to find a cost-optimal policy π∗that decides based on the observed lot state X = (Xp, Xs)
+whether to continue reworking π∗(X) = 1 or to proceed with the next production stage π∗(X) = 0 For any
+observed state X, an optimal policy π∗should decide for rework if the yield improvement ∆Y due to this extra
+step outweighs the costs ∆Y −c > 0, but should continue with the next stage otherwise. Importantly, neither
+the actual yield Y after production, nor the yield improvement ∆Y are known at the time of decision-making.
+Calculating the latter involves estimating interventional quantities, namely the yield of the lot when doing
+one additional rework step Y (A = 1) and the yield of the lot when skipping further rework steps Y (A = 0).
+Therefore, we assume that i = 1, . . . , N observations Wi = (Xi, Ai, Yi), each for an individual production
+lot, are given. A data point i consists of the observed system and product state Xi = (Xi,p, Xi,s) before the
+rework decision Ai, the rework decision Ai, and the yield Yi after production is finished.
+The causal interpretation of estimated quantities, such as ∆Y , requires the employed model to account
+for the confounding influences of the product and system state via observed values X, avoiding reliance on
+spurious associations [Kaddour et al., 2022]. Although the estimation of E[Y |A, X] (and with it E[∆Y | X])
+can be performed flexibly using naive machine learning methods, these models are prone to regularization
+bias, necessitating the use of double machine learning. Despite the adjustment for known confounding, these
+models (like every other model) are vulnerable to unobserved confounding. Therefore, we also assess the
+sensitivity of the estimated models regarding unobserved confounders.
+9
+
+===== Page 10 =====
+
+4
+Methods
+In the following, we describe the causal methodology we use for policy estimation. We begin with an
+introduction to the potential outcomes framework, followed by our approach to treatment effect estimation
+with double/debiased machine learning. We also detail our treatment policy estimation based on orthogonal
+scores. Lastly, we present our approach to sensitivity analysis for confounding factors.
+4.1
+Causal Estimation Approach
+In this section, we introduce our estimation procedure following the potential outcomes framework of Rubin
+[2005]. We define Yi(a) as the potential outcome of a unit i under the treatment decision a ∈{0, 1}. Yi(a) is
+the potential yield of a production lot with rework a = 1 or without rework a = 0. The individual effect of
+the treatment can be defined as
+Yi(1) −Yi(0)
+(1)
+Unfortunately, due to the fundamental problem of causal inference [Holland, 1986], we can never observe
+the outcome for the same individual under treatment and not under treatment simultaneously. We observe only treatment A, which is assigned by an (unobserved) mechanism m : X →A in the data. Here,
+Xi ∈X are all characteristics of the production lot and the system state we observe, as explained in Section 3.3.
+The fact that we cannot observe counterfactual outcomes for an individual raises the question of how to
+estimate the effect of the treatment assignment. One common approach in the literature is to average over all
+individuals to identify the average treatment effect (ATE) [Rubin, 1974] given by
+θ0 := E[Y (1) −Y (0)].
+(2)
+Alternatively, to include the specific information (heterogeneity) about individuals encoded in X, the
+conditional average treatment effect (CATE)
+θ0(z) := E[Y (1) −Y (0) | Z = z]
+(3)
+can be considered. Here, Z can be a subset of X, representing a group average treatment effect (GATE) or
+additional covariates influencing the outcome but not the treatment decision. In our setting, the average
+treatment effect is the effect of reworking every single production lot. The conditional effect, however, is the
+effect conditional on some observable characteristics of the chip lot and system state.
+10
+
+===== Page 11 =====
+
+The identification of θ0 and θ0(z) strongly depends on the treatment assignment mechanism m. If we had
+a randomized assignment, known as a randomized controlled trial or A/B-test, θ0 and θ0(z) could be directly
+derived from the population means. In a deterministic assignment setting (when P(A = 1 | X) ∈{0, 1}),
+designs such as regression discontinuity can be used to identify θ0(C) at a cutoff level C.
+We, however, base our effect identification on two main assumptions, as follows:
+Assumption 1 (Conditional Exchangeability) Y (a) ⊥⊥A | X
+Assumption 1 states that all dependencies between the potential outcomes and the assigned treatment are
+explained by X, so the confounding is completely explained by X. It is expressed graphically in Figure 3 and
+enables us to identify the potential outcomes distributions with observable data. 2
+Assumption 2 (Overlap) ∃ε > 0 : ε < P(A = 1 | X) < 1 −ε
+∀X ∈X
+Assumption 2 states that for the entire space of X, units are assigned to treatment and control with a non-zero
+probability, enabling us to estimate the potential outcomes.
+Based on these key assumptions, there are multiple well-known approaches to estimate the parameter θ0,
+such as inverse probability weighting, regression adjustment or matching. In recent years, more sophisticated
+frameworks for estimating heterogeneous causal effects have been developed, such as targeted maximum
+likelihood estimation [van der Laan and Rubin, 2006], causal forests [Athey and Wager, 2021] and ML-based
+meta-learners (for an overview, see Künzel et al. [2019]). In this work, we follow the recently developed
+semi-parametric double/debiased machine learning framework by Chernozhukov et al. [2018].
+4.2
+Treatment Effect Estimation with Double/debiased Machine Learning
+Unlike the most common use of modern machine learning algorithms for prediction or classification, the
+estimation of causal parameters such as the ATE with ML imposes additional challenges for the estimator.
+As shown by Chernozhukov et al. [2018], biases from regularization or overfitting can be amplified, leading to
+severe bias in the target estimate.
+2In particular, under Assumption 1 P ∗(Y (a) ≤y) =
+R y
+−∞
+R
+x fY |A,X(ˆy | a, x)fX(x)dxdˆy holds with potential outcome
+distribution P ∗and observable densities fX, fY |A,X [Pearl, 2009].
+Naive estimation of the ATE using the observed cdf
+P(Y ≤y | A = a) instead of the corrected P ∗(Y (a) ≤y) leads to the confounding bias described in Section 3.2. Note that when
+conditioning on all confounders, the naive estimator for the CATE coincides with the adjusted one but becomes biased when
+leaving out some confounders (e.g., conditioning on Xp but not on Xs, or disregarding unobserved confounders U).
+11
+
+===== Page 12 =====
+
+The work of Chernozhukov et al. [2018] provides a framework that counteracts these issues, enabling the use
+of algorithms such as random forests or boosting to obtain precise estimates of treatment effects combined
+with confidence intervals to access estimation uncertainty.
+Under Assumptions 1 and 2, the underlying causal structure can be represented by an interactive regression
+model (IRM), which follows the SCM:
+Y = g0(A, X) + ξ,
+E[ξ | X, A] = 0,
+A = m0(X) + ν,
+E[ν | X] = 0,
+where the conditional expectations
+g0(A, X) = E[Y | X, A],
+(4)
+m0(X) = E[A | X] = P(A = 1 | X)
+(5)
+are unknown and might be complex functions of X. In this structural equation model, the ATE
+θ0 = E[g0(1, X) −g0(0, X)]
+as well as the treatment effect of the treated (ATT)
+θAT T = E[g0(1, X) −g0(0, X) | A = 1]
+are identified.
+In double machine learning, inference is based on a method of moments estimator
+E[ψ(W; θ0, η0)] = 0,
+(6)
+with ψ(W; θ0, η0) being a Neyman-orthogonal score that identifies the causal parameter θ0 given ML estimates of the parameters or functions η0 (referred to as nuisance elements). The Neyman-orthogonality
+property ensures the estimator is robust against small perturbations in the ML nuisance element estimates.
+Furthermore, the use of k-fold crossfitting safeguards against overfitting affecting the estimation of the target
+parameter θ0, and the complexity of the estimator to be controlled, leading to appealing properties such as
+12
+
+===== Page 13 =====
+
+√n-consistency and approximate normality.
+In case of an IRM, the score for an ATE estimator is given by the linear form
+ψ(Wi; θ, η) := ψa(Wi, η)θ + ψb(Wi, η)
+(7)
+with
+ψb(Wi, η) := g(1, Xi) −g(0, Xi) + Ai(Yi −g(1, Xi))
+m(Xi)
+−(1 −Ai)(Yi −g(0, Xi))
+1 −m(Xi)
+,
+and
+ψa(Wi, η) := −1
+which is also known as augmented inverse propensity weighting (AIPW) [Robins and Rotnitzky, 1995].
+Consequently, in this case, the nuisance η0 consists of η0 = (g0, m0).
+4.3
+Estimating Optimal Treatment Policies Based on Orthogonal Scores
+The methodology introduced in Section 4.2 enables us to estimate average causal effects over all individuals.
+In manufacturing settings, however, the magnitude of the effect of certain process steps strongly depends on
+the characteristics of each lot. Given a set of the covariates Z, the CATE in the IRM model is defined as
+θ0(z) := E[g0(1, X) −g0(0, X) | Z = z].
+Semenova and Chernozhukov [2021] propose approximating θ0(z) ≈b(z)T β via a linear form, where b(z)
+is a d-dimensional basis vector of z. The idea is based on projecting the part ψb(Wi, η) of the Neymanorthogonal scores onto the predefined basis vector b(z). We can facilitate this estimation procedure to assign
+a counterfactual treatment policy as formulated in the problem set above (Section 3.3). To allow for a
+flexible conditional treatment effect, we use a B-spline basis for b(z). Because a positive CATE indicates
+improvements in yield, our estimated policy will be based on whether the effect on the yield surpasses some
+given threshold
+ˆθ(z) ≥c,
+where z is a defined subset of x, and the threshold c > 0 can be used to incorporate costs and select
+rework groups at different effect levels.
+An alternative approach is to directly estimate a policy based on the part ψb(Wi, η) in Equation 7, as
+13
+
+===== Page 14 =====
+
+introduced by Athey and Wager [2021]. The advantage of this method is a non-parametric CATE estimate,
+which can potentially incorporate more information of X into Z. The counterfactual treatment policy can be
+derived by solving
+ˆπ = arg max
+π∈Π
+1
+n
+n
+X
+i=1
+(2π(Zi) −1)ψb(Wi, ˆη).
+(8)
+The learning problem in Equation 8 can be reformulated as a weighted classification problem with weights
+λi = |ψb(Wi, ˆη)| and target Hi = sign(ψb(Wi, ˆη)). Given a specified policy class Π and the corresponding
+regret
+R(π) := max
+π′∈Π {E[Yi(π′(Zi))]} −E[Yi(π(Zi))],
+Athey and Wager [2021] are able to derive regret bounds of order 1/√n. To evaluate policies at different
+thresholds, we reduce the score by the desired threshold ψb(Wi, ˆη) −c before classification.
+4.4
+Sensitivity of Estimation Towards Unobserved Confounding
+In Section 4.1, we characterized each individual i by its observable characteristics Xi. However, this is only
+the “short story”. If Assumption 1 fails due to an unobserved confounder U that affects both treatment
+assignment and outcome, we might encounter a bias in the estimates.
+Chernozhukov et al. [2023] provide a theory for estimating the effect of omitted variable bias in the DML
+framework. Assume that in the observed data W = (Y, A, X) the necessary confounding variable U is not
+included in the features X. Because Assumption 1 is violated, the procedure identifies a different parameter
+˜θ0 instead of the unconfounded θ0. Chernozhukov et al. [2023] bound this bias as follows:
+|˜θ0 −θ0|2 ≤f(W, ρ, ζy, ζd)
+(9)
+where f is a known function and ζy, ζd, and ρ are model-specific measures that capture the confounding
+strength of U. In the setting of an IRM model, ζy denotes the nonparametric partial R2 of U with Y given
+(D, X). ζd measures the relative gain in average conditional precision by including U in the estimation of
+the treatment assignment. Both measure the explanatory power of the unobserved confounder on either the
+outcome or treatment. Lastly, ρ refers to the correlation between the effects of the unobserved confounder U
+on the outcome and the treatment mechanism.
+In general, it is challenging to interpret and establish reasonable bounds for the strength of unobserved
+14
+
+===== Page 15 =====
+
+confounding ζy, ζd and ρ. However, to gauge the magnitude of the bounds, a popular approach is to rely
+on observed confounders to infer the strength of possibly unobserved confounders. We can emulate omitted
+confounding by purposely omitting observed confounders from the adjustment set X followed by re-estimating
+the whole model. This enables us to compare the “long” and “short” forms with and without omitted
+confounding. From this comparison, one can estimate the explanatory power that the purposely omitted
+confounder had in the “long” and “short” forms, thereby gaining an idea of reasonable bounds for ζy, ζd
+and ρ. Of course, this procedure does not enable the estimation of the strength of the potential unobserved
+confounding U.
+We then use Equation 4.4 to assess the robustness of the estimation against a null hypothesis, ˜θ0 = 0. The
+resulting robustness value (RV) is defined as the required confounding strength (ζy = RV and ζd = RV) such
+that the lower bound of the causal parameter includes the null hypothesis. In other words, the robustness
+value represents the magnitude of an unobserved confounding effect necessary to reduce the estimated effect
+to zero. In addition to the RV based on point estimates, robustness values can also be based on confidence
+intervals (RVa), to assess which confounding is required to render the effect non-significant.
+5
+Empirical Application
+In this section, we describe the application of our framework to the production process of phosphor-converted
+white LEDs at AMS-Osram.
+5.1
+Empirical Setup
+The manufacturing stages in LED production are commonly divided into frontend and backend processing.
+The frontend involves the production of a monochromatic light-emitting semiconductor wafer, whereas the
+backend involves the production steps after the separation of the individual chips. After frontend processing,
+the different chips on the wafer are characterized according to the emitted light spectra, sorted in conformity
+with the target product specification, and glued onto a grid structure called a panel 3 for further processing
+(S1). After the sorting stage, bondwires are attached to the chips on the panel (S2), enabling chipwise inline
+measurements. These measurements take place during the phosphor conversion stage (S3), during which
+the monochromatic blue light spectra of the chips are shifted towards multichromatic white spectra. Once
+conversion is complete, lenses are molded onto the chips (S4), changing the emitted light spectra again.
+Finally, the chips are separated (S5) and subjected to a 100-percent inspection (FI), which determines the
+3A panel holds 28 × 28 chips and, for the purpose of our investigation, is regarded as a production lot.
+15
+
+===== Page 16 =====
+
+share of conforming units on the panel Y . Conforming units are those for which the perceived color of
+the emitted spectrum matches the target color specification of the product. The CIE 1931 chromaticity
+coordinate system (see Smith and Guild [1931]) is used for this purpose, mapping an observed spectrum to
+two-dimensional coordinates in the xy-chromaticity diagram (see Figure 4).
+Due to diverging production recipes further downstream, it becomes necessary to restrict our investigation
+to a certain product and thus to a certain sorting specification at stage (S1). Based on our consultations with
+domain experts, we assume that influences from the backend are also mostly inhibited due to this restriction.
+The rework decisions happen during the conversion stage (S3). According to the recipe, a specific amount
+of phosphor slurry is sprayed onto the panel followed by a curing step that finalizes the deposition of a single
+layer. This procedure is repeated until the specified number of layers is reached, each with a defined target
+thickness. Whereas the (fixed) phosphor mixture influences the conversion curve (direction) in the color
+space, the shift along this curve is mainly controlled by the layer thickness, which can be adjusted through
+settings on the spray gun. Figure 4 depicts the shift from the unconverted monochromatic emission C0 along
+a conversion curve towards the converted emission C1 after phosphor deposition according to the recipe, as
+well as the emission C2 after 100-percent inspection. Subsequently, inline measurements at k = 36 different
+panel positions are taken, revealing the color points C1[j] =
+ Cx[j], Cy[j]
+
+of the selected chips j = 1, . . . , k.
+The manufacturing stages (S1) and (S2) might introduce defectives, resulting in invalid measurements C1[i]
+as indicated by I[j] ∈{0, 1}. 4 Despite measuring individual chips, the operator is only shown the number of
+defectives I = Pk
+j=1 I[j] and the mean panel color point
+C1 = (Cx, Cy) =
+1
+k −I
+k
+X
+j=1
+(1 −I[j])
+ Cx[j], Cy[j]
+
+upon which she decides whether to continue with production or to apply a further corrective layer. The
+product state Xp observed by the operator consists solely of C1 and I. The decision and outcome of corrective
+steps might be affected by the strain the operator feels at the time of the decision-making. As a proxy for
+this, we include the overall shopfloor workload V in the observed system state Xs. If an additional deposition
+step (M) is issued, the inline inspection measurements (I) and the decision-making (OR) are repeated with
+updated observed states as depicted in Figure 2. Based on the physical understanding of the process, it
+is assumed that knowledge of previous C1 measurements yields no additional information, such that Xp
+consisting of the last measurement values is sufficient.
+During times when the equipment is in an “in-control” state (Rosenblatt and Lee [1986]), no additional
+4For example, contact issues after wirebonding (S2) are a reason for invalid measurements. These issues persist until (FI), and
+because the rework decision at (S3) has no effect on it, chips with invalid measurements are disregarded in the yield calculation.
+Nevertheless, the number of defectives might still hold information about the unobserved lot-state P.
+16
+
+===== Page 17 =====
+
+C0
+C1
+C2
+Cx
+Cy
+Figure 4:
+CIE 1931 color space chromaticity diagram with exemplary color points C0 of the ground substrate,
+C1 after conversion, and C2 for the final product.
+rework steps should be necessary to achieve a high yield. But the sedimentation of phosphor particles,
+gradual curing of silicone components in the slurry, and wear of the spray gun nozzle are examples of partially
+competing effects that lead to “out-of-control” states and subsequently to variations in the deposited phosphor.
+Although applying an additional layer can counteract the depletion of phosphor particles and shift the color
+point C1 further along the conversion curve towards the desired position, depositing too many particles leads
+to overshooting, which cannot be corrected.
+5.2
+Data
+The surveyed dataset includes N = 69, 046 i.i.d. production lots of a specific product type manufactured at
+AMS-Osram. It consists of the chip measurements before the rework decision, their validity indicator, the
+shopfloor workload at the time of decision-making, the decision itself, and the yield after production. An
+overview of the variables can be found in Table 1.
+5.3
+Preprocessing
+We perform application-motivated preprocessing measures on the dataset. The operator assigns the rework
+treatment by visually inspecting a plot of the covariates {(Cx), (Cy)} in the CIE chromaticity diagram.
+17
+
+===== Page 18 =====
+
+Variable
+Description
+Cx[1], . . . , Cx[36]
+Individual chip Cx measurements (lot probings)
+Cy[1], . . . , Cy[36]
+Individual chip Cy measurements (lot probings)
+I[1], . . . , I[36]
+Validity of Cx and Cy measurements
+V
+Estimated workload (count of lots in the shift)
+I
+Sum of invalid chip measurements
+Yield Y
+% of chips usable at the end of the process (Y ∈[0, 1])
+Rework decision A
+Indicator of treatment (A ∈{0, 1})
+Table 1: Description of variables in the analysis
+However, as motivated in Section 5.1, the application of the conversion material shifts the resulting color
+point along a conversion curve in the CIE color space (Figure 4). The amount of conversion material applied
+controls the position on this curve, while minor deviations orthogonal to it can be explained through process
+instabilities. In the vicinity of the C1 measurements, the conversion curve can be well approximated by a
+linear function in the color space. Thus, the application of a principal component analysis (PCA) leads to
+transformed color coordinates PCA(C1) = (Cm, Cs), where the primary principal component Cm captures
+the position on the conversion curve representing the main decision criterion, and the secondary principal
+component Cs is mainly determined by process fluctuations. In the following, we refer to Cm as the main
+color point measurement and to Cs as the secondary color point measurement. The same notation applies
+to the mean PCA
+ C1
+
+=
+ Cm, Cs
+
+and area mean color points PCA
+ C1,l
+
+=
+ Cm,l, Cs,l
+
+. For better
+explainability, we will work with these measures in the remainder of this paper.
+Furthermore, we restrict our attention to a region on the conversion curve in which the treatment decision
+is not obvious. This means that we subsample from the original dataset, rejecting data points with Cm
+outside the interval [Cm,min, Cm,max]. This interval is chosen in agreement with domain experts: observations
+exceeding Cm,max should definitely be reworked, whereas data points lower than Cm,min definitely should
+not. While this procedure reduces the sample size to N = 47, 582 observations, it also helps to guarantee
+the overlap assumption (Assumption 2). In the Appendix, we provide more details about the subsampling
+process (Figure 11). In the remainder of this paper, we restrict our attention to the reduced sample.
+5.4
+Positivity Assumption
+In Figure 5, we show that after subsampling there is a sufficient overlap of production lots with similar
+characteristics after conversion but with different treatments assigned.
+To further assess the overlap, we follow the approach of McCaffrey et al. [2013], which is also used by
+18
+
+===== Page 19 =====
+
+Figure 5: Histogram of observations in the “treatment” and “no treatment” groups of different covariates. In
+general, the overlap assumption appears to hold.
+Ellickson et al. [2023]. McCaffrey et al. [2013] propose calculating the propensity score balance (PSB) given by
+PSBA=a = | ¯X(j)
+A=a −¯X(j)|
+σ2
+X(j)
+(10)
+with
+¯X(j)
+A=a =
+Pn
+i=1 1(Ai = a)X(j)
+i
+/ ˆm0(Xi)
+Pn
+i=1 1(Ai = a)/ ˆm0(Xi)
+.
+(11)
+We report the scores for groups A = 0 and A = 1 in Appendix A. McCaffrey et al. [2013] consider balance
+scores lower than 0.2 to be small, a condition clearly met by all our balance scores. Thus, we can confidently
+assert the overlap assumption.
+5.5
+Average Treatment Effect and Comparison to Naïve Estimator
+We report the ATE and the ATT estimates in Table 2. Thereby we compare the naive ATE estimator, which
+uses the in-sample estimate of E[Y | A = 1] −E[Y | A = 0] with the causal estimate from an IRM. The naive
+ATE estimator indicates a significant negative effect amounting to a 5.8% of yield loss, whereas the IRM
+estimator indicates a slight increase in yield of 0.9% over all production lots. This difference is attributed to
+the unadjusted confounding in the naive estimation. According to the naive estimation, reworking all lots
+would vastly reduce the share of items that meet specifications, while the IRM estimator suggests only a
+slight increase in yield. This slight increase is in line with our intuition that not every lot should undergo
+the rework step because, some lots might be damaged depending on the product and system state. This is
+further supported by the average treatment effect on the treated, which is significantly positive. In the group
+of reworked lots, we estimate an increase of 4.2% in yield (indicating a decrease of the same amount if we
+had not reworked these lots). These results underline the importance of a well-designed decision policy.
+19
+
+===== Page 20 =====
+
+estimator
+coef.
+std. err.
+2.5%
+97.5%
+ATE
+naive
+-0.058490
+0.01005327
+-0.078195
+-0.038786
+ATE
+IRM
+0.009241
+0.002753
+0.003846
+0.014636
+ATT
+IRM
+0.041827
+0.005952
+0.030163
+0.053492
+Table 2: ATE and ATT of the inline rework step in the observed data
+6
+Results
+In this section, we report the results of our analysis. 5 Because the quality of policy estimation improves
+with high-quality estimates of the unknown nuisance elements η0 = (g0, m0) (see (4) and (5)), we rely on
+tuned machine learning algorithms. 6 We employ five-fold crossfitting and clip the propensity score estimate
+ˆm at 0.025 and 0.975, respectively. To ensure robustness, we split and use 70% of the data to estimate the
+policies in Sections 6.1 and 6.2. In Sections 6.3 and 6.4, we use the remaining 30% of unseen data to evaluate
+the performance of the policies in the production chain.
+6.1
+Estimation of Conditional Causal Effects
+We project the orthogonal scores from the ATE estimation on different sets of covariates Z to estimate
+the conditional effect. As basis vectors b(˜z) for the CATE estimation, we construct cubic B-splines with
+five degrees of freedom. Figure 6 shows that the greatest effect variation can be observed for the mean
+main color point measurement Cm, which physically approximates the position on the color conversion
+curve. In accordance with the physics of the process, there is a region in which chip lots (on average)
+have not reached the target color point and thus need additional layering. In terms of the mean secondary
+color point measure Cs and the count of invalid measurements per lot I, we do not observe significant
+deviation of the conditional effects from the average effect. For low workload V , we observe a significant
+but small negative effect of the rework. One reason might be that operators tend to experiment more
+under low workloads. This means that panels that would not normally be subjected to rework under
+typical loads are reworked, resulting in a negative effect. Also, if the equipment is not used regularly,
+the setup of the machine before layer deposition might become more complicated (e.g., sedimentation of
+phosphor particles in the slurry reservoir of the machine), affecting rework decisions and outcomes. In
+the medium workload region, we see a peak in the color yield followed by a decline for higher workloads,
+suggesting that while rework is reasonable to carry out, it is more likely to be skipped due to time con5Our analysis relies on the DoubleML-package of Bach et al. [2022, 2021]
+6For hyperparameter tuning, we rely on the FLAML AutoML package [Wang et al., 2021] with an optimization time of one
+hour.
+20
+
+===== Page 21 =====
+
+straints. We also estimate the conditional effect of two covariates simultaneously by using a tensor product of
+Figure 6: Conditional average treatment effect estimated over different covariates which might be relevant for
+the rework policy. We observe conditional effects that significantly differ from the ATE only for the main
+measurement component and for lots that were produced under low workload.
+quadratic B-splines with five degrees of freedom in the two-dimensional case. Due to the process physics,
+we opt to use the mean of the main and secondary color point measures Cm and Cs for the construction
+of the basis. Figure 7 shows that the sign of the conditional effect still largely depends on the main component.
+6.2
+Optimal Treatment Policy Learning
+By assigning treatment in areas with a positive yield improvement for both the one-dimensional (depending
+solely on Cm) and the two-dimensional CATE (depending on Cm and Cs), we can derive simple policies
+based on only a few constraints. To derive more complex policies, we employ the estimated score elements
+ψb(Wi, ˆη) and apply weighted classifiers as in Equation 8 to obtain policy trees. Figure 8 shows an exemplary
+tree of depth four, in which the covariates Z include the main and secondary color point measures as well as
+I and the variance of Cm[j] as an indicator for the individual distribution of quality in each lot. Because an
+exact tree search at this depth is computationally expensive, we define the policy class to be that of greedy
+classification trees. However, for comparison, we perform an exact tree search at depth two, which results in
+a simpler policy.
+6.3
+Out-of-sample Assessment of Policy Value
+We collect new, unseen data to evaluate the value of the policies derived above.7 Table 3 displays the values
+for the different policies. The results in Table 3 indicate a large improvement in value for all data-driven
+policies. The observational policy has a value of 0.5%, suggesting that the assignment of the inline rework
+step increases the overall production yield by half a percent. The optimized policy is estimated to have a
+7It is worth noting that these conclusions are valid only in our subsample.
+21
+
+===== Page 22 =====
+
+Figure 7: Two-dimensional CATE evaluated on the mean main and secondary
+color point measure.
+Figure 8: Exemplary policy, optimized over primary and secondary color point measure statistics as well as the number of
+invalid measurements.
+Figure 9: Exemplary plot of the observed policy as well as the CATE 1D, CATE 2D and greedy policy tree
+policies (from left to right).
+value of 2 −3%, depending on the assumed costs c and the methodology used.
+0% costs
+1% costs
+3% costs
+2.5 %
+effect
+97.5 %
+2.5 %
+effect
+97.5 %
+2.5 %
+effect
+97.5 %
+Simple CATE
+0.023734
+0.030639
+0.037544
+0.021211
+0.027866
+0.034522
+0.018011
+0.024025
+0.030040
+CATE 2D
+0.022258
+0.028881
+0.035505
+0.021881
+0.028478
+0.035074
+0.018818
+0.024876
+0.030933
+Greedy Tree
+0.019566
+0.026718
+0.033870
+0.020436
+0.027434
+0.034433
+0.015950
+0.021449
+0.026947
+Exact Tree
+0.013120
+0.019034
+0.024948
+0.016406
+0.021466
+0.026527
+0.012193
+0.015997
+0.019802
+observed value
+0.003334
+0.007232
+0.011129
+Table 3: Values of the estimated policies at different assumed cost levels c.
+6.4
+Sensitivity and Robustness Considerations
+As motivated in Section 4.4, we aim to assess the possible influences of omitted variable bias. Table 4 reports
+the robustness values of the different policies against this bias. To obtain comparable information to the
+22
+
+===== Page 23 =====
+
+ATE
+value
+ζy
+ζd
+ρ
+∆θ0
+ζy
+ζd
+ρ
+∆value
+All Cm[j]
+0.1538
+1.0000
+-0.0431
+-0.0099
+One Cm[j]
+0.0009
+0.0049
+0.4567
+0.0006
+All Cs[j]
+0.0588
+0.0713
+-0.1856
+-0.0077
+0.0693
+0.0
+-1.0000
+-0.0021
+One Cs[j]
+0.0003
+0.0027
+0.3303
+0.0002
+0.0000
+0.0
+1.0000
+0.0000
+Workload V
+0.0388
+0.1757
+0.1329
+0.0067
+0.0241
+1.0
+0.125
+0.0040
+Invalid I
+0.0000
+0.0044
+1.0000
+0.0007
+0.0012
+0.0
+1.00000
+0.0014
+Table 5: Sensitivity benchmark of the ATEs as well as values for the one-dimensional CATE policy with
+multiple covariates
+Figure 10: Contour plot of different benchmarks. The labels showcase the estimated confounding strength
+explained by observed confounders in the sensitivity analysis.
+robustness values, we perform a benchmark on the one-dimensional CATE policy, where we leave out different
+variables to estimate their impact if omitted. In Table 5, it is evident that confounding similar to most of
+the variables we benchmarked would not substantially change the value estimation and is mostly smaller
+than the robustness value. The robustness values indicate that the estimated policy values are robust to
+(unobserved) confounding effects similar in strength to the secondary color point measurement, which we
+consider highly unlikely in our scenario. Figure 10 further emphasizes this point.
+RV (%)
+RVa (%)
+Simple CATE
+11.836
+9.161
+CATE 2D
+11.726
+9.321
+Greedy Tree
+9.107
+7.095
+Exact Tree
+16.945
+11.258
+Table 4: Robustness values of the different policies against omitted variable bias.
+23
+
+===== Page 24 =====
+
+7
+Conclusion
+In this paper, we have introduced a framework based on causal machine learning to derive optimal rework
+policies in lot-based manufacturing systems. Whereas decision-making depends on the current product and
+system state, we use the direct outcome of interest – costs related to production yield – as the optimization
+target. We have also highlighted that confounding in our general rework setting can lead to severe bias when
+assessing rework decision-making.
+Using a unique industry dataset, we have shown in our application that the causal machine learning
+approach can significantly improve the value of the inline rework step in LED production.
+The robustness and consistency of the different approaches support the argument that the main color
+measurements Cm[j] contain most of the relevant information regarding a rework decision. Thus, a policy
+based on this information should be implemented in production. Our sensitivity analysis shows that this
+conclusion is robust against a reasonable amount of unobserved confounding. Our results in Section 6.3
+consider only the subsample of approximately two-thirds of the data with sufficient overlap. However, for
+the data points outside the considered interval, we expect no yield changes in the worst case. Thus, we can
+conservatively estimate the global value to be at least 66 % of that observed in our local estimates.
+Although our approach addresses a wide range of questions, we would like to point out possible extensions.
+Because production stages subsequent to the rework decision can influence the final yield without affecting
+the rework decision, the causal setup described in Section 3.2 could be extended to include non-confounding
+system states stemming from these stages.
+Such features – for example, manufacturing parameters defined in the product recipe, or features that
+describe the condition of specific machines – can help to explain yield variation. Manufacturers tend to avoid
+fluctuations in production, such that recipe parameters are usually held constant after the product has been
+ramped up. Thus, the effect of recipe variation on yield, while certainly present, can hardly be estimated
+from production data alone. Furthermore, features that describe the machine condition have limited validity
+due to equipment wear or maintenance that occurs after the rework decision and before actual machine usage.
+In this regard, careful feature design is essential.
+Our application simplifies the correction step to a binary decision; however, the framework could be
+adapted to allow for a set of specific or even parameterized repair decisions. In our analysis, this would involve
+adjusting certain machine settings directly instead of deciding on fixed parameter settings for the rework
+step. Furthermore, adjusting these settings directly during production at the cost of additional inspection
+steps between the layer deposition would more closely align with the ZDM approach.
+24
+
+===== Page 25 =====
+
+In conclusion, it is important to combine insights from causal machine learning with the knowledge of
+domain experts to obtain value from the data. Having a clear and causally derived decision policy can help
+reduce the number of defective products and increase production yield.
+A
+Additional Results
+In this section, we report additional tables and figures.
+As motivated in Section 5.3, we clip the data at the 1% quantile of the treatment (rework) group and the
+99.5% quantile of the no-treatment group. Figure 11 displays the cut-offs in the data. Table 6 reports
+the propensity score balance for all variables used as covariates in our analysis. According to McCaffrey
+et al. [2013], scores smaller than 0.2 are considered to represent good overlap. Thus, we can conclude that
+Assumption 2 holds.
+25
+
+===== Page 26 =====
+
+covariate
+A=1
+A=0
+Cm[0]
+0.047534
+0.038591
+Cm[1]
+0.076141
+0.008915
+Cm[2]
+0.093222
+0.010210
+Cm[3]
+0.051037
+0.016896
+Cm[4]
+0.004794
+0.040114
+Cm[5]
+0.080521
+0.005825
+Cm[6]
+0.084074
+0.005506
+Cm[7]
+0.053211
+0.017469
+Cm[8]
+0.087347
+0.003263
+Cm[9]
+0.090025
+0.005484
+Cm[10]
+0.067338
+0.013116
+Cm[11]
+0.096890
+0.002121
+Cm[12]
+0.108802
+0.002094
+Cm[13]
+0.065379
+0.013240
+Cm[14]
+0.106175
+0.003664
+Cm[15]
+0.099587
+0.004157
+Cm[16]
+0.042630
+0.023604
+Cm[17]
+0.082889
+0.002739
+Cm[18]
+0.096174
+0.004846
+Cm[19]
+0.059452
+0.009946
+Cm[20]
+0.080126
+0.002682
+Cm[21]
+0.090127
+0.004553
+Cm[22]
+0.056841
+0.013564
+Cm[23]
+0.070738
+0.004782
+Cm[24]
+0.086241
+0.008711
+Cm[25]
+0.067571
+0.014752
+Cm[26]
+0.089712
+0.005306
+Cm[27]
+0.096237
+0.003064
+Cm[28]
+0.064272
+0.016320
+Cm[29]
+0.058921
+0.000978
+Cm[30]
+0.060912
+0.010125
+Cm[31]
+0.007685
+0.043738
+Cm[32]
+0.024386
+0.016421
+Cm[33]
+0.044095
+0.010250
+Cm[34]
+0.059248
+0.012837
+Cm[35]
+0.008601
+0.050252
+Cs[0]
+0.034725
+0.003140
+Cs[1]
+0.036208
+0.007336
+Cs[2]
+0.023773
+0.003189
+Cs[3]
+0.050198
+0.007174
+Cs[4]
+0.061728
+0.002681
+Cs[5]
+0.034673
+0.000273
+Cs[6]
+0.042859
+0.001663
+Cs[7]
+0.066585
+0.004676
+Cs[8]
+0.036237
+0.004564
+Cs[9]
+0.052454
+0.001202
+Cs[10]
+0.067758
+0.006800
+Cs[11]
+0.050292
+0.010142
+Cs[12]
+0.062176
+0.001292
+Cs[13]
+0.054967
+0.001960
+Cs[14]
+0.057509
+0.004686
+Cs[15]
+0.064475
+0.007918
+Cs[16]
+0.068183
+0.017994
+Cs[17]
+0.068707
+0.001435
+Cs[18]
+0.046259
+0.007101
+Cs[19]
+0.040534
+0.000799
+Cs[20]
+0.032138
+0.014130
+Cs[21]
+0.060988
+0.000473
+Cs[22]
+0.068694
+0.001162
+Cs[23]
+0.064499
+0.012974
+Cs[24]
+0.036732
+0.006433
+Cs[25]
+0.058354
+0.002368
+Cs[26]
+0.085918
+0.008210
+Cs[27]
+0.091729
+0.008323
+Cs[28]
+0.073288
+0.003522
+Cs[29]
+0.083888
+0.001078
+Cs[30]
+0.081795
+0.010065
+Cs[31]
+0.044994
+0.006911
+Cs[32]
+0.078706
+0.013295
+Cs[33]
+0.057090
+0.004444
+Cs[34]
+0.074954
+0.010734
+Cs[35]
+0.053991
+0.004596
+Invalid I
+0.066721
+0.018125
+Workload V
+0.105923
+0.017009
+Table 6: Propensity Balance Scores for all covariates in our model
+26
+
+===== Page 27 =====
+
+Figure 11: Distributions of the main color point measurement by treatment and no-treatment group in the
+observed data. To ensure sufficient overlap, we clip the data for the analysis at the shown quantiles.
+Acknowledgements
+This work was funded by the Bavarian Joint Research Program (BayVFP) – Digitization (Funding reference:
+DIK0294/01). The research partners ams OSRAM and Economic AI kindly thank the VDI/VDE-IT Munich
+for the organization and the Free State of Bavaria for the financial support. We are grateful to Heribert
+Wankerl, Johannes Oberpriller, and Philipp Bach for their valuable comments. Additionally, we appreciate
+the interest and feedback from the participants of the 2023 KDD Workshop on Causal Discovery, Prediction,
+and Decision.
+References
+Omar G. Alsawafy and Shokri Z. Selim. Analysis of a discrete production workstation. Computers &
+Operations Research, 137:105532, 2022. ISSN 0305-0548. doi: https://doi.org/10.1016/j.cor.2021.105532.
+URL https://www.sciencedirect.com/science/article/pii/S0305054821002690.
+Susan Athey and Stefan Wager. Policy learning with observational data. Econometrica, 89(1):133–161, 2021.
+doi: https://doi.org/10.3982/ECTA15732. URL https://onlinelibrary.wiley.com/doi/abs/10.3982/
+ECTA15732.
+Philipp Bach, Victor Chernozhukov, Malte S Kurz, and Martin Spindler. Doubleml–an object-oriented
+implementation of double machine learning in r. arXiv preprint arXiv:2103.09603, 2021.
+Philipp Bach, Victor Chernozhukov, Malte S Kurz, and Martin Spindler. Doubleml-an object-oriented
+implementation of double machine learning in python. J. Mach. Learn. Res., 23:53–1, 2022.
+Rebecca Busch, Michael Wahl, Peter Czerner, and Bhaskar Choubey. Yield prediction with machine learning
+and parameter limits in semiconductor production. In 2022 International Symposium on Semiconductor
+Manufacturing (ISSM). IEEE, dec 2022. doi: 10.1109/issm55802.2022.10027006.
+Victor Chernozhukov, Denis Chetverikov, Mert Demirer, Esther Duflo, Christian Hansen, Whitney Newey,
+and James Robins. Double/debiased machine learning for treatment and structural parameters. The
+Econometrics Journal, 21(1):C1–C68, 01 2018. ISSN 1368-4221. doi: 10.1111/ectj.12097. URL https:
+//doi.org/10.1111/ectj.12097.
+27
+
+===== Page 28 =====
+
+Victor Chernozhukov, Carlos Cinelli, Whitney Newey, Amit Sharma, and Vasilis Syrgkanis. Long story short:
+Omitted variable bias in causal machine learning, 2023.
+Jaehee Cho, Jun Hyuk Park, Jong Kyu Kim, and E. Fred Schubert. White light-emitting diodes: History,
+progress, and future. Laser & Photonics Reviews, 11, 2017.
+M. Colledani, D. Coupek, A. Verl, J. Aichele, and A. Yemane. Design and evaluation of in-line product repair
+strategies for defect reduction in the production of electric drives. Procedia CIRP, 21:159–164, 2014. ISSN
+2212-8271. doi: 10.1016/j.procir.2014.03.186.
+Marcello Colledani and Alessio Angius. Production quality performance of manufacturing systems with in-line
+product traceability and rework. CIRP Annals, 69(1):365–368, 2020. doi: 10.1016/j.cirp.2020.04.018.
+Alexander D’Amour, Katherine Heller, Dan Moldovan, Ben Adlam, Babak Alipanahi, Alex Beutel, Christina
+Chen, Jonathan Deaton, Jacob Eisenstein, Matthew D. Hoffman, Farhad Hormozdiari, Neil Houlsby,
+Shaobo Hou, Ghassen Jerfel, Alan Karthikesalingam, Mario Lucic, Yian Ma, Cory McLean, Diana Mincu,
+Akinori Mitani, Andrea Montanari, Zachary Nado, Vivek Natarajan, Christopher Nielson, Thomas F.
+Osborne, Rajiv Raman, Kim Ramasamy, Rory Sayres, Jessica Schrouff, Martin Seneviratne, Shannon
+Sequeira, Harini Suresh, Victor Veitch, Max Vladymyrov, Xuezhi Wang, Kellie Webster, Steve Yadlowsky,
+Taedong Yun, Xiaohua Zhai, and D. Sculley. Underspecification presents challenges for credibility in
+modern machine learning. November 2020. doi: 10.48550/ARXIV.2011.03395.
+Alexander Diedrich, Kaja Balzereit, and Oliver Niggemann. First Approaches to Automatically Diagnose and
+Reconfigure Hybrid Cyber-Physical Systems, pages 113–122. Springer Berlin Heidelberg, December 2020.
+ISBN 9783662627464. doi: 10.1007/978-3-662-62746-4_12.
+Florian Eger, Daniel Coupek, Davide Caputo, Marcello Colledani, Mariluz Penalva, Jon Ander Ortiz,
+Hermann Freiberger, and Gernot Kollegger. Zero defect manufacturing strategies for reduction of scrap
+and inspection effort in multi-stage production systems. Procedia CIRP, 67:368–373, 2018. ISSN 2212-8271.
+doi: 10.1016/j.procir.2017.12.228.
+Paul B. Ellickson, Wreetabrata Kar, and James C. Reeder. Estimating marketing component effects: Double
+machine learning from targeted digital promotions. Marketing Science, 42(4):704–728, July 2023. ISSN
+1526-548X. doi: 10.1287/mksc.2022.1401. URL http://dx.doi.org/10.1287/mksc.2022.1401.
+Carlos Fernández-Loría and Foster Provost. Causal decision making and causal effect estimation are not the
+same. . . and why it matters. INFORMS Journal on Data Science, 1(1):4–16, April 2022. ISSN 2694-4030.
+doi: 10.1287/ijds.2021.0006.
+Daniel Grünbaum. Causal modelling and validation based on observational data and domain knowledge.
+2023. doi: 10.5283/EPUB.55067.
+Ford W Harris. How many parts to make at once. Factory, 10(2):135–136, February 1913. [Reprinted in
+Operations Research, 1990, 38(6) 947–950, ISSN 1526-5463, URL http://dx.doi.org/10.1287/opre.38.
+6.947 ].
+Teck-Hua Ho, Noah Lim, Sadat Reza, and Xiaoyu Xia. Om forum—causal inference models in operations
+management. Manufacturing & Service Operations Management, 19(4):509–525, 2017. doi: 10.1287/msom.
+2017.0659. URL https://doi.org/10.1287/msom.2017.0659.
+Paul W. Holland. Statistics and causal inference. Journal of the American Statistical Association, 81(396):
+945–960, 1986. ISSN 01621459. URL http://www.jstor.org/stable/2289064.
+Jiaqi Hua, Yingguang Li, Changqing Liu, and Lihui Wang. A zero-shot prediction method based on causal
+inference under non-stationary manufacturing environments for complex manufacturing systems. Robotics
+and Computer-Integrated Manufacturing, 77:102356, 2022. ISSN 0736-5845. doi: https://doi.org/10.1016/j.
+rcim.2022.102356. URL https://www.sciencedirect.com/science/article/pii/S0736584522000448.
+28
+
+===== Page 29 =====
+
+Hsin-Tao Huang, Chuang-Chuang Tsai, and Yi-Pai Huang. Conformal phosphor coating using pulsed spray to
+reduce color deviation of white leds. Opt. Express, 18(S2):A201–A206, Jun 2010. doi: 10.1364/OE.18.00A201.
+URL https://opg.optica.org/oe/abstract.cfm?URI=oe-18-102-A201.
+Paul Hünermund, Jermain Kaminski, and Carla Schmitt. Causal machine learning and business decision
+making.
+SSRN Electronic Journal, 2021.
+ISSN 1556-5068.
+doi: 10.2139/ssrn.3867326.
+URL http:
+//dx.doi.org/10.2139/ssrn.3867326.
+Jean Kaddour, Aengus Lynch, Qi Liu, Matt J. Kusner, and Ricardo Silva. Causal machine learning: A survey
+and open problems. June 2022.
+Sören R. Künzel, Jasjeet S. Sekhon, Peter J. Bickel, and Bin Yu. Metalearners for estimating heterogeneous
+treatment effects using machine learning. Proceedings of the National Academy of Sciences, 116(10):
+4156–4165, February 2019. ISSN 1091-6490. doi: 10.1073/pnas.1804597116. URL http://dx.doi.org/10.
+1073/pnas.1804597116.
+Hau L. Lee and Meir J. Rosenblatt. Simultaneous determination of production cycle and inspection schedules
+in a production system. Management Science, 33(9):1125–1136, September 1987. ISSN 1526-5501. doi:
+10.1287/mnsc.33.9.1125.
+Jeffery C. C. Lo, S. W. Ricky Lee, Xungao Guo, and Huishan Zhao. Multilayer dispensing of remote
+phosphor for led wafer level packaging with pre-formed silicone lens. In Proceedings of the 5th Electronics
+System-integration Technology Conference (ESTC). IEEE, September 2014. doi: 10.1109/estc.2014.6962713.
+Daniel F. McCaffrey, Beth Ann Griffin, Daniel Almirall, Mary Ellen Slaughter, Rajeev Ramchand, and Lane F.
+Burgette. A tutorial on propensity score estimation for multiple treatments using generalized boosted
+models. Statistics in Medicine, 32(19):3388–3414, March 2013. ISSN 1097-0258. doi: 10.1002/sim.5753.
+URL http://dx.doi.org/10.1002/sim.5753.
+Judea Pearl. Causal diagrams for empirical research. Biometrika, 82(4):669–688, 1995. ISSN 00063444. URL
+http://www.jstor.org/stable/2337329.
+Judea Pearl. Causal inference in statistics: An overview. Statistics Surveys, 3(none), January 2009. ISSN
+1935-7516. doi: 10.1214/09-ss057.
+Jonas Peters. Elements of causal inference. The MIT Press, Cambridge, Massachusetts, 2017. ISBN
+9780262037310.
+Evan L. Porteus. Optimal lot sizing, process quality improvement and setup cost reduction. Operations
+Research, 34(1):137–144, February 1986. ISSN 1526-5463. doi: 10.1287/opre.34.1.137.
+Daryl Powell, Maria Chiara Magnanini, Marcello Colledani, and Odd Myklebust. Advancing zero defect
+manufacturing: A state-of-the-art perspective and future research directions. Computers in Industry, 136:
+103596, apr 2022. doi: 10.1016/j.compind.2021.103596.
+James M Robins and Andrea Rotnitzky. Semiparametric efficiency in multivariate regression models with
+missing data. Journal of the American Statistical Association, 90(429):122–129, 1995.
+Meir J. Rosenblatt and Hau L. Lee. Economic production cycles with imperfect production processes. IIE
+Transactions, 18(1):48–55, March 1986. ISSN 1545-8830. doi: 10.1080/07408178608975329.
+Donald B. Rubin. Estimating causal effects of treatments in randomized and nonrandomized studies. Journal
+of Educational Psychology, 66(5):688–701, October 1974. ISSN 0022-0663. doi: 10.1037/h0037350. URL
+http://dx.doi.org/10.1037/h0037350.
+Donald B. Rubin. Causal inference using potential outcomes: Design, modeling, decisions. Journal of the
+American Statistical Association, 100(469):322–331, 2005. ISSN 01621459. URL http://www.jstor.org/
+stable/27590541.
+29
+
+===== Page 30 =====
+
+Oliver Schacht, Sven Klaassen, Philipp Schwarz, Martin Spindler, Daniel Grunbaum, and Sebastian Imhof.
+Causally learning an optimal rework policy. In Thuc Le, Jiuyong Li, Robert Ness, Sofia Triantafillou,
+Shohei Shimizu, Peng Cui, Kun Kuang, Jian Pei, Fei Wang, and Mattia Prosperi, editors, Proceedings
+of The KDD’23 Workshop on Causal Discovery, Prediction and Decision, volume 218 of Proceedings of
+Machine Learning Research, pages 3–24. PMLR, 07 Aug 2023. URL https://proceedings.mlr.press/
+v218/schacht23a.html.
+Erdmann Fred Schubert. Light-emitting diodes. Cambridge Univ. Press, Cambridge [u.a.], 2. ed., 6. print.
+edition, 2014. ISBN 9780521865388.
+Bernhard Schölkopf, David W. Hogg, Dun Wang, Daniel Foreman-Mackey, Dominik Janzing, Carl-Johann
+Simon-Gabriel, and Jonas Peters. Removing systematic errors for exoplanet search via latent causes. May
+2015.
+Vira Semenova and Victor Chernozhukov. Debiased machine learning of conditional average treatment effects
+and other causal functions. The Econometrics Journal, 24(2):264–289, 2021.
+Julian Senoner, Torbjørn Netland, and Stefan Feuerriegel. Using explainable artificial intelligence to improve
+process quality: Evidence from semiconductor manufacturing. Management Science, 68(8):5704–5723, aug
+2022. doi: 10.1287/mnsc.2021.4190.
+W. A. Shewhart. Quality control charts. The Bell System Technical Journal, 5(4):593–603, 1926. doi:
+10.1002/j.1538-7305.1926.tb00125.x.
+T Smith and J Guild. The c.i.e. colorimetric standards and their use. Transactions of the Optical Society, 33
+(3):73–134, January 1931. ISSN 1475-4878. doi: 10.1088/1475-4878/33/3/301.
+Kut C. So and Christopher S. Tang.
+Optimal operating policy for a bottleneck with random rework.
+Management Science, 41(4):620–636, apr 1995. doi: 10.1287/mnsc.41.4.620.
+Cher Ming Tan, Preetpal Singh, Wenyu Zhao, and Hao-Chung Kuo. Physical limitations of phosphor layer
+thickness and concentration for white leds. Scientific Reports, 8(1), February 2018. ISSN 2045-2322. doi:
+10.1038/s41598-018-20883-3.
+Mark J. van der Laan and Daniel Rubin. Targeted maximum likelihood learning. The International Journal of
+Biostatistics, 2(1), 2006. doi: doi:10.2202/1557-4679.1043. URL https://doi.org/10.2202/1557-4679.
+1043.
+Chi Wang, Qingyun Wu, Markus Weimer, and Erkang Zhu. Flaml: A fast and lightweight automl library. In
+MLSys, 2021.
+Yiman Wang, Huai Zheng, Run Hu, and Xiaobing Luo. Modeling on phosphor sedimentation phenomenon
+during curing process of high power led packaging. Journal of Solid State Lighting, 1(1), April 2014. ISSN
+2196-1107. doi: 10.1186/2196-1107-1-2.
+Heribert Wankerl, Christopher Wiesmann, Laura Kreiner, Rainer Butendeich, Alexander Luce, Sandra
+Sobczyk, Maike Lorena Stern, and Elmar Wolfgang Lang. Directional emission of white light via selective amplification of photon recycling and bayesian optimization of multi-layer thin films. Scientific
+Reports, 12(1), mar 2022. doi: 10.1038/s41598-022-08997-1. URL https://www.nature.com/articles/
+s41598-022-08997-1.
+Anne Spence Wein. Random yield, rework and scrap in a multistage batch manufacturing environment.
+Operations Research, 40(3):551–563, June 1992. ISSN 1526-5463. doi: 10.1287/opre.40.3.551.
+Jiun Pyng You, Nguyen T. Tran, and Frank G. Shi. Light extraction enhanced white light-emitting diodes
+with multi-layered phosphor configuration. Optics Express, 18(5):5055, February 2010. ISSN 1094-4087.
+doi: 10.1364/oe.18.005055.
+Paul F. Zantek, Gordon P. Wright, and Robert D. Plante. Process and product improvement in manufacturing
+systems with correlated stages. Management Science, 48(5):591–606, May 2002. ISSN 1526-5501. doi:
+10.1287/mnsc.48.5.591.7804.
+30

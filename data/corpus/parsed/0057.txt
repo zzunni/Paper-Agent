@@ -1,0 +1,965 @@
+
+
+===== Page 1 =====
+
+Grey-box Process Control Mining for Anomaly Monitoring
+and Deconstruction
+Andrés Vargas
+Rensselaer Polytechnic
+Institute
+Troy, NY USA
+vargaa5@rpi.edu
+MD Ridwan Al Iqbal
+Rensselaer Polytechnic
+Institute
+Troy, NY USA
+iqbalm@rpi.edu
+John S. Erickson
+Rensselaer Polytechnic
+Institute
+Troy, NY USA
+erickj4@rpi.edu
+Kristin P. Bennett
+Rensselaer Polytechnic
+Institute
+Troy, NY USA
+bennek@rpi.edu
+ABSTRACT
+We present a new “grey-box” approach to anomaly detection in smart manufacturing. The approach is designed for
+tools run by control systems which execute recipe steps to
+produce semiconductor wafers. Multiple streaming sensors
+capture trace data to guide the control systems and for
+quality control.
+These controls systems are typically PIcontrollers which can be modeled as an ordinary diﬀerential
+equation (ODE) coupled with a control equation, capturing the physics of the process. The ODE “white-box” models capture physical causal relationships that can be used
+in simulations to determine how the process will react to
+changes in control parameters, but they have limited utility
+for anomaly detection. Many “black-box” approaches exist
+for anomaly detection in manufacturing, but they typically
+do not exploit the underlying process control. The proposed
+“grey-box” approach uses the process-control ODE model
+to derive a parametric function of sensor data.
+Bayesian
+regression is used to ﬁt the parameters of these functions
+to form characteristic “shape signatures”. The probabilistic model provides a natural anomaly score for each wafer,
+which captures poor control and strange shape signatures.
+The anomaly score can be deconstructed into its constituent
+parts in order to identify which parameters are contributing to anomalies. We demonstrate how the anomaly scores
+can be used to monitor complex multi-step manufacturing
+processes to detect anomalies and changes and show how
+the shape signatures can provide insight into the underlying
+sources of process variation that are not readily apparent in
+the sensor data.
+1.
+INTRODUCTION
+Permission to make digital or hard copies of all or part of this work for personal or
+classroom use is granted without fee provided that copies are not made or distributed
+for proﬁt or commercial advantage and that copies bear this notice and the full citation on the ﬁrst page. Copyrights for components of this work owned by others than
+ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior speciﬁc permission
+and/or a fee. Request permissions from permissions@acm.org.
+ODD v5.0: ACM SIGKDD 2018 Workshop August 2018, London UK
+c⃝2018 ACM. ISBN 978-1-4503-2138-9.
+DOI: 10.1145/1235
+In semiconductor manufacturing, wafers are transformed
+into fully functional integrated circuits by passing each wafer
+through a sequence of tools or chambers to perform a series
+of deposition and etching processes. Deposition is achieved
+via “recipes” composed of a series of steps, each guided by
+control systems. Sensors continuously collect physical measurements, such as temperature and pressure, during each
+step. The resulting sensor traces are used to guide the control system. Our approach strives to continuously monitor
+the sensors to perform quality control.
+Mathematically, each unique (tool, sensor, step, wafer)
+quadruple induces a time series {t, vj(t)}t∈ti,k
+l
+, in which i
+indexes the tool, j indexes the sensor, k indexes the step, l
+indexes the wafer, and ti,k
+l
+is a vector containing the time
+points for tool i, step k, and wafer l. The ti,k
+l
+may have different numbers of time points, as well as a diﬀerent sampling
+frequencies. Figure 1 shows the raw sensor data from a particular (tool, sensor, step, wafer) quadruple plotted through
+time, and colored by wafer. It is readily apparent from this
+ﬁgure that an appropriate data model would be a damped
+harmonic oscillator with a perhaps linear driving force; we
+justify this assertion by ﬁtting a damped harmonic oscillators to the data (colored curves). In fact, all quadruples in
+our data can be modeled by a damped linearly driven oscillator as a consequence of the underlying PI control system;
+we demonstrate this fact mathematically in section 2.
+The primary contribution of this work is using the vector of oscillator parameters, which we have called the shape
+signature, corresponding to each quadruple as a summary
+statistic for the time series induced by the quadruple. This
+serves as a powerful data compression technique, as each
+time series, often with more than 100 observations, is reduced to just seven parameters. More importantly, it transforms the raw data into a more information-rich parametric
+space. For example, the parameter γ, i.e. the damping coefﬁcient, encodes how fast the time series settles to the target
+set point; this could not have been determined easily from
+the raw time series. In section 3, we ﬁt the shape signatures using constrained nonlinear bayesian regression.
+In
+section 4, we develop an anomaly scoring function based on
+the objective function of the regression optimization procedure. Finally, in section 5, we present case studies of two
+arXiv:1808.03709v1  [cs.SY]  10 Aug 2018
+
+===== Page 2 =====
+
+Figure 1: Temperature trace data for wafers (dots)
+through time and their associated Shape Signatures
+(colored curves). Each color represents a diﬀerent
+wafer.
+The black curve is the normal model (see
+latter sections for further discussion)
+diﬀerent (tool, sensor, step) triples, demonstrating how their
+respective anomaly scores can be monitored through time
+and deconstructed into the contributions from each shape
+signature parameter using a novel approach.
+Since these
+parameters were shown to be analytically related to the underlying control system in section 2, such a deconstruction
+is directly relevant to process engineers.
+Our data set consists of about four months of data from
+two diﬀerent“recipes”, containing trace data from 16 sensors
+of six types: current, voltage, temperature, power, pressure, and the angular position of a throttle valve. One of
+the monitored recipes contained eleven steps and was measured on six diﬀerent tools; the other recipe is fourteen
+steps and was measured on seven tools; so in total there
+are 16 × (11 × 6 + 14 × 7) = 2624 triples.
+Since there
+are between 50 and 300 wafers in each triple, there are at
+least 2624 × 50 = 131, 200 quadruples that must be ﬁtted
+with shape signatures. We used distributed computing to
+greatly minimize algorithm run time; succesfully ﬁtting each
+quadruple with a characteristic shape signature.
+Feature construction for anomaly detection in semiconductor manufacturing has been studied extensively. A common approach uses dynamic time warping or interpolation
+to massage the sensor data into a common time framework.
+General-purpose anomaly detection algorithms are then applied, with variants of PCA and multiway analysis being
+popular choices [7, 3, 4]. Most approaches treat sensor data
+as single (long) traces instead of subdividing into recipe steps
+consistent with the control algorithms. Unlike our shape signature method, these approaches do not leverage knowledge
+of the underlying recipes and controllers. Shape signatures
+are a powerful new representation that could be incorporated into any outlier or anomaly detection algorithm [1]
+and can indicate which steps, sensors, and parameters of
+the control systems are associated with each anomaly.
+An approach similar to our shape signature method constructs ten features, some related to the parameters of the
+damped harmonic oscillator, including amplitude and settling time [5]. Improving on this, our approach constructs
+“grey-box” features that, along with independently encoding
+semantically meaningful information and having the ability
+to be monitored and incorporated into an anomaly detection framework, provide an intricate picture of the underlying physics when considered jointly as a damped harmonic
+oscillator.
+2.
+GREY-BOX MODEL
+In this section, we show how the underlying “white-box”
+model for PI controllers leads to the classical equation of
+damped harmonic motion that forms the basis of our “greybox” approach [2].
+2.1
+Process Model
+In classical control theory a PI Controller controls an output variable v(t) (e.g.
+temperature) by controlling some
+input variable u(t) (e.g. power). We assume that the process model relationship between v and u can be modeled by
+a ﬁrst order diﬀerential equation:
+v′(t) = −1
+τp v(t) + kp
+τp u(t) ,
+(1)
+where τp is the process time constant and kp is the process
+gain. We assume that τp and kp are nonzero.
+For the input and output variables u and v, the process
+transfer function gp(s) must satisfy the relationship V (s) =
+gp(s)U(s), where V and U are the Laplace transforms of v
+and u, respectively; and s is a Laplace domain variable. We
+can derive gp by taking the Laplace transform of both sides
+of (1):
+sV (s) −v(0) = −1
+τp V (s) + kp
+τp U(s)
+Assuming the initial condition v(0) = 0, we obtain
+V (s) =
+kp
+τps + 1U(s) .
+So, gp(s) =
+kp
+τps+1.
+2.2
+Control Model
+A PI controller speciﬁes u as function of the error between
+an observed value of v and the desired value:
+u(t) = u0 + kce(t) + kc
+τI
+Z t
+0
+e(x)dx ,
+(2)
+where u0 is a bias term, kc is the proportional gain, τI is
+the integral time, and e(t) = r(t) −v(t) is the error. Note,
+r(t) is the desired temperature or “set point” at time t. We
+assume that kc and τI are nonzero.
+The controller transfer function gc(s) must satisfy the relationship U(s) = gc(s)E(s). Taking the Laplace transform
+of both sides of (2), we obtain
+U(s) = u0
+s + kcE(s) + kc
+τI
+E(s)
+s
+.
+Assume the bias u0 is zero and manipulate to obtain
+U(s) = kc(τIs + 1)
+τIs
+E(s) .
+So, gc(s) = kc(τIs+1)
+τIs
+.
+
+===== Page 3 =====
+
+2.3
+Closed-Loop Model
+To obtain the closed loop model (transfer function), we
+couple the process model and the control model.
+First,
+recall the process relationship V (s) = gp(s)U(s).
+Substituting in the controller relationship U(s) = gc(s)E(s), we
+have V (s) = gp(s)gc(s)E(s). Also, since e(t) = r(t) −v(t),
+E(s) = R(s) −V (s), and so
+V (s) = gp(s)gc(s)(R(s) −V (s)) .
+Solve for V (s) to obtain
+V (s) =
+gp(s)gc(s)
+1 + gp(s)gc(s)R(s) ,
+thus the closed loop transfer function is
+gCL(s) =
+gp(s)gc(s)
+1 + gp(s)gc(s) .
+(3)
+We can write (3) as
+gCL(s) =
+τIs + 1
+τIτp
+kpkc s2 + τI(1+kpkc)
+kpkc
+s + 1
+=
+τIs + 1
+ms2 + γs + k , (4)
+where m =: τIτp
+kpkc , γ := τI(1+kpkc)
+kpkc
+, and k := 1.
+2.4
+Recovering Damped Linearly Driven Harmonic Motion
+We now have
+V (s) = gCL(s)R(s) =
+τIs + 1
+ms2 + γs + k R(s)
+(5)
+⇒(ms2 + γs + k)V (s) = (τIs + 1)R(s) .
+(6)
+Now use the inverse Laplace transform to bring both sides
+back to the time domain, again assuming that the relevant
+initial conditions are zero:
+mv′′(t) + γv′(t) + kv(t) = τIr′(t) + r(t) .
+(7)
+Observe that (7) is the second order linear diﬀerential equation for damped harmonic motion. For spring motion, m is
+the mass of the object attached to the spring, γ is the damping coeﬃcient, k is the spring constant, and τIr′(t) + r(t) is
+the driving force. We divide through by m and express everything in terms of the underlying parameters to obtain
+v′′(t) + 1 + kpkc
+τp
+v′(t) + kpkc
+τIτp v(t) = kpkc
+τp r′(t) + kpkc
+τIτp r(t) .
+(8)
+Note that equation (8) can also be recovered for the input
+variable u. Explicitly, we have the Laplace domain relationship
+U(s) = gc(s)E(s) = gc(R(s) −V (s))
+= gc(s)(R(s) −gp(s)U(s))
+= kc(τIs + 1)
+τIs
+(R(s) −
+kp
+τps + 1U(s))
+(9)
+We can manipulate (9) to obtain
+[τIτps2 + τI(kpkc + 1)s + kpkc]U(s) = [kcτIτps2 + kc(τp + τI)s
++ kc]R(s) .
+Taking the inverse Laplace transform of both sides and assuming the relevant initial conditions are zero, we have
+u′′(t) + 1 + kpkc
+τp
+u′(t) + kpkc
+τIτp u(t)
+= kcr′′(t) + kc(τp + τI)
+τIτp
+r′(t) +
+kc
+τIτp r(t) .
+(10)
+Note that (10) diﬀers from (8) only in the right hand side.
+Assume r(t) is linear, say r(t) := q1t + q2, then we can
+write the right hand side of (8) as at+b, where b = kpkc
+τp (q1+
+q2
+τI ) and a = kpkcq1
+τIτp . We can also write the right hand side
+of (10) as at + b, only now b =
+kc
+τIτp [q1(τp + τI) + q2] and
+a = kcq1
+τIτp . In either case, we can redeﬁne γ to be 1+kpkc
+τp
+and
+k to be kpkc
+τIτp , to obtain an equation of the form
+v′′(t) + γv′(t) + kv(t) = at + b .
+The solution to the above diﬀerential equation is
+v(t) = Re−γt/2cos(ωt −φ) + ct + y ,
+(11)
+where c = a/k, y = (b −cγ)/k, ω :=
+p
+4k −γ2/2 ∈R,
+R := A/cosφ = B/sinφ, and A and B are constants that
+can be determined from the initial conditions. See [6] for a
+derivation of this solution. The oscillator (11) is a very well
+mathematically understood object and its parameters have
+clear physical interpretations: R is the amplitude, γ is the
+damping coeﬃcient, ω is the frequency, φ is the phase shift,
+c is the slope, and y is the vertical shift.
+We have shown that PI control leads to (11) for both the
+input and output variables of the controller, and the only
+diﬀerences between the input and output variables are the
+slope (a) and intercept (b) of the applied force. In addition,
+we know that PI control is used at every step of every tool.
+Recall that the sensors available are temperature, power,
+voltage, current, pressure, and throttle valve; and also note
+that temperature is controlled as a function of power, voltage is controlled as a function of current, and pressure is
+controlled as a function of throttle valve.
+Thus, (11) is
+an appropriate model for the time series induced by every
+(tool, sensor, step, wafer) quadruple in our data. In section
+3, we estimate the parameters of (11) for each quadruple;
+we call these parameters “shape signatures”.
+Suppose the parameters of (11) have already been estimated.
+Then it is easy to reverse engineer the ODE parameters a, b, k, and γ using the equations immediately
+following (11). Now consider the output variable formulation using v as the sensor. We we have shown the following
+analytical relationships between the ODE parameters and
+the underlying control parameters:
+
+
+
+
+
+
+
+
+
+
+
+γ = (1+kpkc)
+τp
+k = kpkc
+τIτp
+a = kpkcq1
+τIτp
+b = kpkcq1
+τp
++ kpkcq2
+τIτp
+(12)
+Using the above, we can understand the behavior of the
+oscillator in terms of the control system parameters.
+For
+instance, we know that (11) oscillates if ω ̸= 0 ⇔ω2 > 0 ⇔
+γ2 < 4k. By substitution, we obtain the condition in terms
+
+===== Page 4 =====
+
+of the control system parameters:
+τI <
+4kpkcτp
+(1 + kpkc)2 .
+In addition, the ﬁrst two equations of (12) imply that
+τp =
+1
+γ−τIk and kp =
+kτI
+kc(γ−τIk). τI and kc are often known in
+practice because they will often have been tuned to optimize
+certain domain-speciﬁc criteria. If they are known, then we
+can analytically solve for the process parameters τp and kp,
+which are never known in practice.
+We also get r(t) for
+free if the controller parameters are known: q1 = a/k and
+q2 = b−τIa
+k
+.
+If the controller parameters are not known, then the ﬁrst
+two equations imply τI = γτp−1
+kτp
+and the ﬁrst equation can
+be rewritten as ¯k = γτp−1, where ¯k = kpkc. Again, we have
+q1 = a/k and q2 = b−τIa
+k
+. Thus, we have expressed the parameters τI, ¯k, q2, and q1 as functions of the single parameter
+τp. In other words, we have reduced the entire control system to a single degree of freedom τp. This makes it easy to
+see how τp aﬀects the behavior of the system. For instance,
+¯k > 0 is a necessary and suﬃcient condition for stability of
+PI control 1, which from our analysis is equivalent to the condition τp > 1/γ. Also, observe that limτp→∞τI(τp) = γ/k,
+so for large enough τp, τI ≈γ/k, and hence q2 ≈bk−γa
+k2
+.
+Our approach implicitly represents the control system parameters. It is not “white box”, since it only provides full
+recovery of the underlying closed loop parameters in some
+cases. It is also not “black box”, since the damped harmonic
+oscillator parameters (later ﬁtted through bayesian regression) are intimately connected to the underlying control system. Thus, it is“grey-box”and as such can be uniquely used
+to generate insights to guide manufacturing processes.
+2.5
+Empirical Evidence
+Figures 2-6 present raw data from a sample of (tool, sensor,
+step, wafer) quadruples. In all cases, the damped linearly
+driven harmonic oscillator (11) captures the dynamics, thus
+agreeing with the previous theoretical derivation.
+Importantly, ﬁgures 4-6 show data that appears to follow constantly driven harmonic, exponential, and constant motion;
+which can be parametrized as v(t) = Re−γt/2cos(ωt−φ)+y,
+v(t) = Re−γt/2 + y, and v(t) = y; respectively.
+These
+equations are special cases of (11) when certain parameters
+are set to zero. Thus, our claim that all quadruples follow
+damped linearly driven harmonic motion holds.
+3.
+MINING DAMPED HARMONIC OSCILLATORS
+Equation (11) gives the explicit form of the mathematical
+relationship between the sensor v and time t in the time
+series induced by each (tool, sensor, step, wafer) quadruple. To estimate the parameters R, γ, ω, φ, c, and y, we use
+Bayesian regression over sets of contiguous-in-time wafers.
+These sets are deﬁned by the engineer to be lots of wafers
+processed together. Without loss of generality, ﬁx the tool,
+sensor, and step so that the i, j, and k indices are not necessary.
+Let L = {lm}M
+m=1 be a set of contiguous-in-time
+wafers, let tlm be the set of time points corresponding to
+wafer lm, and let zm be the sensor values recorded. Deﬁne
+1This condition is necessary and suﬃcient only for the ﬁrst
+order process assumed in (1)
+Figure 2: Temperature Trace data, colored by wafer,
+follows damped linearly driven harmonic motion.
+Figure 3: Voltage Trace data, colored by wafer, follows damped linearly driven harmonic motion.
+Figure 4: Voltage Trace data, colored by wafer, follows damped constantly driven harmonic motion.
+Figure 5: Current Trace data, colored by wafer, follows exponential motion.
+Sm := (γm, Rm, ωm, ym, φm, cm, xm) ∼N(α(µS, diag(σS)2)
+for all m ∈{1, ..., |L|}, where γm, Rm, ωm, ym, φm, and
+cm are the parameters of equation (11) corresponding to to
+wafer lm, xm is a horizontal shift term that has been in-
+
+===== Page 5 =====
+
+Figure 6:
+Throttle Valve Trace data, colored by
+wafer, follows constant motion.
+cluded to control for the fact that recipe steps often don’t
+start at time 0 (we give a more detailed justiﬁcation for the
+inclusion of xm in a few paragraphs), σS is a vector whose
+elements are the standard deviations of the respective elements of Sm for all m = 1, ..., |L|, and diag(a) is a diagonal
+matrix whose diagonal elements are the elements of the vector a.
+Note that, since Sm is multivariate Gaussian, the
+diagonal covariance implies independence of its individual
+elements.
+We assume that the wafers are independent and that the
+sensor measurements exhibit independent Gaussian noise.
+Speciﬁcally, assume Si and Sj are independent for all i ̸= j
+and let Zm|Sm ∼N(
+⇀α(tlm, Sm), σ2I), where
+⇀α is deﬁned,
+for any vector of parameters s = (γ, R, ω, y, φ, c, x) and set
+of times for N observations t = {t1, t2, ..., tN}, by
+⇀α(t, s) :=
+
+
+
+
+
+α(t1, s)
+α(t2, s)
+...
+α(tN, s)
+
+
+
+
+
+(13)
+with
+α(ti, s) := Re−γ(ti−x)/2cos(ω(ti −x) −φ) + c(ti −x) + y .
+Note that the sampling frequency and number of elements
+in tlm varies with m. The graceful handling of this issue is
+a major beneﬁt of this formulation over prior work.
+We seek to ﬁnd sm, m = 1, ..., M, and hyperparameters σ,
+µS, and σS that maximize the joint probability of the wafers
+and elements of Sm, for each m. We assume that this joint
+probability can be decomposed as
+|L|
+Y
+m=1
+P(zm|sm; σ)P(sm; µS, σS) ,
+while enforcing the physical constraints ωm ≥0 and φm ∈
+[−π/2, π/2]. We equivalently minimize the negative log likelihood −P|L|
+m=1{lnP(zm|sm; σ)+lnP(sm; µS, σS)}. This can
+be formulated as the optimization problem
+mins1,...,s|L|,σ,µS,σS
+−P|L|
+m=1 lnP(zm|sm; σ)
+−P|L|
+m=1 lnP(sm; µS, σS)
+subject to
+ωm ≥0, m = 1, ..., |L|
+φm ∈[−π/2, π/2], m = 1, ..., |L|
+(14)
+One part of the objective involves the sum of square residuals
+between the actual and predicted sensor values
+−lnP(zm|sm; σ2) :=
+ln(σ2)
+2
+|tlm|+
+1
+2σ2
+P
+t∈tlm (zm,t −α(t, sm))2.
+(15)
+Deﬁning ||·||2
+A := (·)T A(·), the other objective term involves
+the prior distribution of the shape signature parameters
+−lnP(sm; µS, σS) :=
+P7
+d=1 ln((σS)d)+
+1
+2||sm −µS||2
+diag(σS)−1.
+(16)
+We solve (14) using block coordinate descent. First starting with initial guesses for the hyperparameters (σ, µS, σS),
+we minimize with respect to the sm’s while holding the hyperparameters constant, and then we minimize with respect
+to the hyperparameters while holding all the sm’s constant.
+The Gaussian assumptions result in a closed from solution
+for the hyperparameter minimization, so only the minimization over the sm’s requires an iterative procedure. For the
+iterative procedure, we use modiﬁed Newton descent, via the
+R function “nlminb” from the “stats” package, because the
+dimension is small enough to make the analytical Hessian
+tractable to derive and invert. Due to the independence of
+the Sm’s, the iterative optimization procedure can be performed for each sm independently.
+The parameter xm is not included in the iterative optimization procedure. Instead, it is hard-coded to the minimum time in the corresponding induced time series to control for the fact that each induced time series corresponds
+to one of many steps in the deposition recipe, and so it need
+not start at 0. The parameter φm, often referred to as the
+phase shift, is included in the iterative procedure in order
+to capture horizontal shift that is not merely an artifact of
+the recipe, but rather an important feature of the wafer.
+Deﬁnition 1. For a set of contiguous-in-time wafers L =
+{lm}M
+m=1, denote the optimal value of sm, from the optimization program (14), by slm, ∀m ∈{1, ..., M}. We call
+slm the shape signature of wafer lm.
+Note that (14) ﬁts shape signatures of the set of contiguousin-time wafers L simultaneously. This is preferable to ﬁtting
+one wafer at a time, since some wafers have too few observations to optimize in isolation. By learning wafers in sets, we
+share information between contiguous wafers enabling ﬁts
+when sensor data is sparse, while also creating an estimate
+of the prior distribution of the shape signature parameters.
+This stabilizes and improves the quality of the estimates. In
+the next section, we show that the prior also plays a crucial
+role in establishing the normal model of chamber operation.
+Knowledge of the manufacturing process is used to choose
+L. Speciﬁcally, on the factory ﬂoor, the wafers are processed
+in lots, with each lot of wafers in its own container, called
+a foup. Robots ferry the foups to diﬀerent chambers. Since
+the chamber can only perform the deposition on one wafer
+at a time, robotic arms lift the wafers for deposition into the
+chamber one after the other in succession. Engineers expect
+all wafers in the foup to follow the same manufacturing process thus they share very similar shape signatures modulo
+measurement errors. Therefore, the wafers in each lot satisfy the contiguous-in-time requirement. Thus, we solve (14)
+for each lot of wafers L in each (tool, sensor, step) triple in
+order to obtain shape signatures for all the wafers in our
+
+===== Page 6 =====
+
+data.2
+We use the parallel computing capabilities of R to quickly
+solve (14) for each lot in each (tool, sensor, step) triple. There
+are 2624 triples, and between 50 and 300 wafers in each
+triple, so distributed computing results in an immense reduction in computation time. We output the shape signatures for each (tool, sensor, step, wafer) quadruple into one
+“data.table”3 per tool, where each column is a unique combination of sensor and step, and each row is a unique wafer.
+We order the rows with respect to time so that we now have
+a single multivariate time series for each tool.
+3.1
+Sample Shape Signature Fits
+In this section we examine ﬁtted shape signatures for the
+same trace data examples discussed in section 2.5. In Figures 8 and 9, the algorithm estimates all slopes to be close
+to zero since the data does not exhibit a signiﬁcant linear
+trend. In Figure 10, the shape signatures do not exhibit oscillations, thus conforming to what we observed in ﬁgure 5.
+Note that oscillation decreases as the diﬀerence between the
+damping coeﬃcient (γ) and the frequency (ω) increases. We
+can see this occurring in Figure 10; when the damping coefﬁcient drops in the blue curve, so too does the frequency. In
+Figure 11, the amplitudes and slopes are all small in magnitude, resulting in shape signatures representing constant
+functions. Regularization or model selection can encourage
+parameters of the simpler models to be identically zero.
+Figure 7: Temperature shape signatures, colored by
+wafer, for damped linearly driven harmonic motion.
+Slopes: green=0.595, blue=0.590, red=0.595.
+4.
+ANOMALY SCORING
+An integral part of any anomaly detection algorithm is
+the computation of an anomaly score for each data point,
+such that a large anomaly score indicates the data does not
+represent an expected pattern and a low anomaly score indicates expected behavior. This can be achieved by deﬁning
+an anomaly scoring function that maps each data point to
+a real number that is high when the data point does not ﬁt
+the expected pattern and low if it ﬁts. Creating a viable
+anomaly score depends on the underlying assumptions of
+what is “normal”, what is “not normal”, and domain knowledge, making anomaly scoring more of an art than science
+2The choice of L diﬀers slightly during the initial ﬁt; see
+section 4.
+3A “data.table” is a special R data structure that is essentially a matrix that is highly optimized for big data storage
+and manipulation.
+Figure 8:
+Voltage shape signatures,
+colored by
+wafer, for damped constantly driven harmonic motion. Slopes: red=-0.013, blue=-0.011.
+Figure 9:
+Voltage shape signatures,
+colored by
+wafer, for damped constantly driven harmonic motion. Slopes: green=0.104, blue=0.093, red=0.095.
+Figure 10:
+Current shape signatures, colored by
+wafer, for exponential motion. The raw data blocks
+view of the shape signatures, so it has been excluded in this image.
+Damping coeﬃcient (γ):
+red=0.347, blue=0.250, green=0.360.
+Frequency
+(ω): red=0.168, blue=0.005, green =0.153,.
+[1].
+In our case, we were given two requirements for our
+anomaly scoring function: 1. Penalize poor ﬁt of shape signature to sensor data; 2. Penalize large diﬀerences of a ﬁtted
+shape signature from a “normal” shape signature model.
+With these requirements in mind, consider the objective
+function of (14), with |L| = 1:
+−lnP(z1|s1; σ) −lnP(s1; µS, σS),
+(17)
+
+===== Page 7 =====
+
+Figure 11: Throttle Valve shape signatures, colored
+by wafer, for constant motion. Slopes: green=5e-04,
+blue=1e-04, red=6e-04.
+Amplitudes (R): green=-
+4.7e-04, blue=-2.4e-02, red=-1e-04. Frequencies (ω):
+green=0.264, blue=0.344, red=0.438. Damping coeﬃcient (γ): green=-0.522, blue=0.074, red-0.248.
+and suppose σ, µS, σS are known.
+Then (17) measures
+how aberrant s1 is, where aberrant is deﬁned as “low probability of occurring” using the probability density function
+P(s1, z1) = P(z1|s1)P(s1). Note that the ﬁrst term of (17)
+encodes deviance with respect to the data since it is the
+negative log of the likelihood of z1. The second term measures deviance of s1 with respect to the prior distribution.
+Thus, encoding the normal model of operation into the prior
+P(S; µS, σS) would cause (17) to satisfy the requirements 1
+and 2. The following deﬁnition explains how to do this.
+Deﬁnition 2. For a given (tool, sensor, step), triple, take
+a set of contiguous-in-time wafers at the start of the data
+collection period. Assume that the data contained in these
+wafers were generated by the same joint distribution
+P(S, Z; σ∗, µ∗
+S, σ∗
+S) = P(Z|S; σ∗)P(S; µ∗
+S, σ∗
+S).
+(18)
+The normal model is deﬁned as (σ∗, µ∗
+S, σ∗
+S). We can then
+solve (14), with L now containing the afore-mentioned wafers,
+to estimate the normal model. We refer to the above procedure of learning the normal model as the initial ﬁt.
+Note that, unlike the procedure from the previous section,
+the wafers used in the initial ﬁt are not required to be from
+the same lot. In fact, it is better for them to span multiple
+lots, as this reduces variance of the normal model parameter
+estimates. On the other hand, using too many wafers is also
+detrimental, as it will bias the parameter estimates, since
+we would expect the underlying process to drift from where
+it began as time progresses. In practice, we used four lots of
+wafers for the initial ﬁt for each triple. Based on the normal
+model, we deﬁne an anomaly scoring function which satisﬁes
+requirements 1 and 2:
+Deﬁnition 3. Given the normal model (σ∗, µ∗
+S, σ∗
+S), the
+anomaly score of a shape signature s, with corresponding
+wafer l and data z = {zt}t∈tl, is
+anom(s) := −lnP(z|s; σ∗) −lnP(s; µ∗
+S, σ∗
+S) .
+(19)
+We now have a way of assigning an anomaly score to each
+shape signature. By construction, the anomaly score is a
+function of the shape signature parameters, which encode
+important information about the underlying control process
+that is hidden in the raw data. Thus, we expect for these
+anomaly scores to be better for identifying and deconstructing anomalies than methods that only use the trace data
+without exploiting the underlying control process.
+5.
+MONITORING AND DECONSTRUCTING
+ANOMALY SCORES
+Heatmaps provide a convenient way to visually monitor
+the anomaly scores and corresponding parameters over time.
+In this section we display the standardized (z-score) shape
+signature parameters, ssr (sum of squared residuals), and
+anomaly scores over time; for two diﬀerent (tool, sensor,
+step) triples, which we obfuscate as “triple 1” and “triple
+2”.
+Each column in the heatmap gives the standardized
+parameter values of a diﬀerent wafer; the wafers are ordered
+in time from left (earliest in time) to right (latest).
+Figure 12: Three shape signatures before and after
+the change point for triple 1. Curves corrected for
+x-shift, which does not contribute to anomaly score.
+The black curve is the normal model.
+In Figure 13, we see that the anomaly score and all parameters except for x (horizontal shift) experience an abrupt
+shift at the change point. Note gamma changes in the negative direction and R, phi, and slope change in the positive direction. Based on equation (11), these changes imply slower
+convergence to set point, larger amplitude, positive horizontal shift, and a steeper asymptote, respectively. These
+changes are apparent in Figure 12, where we have plotted
+the shape signatures before and after the change point.
+We will now consider the gradient at the change point.
+The change point is not readily available since it occurs in
+between two wafers. We approximate the change point gradient by evaluating a ﬁrst order Taylor series expansion of
+the gradient about the shape signature before the gradient
+at the midpoint of the shape signatures before and after the
+gradient. Speciﬁcally, if lchange is the wafer at which the
+change point occurs 4, lbef is the available wafer immediately before the change point, and laft is the available wafer
+immediately after the change point, then:
+4Note that lchange is a theoretical wafer, since it does not
+exist in our data.
+
+===== Page 8 =====
+
+Figure 13: Time Evolution of Standardized Parameters for triple 1. Columns are wafers ordered by time.
+We see almost all parameters shifting abruptly at the change point.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+∂anom(slchange )/∂γ
+∂anom(slchange )/∂R
+∂anom(slchange )/∂ω
+∂anom(slchange )/∂y
+∂anom(slchange )/∂φ
+∂anom(slchange )/∂c
+∂anom(slchange )/∂x
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+= ∇anom(slchange ) ≈∇anom
+
+
+slbef + slaft
+2
+
+
+≈∇anom(slbef ) + ∇2anom(slbef )
+
+
+slaft −slbef
+2
+
+
+=
+
+
+
+
+
+
+
+
+
+
+
+−1.067120 × 106
+4.223630 × 103
+4.947775 × 102
+7.326686 × 101
+3.092527 × 102
+1.623737 × 106
+9.901231 × 10−3
+
+
+
+
+
+
+
+
+
+
+
+,
+Within this gradient, γ and the slope c most strongly contribute to the change in anomaly score, since they have the
+largest magnitude. Less important contributors are R, ω,
+and φ; as their gradients are several orders of magnitude
+lower than those of γ and c. We see that y and x (vertical
+and horizontal shift, respectively) are not really contributing
+to the change point. We also see that the signs of the elements of the gradient match up with what we observerd in
+ﬁgure 12. Speciﬁcally, γ is contributing negatively and c, R,
+and φ are contributing positively. Thus we have seen how the
+gradient is instrumental in establishing causal relationships
+between certain parameters and anomalous phenomena.
+For “triple 2”, Figure 14 calls attention to a spike point,
+i.e. when anomaly score shoots up for just one wafer. Close
+inspection of the column of parameters at the spike point,
+shows that the parameters ssr, slope, and omega are positively correlated with the anomaly score at the spike point;
+whereas y is negatively correlated (has a trough) with anomaly
+score at this point. The trough in y is visually apparent in
+the raw data in Figure 15, but the peaks of the other parameters are less perceptible by eye because these parameters
+vary on much smaller scales than y; they only stand out in
+the heatmap because of the standardization.
+By taking the gradient of the anomaly score, we can understand how changes in the parameters impact the anomaly
+score. We expect ∂anom(s)/∂y to be negative at the spike
+point and the partial derivative with respect to the peaking
+variables to be positive at the spike point. The gradient at
+lspike, the wafer at which the spike occurred, conﬁrms this:
+∇anom(slspike) =
+
+
+
+
+
+
+
+
+
+∂anom(slspike)/∂γ
+∂anom(slspike)/∂R
+∂anom(slspike)/∂ω
+∂anom(slspike)/∂y
+∂anom(slspike)/∂φ
+∂anom(slspike)/∂c
+∂anom(slspike)/∂x
+
+
+
+
+
+
+
+
+
+=
+
+
+
+
+
+
+
+91.110112
+4.94883
+169.607
+−6.655819
+10.89815
+279336942
+0.0537148
+
+
+
+
+
+
+
+.
+The gradient conﬁrms the anomaly score correlations deduced from the heatmap. The magnitudes of the elements
+of the gradient give us the strength of the correlations, i.e.
+how strongly each variable is contributing to the spike. The
+slope c is causing the spike point, as its corresponding partial
+derivative is signiﬁcantly larger than all the rest. In general,
+we can take the gradient of the anomaly score at points of
+interest to determine which shape signature parameters are
+inﬂuencing the anomaly score at that point.
+6.
+CONCLUSION
+We have proposed a new “grey-box” approach to anomaly
+detection in smart manufacturing of semiconductor wafers
+that combines feedback control theory and Bayesian statistical learning to discover causal relationships between deeply
+hidden control parameters and process behavior. It is applicable to any manufacturing process, since these processes
+are known to be employ feedback loops.
+Our method ﬁts shape signatures using a robust statistical model that features regularization and a second-order
+optimization routine.
+The shape signatures provide powerful features, as each of their parameters have important
+physical meaning. We kill two birds with one stone by ﬁnding a way to compute anomaly scores, which automatically
+capture both goodness-of-ﬁt and change in shape, using the
+same statistical model that we used to ﬁt the shape signatures. We illustrate ways in which these anomaly scores can
+be monitored over time using our semiconductor data. The
+anomaly score can be decomposed into its individual components by taking its gradient. Components of the gradient vector correspond to oscillator parameters that we have
+demonstrated how to map to the underlying feedback control parameters. In future work, we can perform sensitivity
+analysis using perturbation theory using this mapping.
+
+===== Page 9 =====
+
+Figure 14: Time Evolution of Standardized Parameters for triple 2. Columns are wafers ordered by time.
+The inset shows a zoom-in of the spike point. The anomaly score shoots up at the spike point and several
+other parameters also experience spikes correlated with anomaly score.
+Figure 15: Triple 2 shape signatures in the neighborhood of the point where the anomaly score spikes.
+The downward shift in y (vertical shift) is clearly
+apparent. The black curve is the normal model.
+Shape signatures provide a basis for powerful new methods for anomaly detection and deconstruction in smart manufacturing.
+By explicitly modeling control systems, they
+better capture normal system performance and provide deeper
+engineering insight.
+This could potentially lead to higher
+manufacturing yields at lower costs. The general approach
+of using parametric function representations of process control systems for quality control and process improvement
+can be adapted to other types of manufacturing processes
+and control systems.
+7.
+ACKNOWLEDGMENTS
+GLOBALFOUNDRIES provided partial funding and manufacturing process data. This work was supported by NSF
+Grant 1331023, and the Rensselaer Institute for Data Exploration and Applications. We thank Mr. Mark Reath of
+GLOBALFOUNDRIES for his support, mentoring and encouragement, and Dr. Wayne Baquette of Rensselaer Polytechnic Institute for his guidance on process control theory.
+8.
+REFERENCES
+[1] C. C. Aggarwal. Outlier Analysis. Springer
+International Publishing, Yorktown Heights, New York,
+USA, 2017.
+[2] B. W. Bequette. Process Control: Modeling, Design,
+and Simulation. Pearson Education Inc., Upper Saddle
+River, NJ 07458, 2003.
+[3] G. A. Cherry and S. J. Qin. Multiblock principal
+component analysis based on a combined index for
+semiconductor fault detection and diagnosis. IEEE
+Transactions on semiconductor manufacturing,
+19(2):159–172, 2006.
+[4] Z. Ge and Z. Song. Semiconductor manufacturing
+process monitoring based on adaptive substatistical
+pca. IEEE Transactions on Semiconductor
+Manufacturing, 23(1):99–108, 2010.
+[5] A. A. U. Haq, K. Wang, and D. Djurdjanovic. Feature
+construction for dense inline data in semiconductor
+manufacturing processes. IFAC-PapersOnLine,
+49(28):274–279, 2016.
+[6] R. C. D. William E. Boyce. Elementary Diﬀerential
+Equations and Boundary Value Problems. John Wiley
+& Sons, 111 River Street, Hoboken NJ 07030, 2012.
+[7] B. M. Wise, N. B. Gallagher, S. W. Butler, D. D.
+White Jr, and G. G. Barna. A comparison of principal
+component analysis, multiway principal component
+analysis, trilinear decomposition and parallel factor
+analysis for fault detection in a semiconductor etch
+process. Journal of Chemometrics: A Journal of the
+Chemometrics Society, 13(3-4):379–396, 1999.

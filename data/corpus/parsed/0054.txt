@@ -1,0 +1,560 @@
+
+
+===== Page 1 =====
+
+Prepared for submission to JINST
+Radiation hard pixel sensors using high-resistive wafers
+in a 150 nm CMOS processing line
+D.-L. Pohl,a,1 T. Hemperek,a I. Caicedo,a L. Gonella,b F. Hügging,a J. Janssen,a H. Krüger,a
+A. Macchiolo,c N. Owtscharenko,a L. Vigani,d and N. Wermesa
+aUniversity of Bonn,
+Physikalisches Institut, Nußallee 12, D-53115 Bonn, Germany
+bUniversity of Birmingham,
+School of Physics and Astronomy, Edgbaston, Birmingham, B15 2TT, UK
+cMax Planck Institut for Physics,
+Werner-Heisenberg Institut, Föhringer Ring 6, D-80805 Munich, Germany
+dUniversity of Oxford,
+Denys Wilkinson Building, Keble Road, Oxford, OX1 3RH, UK
+E-mail: pohl@physik.uni-bonn.de
+Abstract: Pixel sensors using 8′′ CMOS processing technology have been designed and characterized oﬀering the beneﬁts of industrial sensor fabrication, including large wafers, high throughput
+and yield, as well as low cost. The pixel sensors are produced using a 150 nm CMOS technology
+oﬀered by LFoundry in Avezzano. The technology provides multiple metal and polysilicon layers,
+as well as metal-insulator-metal capacitors that can be employed for AC-coupling and redistribution layers. Several prototypes were fabricated and are characterized with minimum ionizing
+particles before and after irradiation to ﬂuences up to 1.1 × 1015 neq cm−2. The CMOS-fabricated
+sensors perform equally well as standard pixel sensors in terms of noise and hit detection eﬃciency.
+AC-coupled sensors even reach 100% hit eﬃciency in a 3.2 GeV electron beam before irradiation.
+Keywords: solid state detectors, pixel detectors, radiation-hard detectors, hybrid pixels
+1Corresponding author.
+arXiv:1702.04953v2  [physics.ins-det]  2 Mar 2017
+
+===== Page 2 =====
+
+Contents
+1
+Introduction
+1
+2
+Pixel sensor design
+2
+3
+Device assembly and characterization procedures
+3
+4
+Results
+4
+4.1
+I-V curves
+4
+4.2
+Signal and noise
+5
+4.3
+Depletion depth
+5
+4.4
+Hit detection eﬃciency
+6
+5
+Conclusions
+8
+1
+Introduction
+Hybrid pixel detectors [1] have matured to a level that they are the main contenders for tracking and
+vertexing near the interaction point at experiments of the planned LHC upgrade (HL-LHC, [2]). The
+surface covered by pixel detectors will likely increase from less than 2 m2 at present to 10–20 m2
+in the future. The detectors will be arranged in several concentric cylindrical layers, with radii
+between 3–30 cm, and many square meters of disk layers in the forward and backward region of the
+detectors.
+Industrial CMOS processes on large, high-resistive wafers enable sensor designs with high
+yield and high throughput at comparatively low cost. This technology is therefore of interest also
+for large area pixel or strip detectors, not only for readout IC fabrication but also for the particle
+sensing elements, the sensors. Furthermore, various parts of the CMOS processing technology like
+multiple metal layers, polysilicon layers, as well as metal-insulator-metal (MIM) capacitors can be
+employed for special sensor features that are otherwise mostly not available. Examples are ACcoupling of the sensor to the readout electronics or obtaining a signiﬁcant module simpliﬁcation
+by implementation of redistribution layers for signals and service voltages on the sensor itself
+rendering a module ﬂex much simpler or even obsolete. A redistribution of bump connections
+by a dedicated metal layer can decouple the sensor pixel pitch from the readout pixel pitch thus
+enabling a module design without elongated inter-gap pixels. As the CMOS sensors include no
+active electronic circuitry (transistors), they are termed passive CMOS sensors.
+In this paper we present radiation hard passive CMOS pixel sensors fabricated in a 150 nm
+CMOS process oﬀered by LFoundry [3] on high-resistive wafers (> 2 kΩ-cm).
+A number of
+prototypes have been characterized with respect to production quality, depletion depth, signal and
+noise levels, pixel capacitance, and detection eﬃciency before and after irradiation up to ﬂuences
+of 1.1 × 1015 neq cm−2.
+– 1 –
+
+===== Page 3 =====
+
+2
+Pixel sensor design
+Prototype n-in-p pixel sensor matrices have been produced in the LFoundry 150 nm CMOS process
+on Czochralski p-type wafers having a foundry speciﬁed resistivity of typically 4–5 kΩ-cm (minimum 2 kΩ-cm). The pixel matrix measures 1.8 × 4 mm2 and is divided into 16 × 36 pixels with a
+size of 50 × 250 µm2. The matrix is surrounded by an n-implantation bounding the active volume of
+the edge pixels, followed by seven p-implantation guard rings to isolate the electrodes from the high
+voltage at the sensor edge (ﬁgure 1). Half of the pixels are DC coupled with punch-through biasing
+and the other half is AC coupled by a 3.2 pF MIM capacitor. AC pixels are biased via a 15 MΩ
+polysilicon resistor present in each pixel. The pixel layout follows a standard planar pixel design
+used, for instance, for the ATLAS IBL planar sensors [4], with a 30 µm wide n-implantation as
+readout electrode and a 20 µm gap between pixels to all sides. For the two outermost columns of the
+DC half, the n-implantation width has been varied in the range between 15 µm and 30 µm, to allow
+for optimization studies of the ﬁll factor with respect to input capacitance and charge-collection
+eﬃciency. All pixels are isolated by a 4 µm p-stop grid implemented below ﬁeld plates made of a
+low resistive polysilicon layer. The intention of the ﬁeld plates is to ﬂatten spikes in the electric
+ﬁeld occurring after irradiation, hence improving the breakdown behavior [5]. A high resolution
+mask set was used for processing as the submission was shared with other monolithic active CMOS
+devices (DMAPS [8]). The use of such (expensive) mask sets is likely not needed in a dedicated
+Figure 1. Pixel sensor matrix with 576 pixels surrounded by an n-well ring and subsequently 7 p-type
+guard rings (top). The bottom shows 4 edge pixels with bump pads. (left) Pair of AC pixels with a large
+area fraction ﬁlled by MIM layers providing the capacitive coupling; (right) pair of DC pixels containing
+dedicated implants for punch through biasing (bias dots).
+– 2 –
+
+===== Page 4 =====
+
+passive sensor production run. The sensors have been thinned to 100 µm and 300 µm and then
+backside processed providing a p-implant and a metallization layer to allow bias voltage application
+from the backside. The very thin 100 µm wafer was processed by IBS in France [6] including a
+thinning step in a TAIKO process [7]. In this process the wafer edge is left thicker to create a
+self-sustainable wafer for further processing without the need of a handling wafer.
+3
+Device assembly and characterization procedures
+The sensor was bonded to the ATLAS FE-I4 pixel readout-chip [9] via ﬁne pitch solder bump
+bonding at Fraunhofer IZM in Berlin [10]. The FE-I4 chip was tuned to threshold values similar to
+those used for the IBL layer of the ATLAS pixel detector corresponding to approximately 3000 e−.
+The chip was readout with the USBpix 2.0 hardware [11] in combination with pyBAR software, a
+Python based readout- and test-system for the ATLAS FE-I4 [12]. The FPGA ﬁrmware modules and
+interfaces were provided by basil, a modular data-acquisition and system-testing framework [13].
+The sensor eﬃciencies were determined in several test-beam campaigns using minimum ionizing particles. Electrons were used with energies between 2.5 GeV and 3.2 GeV at the electron
+stretcher accelerator (ELSA) in Bonn [16] and 120 GeV pions at the super proton synchrotron
+(SPS) at CERN [17]. A fast particle telescope based on two ATLAS FE-I4 modules [18] was used
+for high-rate test-beams at ELSA to determine the detection and charge collection eﬃciencies for
+diﬀerent bias and threshold settings with high statistics. A high resolution telescope (EUDET [19])
+based on six Mimosa26 planes [20] and one FE-I4 hybrid pixel time-reference plane was used for
+the high-energy test-beam setup at CERN to map with sub-pixel resolution. The synchronization
+between data from FE-I4 telescope planes and Mimosa26 planes was established by means of the
+JUDITH software [21]. This synchronization is diﬃcult and error prone, since the event integration
+time of the Mimosa planes is much longer than the integration time of the ATLAS FE-I4 (115 µs
+vs. 0.4 µs). A mismatch between tracks recorded in the Mimosa telescope with hits in the FE-I4
+time reference plane assigns a wrong time stamp to these tracks during reconstruction. Every
+mismatched track artiﬁcially decreases the determined absolute eﬃciency. Consequentially, the
+absolute eﬃciency quoted in this work was always determined with the FE-I4 based telescope,
+where synchronization issues due diﬀerent event integration times do not exist.
+The subsequent steps of a test-beam analysis involving hit clustering, track ﬁnding and ﬁtting
+were carried out using testbeam analysis [22], a novel python package. The performance of testbeam
+analysis was veriﬁed by simulation as well as by analyzing test-beam data from well understood
+and formerly characterized ATLAS IBL pixel modules [18].
+To determine the charge spectra of the sensor a new charge reconstruction method was developed
+(TDC method). This method overcomes the limitation of the front-end to measure charge spectra
+with suﬃcient resolution by sampling the charge signal with a faster external clock utilizing the
+FPGA of the readout system [23].
+One sensor has been irradiated with 24 MeV protons at the Birmingham irradiation facility [14]
+in steps to 0.18 × 1015 neq cm−2 and 1.14 × 1015 neq cm−2. After each step the sensor was annealed for
+80 minutes at 60◦C. The total ﬂuence was measured with about 10% uncertainty by post-irradiation
+dosimetry on nickel foils attached to the device during irradiation [15].
+– 3 –
+
+===== Page 5 =====
+
+4
+Results
+4.1
+I-V curves
+To examine the process- and design quality I-V curves (current versus reverse-bias voltage) of 114
+sensors have been obtained. The sensors were located on one wafer half of a 300 µm thin wafer
+and were contacted at the bias grid by needles on a probe station. The curves in ﬁgure 2 (left)
+show very similar electrical characteristics for all sensors. The breakdown requires bias voltages in
+excess of 100 V for all 114 sensors and is independent of the sensor’s position on the wafer. Only
+one sensor showed a short due to a processing error. The location of the breakdown was determined
+via emission microscopy on 5 sensors of the same wafer after dicing and it occurs at the bias dots
+of the DC pixels. The right side of ﬁgure 2 depicts results of the IV measurements of two fully
+0
+20
+40
+60
+80
+100
+120
+Voltage [V]
+10
+4
+10
+3
+10
+2
+10
+1
+Current [uA]
+0
+20
+40
+60
+80
+100
+Entries
+0
+50
+100
+150
+200
+250
+300
+350
+Voltage [V]
+10
+4
+10
+3
+10
+2
+10
+1
+100
+101
+102
+103
+104
+Current [uA]
+    100
+m
+unirradiated
+test structure
+    300
+m
+unirradiated
+0.18 1015 neq/cm2
+1.14 1015 neq/cm2
+full
+depletion
+break
+down
+Figure 2. I-V measurements of LFoundry CMOS sensors: (left) I-V curves before irradiation and dicing
+of 114 sensors located on the same wafer thinned to 300 µm. One sensor suﬀering a short circuit due to a
+processing error has been excluded from the plot. (right) I-V curves of two pixel module assemblies. I-V
+measurements for two diﬀerent thicknesses (100 µm (dark dashed line) and 300 µm (dark solid line) and two
+diﬀerent irradiation levels (0.18 × 1015 neq cm−2 (dash-dotted line) and 1.14 × 1015 neq cm−2 (light solid line))
+are shown. The light dashed line shows an unbonded test structure treated with plasma etching after backside
+grinding to mitigate the current increase at full depletion. The results are normalized to 20◦C temperature.
+assembled pixel modules after thinning, backside processing, and solder bonding to the ATLAS
+FE-I4 chip. Backside processing after thinning included a p+ implantation plus metallization, but
+was done without an etching step after backside grinding. It has been observed before [24] that
+excessive leakage current can be mitigated by applying etching after grinding. The absence of this
+treatment is likely the cause for the observed behavior at 24 V for the 100 µm device (ﬁgure 2,
+arrow full depletion).
+At this voltage the depletion region reaches the backside, in agreement
+with calculations assuming a resistivity of about 5 kΩ-cm (see section 4.3). In order to prove
+this hypothesis a dedicated test structure with the same pixel pitch, guard rings, and implantations
+was designed and thinned to 100 µm and the backside was treated with plasma etching. It can
+be seen in ﬁgure 2 (test structure) that the additional current increase is not occurring anymore
+when the depletion zone touches the backside.
+The additional current increase at about 160–
+180 V for the unirradiated 100 µm and 300 µm is likely a breakdown at the bias dots of the DC
+pixels. After irradiation of the sensor assembly the breakdown voltage increases. At an irradiation
+– 4 –
+
+===== Page 6 =====
+
+level of 1.14 × 1015 neq cm−2 voltages in excess of 700 V have been applied without observing any
+breakdown.
+4.2
+Signal and noise
+Figure 3 (left) shows single pixel charge distributions of the 300 µm thick sensor obtained in testbeams (3.2 GeV electrons) before irradiation at 160 V bias and after 0.18 × 1015 neq m−2 at 250 V.
+A similar measurement at the highest ﬂuence of 1.14 × 1015 neq cm−2 suﬀered an electric discharge
+disabling the FE-I4 readout chip functionality, and is thus not available.
+0
+5
+10
+15
+20
+25
+30
+35
+40
+45
+Charge [ke]
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Entries [a.u.]
+unirradiated
+1.8 1014neq/cm2
+threshold 3.5 ke
+MPV 18929+163
+169 e
+MPV 13959+52
+52 e
+80
+90
+100
+110
+120
+130
+140
+150
+160
+Noise [e]
+0
+10
+20
+30
+40
+50
+#
+AC coupled
+Mean: 131.73 ± 0.04
+DC coupled
+Mean: 116.70 ± 0.04
+Figure 3. Signal and noise for a 300 µm thick LFoundry passive pixel sensor at 160 V bias bump bonded
+to the ATLAS FE-I4. (left) Measured charge distributions (normalized) of single hit clusters of 3.2 GeV
+electrons before irradiation and after 0.18 × 1015 neq cm−2. The charge was measured using the TDC method
+(see text) and ﬁtted with a Landau-Gauss convolution to determine its MPV. (right) The equivalent noise
+charge distributions for AC (dark) and DC (light) coupled pixels. The mean noise for these couplings is
+stated in the legend.
+Figure 3 (right) shows distributions of the noise for AC and DC coupled pixels determined using
+the internal charge injection circuitry of the ATLAS FE-I4 when a 300 µm sensor at 160 V bias is
+attached. The distributions have mean values of ENC = 117 e−(DC) and 132 e−(AC). This should
+be compared to the noise performance of planar IBL sensors (ENC ≈120 e−[18], CD = 117 fF [25])
+and IBL 3D-Si sensors (ENC ≈140 e−[18], CD = 180 fF [25]) showing that the noise performance
+of the passive CMOS sensor investigated here is comparable. Hence we conclude that the DC
+coupled pixels have an input capacitance less than 120 fF and the AC coupled pixel less than 180 fF.
+The larger value for the AC coupled sensors arises from the parasitic capacitance of the polysilicon
+layer by which the bias resistor is implemented. The values for the bias resistor and coupling
+capacitance were not optimized in the design, but chosen as large as possible, leaving room for
+input capacitance optimization in future designs.
+4.3
+Depletion depth
+Assuming that in silicon a minimum ionizing particle creates about 71 e/h pairs per micron (most
+probable value, from GEANT4 simulation) and that only the depleted volume of the sensor contributes to the charge signal (due to the fast response time of the FE-I4) we determine the depletion
+– 5 –
+
+===== Page 7 =====
+
+depth and thus the p-type bulk resistivity of the passive CMOS sensors using
+d =
+r
+2ϵ0ϵr
+eNeﬀ
+(Vbi + Vbias)
+⇒
+d [µm] ≈0.3
+p
+ρ [Ωcm] · Vbias [V]
+(4.1)
+where d is the depletion depth, Neﬀthe eﬀective doping concentration, ϵ0 the vacuum permittivity
+and ϵr the relative permittivity of silicon.
+0
+25
+50
+75
+100
+125
+150
+175
+200
+Bias [V]
+0
+50
+100
+150
+200
+250
+300
+Depletion width [um]
+Resistivity: 2.0 k
+cm
+Resistivity: 5.5 k
+cm
+Resistivity: 6.0 k
+cm
+Data
+Figure 4.
+Depletion depth as a function of bias voltage for the 300 µm thick LFoundry passive pixel
+sensor. The depletion depth was calculated using Langau ﬁts as in ﬁgure 3 assuming 71 e/h pairs created per
+micrometer. Theoretical depletion curves for three bulk resistivities given by 4.1 are shown for comparison.
+Figure 4 shows the measured depletion depth assuming 71 e/h pairs created per micron using
+the most probable value of measured charge distributions as in ﬁgure 3 (left) extracted by a ﬁt to a
+so-called Langau distribution [26], a Landau distribution [27] folded with a Gaussian. The measured
+depletion depths at diﬀerent bias voltages are compared to theoretical curves obtained from (4.1)
+assuming three diﬀerent values for the (p-type) bulk resistivity. The error bars of the measurements
+are deﬁned by the ﬁt error and the uncertainty of the calibration of the charge-injection circuitry of
+the ATLAS FE-I4. One can conclude that the resistivity of the bulk material of the measured wafer
+is at least 4–5 kΩ-cm, a value compatible with the range quoted by the vendor.
+4.4
+Hit detection eﬃciency
+The hit detection eﬃciency has been determined using 3.2 GeV electrons for sensors thinned
+to 100 µm (unirradiated) and 300 µm (three levels of radiation:
+0, 0.18 × 1015 neq cm−2 and
+1.14 × 1015 neq cm−2).
+The results are shown in ﬁgure 5.
+The hit eﬃciency reaches values
+of 98.7%/99.8% for the DC/AC coupled 100 µm sensor pixels at a standard threshold of about
+3000 electrons and increases to 99.8%/> 99.9% after reducing the threshold to about 1500 electrons. After irradiation the eﬃciency reaches values > 99.9% for AC coupled sensors at bias
+– 6 –
+
+===== Page 8 =====
+
+0
+100
+200
+300
+400
+500
+Bias voltage [V]
+95
+96
+97
+98
+99
+100
+Mean efficiency [%]
+AC pixels
+    100
+m
+unirradiated
+low threshold
+    300
+m
+unirradiated
+0.18 1015neq/cm2
+1.14 1015neq/cm2
+DC pixels
+    100
+m
+unirradiated
+low threshold
+    300
+m
+unirradiated
+0.18 1015neq/cm2
+1.14 1015neq/cm2
+Figure 5. Hit detection eﬃciency of 100/300 µm thick pixel sensors for diﬀerent bias voltages and diﬀerent
+levels of radiation damage. Each point represents the mean eﬃciency of at least 50 center pixels. The
+statistical error bars are too small to visualize and are thus not shown.
+voltages above 350 V. The DC coupled sensor eﬃciency is somewhat lower (> 99% at 450 V) due
+to the 'blind' area taken by the punch-through biasing dot. This eﬀect can be seen in ﬁgure 6,
+0
+500
+1000
+1500
+2000
+2500
+3000
+3500
+4000
+Column position [um]
+0
+250
+500
+750
+1000
+1250
+1500
+1750
+Row position [um]
+0
+10
+20
+30
+40
+50
+60
+70
+80
+90
+100
+Efficiency [%]
+Figure 6. Hit detection eﬃciency map of the LFoundry passive pixel sensor with 300 µm thickness at 160 V
+bias. Bins of 10 µm x 10 µm size have been used and are labeled by a white color where the eﬃciency
+determination is not possible due to low statistics. The eﬃciency is not correct on an absolute scale (see
+section 3), but shows the eﬃciency loss at the location of the bias dots. The upper left ineﬃcient area are two
+disabled pixels during analysis and the ineﬃcient area to the right marks the edge of the active sensor area.
+– 7 –
+
+===== Page 9 =====
+
+showing the eﬃciency map over all pixels determined with 120 GeV pions. The map depicts a
+histogram with 10 µm x 10 µm bins of the intersection points of reconstructed particles tracks with
+the sensor. The ratio of tracks that created a hit in the sensor, within an association distance of
+500 µm, divided by the total number of tracks gives the eﬃciency per bin. While the eﬃciency
+of the AC coupled pixels is homogenous, it is possible to observe an eﬃciency loss at the bias
+dots located in the DC coupled pixels. The absolute eﬃciency is underestimated (see section 3)
+explaining a lower eﬃciency in comparison to ﬁgure 5.
+5
+Conclusions
+In this paper we presented pixel sensors fabricated in a CMOS process line using high ohmic
+(∼5kΩ-cm) substrate wafers. Employing CMOS technology provides several beneﬁts for large area
+pixel detectors such as those planned for the HL-LHC upgrade at CERN, namely: low cost, large
+through-put production on 8′′ or even 12′′ wafers, and design ﬂexibility (e.g. AC coupling, routing)
+while keeping the charge collection properties of standard sensors. The wafers were fabricated
+using LFoundry 150 nm technology. The sensors were thinned to 300 µm and 100 µm thickness and
+were backside processed. A sensor breakdown after irradiation to more than 1015 neq cm−2 did not
+occur up to a maximum applied voltage of 700 V. Measured signal and noise performance was found
+to be very similar to those of planar pixel sensors currently used in the ATLAS experiment. The
+hit-eﬃciency after irradiation was measured in an electron test-beam to be above 99.9% (99.1%)
+for AC- (DC)-coupled sensor-chip assemblies.
+Acknowledgments
+We would like to thank Julie Segal for the emission microscopy to localize the sensor breakdown.
+We also thank Ion Beam Services (IBS) in France and LFoundry in Italy for their kind support and
+useful feedback during sensor production and backside processing. This work was supported by
+the German Ministerium für Bildung, Wissenschaft, Forschung und Technologie (BMBF) under
+contract no. 05H15PDCA9, by the European Union’s Horizon 2020 project AIDA-2020 under grant
+agreement no. 654168, and a Marie Skłodowska-Curie ITN Fellowship of the European Union’s
+Horizon 2020 program under grant agreement no. 675587-STREAM.
+References
+[1] L. Rossi, P. Fischer, T. Rohe, and N. Wermes. Pixel Detectors: From Fundamentals to Applications.
+Springer, Berlin, Heidelberg, 2006.
+[2] The HL-LHC Project. http://hilumilhc.web.cern.ch/.
+[3] LFoundry, a SMIC owned Company. http://www.lfoundry.com/en/technology.
+[4] C. Gößling, R. Klingenberg, D. Münstermann, A. Rummler, G. Troska, and T. Wittig. Planar n+ -in-n
+silicon pixel sensors for the ATLAS IBL upgrade. Nucl. Inst. and Meth. A, 650:198–201, 2011.
+[5] T. Hemperek. Exploration of advanced CMOS technologies for new pixel detector concepts in High
+Energy Physics. Dissertation, Universität Bonn, 2017. To be published.
+– 8 –
+
+===== Page 10 =====
+
+[6] IBS. http://www.ion-beam-services.com/.
+[7] DISCO. https://www.disco.co.jp/eg/solution/library/taiko.html.
+[8] T. Kishishita, T. Hemperek, H. Krüger, and N. Wermes. Depleted Monolithic Active Pixel Sensors
+(DMAPS) implemented in LF-150 nm CMOS technology. JINST, 10(03):C03047, 2015.
+[9] M. Garcia-Sciveres et al. The FE-I4 pixel readout integrated circuit. Nucl. Inst. and Meth. A, 636:155,
+2011.
+[10] M. Klein et al. Development and Evaluation of Lead Free Reﬂow Solderinmg Techniques for the Flip
+Chip Bonding of Large GaAs Pixel Dedectors on Si Readout Chip. In Proc. ECTC 2008, the 58th
+Electronic Components and Technology Conference, pages 1893–1899, Orlando, USA, 2008.
+[11] M. Backhaus, M. Barbero, L. Gonella, J. Große-Knetter, F. Hügging, H. Krüger, J. Weingarten, and
+N. Wermes. Development of a versatile and modular test system for ATLAS hybrid pixel detectors.
+Nucl. Inst. and Meth. A, 650:37–40, 2011.
+[12] Software package pyBAR, versatile readout and test system for the ATLAS FE-I4(A/B) pixel readout
+chip. https://github.com/SiLab-Bonn/pyBAR.
+[13] Software package basil, modular data acquisition system and system testing framework in Python.
+https://github.com/SiLab-Bonn/basil.
+[14] P. Dervan, R. French, P. Hodgson, H. Marin-Reyes, K. Parker, J. Wilson, and M. Baca. Upgrade to the
+Birmingham Irradiation Facility. Nucl. Inst. and Meth. A, 796:80–84, 2015.
+[15] Klupák, Vít, Viererbl, Ladislav, Lahodová, Zdena, Šoltés, Jaroslav, Tomandl, Ivo, and Kudějová,
+Petra. Nickel foil as Transmutation Detector for Neutron Fluence Measurements. EPJ Web of
+Conferences, 106:05013, 2016.
+[16] N. Heurich, F. Frommberger, P. Hänisch, and W. Hillert. The New External Beamline for Detector
+Tests at ELSA. In Proceedings, 7th International Particle Accelerator Conference (IPAC 2016):
+Busan, Korea, May 8-13, 2016, page THPOY002, 2016.
+[17] The Super Proton Synchrotron. Jan 2012.
+[18] ATLAS IBL Collaboration. Prototype ATLAS IBL Modules using the FE-I4A Front-End Readout
+Chip. JINST, page P11010, 2012.
+[19] Jansen, H. et al. Performance of the EUDET-type beam telescopes. EPJ Techn Instrum, 3(1):7, 2016.
+[20] C. Hu-Guo et al. First reticule size MAPS with digital output and integrated zero suppression for the
+EUDET-JRA1 beam telescope. Nucl. Inst. and Meth. A, 623:480–482, 2010.
+[21] G. McGoldrick, M. Červ, and A. Gorišek. Synchronized analysis of testbeam data with the Judith
+software. Nucl. Instrum. Meth., A765:140–145, 2014.
+[22] Software package testbeam analysis. https://github.com/SiLab-Bonn/testbeam_analysis.
+[23] Janssen, J., Pohl, D.-L., and others. A FPGA based TDC implementation for charge characterizations
+of pixel detector prototypes. Publication in preparation.
+[24] M. Okihara, H. Kasai, N. Miura, N. Kuriyama, and Y. Nagatomo. Lapis SOI Pixel Process. 2015.
+[25] M. Havránek, F. Hügging, H. Krüger, and N. Wermes. Measurement of pixel sensor capacitances
+with sub-femtofarad precision. Nucl. Inst. and Meth. A, 714:83–89, 2013.
+[26] Software package pyLandau. https://github.com/SiLab-Bonn/pyLandau.
+[27] K.S. Kölbig and B. Schorr. A program package for the Landau distribution. Comput. Phys. Commun.,
+31:97–111, 1984. (Erratum: Comput. Phys. Commun. 178 (2008), S. 972).
+– 9 –

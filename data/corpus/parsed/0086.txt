@@ -1,0 +1,3648 @@
+
+
+===== Page 1 =====
+
+Phys. Rev. Materials 5, 124601 (2021) 
+doi.org/10.1103/PhysRevMaterials.5.124601 
+Modified Band Alignment Method to Obtain Hybrid Functional Accuracy from 
+Standard DFT: Application to Defects in Highly Mismatched 111-V:Bi Alloys. 
+Maciej P. Polak, 1•2 •* Robert Kudrawiec, 2 Ryan Jacobs,1 Izabela Szlufarska, 1 and Dane Morgan 1,t 
+1 Department of Materials Science and Engineering, 
+University of Wisconsin-Madison, Madison, Wisconsin 53706-1595, USA 
+2 Department of Semiconductor Materials Engineering, 
+Faculty of Fundamental Problems of Technology, Wroclaw University of Science and Technology, 
+Wybrzeie Wyspianskiego 27, 50-370 Wroclaw, Poland 
+(Dated: December 5, 2021) 
+This paper provides an accurate theoretical defect energy database for pure and Bi-containing 
+111-V (111-V:Bi) materials and investigates efficient methods for high-throughput 
+defect calculations 
+based on corrections of results obtained with local and semi-local functionals. Point defects as well as 
+nearest-neighbor and second-nearest-neighbor 
+pair defects were investigated in charge states ranging 
+from -5 to 5. Ga-V:Bi systems (GaP:Bi, GaAs:Bi, and GaSb:Bi) were thoroughly investigated 
+with significantly slower, higher fidelity hybrid Heyd-Scuseria-Ernzerhof 
+(HSE) and significantly 
+faster, lower fidelity local density approximation 
+(LDA) calculations. In both approaches spurious 
+electrostatic 
+interactions were corrected with the Freysoldt correction. 
+The results were verified 
+against available experimental results and used to assess the accuracy of a previous band alignment 
+correction. Here, a modified band alignment method is proposed in order to better predict the HSE 
+values from the LDA ones. The proposed method allows prediction of defect energies with values 
+that approximate those from the HSE functional at the computational 
+cost of LDA (about 20x 
+faster for the systems studied here). Tests of selected point defects in In-V :Bi materials resulted 
+in corrected LDA values having a mean absolute error (MAE) = 0.175 eV for defect levels vs. 
+HSE. The method was further verified on an external database of defects and impurities in CdX 
+(X=S, Se, Te) systems, yielding a MAE = 0.194 eV. These tests demonstrate the correction to be 
+sufficient for qualitative and semi-quantitative 
+predictions, and may suggest transferability to many 
+semiconductor systems without significant loss in accuracy. Properties of the remaining In-V :Bi 
+defects and all Al-V :Bi defects were predicted with the use of the modified band alignment method. 
+I. 
+INTRODUCTION 
+There are many challenges to obtaining defect properties from direct experimental characterization, therefore 
+theoretical predictions of point defect properties are very 
+valuable. 
+For example, DLTS is widely used to study 
+defects (traps for carriers) in semiconductors since this 
+technique provides experimental information on the trap 
+energy level, capture cross section and trap concentration 
+but lacks the ability to identify the defect type [l]. Advanced electron microscopy techniques are able to identify the defect type [2-4] but the measurements are expensive, destructive, difficult to properly perform, and 
+require time-consuming sample preparation. 
+First principle density functional theory (DFT) calculations of defect levels aid interpretation 
+of results obtained with DLTS or other methods and are often used 
+in defect characterization. 
+DFT also enables exploration 
+of a full suite of defect types and interactions and offer 
+physical insight into defect and associated electronic and 
+optical properties of a material. Correct DFT treatment 
+of defects in semiconductors requires the use of supercells 
+with many atoms and a proper description of both the 
+total energy of the system and its electronic band struc-
+* mppolak@wisc.edu 
+t ddmorgan@wisc.edu 
+ture. 
+Recent developments of computational 
+methods 
+such as hybrid functionals and corrections of the spurious electrostatic interactions, allow for accurate theoretical predictions. However, the use of these high fidelity 
+methods also results in very time consuming and computationally expensive calculations, which typically limits 
+researchers to focus only on a small number of specific 
+defect types or a particular material system. Therefore, 
+in order to investigate large range of systems, defects and 
+charge states, approximate but more efficient methods 
+are necessary. 
+The goal of this work is two-fold. First, to provide 
+and assess potential methods to reduce the computational effort required to obtain defect formation energies 
+and defect levels, while preserving relatively high accuracy. Here, band alignment based corrections, as well as 
+machine learning methods, are investigated. Second, to 
+use the most efficient of these methods to build a highlyaccurate first principles defect energy database for pure 
+and Bi-containing III-V (III-V:Bi) materials. 
+Dilute bismides are group III-V semiconductors with 
+bismuth as an isovalent dopant replacing a modest percentage ( typically 10% or less) of the group V host atoms. 
+They have attracted interest in the past 10 or so years 
+mostly due to a significant reduction of the band gap 
+with relatively low Bi concentration and a large increase 
+in the spin-orbit splitting [5-8]. Specifically, when the Bi 
+concentration in GaAsi-xBix approaches 12% the spinPreprint 
+
+===== Page 2 =====
+
+Phys. Rev. Materials 5, 124601 (2021) 
+orbit splitting exceeds the band gap energy, Auger re­
+combination is suppressed which results in higher device 
+efficiency when the material is used in long wavelength 
+laser devices [9]. Additionally, alloying with bismuth is 
+the only way to obtain a group III-V material with a 
+band gap lower than that of InAsi-xSbx, which is nec­
+essary for mid-infrared (MIR) devices. So far, the MIR 
+spectral range is usually covered by using the group II­
+VI alloy Hg1_xCdx Te. However, there are many disad­
+vantages of using this material, such as instability and 
+lack of compositional uniformity [10, 11], as well as the 
+use of environmentally hazardous and highly toxic Hg 
+and Cd elements. A III-V compound with properties 
+favorable for use in MIR devices would provide a possi­
+bility to overcome the challenges of using Hg1-xCdx Te. 
+Such a compound would also enable processing of MIR­
+compatible materials using highly developed III-V indus­
+try technologies, allowing easy integration with existing 
+infrastructure. Some optoelectronic structures based on 
+dilute bismides such as photodetectors [12-14] and re­
+cently even laser structures [15, 16], have been developed 
+and shown promising results, encouraging further devel­
+opment. It is evident, that dilute bismides are an active 
+field of research, with focus not only on Ga- and In-based 
+III-V:Bi systems, but now also extending to Al- based,
+with AlSb1_xBix having been synthesized for the first as 
+recently as last year [17]. 
+Point defects properties are particularly important to 
+establish for dilute bismide semiconductor systems. This 
+importance arises primarily because many dilute bis­
+mides can be regarded as highly mismatched semicon­
+ductor alloys (HMAs) due to the significant discrepancy 
+of the electronegativity and size of the Bi atoms com­
+pared with the atoms comprising the host III-V com­
+pounds. Dilute bismide systems are known for being dif­
+ficult to manufacture. In order to incorporate Bi atoms 
+into the III-V host, the growth conditions have to be 
+adjusted, typically to a significantly lower growth tem­
+perature than that optimal for pure III-V host materi­
+als [18-23]. As a consequence, undesired defects often 
+form during III-V:Bi growth, which defects often function 
+as traps for carriers, in turn lowering device efficiency. 
+Because of poor optical quality of HMAs, post growth 
+annealing is often applied in order to increase the effi­
+ciency of luminescence [24-26]. It is believed that for di­
+lute nitrides, the enhancement of luminescence is related 
+to reduction of the concentration of point defects due to 
+annealing [24, 27, 28]. In the case of dilute bismides, 
+post growth annealing has also been performed [29-34], 
+but its role in the improvement of the material quality 
+is still unclear. However, defects are expected to be con­
+tributing to the annealing response. Overall, defects are 
+likely to play a key role in these systems and knowledge of 
+their properties may help improve materials performance. 
+Specifically, the defect data included in this study can 
+guide the growth process or annealing conditions and en­
+able better interpretation of the results of defect proper­
+ties measured by spectroscopic, optical or electrical methdoi.org/10.1103/PhysRevMaterials.5.124601 
+ods, such as deep-level transient spectroscopy (DLTS), 
+photoluminescence, or temperature-dependent Hall mea­
+surements. Although a few studies focused on particu­
+lar materials (GaAs:Bi and GaSb:Bi) and defect types 
+exist [35-38], a comprehensive study has not been per­
+formed, until now. The data and knowledge contained 
+in this work provide powerful tools for understanding 
+the performance limitations and improving the quality 
+of grown structures. 
+An optimized band alignment correction is proposed, 
+where results of significantly faster, lower-fidelity local 
+density approximation (LDA) (and other local and semi­
+local functionals) calculations are corrected to approach 
+the accuracy of significantly slower, higher-fidelity hy­
+brid Heyd-Scuseria-Ernzerhof functional (HSE) calcula­
+tions. Related to the correction, it has been proposed 
+that much of the improvement associated with HSE vs. 
+LDA can be obtained by a simple band alignment (BA) 
+correction to the LDA energy levels [39-45]. Such an ap­
+proach can potentially produce results that come close 
+to HSE-level accuracy at a fraction of the computational 
+cost (typically more than an order of magnitude reduc­
+tion in computing time). However, the BA approach 
+has only been tested on a handful of defect types and 
+systems, and therefore has not yet been thoroughly as­
+sessed and may not yet be fully optimized. To develop 
+our database and explore a band alignment based ap­
+proach to improving LDA results, all Ga-V:Bi materials 
+were studied directly with both the lower accuracy LDA 
+method and the higher accuracy HSE approach. We de­
+termined formation energies for all charge states for na­
+tive and Bi-related point defects as well as nearest- and 
+second-nearest-neighbor pair defects. Then, we applied 
+the BA correction method to the LDA results and as­
+sessed the accuracy of this correction against HSE. Based 
+on the result of the BA correction, we propose an addi­
+tional empirical correction, which we call the modified 
+band alignment (MBA) method. The MBA includes a 
+band gap-dependent linear shift, which we fit to the Ga­
+V:Bi training data. We then verify the improved ac­
+curacy of the MBA vs. the BA for a test data set of 
+point defects in In-V:Bi. In addition, to test the trans­
+ferability of the method to other systems that are not 
+III-V semiconductors, the MBA was tested on a large,
+recently published database of defect and impurity ener­
+gies in CdX (X=S, Se, Te) materials [46]. Finally, the
+MBA is used to predict the properties of the remaining
+pair defects in In-V:Bi together with all defect properties
+of Al-V:Bi materials. As a result, a large database of
+formation energies and charge-state transition levels in
+III-V:Bi materials is generated.
+Preprint 
+
+===== Page 3 =====
+
+Phys. Rev. Materials 5, 124601 (2021) 
+II. 
+RESULTS AND DISCUSSION 
+A. 
+Validation 
+of first principles 
+calculations 
+In this section, we validate our first principles calculations of charge-state transition energies by comparing 
+to available experimental and computed data. There is 
+limited data for comparison on defect properties of dilute bismides and pure GaP and GaSb, but a significant 
+amount for GaAs, so we focus on GaAs:Bi. DFT studies of GaAs:Bi by Luo et al. [47] using a very similar 
+methodology to this work (see Sec. IV) are in an excellent 
+agreement with the calculations performed here. The difference between our predicted point defect charge-state 
+transition levels and those of Luo et al. have a MAE 
+of 0.06 eV. Excellent agreement is also found between 
+our calculated and the available point defect charge-state 
+transition levels from experimental results, with a MAE 
+of 0.04 eV, based on our best interpretation of the experimental data. This comparison is done for the same data 
+and defect type and defect levels used in Luo et al. 
+Calculations performed by Buckeridge et al. [48] for 
+point defects in pure GaSb use a similar methodology to 
+that used in this paper and are in very good agreement 
+with our calculations, with differences in defect levels 
+not exceeding 0.1 eV. The authors, similarly to us, find 
+only qualitative agreement with the studies performed 
+by Virkkala et al. [49] on GaSb. The quantitative disagreement can be attributed to differences in computational procedures, such as convergence criteria, treatment 
+of spin-orbit interaction, and different approach used for 
+the electrostatic corrections. 
+The experimental observations of metastability of vacancy related defects in GaSb [50], and their theoretical 
+predictions in GaAs [51], where in certain charge states 
+instead of a single group III vacancy (vm), a pair antisite defect and group V vacancy is preferred, are also well 
+reproduced in the current work. 
+A careful investigation of Fig. 1 f), h), and i) reveals 
+that some defects are stable in a negative (-1) charge state 
+at EF = 0 eV. These defects are group III vacancies (in 
+low band gap materials: 
+GaSb, InAs and InSb) and a 
+Gasb antisite. 
+B. 
+Insight from first principles 
+calculations 
+The calculated energies for the Ga-V:Bi systems can 
+be used to better understand the experimental observations associated with III-V:Bi materials. They also allow 
+us to make predictions about possible opportunities and 
+challenges for improving the processing of III-V:Bi materials by mitigating the deleterious effect of defects. In 
+the following we assume that higher stability of defects 
+indicates these defects are present at higher concentrations (relative to less stable defects). This claim is certainly true at equilibrium but may not be true under 
+the nonequilibrium growth conditions used for many of 
+doi.org/10.1103/PhysRevMaterials.5.124601 
+these materials. 
+In particular, III-V:Bi alloys are often 
+grown using molecular beam epitaxy and metalorganic 
+vapor phase epitaxy under conditions that are very far 
+from equilibrium. However, we assume that even in these 
+cases the chemical trends and qualitative features identified below are likely to be preserved. 
+For the case of the isovalent doping (Biv ), low formation energy as well as a stable zero charge defect state 
+with no charge-state transitions is desirable in terms 
+of stably incorporating 
+Bi to form an alloy. 
+Figs. 1 
+d)-f) show formation energies for point defects in GaV:Bi with chemical potentials corresponding to intermediate growth conditions (group III-rich and group V-rich 
+conditions can be found in supplementary Figs. S2 and 
+S8). The predicted formation energies for Biv follow the 
+chemical trend of the mismatch between the group V 
+and Bi atoms, with the highest formation energy for GaP 
+and lowest for GaSb. This result is consistent with previous research on growth of these materials, where the 
+most substantial amounts of Bi can be incorporated in 
+GaSb, less Bi can be incorporated in GaAs, and a high 
+Bi composition in GaP is most difficult to achieve. So 
+far, GaSb:Bi layers and quantum wells with quite good 
+optical properties were reported by Kopaczek et al. [52], 
+Yue et al. [53] and Delorme et al. [54] while reports on 
+optical properties of GaP:Bi are still very limited and not 
+promising [55, 56]. This suggests that high-quality GaP 
+material with Bi is difficult to achieve. 
+Bi-related defects are very important for the optical 
+quality of dilute bismides. In particular, materials can 
+suffer from undesired antisite Bim defects. A high formation energy of those antisite defects is therefore preferable 
+in order to manufacture a high-quality alloy. In p-type 
+materials, the predicted BiGa defect formation energies 
+are very low, close to zero (see Fig. 1 d)-f)). This is especially apparent under V-rich conditions, and in GaP and 
+GaAs, where the formation energy of Bim is lower than 
+that of Biv. The situation improves with the increase 
+of Fermi level, where for n-type materials, BiGa always 
+exhibits a higher formation energy than Biv. 
+The binding energy of the Biv and BiGa defects in 
+each system is the lowest of all nearest-neighbor-pairs 
+and exhibits almost no change as a function of Fermi 
+level (Fig. 2 d )-f)). This result suggests that no significant clustering between Biv and BiGa defects should be 
+expected. The formation energies show that among the 
+three Ga-V materials studied, GaSb:Bi (Fig. 1 f)), the 
+material with the lowest mismatch between Bi and group 
+V atom, exhibits the lowest formation energy for isovalent Biv doping and the highest energy for BiGa antisite 
+under both III- and V-rich conditions. This suggests that 
+GaSb:Bi might be the most promising for obtaining highquality (i.e. low defect concentration) materials. 
+The binding energies show the influence of the mismatch between Bi atoms and the corresponding group 
+V atoms very clearly. GaP:Bi and GaAs:Bi have a noticeable similarity in the shapes of the formation energy 
+curves (Fig. 1) as well as the relative values of the binding 
+Preprint 
+
+===== Page 4 =====
+
+Phys. Rev. Materials 5, 124601 (2021) 
+doi.org/10.1103/PhysRevMaterials.5.124601 
+6 
+~(a) 
+5 
+~(b) 
+5 
+~(c) 
+> 5 
+4 
+4 
+~ 
+ei 4 
+3 
+3 
+QI 
+2 
+C: 
+QI 3 
+2 
+C: 
+1 
+0 
+:p 2 
+1 
+"' 
+0 
+§ 
+0 1 
+Vp--
+0 
+AIAs --
+VAs --
+Alsb --
+Vsb--
+u. 
+BiAI 
+ASAI --
+BiAI 
+-1 
+SbA1 --
+BiAI 
+Bip--
+VA1--
+BiAs --
+VA1--
+Bisb --
+0 
+-1 
+-2 
+0 
+0.5 
+1 
+1.5 
+2 
+2.5 
+0 
+0.5 
+1 
+1.5 
+2 
+0 
+0.5 
+1 
+1.5 
+6 
+:(d) 
+5 
+:(e) 
+4 
+:(f) 
+> 5 
+QI 
+4 
+3 
+;: 4 
+e' 
+3 
+2 
+QI 3 
+C: 
+QI 
+C: 2 
+0 
+2 
+1 
+:p "' 1 
+§ 
+1 
+0 
+: Gasb --
+0 
+vp--
+u. 0 
+BiGa 
+: SbGa --
+Bip--
+VGa --
+-1 
+0 
+-1 
+0 
+0.5 
+1 
+1.5 
+2 
+2.5 
+0 
+0.2 0.4 0.6 0.8 
+1 
+1.2 1.4 1.6 
+0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 
+6 
+lnp --
+:(g) 
+5 
+:(h) 
+3 
+> 5 
+Pin--: 
+V1n--: 
+4 
+~ 
+Vp--
+• 
+: lnAs --
+ei 4 
+Bi1n 
+: 
+:AS1n --
+2 
+QI 
+Bip--: 
+3 
+V1n--
+C: 
+QI 3 
+C: 
+0 
+2 
+:p 2 
+1 
+"' 
+.-
+§ 
+: lnsb --
+Vsb --
+0 1 
+1 
+: Sb1n --
+Bi1n 
+u. 
+V1n--
+Bisb --
+0 
+0 
+0 
+0 
+0.2 0.4 0.6 0.8 
+1 
+1.2 1.4 
+0 
+0.1 
+0.2 
+0.3 
+0.4 
+0 
+0.05 
+0.1 
+0.15 
+0.2 
+0.25 
+Fermi level (eV) 
+Fermi level (eV) 
+Fermi level (eV) 
+FIG. 1. Point defect formation energies as a function of Fermi level for all considered 111-V:Bi materials. 
+Panels d)-i) (GaV:Bi and In-V:Bi) were calculated with the HSE functional, and a)-c) (Al-V:Bi) were obtained with LDA corrected with the 
+modified band alignment correction (MBA) and, therefore, are marked with an asterisk. a)-c) correspond to AlP:Bi, AlAs:Bi, 
+and AlSb:Bi, d)-f) to GaP:Bi, GaAs:Bi, and GaSb:Bi, and g)-i) to InP:Bi, InAs:Bi, and InSb:Bi, respectively. 
+Chemical 
+potentials corresponding to intermediate growth conditions were used. Results for group V- and group III-rich conditions are 
+available in Sec. VI A, Figs. S1-S3 and S7-S9. Here we assume the MBA is sufficient for quantitative 
+comparison, therefore, 
+this figure serves as a presentation of the results for point defects in all studied systems, and not for assessing the method, for 
+which we direct the reader to Figs. 3 and 4. 
+energies. Defects in these two materials span a similar 
+range of stable charge states, with similar order of the 
+formation energies between different defects. 
+GaSb:Bi 
+does not share this similarity. 
+However, GaSb is the 
+only material out of the three where the group V atom 
+is larger than the group III atom, which results in different lattice-strain related effects for substitutional 
+defects. GaSb:Bi is also the material with the lowest mismatch, due to the similar sizes and electronegativities of 
+Sb and Bi, resulting in a Bi level with much larger separation from the valence band maximum (VBM) than 
+the GaAs:Bi and GaP:Bi. This large separation, in turn, 
+results in different electronic properties near the band 
+gap edges, with significantly lower electron localization 
+and narrower emission peaks, as well as reduced lattice 
+strain in Bi-related defects. The reduced strain effects 
+also encourage higher amounts of Bi to incorporate into 
+the alloy. 
+Fig. 2 shows binding energies of pair defects in GaV:Bi materials. P-type GaP:Bi and GaAs:Bi have a large 
+(attractive) binding energy for nearest-neighbor-pair 
+defect vaa+Biv, which involves a vacancy and an isovalent 
+substitution of a smaller group V atom with larger Bi 
+atom. A possible reason for this is that the strain induced by the Bi atom is partially relieved by the neighboring vacancy. The effect diminishes as the Fermi level 
+increases due to the introduction of additional electrons, 
+compensating for the missing electrons due to the vaPreprint 
+
+===== Page 5 =====
+
+Phys. Rev. Materials 5, 124601 (2021) 
+doi.org/10.1103/PhysRevMaterials.5.124601 
+5-~--~--------~ 
+ASGa+GaAs --
+: 
+3-~--~--------~ 
+GaAs+BiAs --
+: 
+AsGa+BiAs --
+: 
+VGa+GaAs --
+: 
+VGa+VAs 
+-
+: 
+VGa+BiAs --
+: 
+2 
+BiGa+GaAs --
+: 
+,_.,~_:s;:=~"---J;'iGa+BiAs 
+: 
+1 
+0 
+-1 
+AsGa+BiGa --
+: 
+VGa+BiGa --
+: 
+VAs+BiAs --
+: 
+BiGa+BiGa 
+: 
+BiAs+BiAs --
+: 
+1 
+0 
+GaA5+GaAs --
+AsGa+AsGa --
+VGa+ASGa --
+VGa+VGa --
+VA5+GaAs 
+VAs+VAs --
+0 
+0.2 0.4 0.6 0.8 
+1 
+1.2 1.4 1.6 
+0 
+0.2 0.4 0.6 0.8 
+1 
+1.2 1.4 1.6 
+0 
+0.2 0.4 0.6 0.8 
+1 
+1.2 1.4 1.6 
+6~~~~~-~~--~~~~ 
+5 
+~4 
+e> 3 
+Q) 
+~ 2 
+g> 1 
+'o 
+~ 0 
+-1 
+PGa+Gap --
+: 
+PGa+Vp --
+: 
+PGa+Bip --
+: 
+VGa+Gap --
+: 
+VGa+Vp 
+-2 ~~~~~-~~~~~~~~ 
+0 
+0.5 
+1 
+2 
+2.5 
+2-~~~~~~-~~~~~~ 
+Sb a+Gasb --
+: 
+5 
+4 
+3 
+2 
+1 
+0 
+-1 
+-2 
+2 
+1 
+(e): 
+Gap+Bip --
+: 
+PGa+BiGa --
+: 
+VGa+BiGa --
+: 
+Vp+Bip --
+: 
+BiGa+BiGa 
+: 
+Bip+Bip --
+: 
+~ 
+0 
+0.5 
+1 
+1.5 
+2 
+(h): 
+: Gasb+Bisb --
+Vsb+Bisb --
+• SbGa+BiGa --
+BiGa+BiGa 
+-
+: VGa+BiGa --
+Bisb+Bisb --
+3 
+2 
+1 
+0 
+-1 
+-2 
+-3 
+2.5 
+0 
+2 
+(i): 
+1 
+0 
+-1 
+0.5 
+1 
+1.5 
+2 
+Vsb+Gasb 
+Vsb+Vsb --
+2.5 
+-1 ~~~~~~~~~~~~~~ -2 ~~~~~~~~~~~~~~ 
+0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 
+0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 
+0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 
+Fermi level (eV) 
+Fermi level (eV) 
+Fermi level (eV) 
+FIG. 2. Binding energies for pair defects in Ga-V:Bi compounds, calculated with the HSE functional. 
+a)-c), d)-f), and g)-i) 
+correspond to GaP:Bi, GaAs:Bi, and GaSb:Bi respectively. Each material has been separated into three columns for clarity, 
+where the first column includes the nearest-neighbor-pair 
+defects, the second contains second-nearest-neighbor-pair 
+defects with 
+Bi related defects, and the third contains the remaining second-nearest-neighbor 
+defects. 
+cancy. This compensation is directly connected with the 
+decrease of the formation energy of VGa point defect in 
+n-type materials. The same effect is not as pronounced 
+in GaSb:Bi, where the strain effects resulting from size 
+mismatch are small relative to GaAs and GaP, as discussed above. The very high attractive binding energy of 
+vaa+Biv pairs in GaP:Bi and GaAs:Bi strongly suggests 
+that unwanted Ga vacancies are more likely to be present 
+when GaP and GaAs are grown with Bi atoms to form 
+an alloy, compared to GaSb:Bi which again is predicted 
+to have the lowest tendency to form unwanted defects. 
+In the case of in-situ or ex-situ annealing, which is 
+widely applied to HMAs, it can be expected that the 
+formation/annihilation 
+of point defects will be strongly 
+influenced by formation energies as well as the kinetics of each defect type. 
+Therefore, the possibility of 
+clustering, which is very often suggested to occur in 
+HMAs, including dilute bismides, is worth investigating. 
+In the above discussion, we concluded that the 
+Biv atom clustering tendencies in GaSb:Bi differs significantly from that in GaP:Bi and GaAs:Bi since the 
+binding energy for vaa+Biv 
+defect pairs in these alloys is much larger (i.e. attractive) 
+than in GaSb:Bi, 
+(Fig. 2). This conclusion is consistent with the experimental data reported so far for these alloys. For example, 
+for GaAs:Bi a strong clustering upon annealing was reported in Refs. [57, 58] while a very homogeneous alloy 
+was observed for GaSb:Bi [59, 60]. One of the pair defects, namely Biaa +vv was found to be unstable in all 
+charge states - it undergoes a structure change to a more 
+stable form of vaa+Biv. 
+A similar situation is observed 
+in the case of negatively charged Vaa+vv in GaP:Bi and 
+GaAs:Bi, where a more stable VGa is observed. 
+It is also interesting to note the fact that the binding energy curves as a function of Fermi energy are not always 
+flat. This shows that in many cases the pair defects are 
+Preprint 
+
+===== Page 6 =====
+
+Phys. Rev. Materials 5, 124601 (2021) 
+not in the same charge states as the point defects comprising the pair. Furthermore, the curves are not always 
+convex because the pair and corresponding point defects 
+change stable charge states as a function of Fermi energy 
+in different ways. 
+Overall, the calculated database in this work provides 
+significant insights into the behavior of defects in the GaV :Bi (as well as In-V:Bi and Al-V:Bi) systems. We expect that as more experimental data on defect levels in dilute bismides becomes available, particularly from DLTS, 
+the present data will provide a valuable resource to aid 
+in interpretation of experimental results, enhance understanding of III-V:Bi defect properties and, subsequently, 
+aid in materials design and optimization. Additional details on results for the remaining In-V:Bi and Al-V:Bi 
+systems obtained with the correction schemes described 
+in Sec. II C can be found in Sec. II C 2. 
+C. 
+Modified band alignment method 
+The band alignment (BA) methods described in Methods section (Sec. IV B) have been used and tested in 
+previous studies on a few select systems, and the mean 
+absolute error between the values obtained with the BA 
+correction and full HSE calculations has been found to 
+be 0.24 eV and less than 0.2 eV in Refs. [40] and [39], 
+respectively. However, in our case, the number of studied defect types and charge states is significantly larger 
+than in previous studies. Here, we have 188 stable defect 
+levels compared to around 20 and 55 in [40] and [39], respectively. This large number of defects allows for a more 
+quantitative assessment of the method. The applicability 
+of the method is apparent from comparing Figs. 3b) and 
+e). In Fig. 3b), which shows the accuracy of LDA vs. 
+HSE for charge state transition levels, a clear underestimation of the defect levels can be observed, with a mean 
+error equal to the negative of the mean absolute error 
+ME= -MAE= 
+-0.439 eV. Fig. 3e) shows the LDA vs. 
+HSE charge state transition levels after the BA correction, where the error statistics are much improved with 
+MAE= 0.226 eV and ME= 0.18 eV. See Tab. I for easier 
+comparison of error values. The BA results from Ref. [40] 
+reveal that certain charge state transition levels, in particular those where the charge localization effects are not 
+appropriately described within the local/semilocal functional [61], may show larger inaccuracies and in extreme 
+cases be falsely determined to be unstable. 
+A specific 
+example where these errors might be particularly large is 
+in defects with large Jahn-Teller distortions that require 
+proper charge localization to capture in a quantitative 
+manner. These situations are taken into account and are 
+quantified by precision, recall and Fl scores, which carry 
+information on the amount of misclassified defect levels 
+and formation energies. These values are present on all 
+charge-state transition level and formation energy parity 
+plots. 
+Although the BA provides a significant improvement, 
+doi.org/10.1103/PhysRevMaterials.5.124601 
+reducing the mean error values by a factor of 2, the now 
+positive value of the mean error indicates the correction 
+overestimated a majority of the values. A visual inspection of Fig. 3e) reveals that the overestimation occurs 
+mostly near the bottom of the band gap, while values at 
+the top of the band gap seem to be more accurate, and 
+that the overestimation is more severe for higher band 
+gap materials. A similar behavior can be observed in Fig. 
+2 in Ref. [39], where values near the bottom of the band 
+gap tend to be overestimated after the BA correction. 
+These trends suggest an opportunity for improvement of 
+the BA correction scheme. In general, the behavior described above can be remedied by adding two band-gap 
+dependent linear terms to the constant shift: 
+Eforr =Ed+ Eshift + /3 ((1- 8)E9 - Ed). 
+(1) 
+This modified BA method (MBA) results in a shift dependent on the band gap of the material and on the position of a particular defect state within the gap. Such 
+a correction is justified based on the trends apparent in 
+Fig. 3e) and is clearly capable of improving the obtained 
+charge-state transition levels for the data presented here 
+(as can be seen in Fig. 3h)), although its physical interpretation is not obvious. The large number of defects 
+and charge states calculated in this work with both LDA 
+and HSE allows for an empirical determination of the /3 
+and 8 parameters. 
+In our case, all three Ga-V:Bi material systems have been used in determination of these 
+parameters. 
+Minimizing the RMSE for the general formula (Eq. 1) resulted in 8 = 0.05 and /3 = -0.14. Given 
+that the value of 8 is so close to zero simply set it to zero, 
+resulting in a simpler one parameter correction formula. 
+With 8 set to zero, the minimization of RMSE resulted 
+in an optimal value of /3 = -0.14 and only 1% reduction 
+in RMSE. Further analysis of one- versus two-parameter 
+formulas using Akaike information criterion [62] as well 
+as Bayesian information criterion [63] shows that both 
+criteria support the one-parameter, simplified equation. 
+The MBA method with the optimized value of /3 and 
+8 = 0 leads to a modest but significant improvement in 
+the error statistics of defect levels vs. the BA, producing 
+a MAE = 0.182 eV and ME = 0.001 eV, which is an 
+improvement of about 19% (99%) for MAE (ME) relative to the original band alignment correction method, 
+respectively. 
+As mentioned in Sec. IVB, the BA correction on the 
+defect levels can be projected to formation energies. As 
+a result, BA with the use of Eq. 6 improves the accuracy 
+of formation energies, reducing the error statistics from 
+MAE= 
+1.612 eV and ME = -1.538 eV for the uncorrected LDA vs. HSE, to MAE = 0.904 eV and ME = 
+-0.89 eV. These values are calculated for the formation 
+energies of stable charge states of defects at E F = 0 e V 
+(i.e. the VBM, p-type condition), which are presented in 
+Fig. 3a) and d) for uncorrected LDA vs. HSE and BA 
+correction, respectively. The extent of the improvement 
+provided by the projection (Eq. 6) is, however, limited 
+by the inability of the correction to influence q = 0 charge 
+Preprint 
+
+===== Page 7 =====
+
+Phys. Rev. Materials 5, 124601 (2021) 
+states. This results in a subsequent error in the q = 0 
+charge state defect formation energies ( and, therefore, all 
+other charged defect formation energies) in LDA as compared to HSE. This error is inherent to the LDA approach 
+and may be partially due to the LDA inappropriate description of the band positions (and band gap underestimation). As a consequence, improper description of the 
+change in the total energy associated with charge transfer due to charge density reorganization when defects are 
+introduced. The physical mechanism of this behavior is 
+complex and therefore it is not straightforward to fix with 
+a simple physics-based correction. 
+A similar procedure of projecting the corrected defect 
+levels onto formation energies, although slightly more 
+complex than that in BA, can be carried out for the 
+MBA: 
+Eforr[Xq] = Ef[Xq] + qEshift+ 
++ ,B(Ef[X 0] - Ef[Xq] - q(l - 8)E9 ) + "f. 
+(2) 
+The MBA expression for formation energies (Eq. 2) 
+includes new, band gap-dependent, terms. This is a consequence of the new terms in the expression for the defect levels (Eq. 1) compared to BA (Eq. 5). However, 
+despite the MBA providing an improvement over BA defect levels, it suffers from a similar problem as the BA 
+correction in terms of inaccuracy when projected to formation energies. Therefore we propose an additional empirical correction to the MBA ('y term in Eq. 2), a constant shift based on the mean error of formation energies, 
+which was determined to be"(= 
+0.839 eV. This results 
+in a significant improvement of error statistics of formation energies compared to BA, with MAE= 
+0.37 eV, a 
+59% improvement, and ME= 0 eV by construction. As 
+before, these values are calculated for the formation energies of stable charge states of defects at E F = 0 e V, 
+which are presented in Fig. 3g). Parity plots of formation energies for all defects and charge states, including 
+the unstable ones, for all methods can be found in supplementary Fig. S10. It is worth noting, that although 
+the MBA method is based on first principles calculations 
+the newly introduced ,B and "( parameters are obtained 
+empirically. 
+Finally, as a consequence of the improved accuracy in 
+formation energies and charge-state transition levels, errors in the binding energies of pair defects (panels c), f) 
+and i) in Fig. 3) are also reduced. BA improves the LDA 
+vs. HSE MAE= 1.312 eV and ME= -1.240 eV to MAE 
+= 1.064 eV and ME= -1.064 eV. MBA further reduces 
+the MAE to 0.489 eV and ME= 
+-0.099 eV. 
+It is interesting to note that for the direct LDA and 
+BA the RMSE errors of the binding energies are much 
+lower than expected by simply adding RMSE of formation energies in quadrature ( v'3 times the formation energy RMSE). This results implies that there is significant 
+cancellation in the formation energy errors when these 
+doi.org/10.1103/PhysRevMaterials.5.124601 
+energies are combined in the binding energies, as might 
+be expected. However, this trend does not continue for 
+the MBA. The MBA gives an RMSE = 0.499 for formation energy and RMSE = 0.780 eV for binding energy. 
+The latter is very close to 0.499\/'3 = 0.864 eV, which is 
+what would be expected by adding the formation energy 
+errors in quadrature. 
+This result demonstrates that after the MBA correction almost no cancellation of errors 
+is obtained in taking the formation energies, supporting 
+that the MBA has effectively used readily available error reduction information. 
+It is worth mentioning that 
+the binding energies, similarly to formation energies, are 
+a function of Fermi energy. Parity plots correspond to 
+EF = 0 eV and EF = E9 , but the same test performed 
+at a different EF leads to similar error statistics. Finally, 
+some outliers can be seen in the binding energy parity 
+plots 3 c), f) and i). These are a consequence of the LDA 
+(and, therefore, BA and MBA as well) occasionally being unable to predict a certain charge state transition as 
+stable when compared to HSE. This has been discussed 
+in more detail in [40] and in Sec. II C. As a consequence, 
+in some instances, the binding energies of LDA, BA and 
+MBA for one of the point defects or the pair defect are 
+predicted to be in a different charge state than in HSE, 
+leading to a larger error. 
+The residuals (Fig. S11 c)), 
+however, follow a reasonably normal distribution. 
+In general, comparison of panels a)-c) with d)-f) and 
+g)-i) in Fig. 3 shows that the MBA correction not only 
+brings the results of a pure LDA approach close to the 
+reference HSE functional values, but also improves upon 
+the standard BA method, at the same time preserving 
+the computational efficiency of LDA. This result shows 
+that the HSE defect properties may be predicted reasonably accurately using the results of significantly faster 
+but less accurate LDA methods. This use of two levels 
+of accuracy in the modeling is sometimes called a multifidelity approach and has been previously used with success [46, 64, 65]. 
+1. Method validation 
+The MBA correction (Eqs. 1 and 2) is most useful if its 
+parameters can be readily transferred to a new system. 
+The ,Band"( (and 8 = 0) parameters in the MBA are fitted to the Ga-V:Bi systems, and not necessarily universal 
+and transferable to other systems. In order to assess their 
+transferability, a new database of single species point defects (i.e. no pair defects) was calculated for the In-V:Bi 
+systems, yielding a set of 3 · 6 · 11 = 198 defect formation 
+energies. The calculations used the exact same approach 
+as in the Ga-V:Bi calculations and included both LDA 
+and HSE values. The values of ,B = -0.14 and"(= 
+0.839 
+eV (and 8 = 0) optimized entirely on the Ga-V:Bi dataset 
+were then used for a MBA correction of charge-state transition levels and defect formation energies of point defects 
+in In-V:Bi. The corrected values were compared to the 
+actual HSE results. The magnitude of the correction of 
+Preprint 
+
+===== Page 8 =====
+
+Phys. Rev. Materials 5, 124601 (2021) 
+doi.org/10.1103/PhysRevMaterials.5.124601 
+RM5E = 1.917 eV 
+2.5 
+RM5E = 0.498 eV 
+RM5E = 1.626 eV 
+RM5E/o = 0.592 
+RM5E/o = 0.724 
+RM5E/o = 1.116 
+~ 15 
+MAE = 1.612 eV 
+MAE = 0.439 eV 
+-4 
+MAE = 1.312 eV 
+ME = -1.538 eV 
+. 
+~:t ;;; o~·Nl 
+eV 
+• 
+ME = -1.240 eV 
+R2 = 0.649 
+> 2 
+. 
+> 
+R2 = -0.256 
+~ 
+>, 
+PREC = 65.5 % 
+~ 
+PREC = 53.0 % 
+. 
+>, 
+PREC = 100.0 % 
+e' 
+RCL = 79.4 % 
+RCL = 67.3 % 
+. . ,, .. 
+RCL = 54.8 % 
+• 
+QJ 
+Fl = 71.8 % 
+cii 
+Fl = 59.3 % 
+,. 
+~2 
+Fl = 70.8 % 
+.. ' 
+C: 
+11.5 
+.. 
+QJ 
+, .. 
+C: 
+. 
+C: 10 
+,," •• 
+>-_• 
+QJ 
+. 
+..., 
+0 
+u 
+Cl 
+• 
+:p 
+~ 
+,, .... 
+C: 
+"' 
+QJ 
+1 
+,' ~,,-
+'o 0 
+. 
+E 
+'C 
+, . 
+C: 
+. 
+.E 
+<( 
+,, ,, ,.., .. 
+:c 
+5 
+g 0.5 
+, 
+• 4 
+<( 
+, . .. • 
+<( 
+,.fto:-.• 
+, 
+:l -2 
+, -
+Cl 
+,, ...... 
+, .. .. 
+...J 
+,' 
+•4-1, 
+. 
+(a) 
+0 
+,~- ... 
+(b) 
+• 
+(c) 
+0 
+,If 
+•••• 
+-4 
+0 
+5 
+10 
+15 
+0 
+0.5 
+1 
+1.5 
+2 
+2.5 
+-4 
+-2 
+0 
+2 
+4 
+16 
+RM5E = 1.040 eV 
+2.5 
+RM5E = 0.283 eV 
+'1 
+RM5E = 1.347 eV 
+> 
+RM5E/o = 0.427 
+RM5E/o = 0.401 
+. ,?. 
+5 
+RM5E/o = 0.924 
+14 
+MAE = 0.904 eV 
+,. . 
+MAE = 0.226 eV 
+~4 
+MAE = 1.064 eV 
+~ 
+.. 
+, 
+ME = -0.890 eV 
+> 
+ME= 0.180 eV 
+.. , 
+ME= -1.064 eV 
+>, 
+R2 = 0.817 
+~ 2 
+R2 = 0.838 
+¥tt!,• 
+R2 = 0.139 
+. 
+e' 12 
+>, 
+QJ 
+PREC = 71.6 % 
+cii 
+PREC = 57.5 % 
+,.. . 
+e' 3 
+PREC = 100.0 % 
+• • . 
+C: 
+RCL = 88.5 % 
+> 
+RCL = 74.9 % , . 
+QJ 
+RCL = 51.6 % 
+• 
+QJ 10 Fl = 79.2 % 
+.!!! 1.5 
+Fl = 65.1 % 
+~., 
+C: 
+Fl = 68.1 % 
+C: 
+..., 
+" ft •• 
+QJ 2 
+• 
+0 
+u 
+. . ,,_,, 
+Cl 
+. 
+:p 
+~ 
+C: 
+"' 8 
+-~ 
+.-.;•, ~-
+'o 1 
+. 
+QJ 
+1 
+E 
+'C 
+•• 
+C: 
+6 
+... 
+, 
+:c 0 
+• 
+.E 
+<( 
+,:., 
+. . 
+al 
+<( 
+<( 
+;l: 0.5 
+al 
+al 
+4 
+, . 
+;l:-1 
++ 
+Cl 
+<( 
+...J 
+Cl 
+• 
+Cl 
+2 
+...J -2 
+...J 
+0 
+(d) 
+(e) 
+~, 
+(f) 
+0 
+-3 
+0 
+2 
+4 
+6 
+8 
+10 12 14 16 
+0 
+0.5 
+1 
+1.5 
+2 
+2.5 
+-3 
+-2 
+-1 
+0 
+1 
+2 
+3 
+4 
+5 
+16 
+RM5E = 0.499 eV 
+2.5 
+RM5E = 0.214 eV 
+RM5E = 0.780 eV 
+> 
+RM5E/o = 0.194 
+RM5E/o = 0.307 
+, . 
+5 
+RM5E/o = 0.536 
+~ 14 
+MAE = 0.370 eV 
+• 
+MAE = 0.182 eV 
+. ,.11: > 
+MAE = 0.489 eV 
+. 
+ME = -0.001 eV 
+,. 
+> 
+ME= 0.001 eV 
+~4 
+ME = -0.099 eV 
+>, 
+~ 
+... 
+,,"•• .. 
+e' 
+R2 = 0.962 
+2 
+R2 = 0.905 . 
+,, 
+>, 
+R2 = 0.711 
+12 
+PREC = 79.4 % 
+, .. 
+cii 
+PREC = 67.0 % 
+Cl 
+PREC = 88.7 % 
+QJ 
+, , ,,._. 
+ai 3 
+C: 
+RCL = 85.2 % 
+✓:. 
+> 
+RCL = 72.9 % 
+RCL = 98.2 % 
+QJ 
+QJ 
+.;,., . . 
+C: 
+. 
+, 
+C: 10 Fl = 82.2 % 
+,.I 
+;:; 1.5 
+Fl = 69.8% 
+QJ 
+Fl = 93.2 % ·-
+0 
+. 
+u 
+.1,. , .,, 
+Cl 2 
+• 
+• 
+:p 
+~ 
+--•1-·· 
+C: 
+. 
+"' 8 
+'o 
+E 
+QJ 
+.......... 
+1 
+. 
+'C 
+1 
+C: 
+• 
+.E 6 
+<( 
+~ t _,._ ,.. 
+:c 
+. ... 
+al 
+••,~··· . 
+<( 
+<( 
+:;: 
+al 0 
+., 
+~, 
+al 
+;l: 0.5 
+.. ., 
+:;: 
+:;: 
+4 
+;l:-1 -•,," 
++ 
+Cl 
+. 
+<( 
+2 
+...J 
+• 
+Cl 
+Cl 
+...J -2 . 
+...J 
+(g) 
+0 
+(h) 
+(i) 
+0 
+0 
+2 
+4 
+6 
+8 
+10 12 14 16 
+0 
+0.5 
+1 
+1.5 
+2 
+2.5 
+-2 
+-1 
+0 
+1 
+2 
+3 
+4 
+5 
+H5E formation energy (eV) 
+H5E defect level (eV) 
+H5E binding energy (eV) 
+FIG. 3. Accuracy comparison of different approaches with hybrid functional (HSE) results on Ga-V:Bi dataset. 
+First row: 
+baseline LDA vs. HSE, second row: band alignment (BA) correction, third row: modified band alignment (MBA) correction. 
+First column: formation energies of stable defects (precision and recall pertain to whether a defect in a certain charge state is 
+predicted to be stable), second column: charge-state transition levels (precision and recall pertain to whether a charge-transition 
+is properly predicted inside the band gap), third column: binding energies (precision and recall pertain to whether a binding 
+energy is properly predicted as positive or negative). Red, blue and green points correspond to defects in GaP:Bi, GaAs:Bi, 
+and GaSb:Bi respectively. 
+our MBA method is scaled by the band gap, so it might 
+be expected to be least effective for low band gap materials. Therefore, performing the validation on the low 
+band gap In-V:Bi was chosen to assess a perhaps worst 
+case scenario applicability of the method. Figs. 4b), e) 
+and h) show defect level parity plots of HSE results with, 
+respectively, LDA, LDA with BA correction, and LDA 
+with MBA correction (Eq. 1, with /3 = -0.14 and o = 0). 
+Similarly as in the case of Ga-V:Bi materials, the BA 
+correction (panel e)) provides a significant improvement 
+over the uncorrected values (panel b)), but exhibits an 
+overestimation in the lower region of the band gap. This, 
+in turn, is remedied by applying the MBA (panel h)), although due to the much lower band gaps of the In-V:Bi 
+systems and therefore fewer stable defect levels, the effect is not as pronounced, and the main improvement is 
+observed through the reduction in mean error. The final error values for the MBA are MAE= 0.175 eV and 
+ME = -0.009 eV, which represent 50% and 97% improvement over the uncorrected values of MAE = ME = 
+-0.35 eV. This result demonstrates that the empirically 
+obtained /3 = -0.14 and o = 0 are transferable to this 
+Preprint 
+
+===== Page 9 =====
+
+Phys. Rev. Materials 5, 124601 (2021) 
+system. Figs. 4a), d) and g) show formation energy of 
+defects in stable charge-states at Ep = 0 eV parity plots 
+of HSE results with, respectively, LDA, LDA with BA 
+correction, and LDA with MBA correction (Eq. 2, with 
+/3 = -0.14 and,= 
+0.839 eV, (and 8 = 0)). Their analysis, again, reveals improvement of the error statistics 
+for BA as compared to uncorrected values, and further 
+improvement when MBA is used, confirming the transferability of, and /3. The final error values for the MBA are 
+MAE= 
+0.384 eV and ME= 
+0.236 eV, which represent 
+62% and 74% improvement over the uncorrected values 
+of MAE= 
+1.014 eV and ME= 0.905 eV. Parity plots of 
+formation energies for all defects and charge states, including the unstable ones, can be found in supplementary 
+Fig. 810. 
+The In-V:Bi systems are likely to be quite similar with 
+the Ga-V:Bi systems used to obtain the (3 and , values 
+and therefore significant additional study in other materials families, e.g. II-VI systems, is needed to establish 
+the general applicability of the MBA vs. BA method. In 
+order to further demonstrate the applicability of MBA, 
+we apply the method to a set of 656 PEE-calculated 
+charge state transition levels of defects and impurities in 
+CdX (X=S, Se, Te) reported by Mannodi-Kanakkithodi 
+et al. [46], and compare them to the equivalent HSE values reported therein. As mentioned in Sec. IV, the BA 
+and MBA methods are, in principle, applicable to semilocal functionals as well, therefore this test will assess not 
+only the transferability of the method and its optimized 
+parameters to other systems, but to other functionals as 
+well. The resulting parity plots can be found in Figs. 4 c), 
+f) and i). The MBA method (panel i)) again proved to be 
+very efficient with MBA predicted values giving a MAE 
+= 0.194 eV and ME= 
+-0.006 eV vs HSE values. This 
+represents an improvement of 16% and 96% compared to 
+the MAE = 0.230 eV and ME = 0.137 eV obtained with 
+pure BA and an improvement of 55% and 99% over the 
+uncorrected defect levels with MAE= 0.427 eV and ME 
+= -0.415 eV. The work in Ref. [46] allows us to make 
+a direct and independent comparison between the MBA 
+and machine learning (ML) methods. Ref. [46] provides 
+a ML model for predicting defect level values as close as 
+possible to HSE from input features that include elemental properties and PBE defect levels. We can therefore 
+compare the errors from the MBA and the ML model 
+where both have the full PBE defect information available. We note that all the data sets in Ref. [46] include 
+charge states outside the gap, which were not used in the 
+optimization of our present MBA model. Ref. [46] obtained a RMSE = 0.24 eV with their best average ML 
+model (Random Forest Regression - RFR) on a 10% left 
+out test set from their main training data. To compare 
+to this, we use the MBA to predict their main data set 
+(including the test set) split into 10 folds, to obtain an 
+average and standard deviation RMSE = 0.240±0.035 eV 
+(Fig. 812 c)). We also compare to their predictions on an 
+out-of-sample test comprised of data on two new systems 
+not directly in their training space (CdTeo_5Seo.5 and 
+doi.org/10.1103/PhysRevMaterials.5.124601 
+CdSe0.580.5 ). On this data, the ML model in Ref. [46] 
+obtained a RMSE = 0.235 eV and the MBA obtained a 
+RMSE = 0.267 eV (Fig. 812 f)). The MBA RMSEs for 
+the out of sample test set are around 13% worse than 
+the ML model, which is statistically significant, but the 
+MBA provides a much simpler approach, with just one 
+fitting parameter for defect levels that appears to be quite 
+transferable. Additionally, it is important to notice that 
+even though the MBA was optimized on LDA calculated 
+values, the optimized parameters also apply to the PBE, 
+and it is expected that they should apply to other semilocal functionals as well. All of the error statistic values are 
+gathered in Tab. I. 
+The 
+CdX 
+(X=S,Se,Te) 
+results 
+from 
+MannodiKanakkithodi 
+et al. [46] were the only large readily 
+available database for defect levels calculated with both 
+hybrid and local/semi-local functional, which is necessary to critically assess the transferability of the MBA 
+method. 
+Furthermore, this database shared many features with ours, including the same crystal structure and 
+similar methods of calculations ( e.g. the same supercell size, DFT code and electrostatic correction), providing perhaps near optimal condition for transferability 
+of our MBA. We have performed some more limited but 
+more demanding testing for transferability with the much 
+smaller set of data reported in [39] and [40]. The results 
+are shown in supplementary Fig. 814. The MBA for 
+dataset from Ref. [39] shows an improvement of 20% in 
+MAE over the regular BA, however the parameters need 
+to be reoptimized, and both /3 and 8 need to be utilized. 
+The MBA method used on, another smaller dataset, reported in [40], results in an improvement in MAE of 8% 
+over the regular BA with the parameters reoptimized. 
+Both of these smaller datasets are, however, performed 
+on larger supercells, in systems of different crystal structure and chemistry and with slightly different computational methods, which is potentially the reason why the 
+reoptimization is necessary. 
+Although the need to re--
+optimize parameters may make the method more time 
+consuming to apply in some cases, analysis performed 
+on our main dataset (Ga-V:Bi systems) shows that using 
+as few as 10 points for reoptimization produces results 
+that already show noticeable improvement over the regular band alignment method. 
+Supplementary Fig. 815 
+shows the MAE as a function of the number of points 
+used in parameter optimization. 
+The rapid convergence 
+of the fitting means that the MBA can be refit with very 
+modest amounts of data. 
+These validation tests show 
+that the modified band alignment method does improve 
+the results of the regular band alignment approach in all 
+cases studied here, and those cover a wide variety of different systems of different chemistry and different computational approaches, which suggests that the method 
+is likely to be widely applicable. However, the parameters may need to be reoptimized for different unit cell 
+sizes and crystal structures than those that were used in 
+this study or in Ref. [46]. For calculations similar to 
+those performed here or in the CdS study [46] our MBA 
+Preprint 
+
+===== Page 10 =====
+
+Phys. Rev. Materials 5, 124601 (2021) 
+RMSE = 1.253 eV 
+9 
+RMSE/cr = 0.638 
+MAE = 1.014 eV 
+i 8 
+ME = -0.905 ev 
+-
+R2 = 0.584 
+>- 7 
+PREC = 68.9 % 
+e' 
+RCL = 66.0 % 
+~ 6 
+Fl =67.4% 
+ii) 
+5 5 
+• 
+• 
+RMSE = 0.419 eV 
+1.4 
+RMSE/cr = 1.027 
+MAE = 0.350 eV 
+1 2 
+ME = -0.350 ev 
+> • R2 = -0.116 
+~ l 
+PREC = 60.0 % 
+• w 
+RCL = 60.0 % 
+> 
+Fl = 60.0 % 
+2 0.8 
+w 
+• 
+doi.org/10.1103/PhysRevMaterials.5.124601 
+~ 
+RMSE = 0.502 eV 
+RMSE/cr = 0.887 
+2 
+MAE = 0.427 eV 
+ME = -0.415 ev 
+R2 = 0.210 
+w 1.5 
+> 
+PREC = 54.4 % 
+RCL = 90.8 % 
+Fl = 68.0 % 
+2 
+, . 
+.:; 
+11] § 4 
+J!! 0.6 
+ii) 
+"O 
+, . • 
+.E 3 
+~ 0.4 
+• 
+• 
+~ 
+_, 2 
+_, 
+0.2 
+• 
+(a) 
+0 
+, .... 
+,. 
+. 
+(b) 
+(c) 
+1 
+2 
+3 
+4 
+5 
+6 
+7 
+8 
+9 10 
+0 
+0.2 0.4 0.6 0.8 
+1 
+1.2 1.4 
+0 
+0.5 
+1 
+1.5 
+2 
+RMSE = 0.793 eV 
+6 
+RMSE/cr = 0.471 
+i 
+MAE = 0.698 eV 
+-
+ME = -0.696 eV 
+>-
+5 
+R2 = 0.774 
+e' 
+PREC = 77.1 % 
+~ 
+RCL = 78.7 % 
+~ 4 
+Fl = 77.9 % 
+0 
+.:; § 3 
+E 
+<( 
+2 
+co 
++ 
+~ 1 
+_, 
+, . 
+,. 
+, . , 
+,.,~-,~· 
+, .. 
+•• . 
+. 
+• 
+• . 
+, .. 
+. . 
+(d) 
+, .. 
+0 ~~-~-~~-~~-~-~~ 
+RMSE = 0.227 eV 
+1.4 
+RMSE/cr = 0.537 
+MAE = 0.182 eV 
+ME= 0.103 eV 
+R2 = 0.698 
+~ 1 
+2 w 0.8 
+J!! 
+~ 0.6 
+~ 
++ 0.4 
+~ 
+_, 0.2 
+0 
+PREC = 68.8 % 
+RCL = 73.3 % 
+Fl = 71.0 % • 
+. , ... 
+. 
+, 
+(e) 
+RMSE = 0.292 eV 
+• 
+~' 
+RMSE/cr = 0.483 
+• • 
+'-• 
+2 
+MAE = 0.230 eV 
+• 
+,~;-r 
+:>ii) 
+ME = 0.137 eV 
+• .,: •• 
+_ 
+R2 = 0.766 
+PREC = 73.3 % 
+• • 
+J,•'' 
+..... 
+u 't 1 
+"O 
+<( co ;I: 0.5 
+l'.) 
+l'.) 
+0 
+RCL = 90.8 % •• 
+.J ,ti 
+• 
+Fl = 81.1 '/{o 
+' 
+7, 
+••• : • 
+-1;: 
+•• 
+. ~.,,.. 
+-~- ,. .. 
+•-::· ,,".,• 
+" 
+• 
+• 
+(f) 
+0 
+1 
+2 
+3 
+4 
+5 
+6 
+0 
+0.2 0.4 0.6 0.8 
+1 
+1.2 1.4 
+0 
+0.5 
+1 
+1.5 
+2 
+RMSE = 0.462 ev 
+,, 
+RMSE = 0.215 ev 
+• 
+RMSE = 0.246 ev 
+:" 
+> 
+RMSE/cr = 0.278 
+1.4 
+RMSE/cr = 0.503 
+RMSE/cr = 0.477 
+• 
+6 
+.. 
+, .. 
+~ 
+MAE = 0.384 eV 
+. , 
+~ 1.2 
+MAE = 0.175 eV 
+> 
+2 
+MAE = 0.194 eV 
+,' .f 
+ME = 0.236 ev 
+,. 
+ME = -0.009 ev 
+ME = -0.006 ev 
+. 
+>, 
+, . 
+~ 
+. 
+~,, ... 
+R2 = 0.921 
+R2 = 0.735 
+R2 = 0.771 
+e' 5 
+PREC = 78.0 % 
+,.~•· 
+w 
+PREC = 69.7 % 
+•,, 
+w 
+PREC = 78.7 % 
+•.. : .. 
+ii) 
+1 
+~ 1.5 
+♦ ♦♦ 
+,l ' 
+C: 
+RCL = 83.0 % 
+> 
+RCL = 76.7 % 
+• 
+RCL = 93.1 % 
+ii) 
+, 
+2 
+'• . 
+C: 
+4 Fl = 80.4 % 
+, . 
+~ 0.8 
+Fl = 73.0 % 
+. . 
+w 
+Fl = 85.3 % .. •"' . 
+0 
+,.., 
+\ 
+. 
+.,,_ 
+.:; 
+• ,~ 
+• 
+J!! 
+• 
+• • .J.,, • 
+11] 
+•• 
+ii) 
+ii) 
+1 
+. 
+§ 
+3 
+., 
+"0.6 
+. 
+, 
+"O 
+... 
+,' ), 
+• 
+. 
+<( 
+<( 
+. -:. ,--:. ' . 
+E 
+. : 
+~~~ 
+co 
+. 
+co 
+<( 
+2 
+::0: 0.4 . • 
+,.,. 
+::;: 
+. , 
+co 
+. . 
+, 
++ 
+;I: 0.5 .. ., 
+::;: 
+... !I,, 
+. 
+.. 
+, . • 
+. 
+, 
+<( 
+,, 
++ 
+.-: 
+,, ,, 
+g 0.2 
+• 
+l'.) 
+• 
+<( 
+1 
+. 
+l'.) 
+Cl 
+, . 
+. 
+_, 
+(g) 
+0 
+. 
+(h) 
+0 
+(i) 
+0 
+0 
+1 
+2 
+3 
+4 
+5 
+6 
+0 
+0.2 0.4 0.6 0.8 
+1 
+1.2 1.4 
+0 
+0.5 
+1 
+1.5 
+2 
+HSE formation energy ( eV) 
+HSE defect level (eV) 
+HSE defect level (eV) 
+FIG. 4. Validation of the correction methods for In-V:Bi point defects and a test set of CdX (X=S, Se, Te) defects and 
+impurities [46], optimized on Ga-V:Bi dataset. 
+First row: baseline LDA/GGA vs. HSE, second row: band alignment (BA) 
+correction, third row: modified band alignment (MBA) correction. First column: formation energies of stable defects (precision 
+and recall pertain to whether a defect in a certain charge state is predicted to be stable), second column: charge-state transition 
+levels (precision and recall pertain to whether a chargeatransition is properly predicted to be stable and inside the band gap). 
+Red, blue and green points correspond to defects in InP:Bi, InAs:Bi, and InSb:Bi (CdS, CdSe, CdTe) respectively. Grey and 
+yellow are CdSSe and CdSeTe alloys. 
+correction with /3 = -0.14 and 'Y = 0.839 eV (and t5 = 0) 
+may be applied directly to modify the regular band alignment method and provide a quick path to increasing the 
+fidelity of LDA or GGA defect levels and formation energies to approach HSE accuracy. 
+2. 
+Application of the method to new systems 
+After demonstrating that the MBA is an effective correction of defect properties ( see Sec. II C 1), the MBA was 
+subsequently used to obtain defect properties of the remaining (pair) defects in the In-V:Bi family of materials 
+as well as all 27 defect types in Al-V:Bi. These predictions, combined with the directly calculated HSE results 
+for Ga-V:Bi and point defects in In-V:Bi resulted in a 
+large database of 2673 defect formation energies. These 
+systems are all naturally zincblende III-V semiconductors which are technologically relevant for optoelectronic 
+applications. The calculated values included the formation energies, binding energies, and defect chargeastate 
+transition levels. Due to the mixed direct HSE DFT 
+Preprint 
+
+===== Page 11 =====
+
+Phys. Rev. Materials 5, 124601 (2021) 
+doi.org/10.1103/PhysRevMaterials.5.124601 
+TABLE I. Comparison of error statistics of all the studied methods on different test data. 
+Formation 
+energy 
+Defect 
+Levels 
+Binding 
+energy 
+Baseline 
+BA 
+Baseline 
+Baseline 
+BA 
+MBA 
+(LDA vs. HSE) 
+MBA 
+(LDA vs. HSE) BA 
+MBA 
+(LDA vs. HSE) 
+Ga-V:Bi 
+RMSE (eV) 
+1.917 
+1.040 0.499 
+MAE (eV) 
+1.612 
+0.904 0.370 
+ME (eV) 
+-1.538 
+-0.890 -0.001 
+In-V:Bi 
+RMSE (eV) 
+1.253 
+0.793 0.462 
+test set MAE (eV) 
+1.014 
+0.698 0.384 
+ME (eV) 
+0.905 
+-0.696 0.236 
+CdX [46] RMSE (eV) 
+test set MAE (eV) 
+ME (eV) 
+and LDA + MBA correction approaches in tables and figures, MBA results are marked with an asterisk. Tables II 
+and III include the MBA defect levels for In-V:Bi materials alongside the directly HSE-calculated Ga-V:Bi, while 
+the MBA values for Al-V:Bi can be found in Sec. VIA, 
+Tab. SIi). The MBA binding energies for ln-V:Bi and AlV:Bi are present in Figs. 6 and 5 respectively. Point defect formation energies are collected in one figure together 
+with the directly calculated values in Fig. 1. Due to the 
+large amount of calculated data, only point defect formation energies in intermediate conditions together with 
+binding energies are presented here. The formation energies of pair defects can be estimated from the binding 
+energies, or can be found in the supplementary material 
+(Sec. VI A, Figs. 81-89) for both group III and group V 
+rich conditions, as well as intermediate ones. 
+The chemical trends observed in the results of the predicted values for In-V:Bi and Al-V:Bi materials are generally analogous to the trends observed for the directly 
+calculated values for Ga-V:Bi, discussed in Sec. IL Point 
+defect formation energies exhibit similar trends with mismatch, with the most encouraging properties visible for 
+III-Sb:Bi. The differences in group III and Bi atoms size, 
+although less prominent, are also visible in the chemical 
+trends but do not influence the general conclusions, apart 
+from the fact that Biv charge-transition transition levels 
+are visible above the VBM for all Al-V:Bi materials. The 
+main differences visible in the shape of the formation energies and binding energies come from the large difference 
+in the band gaps between Al and In based materials. 
+The results of all calculations can be found in VI B. 
+D. 
+Machine 
+learning model exploration 
+Recent studies on machine learning (ML) for impurities in Cd based chalcogenides [46] showed that ML 
+can be a powerful tool for efficient predictions of defect 
+properties based not only on the results of less expensive 
+semi-local functionals, but even just elemental properties 
+of the impurities, greatly reducing the effective computational cost. The notable success of the relatively simple 
+BA and MBA methods suggests that a simple relation0.498 
+0.283 0.214 
+1.626 
+1.347 0.780 
+0.439 
+0.226 0.182 
+1.312 
+1.064 0.489 
+-0.439 
+0.180 0.001 
+-1.240 
+-1.064 -0.099 
+0.419 
+0.227 0.215 
+0.350 
+0.182 0.175 
+-0.350 
+0.103 -0.009 
+0.502 
+0.292 0.246 
+0.427 
+0.230 0.194 
+-0.415 
+0.137 -0.006 
+ship might exist between the LDA and HSE defect energetics which could be effectively captured with machine 
+learning. To explore this hypothesis, we consider the regression problem of fitting F in Y = F(X), where the 
+target Y are the HSE defect formation energies and features X are data we can obtain from LDA. Note that 
+the X data could be just defect formation energies, but 
+we could include some other features that come at no extra computational cost from the LDA calculations. Tools 
+used in the machine learning are described in Sec. IV D. 
+The X features used in the regression included the formation energy, charge state, band gap, FNV charge interaction correction, total energy, and results of Bader analysis 
+(which captures aspects of localization effects). We first 
+considered linear multivariable regression, which revealed 
+the charge state and the formation energy to have by far 
+the highest coefficients. This result suggested that the 
+band alignment shift is the major factor in the discrepancy between HSE and LDA results. 
+Consistent with 
+this result, the validation on In-V:Bi test data, equivalent to that in Fig. 4, resulted in statistics very similar 
+to those of the MBA method. 
+Second, in order to try 
+more complex nonlinear methods, other machine learning approaches were optimized to yield the lowest leavesystem-out cross validation (CV) MAE. Neural networks 
+yielded the most promising results. After a modest effort 
+of testing the number of layers and nodes, a neural network of 3 layers with 128, 64, and 32 nodes was found to 
+be fairly optimal. As a result of leave-system-out CV, the 
+obtained error statistics were ME = 0.04 eV and MAE 
+= 0.195 eV for the defect levels and ME= -0.115 eV and 
+MAE= 0.343 eV for the formation energies. Random 5fold CV yielded only marginally better error statistics. 
+Supplementary figure Fig. 813 shows parity plots of the 
+results of the leave-system-out CV of the model vs. HSE 
+results of formation energies and defect levels. The result 
+is not noticeably better than the MBA method (Fig. 3 
+g), h)), but required a much more computationally 
+intensive machine learning algorithm and training on both 
+HSE and LDA datasets, making the method much less 
+accessible and more difficult to apply. Additionally, due 
+to simplicity and being more physics-based, MBA is expected to be much more transferable to new systems. 
+Preprint 
+
+===== Page 12 =====
+
+Phys. Rev. Materials 5, 124601 (2021) 
+doi.org/10.1103/PhysRevMaterials.5.124601 
+6------------~ 
+4------------~ 
+3------------~ 
+5 
+> 
+~ 4 
+>, 
+~ 3 
+C 
+~ 2 
+C 
+e£.'-~----
+'g 1 
+____ 
+_..::::-~;:;::::::i 
+iii 
+0 
+0 
+0.5 
+1 
+1.5 
+2 
+(b) 
+3 
+2 
+1 
+0 
+0.5 
+1 
+AIAs+BiAs --
+AsAi+BiA1 --
+VA1+BiA1 --
+VAs+BiAs --
+BiAi+BiAI 
+BiAs+BiAs --
+1.5 
+2 
+(c) 
+2 
+1 
+0 
+-1 
+: AIAS+AIAs--·· 
+: AsA1+AsA1 --
+: 
+VA1+ASAI --
+: 
+VA1+VAI --
+: VAs+AIAs 
+: 
+VAs+VAs --
+0 
+0.5 
+1 
+1.5 
+2 
+6------------~ 
+PA1+Alp --
+: 
+5------------~ 
+% 
+5 
+;: 
+4 
+E' 
+QJ 
+~ 3 
+01 
+=a 2 
+C 
+iii 1 
+(d) 
+PA1+Bip --
+: 
+VA1+Alp --
+: 
+VA1+vp 
+, 
+VA1+Bip --
+: 
+Bi~1+Alp --
+: 
+BiA"j'PBiR 
+: 
+'"""------
+4 
+3 
+2 
+1 
+0 
+-1 
+-2 ~~~~~~-~~~~--
+0 
+0.5 
+1 
+1.5 
+2 
+2.5 
+0 
+0.5 
+1 
+1.5 
+2 
+0 
+0.5 
+1 
+(h)' 
+Alsb+Bisb --
+SbA1+BiA1 --
+VA1+BiA1 --
+Vsb+Bisb --
+BiA1+BiA1 
+Bisb+Bisb --
+0 
+0.5 
+1.5 
+1 
+2 
+2.5 
+2 
+1 
+0 
+-1 
+1.5 
+0 
+0.5 
+1 
+1.5 
+2 
+2.5 
+: Alsb+Alsb--· 
+·"x········ 
+=--.········ 
+i 
+-, 
+: SbA1+SbA1 --
+VAi+SbAI --
+VAi+VAI --
+Vsb+Alsb 
+Vsb+Vsb --
+0 
+0.5 
+1 
+1.5 
+Fermi level (eV) 
+Fermi level (eV) 
+Fermi level (eV) 
+FIG. 5. Binding energies obtained with the modified band alignment method (MBA) for pair defects in Al-V:Bi compounds. 
+a)-c), d)-f), and g)-i) correspond to AlP:Bi, AlAs:Bi, and AlSb:Bi respectively. The asterisk indicates that the results were 
+obtained with LDA corrected with the modified band alignment correction (MBA). 
+Therefore, based on the results obtained here as well as 
+the trends of local/semilocal defect levels vs. HSE observed in Refs. [39, 40, 46], we believe that the MBA 
+method may be the most practical approach. 
+It is worth to notice that in case of impurities, as demonstrated in [46, 66], ML methods may be able to provide 
+approximate description of defect levels and formation 
+energies solely from elemental properties. 
+However, for 
+the present study which focuses mostly on intrinsic defects, such type of ML model was not possible to explore. 
+III. 
+SUMMARY 
+In this work, we provide a comprehensive, 
+selfconsistent database of defect formation energies, chargestate transition levels and binding energies for point and 
+pair defects using state-of-the-art 
+ab initio methods. The 
+computed database covers all zincblende III-V diluted 
+bismides, which are technologically relevant for a number of optoelectronic applications. 
+Based on the obtained results, band alignment and machine learning approaches are investigated to obtain hybrid functional accuracy defect formation energies and defect levels from 
+more inexpensive functionals. A new method of correcting results of computationally 
+inexpensive functionals, 
+the modified band alignment, is proposed and assessed 
+in detail. 
+This research provides valuable information 
+for a range of materials research modalities. 
+The large 
+database can aid experimental researchers in identification of defects observed in experimental measurements 
+and provide rational strategies to tune the defect properties of a material. 
+The large amount of data can be 
+directly used by the materials informatics community to 
+design, build and assess new machine learning models 
+for more quantitative prediction of defect properties and 
+understanding of chemical trends in a range of semiconductor systems. 
+Finally, the modified band alignment 
+method proposed here is directly useful for computational researchers conducting atomistic simulations of dePreprint 
+
+===== Page 13 =====
+
+Phys. Rev. Materials 5, 124601 (2021) 
+doi.org/10.1103/PhysRevMaterials.5.124601 
+4 
+3 
+lnAs+BiAs --
+: 
+2 
+AS1n+lnAs --
+(b) 
+(c) 
+As1n+BiAs --
+As1n+Bi1n --
+: 
+> 3 
+V1n+lnAs --
+V1n+Bi1n --
+: 
+1 
+2 
+V1n+VAs 
+2 
+VA5+8iAs --
+: 
+V1n+BiAs --
+Bi10 +Bi1n 
+: 
+>, 
+Bi1n+lnAs --
+BiAs+BiAs --
+: 
+E' 2 
+0 
+QJ 
+Bi10 +-BiAs 
+C 
+1 
+QJ 
+"' 1 
+-1 
+C 
+'o 
+C 
+0 
+a5 0 
+-2 
+lnAs+lnAs --
+: 
+AS1n+AS1n --
+: 
+V1n+As1n --
+: 
+V1n+V1n --
+: 
+VAs+lnAs 
+: 
+VAs+VAs --
+: 
+-1 
+-1 
+-3 
+0 
+0.1 
+0.2 
+0.3 
+0.4 
+0 
+0.1 
+0.2 
+0.3 
+0.4 
+0 
+0.1 
+0.2 
+0.3 
+0.4 
+6 
+4 
+3 
+d) 
+P10 +1np --
+lnp+Bip --
+(f): 
+5 
+p +Bi --
+3 
+P1n+Bi1n --
+2 
+> 4 
+V1n+Bi1n --
+2 
+Vp+Bip --
+1 
+>, 
+2 
+Bi1n+Bi1n 
+E' 3 
+Bip+Bip --
+QJ 
+0 
+C 2 
+1 
+QJ 
+-1 
+"' 
+C 1 
+0 
+'o 
+-2 
+C 0 
+a5 
+-1 
+-1 
+-3 
+lnp+lnp --
+: 
+P1n+P1n --
+: 
+V1n+P1n --
+: 
+V1n+V1n --
+: 
+Vp+lnp 
+Vp+Vp --
+: 
+-2 
+-2 
+-4 
+0 
+0.2 0.4 0.6 0.8 
+1 
+1.2 1.4 
+0 
+0.2 0.4 0.6 0.8 
+1 
+1.2 1.4 
+0 
+0.2 0.4 0.6 0.8 
+1 
+1.2 1.4 
+2 
+1 
+3 
+(g), 
+Sb1n+lnsb --
+(h), 
+(i)~ 
+Sb1n+Bisb --
+> 
+v10 +lnsb --
+v10 +v1n --
+lnsb+lnsb --
+: 
+Vsb+lnsb 
+Sb1n+Sb1n --
+: 
+Vsb+Vsb --
+V1n+Sb1n --
+: 
+2 
+>, 1 
+2 
+E' 
+QJ 
+C 
+0 
+QJ 
+"' 
+C 0 
+lnsb+Bisb --
+1 
+'o 
+C 
+Sb1n+Bi1n --
+a5 
+V1n+Bi1n --
+-1 
+0 
+0.05 
+0.1 
+0.15 
+0.2 
+0.25 
+0 
+0.05 
+0.1 
+0.15 
+0.2 
+0.25 
+0 
+0.05 
+0.1 
+0.15 
+0.2 
+0.25 
+Fermi level (eV) 
+Fermi level (eV) 
+Fermi level (eV) 
+FIG. 6. Binding energies obtained with the modified band alignment method (MBA) for pair defects in In-V:Bi compounds. 
+a)-c), d)-f), and g)-i) correspond to InP:Bi, InAs:Bi, and InSb:Bi respectively. The asterisk indicates that the results were 
+obtained with LDA corrected with the modified band alignment correction (MBA). 
+feet properties. The method enables prediction of defect 
+formation energies and charge state transition levels with 
+accuracy approaching that of hybrid HSE functionals but 
+at the computational expense of LDA/GGA calculations. 
+Our proposed method has been thoroughly verified on 
+our own tests, as well as on defect data for an entirely 
+different family of materials obtained from a separate 
+study. The modified band alignment method not only 
+allows for fast evaluation of defect properties, but also 
+opens up new opportunities for high-throughput calculations of defect and related properties in other systems. 
+IV. 
+METHODS 
+A. 
+Defect properties 
+For each material, 27 different types of defects were 
+studied. 
+6 point defects: 
+Birn, Biv, vrn, vv, Illv, 
+Vrn, and 21 pair defects (the defects are described in 
+Kroger-Vink notation where III and V refer to elements 
+from these columns of periodic table, and v refers to vacancies). 
+The pair defects included all possibilities of 
+nearest- and second-nearest-neighbor 
+pairs of point defects. Charges ranging from -5 to 5 were analyzed. As 
+no defects of charge -5 (5) were found to be stable, no 
+higher charged defects were investigated. 
+The formation energy of a defect X with a charge q 
+added to the computational 
+unit cell as a function of 
+Fermi level EF in the band gap was calculated according 
+to the formula: 
+(3) 
+where Et 0t[Xq] is the total energy of the supercell with 
+the defect, Et 0 t[pure] is the total energy of the corresponding pure (undefected) supercell, ni is the number 
+of added (ni > 0) or removed (ni < 0) atoms, µi is the 
+chemical potential of the species i, EvBM [pure] is the 
+Preprint 
+
+===== Page 14 =====
+
+Phys. Rev. Materials 5, 124601 (2021) 
+energy of the valence band maximum of the pure material and Ecorr is the energy correction that compensates 
+for the electrostatic interactions arising from the periodic 
+image of the defect. The Freysoldt, Neugebauer and Van 
+de Walle (FNV) correction [67, 68] was used to account 
+for the electrostatic interaction. 
+For pair defects XYq comprised of point defects Xq 
+and yq, the binding energy was evaluated according to: 
+Eb(EF) = E 1[xqx](EF)+E
+1[Yqy](EF)-E
+1[XYQXY](EF) 
+(4) 
+where qx, qy and qxy correspond to the charge state of 
+the particular defect with the lowest formation energy at 
+the chosen Fermi level. Positive values of binding energy 
+indicate an energetic preference of the defects forming as 
+a pair rather than separately. 
+A stable charge state is define by the lowest formation energy Ef [Xq] ( E F) at a given Fermi level E F · The energies 
+at which the resultant curve changes slope (intersections 
+of Ef[Xq](EF) 
+lines) are the charge state transition (defect) levels, Ed, 
+It is worthwhile to mention here that the Biv is an isovalent dopant, which is usually not treated as a defect. 
+However, since it may influence the electronic structure 
+and have a similar physical effect on the system as other 
+defects, treating it as such in this work provides a much 
+more convenient way of comparing and presenting the 
+results. 
+B. 
+Band alignment 
+based correction 
+of LDA results 
+One of the most efficient and at the same time computationally inexpensive methods of correcting the LDA results of charge-state transition levels (and, consequently, 
+formation energies) is the band alignment correction family of methods [39-45]. In these methods, a common 
+reference for the charge-state transition levels is established and allows one to align the band edges between the 
+semilocal/local and hybrid functional calculations. Over 
+the years, a number of different approaches have been 
+used: Ref. [39] used local ionic potential as a reference, 
+Ref. [41] used a deep 2s atomic level, Ref. [40] utilized 
+slab calculations to allow the use of vacuum as a reference, and Refs. [42-45] used the average electrostatic potential. In this work, we adopt the last approach, where 
+the alignment is obtained from the average electrostatic 
+potential. The main advantage of this method is its simplicity and the requirement of only one HSE calculation 
+on the primitive unit cell of the undefected system, effectively making the correction quick and easy to apply. 
+Although the band gaps calculated within LDA or GGA 
+and HSE differ significantly, the geometry of the primitive unit cell calculated within LDA or GGA and HSE 
+are often similar, which is also true in the case of materials studied in this work. Therefore, we assume that 
+the structural differences have negligibly small impact on 
+the electronic densities which is necessary for the method 
+doi.org/10.1103/PhysRevMaterials.5.124601 
+to succeed [42]. This allows for the method to be used 
+on fully self-consistent LDA or GGA calculations and 
+validated against independent fully self-consistent HSE 
+results. 
+In practice, in this work, the band alignment 
+is obtained by first calculating the electronic structure 
+and electrostatic potential of the pure material with both 
+LDA and HSE, and then calculating the difference between the averaged electrostatic potentials (band alignment shift, EshiJt)-
+The value is then added to the LDA 
+charge state transition levels (the band edges are aligned 
+according to the average electrostatic potentials). 
+This 
+results in a constant shift of those levels on the energy 
+scale. 
+(5) 
+where Ed is the LDA defect level. It is worth noting 
+that the underestimated value of the LDA band gap is 
+also corrected in this method and the systems are analyzed and interpreted within the correct, and appropriately aligned, HSE band gap. After the alignment the 
+defect levels are referenced to the VBM of the corrected 
+band gap. A shift of a charge-state transition level, i.e. 
+the intersection of two Ef (EF) (Eq. 3) lines associated 
+with two charge states, may be interpreted as shifts of the 
+Ef (EF = 0) formation energy levels of those two charge 
+states. 
+Therefore, correction associated with the band 
+alignment shift of the defect levels can be projected onto 
+the formation energies, resulting in a charge-dependent 
+correction of the Ef (EF = 0) formation energies. 
+(6) 
+There is, however, a fundamental limitation of this approach to obtaining corrected formation energies. The 
+projection of band alignment correction on the formation 
+energies is charge dependent and, therefore, provides no 
+correction for charge q = 0. Although the band alignment projection does significantly improve the accuracy 
+of the formation energies as can be seen by comparing 
+Figs. 3 a) and d), there is still a clear but consistent 
+underestimation, associated with the inability of the correction to affect q = 0 formation energies. 
+C. 
+First principles 
+calculations 
+Calculations were performed using density-functional 
+theory [69] as implemented in the VASP code [70, 71], and 
+with plane-augmented wave (PAW) potentials [72] with 
+s2pl and s2p3 valence electron configuration for group 
+III and V atoms respectively, with the exception of Bi 
+atoms where, due to its large size, d electrons were additionally included. A 64 atom supercell was used, which is 
+a 2 x 2 x 2 multiplication of a conventional zincblende unit 
+cell. Convergence studies on GaAsBi [47] have shown 
+that for a -3 charge state this choice of supercell, when 
+Preprint 
+
+===== Page 15 =====
+
+Phys. Rev. Materials 5, 124601 (2021) 
+used in conjunction with the FNV electrostatic correction scheme, leads to an error in formation energies of 
+up to 0.16 eV when compared to a large, 512 atom unit 
+cell. For defect levels, additional tests we performed here 
+led to an estimated error of using 64 atom unit cells not 
+exceeding 0.16 eV (See Fig. S16, where a convergence of 
+defect levels with respect to unit cell size for v As in GaAs 
+for charge states ranging from Oto -4 is presented). It is 
+important to notice that very few defects for the systems 
+studied here are stable in charge states higher than + - 3 
+(less than 5%), and the majority of stable states are in the 
+±2 range. Considering the computational cost required 
+for the large number of calculations and the HSE hybrid 
+functional [73], which has been used for both the geometry optimization and the total energy calculations, the 64 
+atom unit cell has been chosen as a compromise between 
+computational cost and accuracy. In addition, the use 
+of 64 atom unit cell allowed for consistency in the additional verification on CdX systems from Ref. [46], which 
+were obtained on 64 atom supercells as well. The internal 
+atomic degrees of freedom were optimized for each defect 
+and each charge state to allow the possibility of different relaxations, including Jahn-Teller distortions. 
+The 
+use of the HSE functional was deemed necessary for a 
+number of reasons: first, to reproduce the intricate electron density of charged structures as accurately as possible, second, to get an accurate value of the total energy, 
+and finally to provide a correct description of the band 
+structure and the band gap value in particular. 
+The a 
+in the HSE was used as a free parameter to fine-tune 
+the obtained value of the band gap for pure parent GaP, 
+GaAs and GaSb compounds, where slight adjustments 
+provided an excellent agreement of band gaps and lattice parameters with those of OK experimental values. 
+The values of the a parameter used for each material together with the resulting band gaps, lattice parameters 
+and Eshift values used in Eqs. 1, 2, 5 and 6 have been 
+summarized in supplementary Table SI. All defect calculations were performed with the optimized a values for 
+each material. 
+Convergence studies and assessment of 
+the required computational resources resulted in a choice 
+of 2 x 2 x 2 Monkhorst-Pack mesh [74]. An energy cutoff of 350 eV (1.35 times the recommended value in the 
+POTCAR of the hardest atom) was used, and the total energy within each SCF cycle was converged to 0.1 
+meV. The optimization procedure was carried out until 
+none of the forces exceeded 0.005 eV / A. Due to the large 
+mass of Bi and in order to properly reproduce the band 
+structure ( the band gap in particular), 
+all calculations 
+were performed with spin-orbit coupling included. It has 
+been shown that the inclusion of spin-orbit coupling has 
+significant influence on the electronic structure as well 
+as on formation energies [47] in GaAs:Bi and the same 
+is expected for other systems studied here. In all cases, 
+the magnetic moments were optimized from initial values 
+of mx = my = mz = 1 Bohr magneton per atom with 
+the assumption that the most stable spin state would be 
+found through optimization. Due to the large scale of the 
+doi.org/10.1103/PhysRevMaterials.5.124601 
+study it was not feasible to explicitly study all possible 
+spin states for all defects, however, since the typical spin 
+polarization energies for similar systems ( specifically, vacancies in other similar III-V systems), of present at all, 
+are in the order of tens of meV [75], the error would be 
+negligible. 
+The shortcoming of the periodic approach to charged 
+defect calculations, specifically, the problem of the electrostatic interaction between the artificially high concentration of defects created by the periodic images of the 
+defects [76], was overcome by the use of the Freydsoldt 
+(FNV) method [67, 68]. The correction was calculated 
+via the alignment of the local potentials of defected and 
+pure structures with the use of the sxdefectalign 
+code, 
+an add-on to the SPXInX repository. To keep the results 
+consistent throughout the large number of cases studied 
+the alignment region of the potential was kept consisten~ 
+throughout all the structures and types of defects. The 
+region was chosen as 30% of the area of the potential 
+in the middle between the periodic images of the defect 
+from which an average value was calculated and use<l 
+in the alignment procedure. Dielectric constants are required for proper description of screening properties in 
+the determination 
+of the electrostatic correction. 
+Out 
+of convenience and due to their wide availability for a 
+large number of semiconductor materials, experimental 
+values of dielectric constants were used. Those values 
+were taken from Ref. [77]. For unknown systems, however, our tests have shown an LOA-calculated dielectric 
+constants should yield satisfactory results of the electrostatic correction, with the difference between the energy 
+correction calculated with experimental and LDA dielectric constant not exceeding 10% for a + /-1 charge. The 
+chemical potentials have been calculated for each element 
+as a total energy per atom in their corresponding lowest 
+energy cr)'._stal structures, i.e. Cmca for Ga, 14/mmm for 
+In, and R3m for all group V elements except phosphorus 
+which according to both our calculations and Ref. [78j 
+has an equilibrium structure of P2/c. 
+The calculation 
+parameters for chemical potentials were kept consistent 
+with the parameters for calculation of formation energies. 
+In the case of HSE, a values corresponding to that used 
+for the host material were used for calculation of chemical 
+potentials. This was done in order to stay consistent and 
+take advantage of potential error cancellation. Although 
+hybrid functionals are not necessarily the most accurate 
+for calculating cohesive energy of metals, they still tend 
+to perform well [73]. The obtained chemical potentials 
+were used in the calculation of defect formation energies 
+which have been evaluated in III-rich and V-rich condi~ 
+tions (upper and lower bounds). For III-rich conditions, 
+µ V was obtained with the use of the DFT values of µI I I 
+and µ(II I- V) and for V-rich, µI I I was calculated respectively with the DFT values of µV and µ(III-V), 
+in both 
+cases utilizing the relation µIII+ 
+µV = µ(III-V). 
+Intermediate conditions correspond to chemical potentials 
+calculated as an average between III- and V-rich values. 
+Values of all used chemical potentials can be found in 
+Preprint 
+
+===== Page 16 =====
+
+Phys. Rev. Materials 5, 124601 (2021) 
+VIB. 
+The post-processing of the results of formation energies 
+to obtain binding energies and defect levels from the DFT 
+results and band alignment and modified band alignment approaches was performed with self-written python 
+codes. See Sec. VI B for information about the obtained 
+data. 
+D. 
+Machine learning models 
+The machine learning models were built and validated with the MAterials Simulation Toolkit for Machine 
+Learning MAST-ML utility [79], which uses numerical procedures as implemented in scikit-learn 
+[80]. 
+E. 
+Appendix: 
+Definitions 
+of statistical 
+quantities 
+ME = I::~1 Yi -
+Xi 
+n 
+l 
+n 
+u = 
+- L (xi - x)2 
+n i=l 
+l 
+n 
+X = -
+LXi 
+n i=l 
+p 
+_ 
+true positives 
+rec -
+. . 
+. 
+true positives + true negatives 
+1 _ 
+true positives 
+Re-
+.. 
+fl 
+. 
+true positives + a se negatives 
+Fl = 2 • Pree • Rel 
+Pree+ Rel 
+where Yi are the corrected values and Xi are the reference HSE results. 
+doi.org/10.1103/PhysRevMaterials.5.124601 
+ACKNOWLEDGMENTS 
+M. P. P. acknowledges support within ETIUDA grant 
+no. 
+2016/20/T/ST3/00258 
+from the National Science Centre (NCN) Poland. 
+The author R. K. acknowledges financial support 
+from NCN (grant no. 
+2012/07 /E/ST3/01742). 
+The authors D.M. and R.J. acknowledges support from the National Science Foundation (NSF) Cyberinfrastructure 
+for Sustained Scientific 
+Innovation (CSSI) (OAC-1931298) . LS. acknowledges 
+support from NSF through the University of Wisconsin Materials Research Science and Engineering Center 
+(DMR-1720415). Calculations have been carried out using resources provided by Wroclaw Centre for Networking 
+and Supercomputing (http://wcss.pl). 
+V. 
+CONTRIBUTIONS 
+M. P. P. performed 
+the 
+calculations 
+and 
+prepared/ analysed the results, D. M. guided and supervised 
+the research. Interpretation of results and writing of the 
+manuscript was done by M. P. P. and D. M .. R. K., R. 
+J. and I. S. revised the manuscripts and discussed the 
+results. All authors read, revised and approved the final 
+manuscript. 
+VI. 
+ADDITIONAL 
+INFORMATION 
+A. 
+Supplementary 
+Material 
+Due to the large number of calculations, many figures 
+and tables would not fit into the paper and are all gathered in a supplementary material document published 
+along with this paper on the publisher website. 
+B. 
+Data Availability 
+All datasheets 
+containing 
+results 
+supporting 
+the 
+findings of this study 
+(formation 
+energies, 
+change 
+state transition levels) are available on figshare [81]: 
+https://doi.org/10.6084/m9.figshare.12478700. 
+Raw 
+data (input and output files), excluding POTCARs due 
+to VASP license restrictions, are also included together 
+with the code that allows to postprocess it in order to 
+obtain the results presented in the paper. 
+C. 
+Code Availability 
+The DFT calculations have been performed using 
+VASP 
+(v5.4.4) 
+[70, 71], the 
+electrostatic 
+correction has been calculated 
+using the sxdefectalign 
+(v2.2) [67] which is available directly from the authors 
+at: 
+https://sxrepo.mpie.de/projects/sphinxPreprint 
+
+===== Page 17 =====
+
+~ 
+i-; co 
+~ 
+i-; 
+...... a 
+TABLE IL Charge-state transition levels in reference to the valence band maximum. The levels printed in gray lay outside of the gap but fit within 10% of the value 
+of the gap. Numbers in parenthesis indicate the charge-state transition. 
+Energy values are given in electronvolts (eV). Columns calculated with the MBA approach 
+are indicated with an asterisk . 
+Point defects 
+Nearest neighbour pair defects 
+Defect 
+Bica 
+Bip 
+Gap 
+VGa 
+Paa 
+Vp 
+Bica+Bip 
+Bica+Gap 
+Vca+Bip 
+vaa+vp 
+Paa+Bip 
+Paa+Gap 
+0.09 (2/1) 
+-0.14 (1/0) 
+0.33 (3/1) 
+-0.08 (4/2) 
+0.61 (3/2) 
+0.02 (2/1) 
+1.18 (2/1) 
+0.11 (2/1) 
+GaPBi 0.64 (2/1) 
+0.31 (1/0) 
+0.16 (0/-1) 
+1.04 (2/1) 
+1.34 (1/0) 
+0.90 (2/1) 
+0.17 (2/1) 
+0.79 (2/-1) 
+0.82 (1/-2) 
+1.45 (1/0) 
+0.39 (1/0) 
+(eV) 
+1.16 (1/0) 
+0.07 (1/0) 
+0.87 (0/-1) 0.76 (-1/-2) 1.36 (1/0) 
+1.51 (0/-1) 
+1.23 (1/0) 
+0.44 (1/0) 
+1.24 (-1/-2) 2.04 (-2/-3) 
+1.94 (0/-1) 
+1.96 (0/-1) 
+1.14 (-1/-2) 1.06 (-2/-3) 2.52 (0/-1) 1.93 (-1/-2) 
+2.37 (0/-1) 
+2.01 (0/-1) 1.74 (-2/-3) 2.42 (-3/-4) 2.58 (-1/-2) 
+2.29 (-1/-2) 
+2.02 (-2/-3) 
+2.12 (-1/-2) 
+Defect 
+Bica 
+BiAs 
+GaAs 
+VGa 
+Asaa 
+VAs 
+Bica+BiAs 
+Bica+GaAs 
+Vca+BiAs 
+VGa+VAs 
+Asaa+BiAs 
+Asaa+GaAs 
+0.20 (3/1) 
+-0.03 (1/0) 
+0.82 (1/0) 
+0.37 (3/-1) 
+0.61 (2/1) 
+GaAsBi 0.37 (2/1) -0.10 (1/0) 0.43 (0/-1) 
+0.21 (0/-2) 
+0.40 (2/1) 
+0.93 (0/-1) 
+0.58 (2/1) 
+0.11 (1/0) 
+0.69 (-1/-2) 0.55 (1/-2) 
+1.00 (1/0) 
+0.06 (1/0) 
+(eV) 
+0.83 (1/0) 
+0.73 (-1/-2) 0.69 (-2/-3) 0.80 (1/0) 1.19 (-1/-2) 
+0.96 (1/0) 
+1.54 (0/-1) 1.15 (-2/-3) 1.37 (-2/-3) 
+1.67 (0/-1) 
+1.38 (0/-1) 
+1.58 (-2/-3) 
+1.64 (-3/-4) 
+Defect 
+Bica 
+Bisb 
+Gasb 
+VGa 
+Sbca 
+VSb 
+Bica+Bisb 
+Bica+Gasb 
+Vca+Bisb 
+vaa+vsb 
+Sbca+Bisb 
+Sbca+Gasb 
+0.08 (1/-1) 
+0.35 (0/-2) 
+GaSbBi -0.06 (2/1) 
+0.05 (-1/-2) 0.23 (2/1) 0.45 (-1/-2) 
+-0.01 (2/1) 
+0.17 (-1/-2) 
+0.27 (2/1) 
+(eV) 
+0.31 (1/0) 
+0.15 (-1/-2) 0.32 (-2/-3) 0.54 (1/0) 0.65 (-2/-3) 
+0.39 (1/0) 
+0.79 (0/-1) 0.44 (-2/-3) 0.38 (-2/-3) 
+0.61 (1/0) 
+0.89 (0/-1) 
+0.77 (-3/-4) 
+0.67 (-3/-4) 
+Defect 
+Bi1n 
+Bip 
+lnp 
+VJn 
+P1n 
+Vp 
+Bi1n+Bip* 
+Bi1n+lnp* 
+v1n+Bip* 
+v1n+vp* 
+P1n+Bip* 
+P1n+lnp* 
+-0.12 ( 4/3) 
+0.12 (3/2) 
+0.22 (0/-1) 
+0.54 (3/1) 
+0.04 (4/2) 
+0.24 (3/1) 
+0.24 (1/0) 
+0.72 (2/1) 
+0.29 (2/1) 
+InPBi 0.31 (2/1) -0.14 (2/1) 
+0.38 (2/1) 
+0.53 (-1/-2) 0.83 (2/1) 
+1.15 (1/0) 
+0.53 (2/1) 
+0.39 (2/1) 
+0.65 (1/0) 
+0.73 (0/-2) 
+1.10 (1/0) 
+0.69 (1/0) 
+(eV) 0.77 (1/0) 
+0.12 (1/0) 
+0.58 (1/0) 
+1.03 (1/0) 
+0.93 (1/0) 
+1.06 (0/-2) 
+1.02 (0/-1) 0.72 (-2/-3) 
+1.24 (0/-1) 
+0.77 (1/0) 
+1.38 (-2/-3) 1.38 (-2/-3) 
+1.43 (0/-1) 
+1.40 (0/-1) 
+1.27 (-1/-2) 
+Defect 
+Bi1n 
+BiAs 
+lnAs 
+VJn 
+As1n 
+VAs 
+Bi1n+BiAs* Bi1n+lnAs* v1n+BiAs* 
+VJn+VAs* As1n+BiAs* As1n+lnAs* 
+InAsBi 0.12 (2/1) 
+0.00 (1/0) 
+0.11 (2/1) 
+0.21 (-1/-2) 0.21 (2/1) 
+0.44 (3/1) 
+0.34 (2/1) 
+0.30 (2/1) 
+0.19 (3/1) 
+0.19 (1/0) 
+0.26 (2/1) 
+0.22 (2/1) 
+(eV) 
+0.30 (1/0) 
+0.42 (1/-1) 
+Defect 
+Bi1n 
+Bisb 
+lnsb 
+VJn 
+Sb1n 
+VSb 
+Bi1n+Bisb* Bhn+lnsb* 
+v1n+Bisb* 
+v1n+vsb* 
+Sb1n+Bisb* Sb1n+lnsb* 
+InSbBi 0.11 (1/0) 
+0.06 (0/-1) 0.18 (-2/-3) 0.06 (2/1) 
+0.13 (3/-1) 
+-0.01 (2/1) 
+0.25 (1/0) 
+0.07 (1/-2) 
+0.03 (2/1) 
+0.23 (1/0) 
+(eV) 
+'ij 
+~ 
+:" 
+w 
+~ 
+~ 
+~-e:.. 
+en 
+0, 
+...... 
+~ 
+,i::. 
+~ 
+0 ...... 
+~ 
+0 
+~ 
+...... 
+.__, 
+~ 
+0 .... 
+()q 
+-----
+...... 
+? ...... 
+...... 
+0 c..:, 
+-----
+'ij 
+[ 
+~ 
+< 
+~ 
+~ 
+~-
+e:.. 
+:" 
+01 ...... 
+~ 
+,i::. 
+~ 
+0 ...... 
+
+===== Page 18 =====
+
+~ 
+i-; co 
+~ 
+i-; 
+...... a 
+TABLE III. Charge-state transition levels in reference to the valence band maximum. The levels printed in gray lay outside of the gap but fit within 10% of the gap. 
+Numbers in parenthesis indicate the charge-state transition. Energy values are given in electronvolts (eV). Rows calculated with the MBA approach are indicated with 
+an asterisk . 
+Second nearest neighbour pair defects 
+Defect Biaa+Biaa 
+Bip+Bip 
+Gap+Bip 
+Gap+Gap 
+Vaa+Biaa 
+VGa+VGa 
+Vaa+Paa 
+Paa+Biaa 
+Paa+Paa 
+vp+Bip 
+vp+Gap 
+vp+vp 
+0.14 ( 4/3) 
+0.00 (2/1) 
+0.44 (0/-1) -0.18 (2/1) -0.22 (4/3) 
+0.20 (3/1) 
+0.10 (3/2) 
+0.09 (4/2) 
+0.29 (3/2) 
+-0.02 (2/1) 
+0.24 (1/0) 
+0.60 (3/1) 0.62 (-1/-2) 
+0.27 (1/0) 
+0.30 (3/2) 
+-0.10 (4/3) 
+1.12 (1/-1) 
+0.44 (2/0) 
+0.74 (2/0) 
+GaPBi 1.00 (2/1) 
+0.14 (2/1) 
+0.44 (1/0) 
+0.81 (0/-1) 
+1.13 (1/-1) 0.98 (-2/-3) 0.46 (0/-1) 
+1.21 (2/1) 
+0.08 (3/2) 
+2.09 (-1/-2) 1.05 (0/-1) 
+1.28 (0/-1) 
+(eV) 
+1.17 (1/0) 
+0.58 (1/0) 
+1.29 (0/-1) 
+1.01 (-1/-2) 1.90 (-1/-2) 1.18 (-3/-4) 2.02 (-1/-2) 
+1.52 (1/0) 
+1.43 (2/0) 
+2.41 (-2/-3) 1.54 (-1/-3) 1.56 (-1/-2) 
+2.47 (0/-1) 
+1.73 (-1/-2) 2.27 (-2/-3) 2.08 (-2/-3) 1.78 (-4/-5) 2.39 (-2/-3) 1.60 (0/-2) 
+2.23 (0/-3) 2.43 (-3/-4) 2.58 (-3/-4) 1.81 (-2/-3) 
+2.57 (-2/-3) 
+1.99 (-3/-4) 
+Defect Biaa+Biaa 
+BiAs+BiAs GaAs+BiAs GaAs+GaAs 
+Vaa+Biaa 
+VGa+VGa Vaa+Asaa 
+Asaa+Biaa 
+Asaa+Asaa 
+VAs+BiAs 
+VAs+GaAs 
+VAs+VAs 
+0.05 (0/-1) 
+0.25 (3/2) 
+0.01 (4/2) 
+-0.07 (4/3) 
+0.06 (1/0) 
+-0.06 (1/0) 
+0.44 (3/-1) 0.23 (-1/-2) -0.06 (1/0) 
+0.56 (2/1) 
+0.07 (3/2) 
+0.22 (2/0) 
+0.41 (2/0) 
+GaAsBi 0.11 (3/2) 
+0.17 (1/0) 
+0.65 (0/-1) 
+0.34 (0/-1) 
+1.30 (-1/-2) 0.57 (-2/-3) 0.17 (0/-1) 
+0.95 (1/0) 
+0.75 (2/1) 
+0.47 (1/-1) 
+0.32 (0/-1) 
+0.74 (0/-1) 
+(eV) 
+0.71 (2/1) 
+1.05 (-1/-2) 0.55 (-1/-2) 1.62 (-2/-3) 0.78 (-3/-4) 1.24 (-1/-2) 1.42 (0/-1) 
+0.93 (1/0) 
+1.10 (-1/-3) 1.02 (-1/-3) 0.96 (-1/-2) 
+0.88 (1/0) 
+1.47 (-2/-3) 
+1.41 (-4/-5) 1.63 (-2/-3) 1.65 (-1/-2) 
+1.51 (0/-2) 
+1.25 (-2/-3) 
+1.50 (-3/-4) 
+Defect Biaa+Biaa 
+Bisb+Bisb 
+Gasb+Bisb 
+Gasb+Gasb 
+Vaa+Biaa 
+VGa+VGa Vaa+Sbaa 
+Sbaa+Biaa 
+Sbaa+Sbaa 
+vsb+Bisb 
+vsb+Gasb 
+Vsb+Vsb 
+-0.02 (-1/-2) -0.08 (3/0) 0.16 (-2/-3) 
+0.02 (3/2) 
+-0.05 (2/-1) -0.02 (0/-2) 
+GaSbBi 0.13 (2/1) 
+-0.07 (0/-1) 0.36 (-2/-3) -0.04 (0/-1) 0.41 (-3/-4) -0.05 (0/-1) 
+0.30 (2/1) 
+0.37 (2/1) 
+0.07 (-1/-2) 0.07 (-1/-3) 0.06 (-2/-3) 
+(eV) 
+0.38 (1/0) 
+0.19 (-1/-2) 0.69 (-3/-4) 0.65 (-1/-2) 0.84 (-4/-5) 0.74 (-1/-2) 0.60 (1/-1) 
+0.64 (1/0) 
+0.34 (-2/-3) 0.32 (-3/-4) 0.43 (-3/-4) 
+0.56 (-4/-5) 0.57 (-4/-5) 
+Defect Bi1n+Bi1n 
+Bip+Bip 
+lnp+Bip 
+lnp+lnp 
+v1n+Bi1n 
+V1n+V1n 
+v1n+P1n 
+P1n+Bi1n 
+P1n+P1n 
+vp+Bip 
+vp+lnp 
+vp+vp 
+-0.10 ( 4/2) 
+-0.09 (3/2) 
+-0.13 (0/-1) 
+0.27 (2/1) 
+0.34 (2/1) 
+InPBi 0.09 (3/2) 
+0.27 (2/1) 
+0.34 (2/1) 
+0.26 (2/1) 
+0.28 (3/1) 0.22 (-1/-2) 0.20 (0/-1) 
+0.78 (2/1) 
+0.71 (2/1) 
+0.02 (2/1) 
+0. 73 (1/0) 
+0.37 (1/0) 
+0.53 (2/1) 
+0.63 (1/0) 
+1.08 (1/-1) 0.54 (-2/-3) 
+1.14 (1/0) 
+1.18 (1/0) 
+0.59 (0/-1) 
+(eV)* 0.99 (1/0) 
+0.74 (1/0) 
+0.76 (1/0) 
+0.97 (0/-1) 
+1.22 (-1/-2) 0.86 (-3/-4) 1.29 (-1/-2) 1.48 (0/-3) 
+1.53 (0/-1) 
+0.78 (1/-1) 
+0.79 (0/-1) 1.06 (-1/-2) 
+1.31 (0/-1) 
+1.41 (-1/-2) 
+1.27 (-4/-5) 
+1.20 (-1/-2) 1.42 (-2/-3) 
+Defect Bi1n+Bi1n BiAs+BiAs 
+lnAs+BiAs 
+lnAs+lnAs 
+v1n+Bi1n 
+V1n+V1n 
+v1n+As1n 
+As1n+Bi1n 
+As1n+As1n 
+VAs+BiAs 
+VAs+lnAs 
+VAs+VAs 
+InAsBi 0.01 (3/2) 
+0.24 (2/1) 
+0.23 (2/1) 
+0.12 (2/1) 
+0.40 (3/-1) 0.06 (-1/-2) 0.21 (0/-1) 
+0.34 (2/1) 
+0.26 (2/1) 
+0.01 (2/1) 
+0.11 (2/1) 
+0.09 (2/1) 
+(eV)* 
+0.43 (2/1) 
+0.35 (-2/-3) 
+0.24 (1/-1) 
+Defect Bi1n+Bi1n Bisb+Bisb 
+lnsb+Bisb 
+lnsb+lnsb 
+v1n+Bi1n 
+V1n+V1n 
+v1n+Sb1n 
+Sb1n+Bi1n Sb1n+Sb1n 
+vsb+Bisb 
+Vsb+lnsb 
+Vsb+Vsb 
+InSbBi 0.10 (2/1) 
+0.26 (1/0) 
+-0.01 (1/0) 
+0.19 (0/-1) 
+0.10 (0/-1) 0.04 (-2/-3) 0.11 (0/-1) 
+0.19 (2/1) 
+0.23 (2/1) 
+0.03 (-1/-2) 
+(eV)* 
+'ij 
+~ 
+:" 
+w 
+~ 
+~ 
+~-e:.. 
+en 
+0, 
+...... 
+~ 
+,i::. 
+~ 
+0 ...... 
+~ 
+0 
+~ 
+...... 
+.__, 
+~ 
+0 .... 
+()q 
+-----
+I-' 
+? ...... 
+...... 
+0 c,:, 
+-----
+'ij 
+[ 
+~ 
+< 
+~ 
+~ 
+~-
+e:.. 
+:" 
+01 ...... 
+~ 
+,i::. 
+~ 
+0 ...... 
+
+===== Page 19 =====
+
+Phys. Rev. Materials 5, 124601 (2021) 
+add-ons/files. 
+The 
+code 
+used 
+to 
+postpro­
+cess the raw data is available on figshare [81]: 
+https://doi.org/10.6084/m9.figshare.12478700 
+D.
+Competing Interest
+The authors declare no competing interest. 
+[1] L. Dobaczewski, A. R. Peaker, and K. Bonde Nielsen,
+Laplace-transform deep-level spectroscopy: The tech­
+nique and its applications to the study of point defects
+in semiconductors, Journal of Applied Physics 96, 4689
+(2004).
+[2] J. M. Johnson, S. Im, W. Wind!, and J. Hwang, Three­
+dimensional imaging of individual point defects using se­
+lective detection angles in annular dark field scanning
+transmission electron microscopy, Ultramicroscopy 172,
+17 (2017).
+[3] S. Takeda, Structure analysis of defects in nanometer
+space inside a crystal: Creation and agglomeration of
+point defects in Si and Ge revealed by high-resolution
+electron microscopy, Microscopy Research and Technique
+40, 313 (1998).
+[4] H. Kim, J. Y. Zhang, S. Raghavan, and S. Stemmer, Di­
+rect Observation of Sr Vacancies in SrTiO3 by Quantita­
+tive Scanning Transmission Electron Microscopy, Physi­
+cal Review X 6, 041063 (2016).
+[5] B. Fluegel, S. Francoeur, A. Mascarenhas, S. Tixier,
+E. C. Young, and T. Tiedje, Giant Spin-Orbit Bowing in
+GaAs1-xBix, Physical Review Letters 97, 067205 (2006).
+[6] R. Kudrawiec, J. Kopaczek, J. Misiewicz, J. P. Petropou­
+los, Y. Zhong, and J. M. 0. Zide, Contactless elec­
+troreflectance study of E0 and E0 + b"SO transitions in
+lno,53Gao.41BixAs1-x alloys, Applied Physics Letters 99,
+251906 (2011).
+[7] M. P. Polak, P. Scharoch, R. Kudrawiec, J. Kopaczek,
+M. J. Winiarski, W. M. Linhart, M. K. Rajpalke, K. M.
+Yu, T. S. Jones, M. J. Ashwin, and T. D. Veal, Theo­
+retical and experimental studies of electronic band struc­
+ture for GaSb1-xBix in the dilute Bi regime, Journal of
+Physics D: Applied Physics 47, 355107 (2014).
+[8] J. Kopaczek, R. Kudrawiec, M. P. Polak, P. Scharoch,
+M. Birkett, T. D. Veal, K. Wang, Y. Gu, Q. Gong, and
+S. Wang, Contactless electroreflectance and theoretical
+studies of band gap and spin-orbit splitting in InP1-xBix 
+dilute bismide with x :S 0.034, Applied Physics Letters
+105, 222104 (2014).
+[9] S. J. Sweeney, Z. Batool, K. Hild, S. R. Jin, and T. J. C.
+Hosea, The potential role of Bismide alloys in future pho­
+tonic devices, in 2011 13th International Conference on
+Transparent Optical Networks (2011) pp. 1-4.
+[10] A. Rogalski, HgCdTe infrared detector material: history,
+status and outlook, Reports on Progress in Physics 68,
+2267 (2005).
+[11] W. Lei, J. Antoszewski, and L. Faraone, Progress, chal­
+lenges, and opportunities for HgCdTe infrared materials
+and detectors, Applied Physics Reviews 2, 041303 (2015).
+[12] I. C. Sandall, F. Bastiman, B. White, R. Richards,
+D. Mendes, J. P. R. David, and C. H. Tan, Demonstradoi.org/10.1103/PhysRevMaterials.5.124601 
+tion of InAsBi photoresponse beyond 3.5 µm, Applied 
+Physics Letters 104, 171109 (2014). 
+[13] J. J. Lee, J. D. Kim, and M. Razeghi, Room temperature
+operation of 8-12 µm InSbBi infrared photodetectors on
+GaAs substrates, Applied Physics Letters 73, 602 (1998).
+[14] Y. Gu, R. D. Richards, J. P. R. David, and Y. Zhang, Di­
+lute bismide photodetectors, in Bismuth-Containing Al­
+loys and Nanostructures (Springer Singapore, Singapore,
+2019) pp. 299-318.
+[15] 0. Delorme, L. Cerutti, E. Luna, G. Narcy, A. Trampert,
+E. Tournie, and J.-B. Rodriguez, GaSbBi/GaSb quantum
+well laser diodes, Applied Physics Letters 110, 222106
+(2017).
+[16] I. P. Marko and S. J. Sweeney, The physics of bismide­
+based lasers, in Bismuth-Containing Alloys and Nanos­
+tructures (Springer Singapore, Singapore, 2019) pp. 263298.
+[17] X. Zhang, Y. Zhang, L. Yue, H. Liang, C. Chi, Y. Wu, 
+X. Ou, and S. Wang, Growth and properties of alsbbi
+thin films by molecular beam epitaxy, Journal of Alloys
+and Compounds 801, 239 (2019).
+[18] T. F. Kuech, S. E. Babcock, and L. Mawst, Growth far
+from equilibrium: Examples from III-V semiconductors,
+Applied Physics Reviews 3, 040801 (2016).
+[19] M. K. Rajpalke, W. M. Linhart, M. Birkett, K. M. Yu, 
+D. 0. Scanlon, J. Buckeridge, T. S. Jones, M. J. Ashwin,
+and T. D. Veal, Growth and properties of GaSbBi alloys,
+Applied Physics Letters 103, 142106 (2013).
+[20] M. Yoshimoto, S. Murata, A. Chayahara, Y. Horino,
+J. Saraie, and K. Oe, Metastable gaasbi alloy grown by 
+molecular beam epitaxy, Japanese Journal of Applied
+Physics 42, L1235 (2003).
+[21] G. Feng, K. Oe, and M. Yoshimoto, Temperature depen­
+dence of Bi behavior in MBE growth of InGaAs/InP,
+Journal of Crystal Growth 301-302, 121 (2007), 14th
+International Conference on Molecular Beam Epitaxy.
+[22] J. S. Harris, R. Kudrawiec, H. B. Yuen, S. R. Bank,
+H. P. Bae, M. A. Wistey, D. Jackrel, E. R. Pickett,
+T. Sarmiento, L. L. Goddard, V. Lordi, and T. Gugov,
+Development of GalnNAsSb alloys: Growth, band struc­
+ture, optical properties and applications, physica status
+solidi (b) 244, 2707 (2007).
+[23] L. Gelczuk, H. Stokowski, J. Kopaczek, L. Zhang, Y. Li,
+K. Wang, P. Wang, Shumin Wang, and R. Kudrawiec,
+Bi-induced acceptor level responsible for partial compen­
+sation of native free electron density in InP1-xBix dilute
+bismide alloys, Journal of Physics D: Applied Physics 49,
+115107 (2016).
+[24] E. Tournie, M.-A. Pinault, and A. Guzman, Mechanisms
+affecting the photoluminescence spectra of GainNAs af­
+ter post-growth annealing, Applied Physics Letters 80,
+Preprint 
+
+===== Page 20 =====
+
+Phys. Rev. Materials 5, 124601 (2021) 
+4148 (2002). 
+[25] S. G. Spruytte, C. W. Coldren, J. S. Harris, W. Wampler, 
+P. Krispin, K. Ploog, and M. C. Larson, Incorporation 
+of nitrogen in nitride-arsenides: 
+Origin of improved luminescence efficiency after anneal, Journal of Applied 
+Physics 89, 4401 (2001). 
+[26] T. Kageyama, T. Miyamoto, S. Makino, F. Koyama, and 
+K. lga, Thermal Annealing of GalnNAs/GaAs 
+Quantum 
+Wells Grown by Chemical Beam Epitaxy and Its Effect on Photoluminescence, 
+Japanese Journal of Applied 
+Physics 38, L298 (1999). 
+[27] L. Gelczuk, R. Kudrawiec, and M. Henini, Identification 
+of nitrogenand host-related deep-level traps in n-type 
+GaNAs and their evolution upon annealing, Journal of 
+Applied Physics 116, 013705 (2014). 
+[28] L. Gelczuk, H. Stokowski, M. Dabrowska-Szata, 
+and 
+R. Kudrawiec, Origin and annealing of deep-level defects 
+in GaNAs grown by metalorganic vapor phase epitaxy, 
+Journal of Applied Physics 119, 185706 (2016). 
+[29] I. Moussa, H. Fitouri, Z. Chine, A. Rebey, and B. E. 
+Jani, Effect of thermal annealing on structural and optical properties of the GaAs 0.963 Bi 0.037 alloy, Semiconductor Science and Technology 23, 125034 (2008). 
+[30] A. R. Mohmad, F. Bastiman, C. J. Hunter, R. Richards, 
+S. J. Sweeney, J. S. Ng, and J. P. R. David, Effects of 
+rapid thermal annealing on GaAs1-xBix alloys, Applied 
+Physics Letters 101, 012106 (2012). 
+[31] S. Mazzucato, 
+P. Boonpeng, 
+H. Carrere, 
+D. Lagarde, A. Arnoult, G. Lacoste, T. Zhang, A. Balocchi, 
+T. Amand, X. Marie, and C Fontaine, Reduction of defect density by rapid thermal annealing in GaAsBi studied by time-resolved photoluminescence, 
+Semiconductor 
+Science and Technology 28, 022001 (2013). 
+[32] P. C. Grant, D. Fan, A. Mosleh, S.-Q. Yu, V. G. Dorogan, M. E. Hawkridge, Y. I. Mazur, M. Benamara, G. J. 
+Salamo, and S. R. Johnson, Rapid thermal annealing effect on GaAsBi/GaAs 
+single quantum wells grown by 
+molecular beam epitaxy, Journal of Vacuum Science & 
+Technology B 32, 02C119 (2014). 
+[33] H. Kim, Y. Guan, S. E. Babcock, T. F. Kuech, and 
+L. J. Mawst, Characteristics 
+of OMVPE grown GaAsBi 
+QW lasers and impact of post-growth thermal annealing, 
+Journal of Applied Physics 123, 113102 (2018). 
+[34] X. Y. Wu, K. Wang, W.W. Pan, P. Wang, Y. Y. Li, Y. X. 
+Song, Y. Gu, L. Yue, H. Xu, Z. P. Zhang, J. Cui, Q. Gong, 
+and S. M. Wang, Effect of rapid thermal annealing on 
+InP1-xBix grown by molecular beam epitaxy, Semiconductor Science and Technology 30, 094014 (2015). 
+[35] L. Gelczuk, J. Kopaczek, 
+T. B. 0. Rockett, 
+R. D. 
+Richards, and R. Kudrawiec, Deep-level defects inn-type 
+GaAsBi alloys grown by molecular beam epitaxy at low 
+temperature 
+and their influence on optical properties, 
+Scientific Reports 7, 12824 (2017). 
+[36] P. M. Mooney, M. Tarun, D. A. Beaton, A. Mascarenhas, and K. Alberi, Deep level defects in dilute GaAsBi 
+alloys grown under intense UV illumination, Semiconductor Science and Technology 31, 085014 (2016). 
+[37] P. M. Mooney, K. P. Watkins, Z. Jiang, A. F. Basile, 
+R. B. Lewis, V. Bahrami-Yekta, 
+M. Masnadi-Shirazi, 
+D. A. Beaton, and T. Tiedje, Deep level defects inn-type 
+GaAsBi and GaAs grown at low temperatures, 
+Journal 
+of Applied Physics 113, 133708 (2013). 
+[38] N. Segercrantz, J. Slotte, I. Makkonen, F. Tuomisto, I. C. 
+Sandall, M. J. Ashwin, and T. D. Veal, Hole density and 
+doi.org/10.1103/PhysRevMaterials.5.124601 
+acceptor-type defects in MBE-grown GaSb1-xBix, Journal of Physics D: Applied Physics 50, 295102 (2017). 
+[39] A. Alkauskas, P. Broqvist, and A. Pasquarello, Defect 
+Energy Levels in Density Functional Calculations: Alignment and Band Gap Problem, Phys. Rev. Lett. 101, 
+046405 (2008). 
+[40] J. L. Lyons and C. G. V. de Walle, Computationally 
+predicted energies and properties of defects in GaN, npj 
+Computational 
+Materials 3, 1 (2017). 
+[41] P. Dahinden, P. Broqvist, and A. Pasquarello, Charge 
+transition levels of nitrogen dangling bonds at Si/SiO2 
+interfaces: 
+A first-principles study, Phys. Rev. B 81, 
+085331 (2010). 
+[42] A. Alkauskas and A. Pasquarello, Band-edge problem in 
+the theoretical determination of defect energy levels: The 
+0 vacancy in ZnO as a benchmark case, Phys. Rev. B 84, 
+125206 (2011). 
+[43] G. Miceli and A. Pasquarello, Defect energy levels of the 
+As-As dimer at InGaAs/oxide interfaces: A first principles study, Microelectronic Engineering 109, 60 (2013). 
+[44] G. Miceli and A. Pasquarello, Energetics of native point 
+defects in GaN: A density-functional 
+study, Microelectronic Engineering 147, 51 (2015). 
+[45] A. Alkauskas, P. Broqvist, and A. Pasquarello, Defect 
+levels through hybrid density functionals: 
+Insights and 
+applications, physica status solidi (b) 248, 775 (2011). 
+[46] A. Mannodi-Kanakkithodi, 
+M. Y. Toriyama, F. G. Sen, 
+M. J. Davis, R. F. Klie, and M. K. Y. Chan, Machinelearned impurity level prediction for semiconductors: the 
+example of Cd-based chalcogenides, npj Computational 
+Materials 6, 39 (2020). 
+[47] G. Luo, S. Yang, G. R. Jenness, Z. Song, T. F. Kuech, 
+and D. Morgan, Understanding and reducing deleterious 
+defects in the metastable alloy GaAsBi, NPG Asia Materials 9, e345 (2017). 
+[48] J. Buckeridge, T. D. Veal, C. R. A. Catlow, and D. 0. 
+Scanlon, Intrinsic point defects and the n- and p-type 
+dopability of the narrow gap semiconductors GaSb and 
+InSb, Physical Review B 100, 035207 (2019). 
+[49] V. Virkkala, V. Havu, F. Tuomisto, and M. J. Puska, 
+Native point defect energetics in GaSb: Enabling p-type 
+conductivity of undoped GaSb, Physical Review B 86, 
+144101 (2012). 
+[50] N. Segercrantz, J. Slotte, F. Tuomisto, K. Mizohata, and 
+J. Raisanen, Instability of the Sb vacancy in GaSb, Physical Review B 95, 184103 (2017). 
+[51] G. A. Baraff and M. Schluter, Bistability and metastability of the gallium vacancy in gaas: The actuator of EL 
+2?, Phys. Rev. Lett. 55, 2340 (1985). 
+[52] J. Kopaczek, R. Kudrawiec, W. Linhart, M. Rajpalke, 
+T. Jones, M. Ashwin, and T. Veal, Low- and high-energy 
+photoluminescence from GaSb1-xBix with O j x S 0.042, 
+Applied Physics Express 7, 111202 (2014). 
+[53] L. Yue, X. Chen, Y. Zhang, J. Kopaczek, J. Shao, 
+M. Gladysiewicz, R. Kudrawiec, X. Ou, and S. Wang, 
+Structural and optical properties of GaSbBi/GaSb quantum wells [Invited], Optical Materials Express 8, 893 
+(2018). 
+[54] 0. Delorme, L. Cerutti, E. Tournie, and J.B. Rodriguez, 
+Molecular beam epitaxy and characterization 
+of high Bi 
+content GaSbBi alloys, Journal of Crystal Growth Proceeding of the 19th International 
+Conference on Molecular Beam Epitaxy, 477, 144 (2017). 
+Preprint 
+
+===== Page 21 =====
+
+[55] T. M. Christian, D. A. Beaton, K. Alberi, B. Fluegel, and 
+A. Mascarenhas, Mysterious absence of pair luminescence 
+in gallium phosphide bismide, Applied Physics Express 
+8, 061202 (2015). 
+[56] L. Nattermann, 
+A. Beyer, 
+P. Ludewig, 
+T. Hepp, 
+E. Sterzer, and K. Volz, MOVPE growth of Ga(PBi) on 
+GaP and GaP on Si with Bi fractions up to 8%, Journal 
+of Crystal Growth 463, 151 (2017). 
+[57] M. Wu, 
+E. Luna, 
+J. Puustinen, 
+M. Guina, 
+and 
+A. Trampert, Formation and phase transformation of Bicontaining QD-like clusters in annealed GaAsBi, Nanotechnology 25, 205605 (2014). 
+[58] A. W. Wood, W. Chen, H. Kim, Y. Guan, K. Forghani, 
+A. Anand, T. F. Kuech, L. J. Mawst, and S. E. Babcock, Annealing-induced 
+precipitate formation behavior 
+in MOVPE-grown GaAs1-xBix explored by atom probe 
+tomography 
+and HAADF-STEM, 
+Nanotechnology 
+28, 
+215704 (2017). 
+[59] E. Luna, 0. Delorme, L. Cerutti, 
+E. Tournie, J.-B. 
+Rodriguez, and A. Trampert, 
+Microstructure 
+and interface analysis of emerging Ga(Sb,Bi) 
+epilayers and 
+Ga(Sb,Bi)/GaSb 
+quantum wells for optoelectronic applications, Applied Physics Letters 112, 151905 (2018). 
+[60] E. Luna, 0. Delorme, L. Cerutti, E. Tournie, J.-B. Rodriguez, and A. Trampert, 
+Transmission electron microscopy ofGa(Sb, Bi)/GaSb quantum wells with varying 
+Bi content and quantum well thickness, Semiconductor 
+Science and Technology 33, 094006 (2018). 
+[61] P. Mori-Sanchez, A. J. Cohen, and W. Yang, Localization 
+and delocalization errors in density functional theory and 
+implications for band-gap prediction, Phys. Rev. Lett. 
+100, 146401 (2008). 
+[62] H. Akaike, A new look at the statistical model identification, IEEE Transactions on Automatic Control 19, 716 
+(1974). 
+[63] G. Schwarz, Estimating the dimension of a model, Ann. 
+Statist. 6, 461 (1978). 
+[64] M. L. Hutchinson, E. Antono, B. M. Gibbons, S. Paradiso, J. Ling, and B. Meredig, Overcoming data scarcity 
+with transfer learning, CoRR abs/1711.05099 
+(2017), 
+arXiv:1711.05099. 
+[65] G. Pilania, 
+J. Gubernatis, 
+and T. Lookman, Multifidelity machine learning models for accurate bandgap 
+predictions of solids, Computational 
+Materials Science 
+129, 156 (2017). 
+[66] V. Sharma, P. Kumar, P. Dev, and G. Pilania, Machine learning substitutional 
+defect formation energies in 
+abo3 perovskites, Journal of Applied Physics 128, 034902 
+(2020). 
+[67] C. Freysoldt, J. Neugebauer, and C. G. Van de Walle, 
+Fully Ab Initio Finite-Size 
+Corrections 
+for ChargedDefect Supercell Calculations, Physical Review Letters 
+102, 016402 (2009). 
+[68] C. Freysoldt, J. Neugebauer, and C. G. Van de Walle, 
+Electrostatic interactions between charged defects in supercells, physica status solidi (b) 248, 1067 (2011). 
+[69] P. Hohenberg and W. Kohn, Inhomogeneous Electron 
+Gas, Physical Review 136, B864 (1964). 
+[70] G. Kresse and J. Furthmiiller, Efficiency of ab-initio total 
+energy calculations for metals and semiconductors using 
+a plane-wave basis set, Computational 
+Materials Science 
+6, 15 (1996). 
+[71] G. Kresse and J. Furthmiiller, Efficient iterative schemes 
+for ab initio total-energy calculations using a plane-wave 
+basis set, Physical Review B 54, 11169 (1996). 
+[72] G. Kresse and D. Joubert, From ultrasoft pseudopotentials to the projector augmented-wave method, Physical 
+Review B 59, 1758 (1999). 
+[73] J. Heyd, G. E. Scuseria, and M. Ernzerhof, Hybrid functionals based on a screened Coulomb potential, The Journal of Chemical Physics 118, 8207 (2003). 
+[74] H. J. Monkhorst and J. D. Pack, Special points for 
+Brillouin-zone integrations, Physical Review B 13, 5188 
+(1976). 
+[75] 0. Volnianska and P. Boguslawski, High-spin states of 
+cation vacancies in gap, gan, aln, bn, zno, and beo: A 
+first-principles study, Phys. Rev. B 83, 205205 (2011). 
+[76] C. Freysoldt, B. Grabowski, T. Hickel, J. Neugebauer, 
+G. Kresse, A. Janotti, and C. G. Van de Walle, Firstprinciples calculations for point defects in solids, Reviews 
+of Modern Physics 86, 253 (2014). 
+[77] J. Piprek, 
+Appendix 
+A -
+Constants 
+and Units, in 
+Semiconductor Optoelectronic Devices (Academic Press, 
+Boston, 2003) p. 237. 
+[78] A. Jain, S. P. Ong, G. Hautier, W. Chen, W. D. Richards, 
+S. Dacek, S. Cholia, D. Gunter, D. Skinner, G. Ceder, 
+and K. A. Persson, Commentary: The Materials Project: 
+A materials genome approach to accelerating materials 
+innovation, APL Materials 1, 011002 (2013). 
+[79] R. Jacobs, 
+T. Mayeshiba, 
+B. AfHerbach, L. Miles, 
+M. Williams, M. Turner, R. Finkel, and D. Morgan, The 
+materials simulation toolkit for machine learning (mastml): An automated 
+open source toolkit to accelerate 
+data-driven materials research, Computational 
+Materials 
+Science 176, 109544 (2020). 
+[80] F. Pedregosa, G. Varoquaux, A. Gramfort, V. Michel, 
+B. Thirion, 
+0. Grisel, M. Blondel, P. Prettenhofer, 
+R. Weiss, V. Dubourg, J. Vanderplas, A. Passos, D. Cournapeau, 
+M. Brucher, 
+M. Perrot, 
+and E. Duchesnay, 
+Scikit-learn: Machine learning in Python, Journal of Machine Learning Research 12, 2825 (2011). 
+[81] M. Polak, R. Kudrawiec, R. Jacobs, I. Szlufarska, and 
+D. Morgan, Datasets, 
+codes and supplemental 
+information: 
+https://doi.org/10.6084/m9.figshare.12478700 
+(2021). 
+[82] I. Vurgaftman, 
+J. R. Meyer, and L. R. Ram-Mohan, 
+Band parameters 
+for 111-V compound semiconductors 
+and their alloys, Journal of Applied Physics 89, 5815 
+(2001). 
+Preprint 

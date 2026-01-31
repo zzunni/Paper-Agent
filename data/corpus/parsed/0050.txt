@@ -1,0 +1,406 @@
+
+
+===== Page 1 =====
+
+Coherent Fourier Scatterometry for detection of
+killer defects on silicon carbide samples
+Jila Rafighdoost, Dmytro Kolenov, and Silvania F. Pereira
+Optics Research Group, Imaging Physics Department, Faculty of
+Applied Sciences, Delft University of Technology, Lorentzweg 1,
+2628 CJ Delft, The Netherlands
+October 28, 2024
+Abstract
+It has been a widely growing interest in using silicon carbide (SiC)
+in high-power electronic devices. Yet, SiC wafers may contain killer defects that could reduce fabrication yield and make the device fall into
+unexpected failures. To prevent these failures from happening, it is very
+important to develop inspection tools that can detect, characterize and
+locate these defects in a non-invasive way. Current inspection techniques
+such as Dark Field or Bright field microscopy are effectively able to visualize most such defects; however, there are some scenarios where the
+inspection becomes problematic or almost impossible, such as when the
+defects are too small or have low contrast or if the defects lie deep into
+the substrate. Thus, an alternative method is needed to face these challenges. In this paper, we demonstrate the application of coherent Fourier
+scatterometry (CFS) as a complementary tool in addition to the conventional techniques to overcome different and problematic scenarios of killer
+defects inspection on SiC samples. Scanning electron microscopy (SEM)
+has been used to assess the same defects to validate the findings of CFS.
+Great consistency has been demonstrated in the comparison between the
+results obtained with CFS and SEM.
+1
+Introduction
+Silicon carbide (SiC) has earned its place in the semiconductor industry and
+its applications especially in power electronic devices [1–3]. SiC-based devices
+are mainly known for their high thermal conductivity, a large bandgap, and also
+their high break-down electric fields [4]. SiC is transparent, but its transparency
+varies with wavelength. This is due to the material’s electronic structure, with
+the material being more transparent at longer wavelengths. At visible wavelengths, the real part of n ∼2.6 and the imaginary part is low, indicating
+1
+arXiv:2312.13290v1  [physics.app-ph]  20 Nov 2023
+
+===== Page 2 =====
+
+low absorption. However, at shorter wavelengths, the imaginary part increases.
+As a result, its use has been rapidly growing in power electronic devices such
+as aerospace materials, automotive driving, and high power converters [5–7].
+They can be considered as the third generation of semiconductor which also
+happens to show a better performance compared to silicon (Si) and gallium
+arsenide (GaAs) as the first and second generations of semiconductors, respectively [8].Yet, due to fabrication issues, SiC wafers might still contain a variety
+of defects that can put the device’s performance at risk [9–15]. Defects in such
+semiconductor wafers can be classified into two categories - crystallographic defects found within the wafer, and morphological defects present on or near the
+wafer surface. The so-called killer defects that can cause device deterioration
+are mostly morphological and have been identified and classified [16–20].
+In order to avoid failures in the fabrication of devices on SiC wafers, defect inspection plays an important role.
+In the literature, one finds several
+high resolution imaging techniques that are used for inspection such as electron microscopy (TEM and SEM), atomic force microscopy (AFM), near field
+microscopy (SNOM). Although these techniques provide a high resolution mapping of the location and shape of the defects, there are drawbacks such as low
+throughput, invasiveness and they are not easily applicable for in-line inspection [21–27].
+These drawbacks can be avoided if one considers far field optical-based techniques such as optical coherence tomography (OCT), dark field (DF), bright
+Field (BF) or confocal differential interference contrast microscopy (CDIC)
+[28–32]. Among these methods, both BF and DF microscopy have proven to
+be the most optimal options, primarily due to their remarkable speed and costeffectiveness .Yet there are difficulties in applying them when it comes to resolve
+the shape of very small and/or low contrast defects located on the surface or
+deeper within the sample.
+In these scenarios a complementary approach is
+needed to deal with the challenging defects.
+In this paper, we present a new approach for defect characterization, namely
+Coherent Fourier Scatterometry (CFS) [33–36]. We show that by using CFS a
+complete characterization of killer defects such as stacking faults and polytype
+inclusions on 4H-SiC wafer can be obtained with high visibility. To validate
+and compare CFS with other techniques, the same sample has been inspected
+with BF and DF microscopy. Also, SEM was used as a calibration tool (ground
+truth).
+Given that this method is a far field scattering technique that uses
+low light power and it is not limited by diffraction, we believe that it can be
+considered as a complementary tool to BF and DF microscopy in scenarios like
+partially buried defects or isolated defects that are very small in at least one
+dimension such as thin lines.
+In addition, since the light is focused on the
+sample, the scattered signal is less affected by neighboring structures as it is the
+case of DF microscopy. For defects that lie deeper into the sample, re-focusing
+could be used. At last, since most of the killer defects are of the extended type,
+inspection is required for each step of the production. Therefore, the inspection
+needs to be conducted throughout the process flow, meaning that an in-line
+and non-destructive method is crucial. CFS also fits these needs since it can be
+2
+
+===== Page 3 =====
+
+made very compact and easy to be mounted in in-line tools.
+2
+CFS technique and experimental setup
+Scatterometry-based techniques utilize the properties of scattered light to extract information about the object being illuminated. In our implementation,
+we use coherent light from a laser source to illuminate the object and observe
+the scattered light in the far field. The details of the setup are shown in Figure
+1. A collimated He-Ne laser with a wavelength of λ = 632nm passes through a
+non-polarising 50-50% beam splitter (BS1). The input light is linearly polarized
+in arbitrary direction before it passes through the beam splitter BS1(hereby we
+note that the polarization direction has negligible effect on the detection of the
+defects). The light then is focused on the sample plane by a high numerical
+aperture objective (NA=0.9). In this approach, the high numerical aperture
+objective allows us to illuminate the sample and collect the diffracted field in a
+large number of angles in one shot.
+The sample is mounted on a 2D piezo-electric stage (Physik Instrumente
+P-629.2CD) that is programmed to be moved in the lateral direction in raster
+scan mode. The focus position can also be adapted with a 1D piezo-electric
+stage (Physik Instrumente P-620.ZCD). Given that the focus depth is very short
+(∼1µm), one can focus the light onto different depths within the sample. The
+reflected and scattered field is captured by the same objective lens and directed
+back to BS1. However, due to the small depth of focus, finding the correct
+focal plane is challenging. We solved this issue by allowing the reflected beam
+from the sample to interfere with a reference beam by placing temporarily a
+mirror at the open port of beam splitter BS1(not shown in Figure 1). In this
+case, when flat interference fringes are observed between the two beams, we can
+ensure that the light is focused on the sample plane. The reference beam is
+then removed during the data acquisition. The back focal plane of the objective
+is imaged simultaneously into the camera and the split detector (ODD3W2 BiCell Silicon Photodiode) using the telescope arrangements formed by lenses L1,
+L2 and L3. The camera is only used for general localization of features on the
+sample. The split detector is a bi-cell detector, i.e., a detector whose area is
+divided in two halves, with the latter being aligned perpendicular to the scan
+direction of one line of the raster scan.
+During the scan, the photocurrents
+of the two halves of the detector are subtracted from each other, resulting in
+a differential photo-current I−that is recorded for every scan position. After
+the raster scan, a 2D mapping with the values of I−for each scan position are
+plotted in a 2D graph. In order to interpret the scan maps, one can see that
+if there are no defects on the sample, the photo-current I−∼0 (given that
+the scattered signal will correspond to the spurious reflection of the sample).
+However, when a defect passes through the focused light beam while the stage is
+being scanned, the far field will show asymmetries and will generate a non-zero
+I−.
+3
+
+===== Page 4 =====
+
+Figure 1: The schematic of the CFS setup. The sample is placed on the stage
+with a piezo-electric translator, BS1 and BS2: 50-50 non-polarizing beamsplitters, L1, L2, and L3: positive lenses; Camera: CCD camera used for localizing
+features on the sample; SD: split detector (bi-cell silicon photodiode). A collimated and uniform He-Ne laser is used as the coherent source. The split detector
+is aligned perpendicular to the scan direction of one line of the raster scan.
+4
+
+===== Page 5 =====
+
+3
+Results and Discussion
+Most defects are formed through the production process in which they not only
+occur on the substrate but are also generated or even modified by other layers
+during the wafer planarization process. As a result, the majority of defects can
+be classified as extended defects.
+Here, we measured defects on a 4H-SiC wafer with four degrees off-cut angle
+and 12±2 µm thickness that includes four killer defects, three stacking faults,
+and one polytype inclusion. As BF and DF microscopy are the primary methodologies for general surface inspection, we have first obtained DF and BF images
+from a Keyence digital microscope (model VHX-6000). Furthermore, to verify
+the capabilities of CFS to detect such defects, we compared the defect shape
+with SEM images (Novanano, captured at 10 KV with 1000X and some with
+800X magnification). In the coming subsections, we show the results.
+It should be noted that besides the observation of the aimed killer defects,
+some images show extra particles around the defects. This is due to the fact
+that the data has been captured in different labs and over different days. Unfortunately, the samples tend to accumulate dirt and contaminants from the
+environment. To avoid causing any damage to the samples, cleaning procedures
+have not been pursued.
+3.1
+Stacking Faults
+Extended defects with a planar shape are generally classified into three different
+groups named, stacking fault, stacking fault propagated, and stacking fault
+complex. Stacking faults usually appear triangular with a distant outline on the
+surface of SiC wafers. Propagated stacking faults have a trapezoidal structure.
+Our sample did not contain any stacking fault propagated and therefore we only
+have results for the stacking fault. Here, Figure 2(a)-(d) show the BF and DF
+images, the CFS scattering map and SEM image, respectively. One can clearly
+see that although all methods are able to detect the defect, CFS shows a better
+visibility with respect to the background as compared to the other techniques.
+In addition, when comparing BF and DF images with CFS, the latter recovers
+the object even if it is not in one plane on the substrate but could extend deep
+into the substrate.
+The next detected defect was the Stacking fault complex, which is usually
+called carrot. This is also a major morphological defect that has a shape of a
+long and thin needle that gradually becomes even thinner at one end of the line.
+In Figure 3 we show images of two different carrots obtained with BF(Figure
+3(a) and (c)) and DF images (Figure 3(b) and (d)). In Figure 4 we compare the
+detection of the same carrot defects using CFS (Figure 4(a) and (c)) and SEM
+(Figure 4(b) and (d)). Similar argument with the previous defect is also valid
+here. The thick head and thin tail of the defect is clearly visible with CFS and
+not so clear using the other techniques.
+To compare the detected signal from the defect and the surrounding background for both CFS and BF, the visibility was determined in various regions
+5
+
+===== Page 6 =====
+
+of the second Stacking Fault shown in Fig. 3(c) (BF) and Fig. 4(c) (CFS) by
+averaging the background (Ibackground) and taking the intensity of the defect
+(Isignal) at various points within the defect. The visibility is obtained from the
+expression V =(Idefect −Ibackground)/(Idefect +Ibackground). The values around
+the thinner tail region of the defect were V = 0.06 for BF and V = 0.8 for CFS.
+If one would take the brightest value within the defect (around the the middle
+of the defect), the visibility V = 0.35 for BF, while the corresponding value for
+CFS was V ∼1. The visibilities of the other defects shown in Fig. 2, 3, and 4
+are also in the same order.
+Figure 2: (a) and (b) BF and DF images of the stacking fault defect, respectively.
+(c) CFS scan map of the stacking fault defect, and (d) SEM image of the same
+defect.
+Figure 3: (a) and (c) BF images of different defects, and (b) and (d) DF images
+corresponding to (a) and (c), respectively.
+6
+
+===== Page 7 =====
+
+Figure 4: (a)(c) and (b)(d) represent the CFS scan map (left colunm) and the
+SEM images (right colunm) of these defects.
+Figure 5: (a) is a BF image of the defect while (b) and (c) are also DF images
+of the same defects. (c) is saturated in order to see the entire defect.
+7
+
+===== Page 8 =====
+
+3.2
+Polytype inclusion
+Polytype inclusion defects are another type of morphological defect that appear
+as triangular with long and thin arms with a big spherical particle called downfall
+located at the apex of the triangle.
+Polytype inclusion could be formed by
+dropping a foreign material during the process of epitaxial growth on the SiC
+epilayer.
+Figure 5(a) shows the BF image of a polytype inclusion, while Figure (b) and
+(c) are both DF images with different powers. Figure 5(c) is saturated in order
+to reveal parts of the defect that are buried. Figure 6(a) shows the scattering
+CFS map and Figure 6(b) and (c) the SEM image of the same defect. The
+two SEM images are obtained at 10 and 30 KV, respectively to also highlight
+different parts of the defect. By comparing these images, one can see that with
+CFS, the triangle next to the big spherical defect is clearly revealed (see also
+the inset of Figure 6(a)) while all other techniques (BF, DF and SEM) fail to
+image it properly. We believe that this is due to two reasons: first, the contrast
+was too low, and second, the triangle is in a different depth than the downfall.
+This is one scenario where both optical microscopy and SEM would fail to
+have a comprehensive inspection due to the low penetration depth and/or low
+contrast. Therefore, when it comes to very narrow and features that lie partially
+outside the sample plane, CFS can outperform the conventional methods and
+become a complementary tool to them. The comparison between the results of
+all techniques indeed shows good consistency and demonstrates CFS’s capability
+in visualizing and locating killer defects.
+Figure 6: (a) CFS scan map, (b) and (c) are SEM images of the same defect
+with 10 and 30 KV, respectively. In the inset in 6(a) we highlight the parts of
+the defect that is not clearly observed with other techniques.
+8
+
+===== Page 9 =====
+
+4
+Conclusion
+In this paper, we demonstrate CFS as an inspection technique for defect detection on SiC wafers that could be considered as a complementary tool to optical
+microscopy. It offers some advantages including its superior visibility with respect to the background and its ability to detect defects within the substrate.
+We present a proof-of-principle experiment of the technique at one wavelength (635 nm) and one numerical aperture (NA=0.9) but other wavelengths
+or NAs could be used as well. Shorter wavelengths/high NA are ideal for studying smaller defects, while longer wavelengths could be used to look deeper in to
+the sample due to longer penetration depth. Even though CFS is not an imaging
+technique, we have shown that it is perfectly able to determine the shape and
+other details of killer defects on SiC wafers. The results shown here were verified by SEM and even though the defects are visible using all techniques, CFS
+scattering maps provide very high visibility thanks to the differential detection
+scheme that highlights asymmetries of the scattered field due to the presence
+of the defect interacting the light beam. Furthermore, since CFS collects the
+scattering from different depths within the focal depth at once, it allows us to
+detect parts of the defect that are extended and formed in different layers in a
+much better way than the SEM. The major drawback so far of CFS is that it
+is scanning technique and it is relatively slow compared to DF or BF. In the
+work we show here, the scanning was performed with piezo-electric translator
+and it takes a couple of minutes to obtain an entire scan map. Thus in order to
+make this technique applicable for large area inspection, further developments
+are needed towards fast scan combined with parallel probes techniques such as
+parallel optical data storage or real time confocal microscopy.
+Funding
+This work is financed by the Project 20IND09 “PowerElec” within the program
+EMPIR. The project is jointly supported by the European Commission and the
+participating countries within the European Association of National Metrology
+Institutes (EURAMET).
+Acknowledgements
+We acknowledge AIXTRON for providing high quality state-of-the-art samples
+that have been used for these measurements and for fruitful discussions on
+different types of defects on SiC wafers.
+References
+[1] Frederic Monteverde and Luigi Scatteia. Resistance to thermal shock and
+to oxidation of metal diborides–SiC ceramics for aerospace application. J.
+9
+
+===== Page 10 =====
+
+Am. Ceram. Soc., 90(4):1130–1138, 2007.
+[2] Tsunenobu Kimoto. Material science and device physics in SiC technology
+for high-voltage power devices. Jpn. J. Appl. Phys., 54(4):040103, 2015.
+[3] Wolfgang Wondrak, Raban Held, Ekkehard Niemann, and Ulrich Schmid.
+SiC devices for advanced power and high-temperature applications. IEEE
+Trans. Ind. Electron. IEEE T IND ELECTRON, 48(2):307–308, 2001.
+[4] Tsunenobu Kimoto. High-voltage SiC power devices for improved energy
+efficiency. Proc. Jpn. Acad. B, 98(4):161–189, 2022.
+[5] Giuseppe Mauromicale, Angelo Raciti, Santi Agatino Rizzo, Giovanni
+Susinni, Luigi Abbatelli, Simone Buonomo, Daniela Cavallaro, and Vittorio Giuffrida. SiC power modules for traction inverters in automotive
+applications. In IECON 2019-45th Annual Conference of the IEEE Industrial Electronics Society, volume 1, pages 1973–1978. IEEE, 2019.
+[6] Wei Wang, Qiang Song, Shuo Zhang, Yiting Li, Mukhtiar Ahmad, and
+Yansong Gong. The loss analysis and efficiency optimization of power inverter based on SiC mosfet s under the high-switching frequency. IEEE
+Trans. Ind. Appl., 57(2):1521–1534, 2020.
+[7] Stefania Castelletto, Alberto Peruzzo, Cristian Bonato, Brett C Johnson, Marina Radulaski, Haiyan Ou, Florian Kaiser, and Joerg Wrachtrup.
+Silicon carbide photonics bridging quantum technology. ACS Photonics,
+9(5):1434–1457, 2022.
+[8] Bj¨orn Hult, Mattias Thorsell, Jr-Tai Chen, and Niklas Rorsman. High voltage and low leakage GaN-SiC mishemts on a “buffer-free” heterostructure.
+IEEE Electron Device Lett, 43(5):781–784, 2022.
+[9] Hiroki Sakakima, So Takamoto, Asuka Hatano,
+and Satoshi Izumi.
+Temperature-dependent stacking fault energies of 4H–SiC: A first-principles
+study. J. Appl. Phys., 127(12):125703, 2020.
+[10] J Hassan, A Henry, PJ McNally, and JP Bergman. Characterization of the
+carrot defect in 4H–SiC epitaxial layers. J. Cryst. Growth, 312(11):1828–
+1837, 2010.
+[11] Edward Van Brunt, Albert Burk, Daniel J Lichtenwalner, Robert Leonard,
+Shadi Sabri, Donald A Gajewski, Andrew Mackenzie, Brett Hull, Scott
+Allen, and John W Palmour. Performance and reliability impacts of extended epitaxial defects on 4H–SiC power devices. In Mater. Sci. Forum.,
+volume 924, pages 137–142. Trans Tech Publ, 2018.
+[12] Shenghuang Lin, Zhiming Chen, Ying Yang, Sujuan Liu, Yintu Ba, Lianbi
+Li, and Chen Yang. Formation and evolution of micropipes in SiC crystals.
+CrystEngComm, 14(5):1588–1594, 2012.
+10
+
+===== Page 11 =====
+
+[13] Haizheng Song and Tangali S Sudarshan. Basal plane dislocation conversion
+near the epilayer/substrate interface in epitaxial growth of 4 off-axis 4H–
+SiC. J. Cryst. Growth., 371:94–101, 2013.
+[14] Mina Abadier, Haizheng Song, Tangali S Sudarshan, Yoosuf N Picard, and
+Marek Skowronski. Glide of threading edge dislocations after basal plane
+dislocation conversion during 4H–SiC epitaxial growth. J. Cryst. Growth.,
+418:7–14, 2015.
+[15] Tsuneo Kurita, Koji Miyake, Kenji Kawata, Kiwamu Ashida, and Tomohisa Kato. Development of new complex machining technology for single
+crystal silicon carbide polishing. J. Autom. Technol., 10(5):786–793, 2016.
+[16] T Hatakeyama, K Ichinoseki, K Fukuda, N Higuchi, and K Arai. Evaluation of the quality of commercial silicon carbide wafers by an optical
+non-destructive inspection technique. J. Cryst. Growth., 310(5):988–992,
+2008.
+[17] Passapong Wutimakun, Chumpol Buteprongjit, and Jun Morimoto. Nondestructive three-dimensional observation of defects in semi-insulating
+6H–SiC single-crystal wafers using a scanning laser microscope (slm)
+and infrared light-scattering tomography (ir-lst).
+J. Cryst. Growth.,
+311(14):3781–3786, 2009.
+[18] Tsunenobu Kimoto. Bulk and epitaxial growth of silicon carbide. Prog.
+Cryst. Growth Charact. Mater., 62(2):329–351, 2016.
+[19] Jianqiu Guo, Yu Yang, Balaji Raghothamachar, Taejin Kim, Michael Dudley, and Jungyu Kim.
+Understanding the microstructures of triangular
+defects in 4H–SiC homoepitaxial. J. Cryst. Growth., 480:119–125, 2017.
+[20] Lixia Zhao. Surface defects in 4H–SiC homoepitaxial layers. Nanotechnol.
+Precis. Eng., 3(4):229–234, 2020.
+[21] SA Sakwe, R M¨uller, and PJ Wellmann. Optimization of KOH etching
+parameters for quantitative defect recognition in n-and p-type doped SiC.
+J. Cryst. Growth., 289(2):520–526, 2006.
+[22] A Severino, C Frewin, C Bongiorno, R Anzalone, SE Saddow, and F La Via.
+Structural defects in (100) 3C- SiC heteroepitaxy: Influence of the buffer
+layer morphology on generation and propagation of stacking faults and
+microtwins. Diam. Relat. Mater., 18(12):1440–1449, 2009.
+[23] Sandeep Mahajan, MV Rokade, ST Ali, K Srinivasa Rao, NR Munirathnam, TL Prakash, and DP Amalnerkar. Investigation of micropipe and
+defects in molten KOH etching of 6H n-silicon carbide (SiC) single crystal.
+Mater. Lett., 101:72–75, 2013.
+11
+
+===== Page 12 =====
+
+[24] F La Via, A Severino, R Anzalone, C Bongiorno, G Litrico, M Mauceri,
+M Schoeler, P Schuh, and P Wellmann. From thin film to bulk 3C-SiC
+growth: Understanding the mechanism of defects reduction.
+Mater Sci
+Semicond Process., 78:57–68, 2018.
+[25] AJ Steckl, MD Roth, JA Powell, and DJ Larkin. Atomic probe microscopy
+of 3C SiC films grown on 6H SiC substrates. Appl. Phys. Lett., 62(20):2545–
+2547, 1993.
+[26] Johan B Malherbe, NG Van Der Berg, AJ Botha, E Friedland, Thulani Thokozani Hlatshwayo, Remeredzai Joseph Kuhudzai, E Wendler,
+W Wesch, P Chakraborty, and EF Da Silveira. SEM analysis of ion implanted SiC. Nucl Instrum Methods Phys Res B NUCL INSTRUM METH
+B., 315:136–141, 2013.
+[27] Shota Monno, Yoshifumi Kamada, Hiroyoshi Miwa, Koji Ashida, and
+Tadaaki Kaneko. Detection of defects on sic substrate by SEM and classification using deep learning. In Advances in Intelligent Networking and Collaborative Systems: The 10th International Conference on Intelligent Networking and Collaborative Systems (INCoS-2018), pages 47–58. Springer,
+2019.
+[28] Lawrence S Chan. Emerging biomedical imaging optical coherence tomography. In Med. Eng., pages 256–266. CRC Press, 2019.
+[29] A Gh Podoleanu. Optical coherence tomography. J. Microsc., 247(3):209–
+219, 2012.
+[30] Pei Ma, Jiajie Ni, Jiawei Sun, Xuedian Zhang, Junyin Li, and Hui Chen.
+Three-dimensional detection and quantification of defects in SiC by optical
+coherence tomography. Appl. Opt., 59(6):1746–1755, 2020.
+[31] Hideki
+Sako,
+Tamotsu
+Yamashita,
+Naoyuki
+Sugiyama,
+Junichiro
+Sameshima, Osamu Ishiyama, Kentaro Tamura, Junji Senzaki, Hirofumi
+Matsuhata, Makoto Kitabatake, and Hajime Okumura. Characterization
+of scraper-shaped defects on 4H–SiC epitaxial film surfaces. Jpn J Appl
+Phys, 53(5):051301, 2014.
+[32] Makoto Kitabatake, Hideki Sako, Masayuki Sasaki, Tamotsu Yamashita,
+Kentaro Tamura, Keiichi Yamada, Osamu Ishiyama, Junji Senzaki, and Hirohumi Matsuhata. Electrical characteristics/reliability affected by defects
+analyzed by the integrated evaluation platform for sic epitaxial films. In
+Mater. Sci. Forum, volume 778, pages 979–984. Trans Tech Publ, 2014.
+[33] S Roy, Maryse Bouwens, Lei Wei, SF Pereira, HP Urbach, and P Van
+Der Walle. High speed low power optical detection of sub-wavelength scatterer. Rev. Sci. Instrum, 86(12):123111, 2015.
+12
+
+===== Page 13 =====
+
+[34] D Kolenov, IE Zadeh, RC Horsten, and SF Pereira. Direct detection of
+polystyrene equivalent nanoparticles with a diameter of 21 nm (
+λ/19)
+using coherent fourier scatterometry. Opt. Express, 29(11):16487–16505,
+2021.
+[35] Dmytro Kolenov and SF Pereira. Machine learning techniques applied for
+the detection of nanoparticles on surfaces using coherent fourier scatterometry. Opt. Express, 28(13):19163–19186, 2020.
+[36] Dmytro Kolenov, D Davidse, J Le Cam, and SF Pereira. Convolutional
+neural network applied for nanoparticle classification using coherent scatterometry data. Appl. Opt., 59(27):8426–8433, 2020.
+13

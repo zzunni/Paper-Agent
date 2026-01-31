@@ -1,0 +1,1101 @@
+
+
+===== Page 1 =====
+
+FPIC: A Novel Semantic Dataset for Optical PCB Assurance
+NATHAN JESSURUN, OLIVIA P. DIZON-PARADIS, JACOB HARRISON, SHAJIB GHOSH, MARK
+M. TEHRANIPOOR, DAMON L. WOODARD, and NAVID ASADIZANJANI, University of Florida, USA
+Outsourced printed circuit board (PCB) fabrication necessitates increased hardware assurance capabilities. Several assurance techniques
+based on automated optical inspection (AOI) have been proposed that leverage PCB images acquired using digital cameras. We review
+state-of-the-art AOI techniques and observe a strong, rapid trend toward machine learning (ML) solutions. These require significant
+amounts of labeled ground truth data, which is lacking in the publicly available PCB data space. We contribute the FICS PCB Image
+Collection (FPIC) dataset to address this need. Additionally, we outline new hardware security methodologies enabled by our data set.
+Additional Key Words and Phrases: Automated Optical Inspection, PCB, Dataset, Semantic Segmentation, Hardware Assurance
+ACM Reference Format:
+Nathan Jessurun, Olivia P. Dizon-Paradis, Jacob Harrison, Shajib Ghosh, Mark M. Tehranipoor, Damon L. Woodard, and Navid
+Asadizanjani. 2023. FPIC: A Novel Semantic Dataset for Optical PCB Assurance. In . ACM, New York, NY, USA, 22 pages. https:
+//doi.org/XXXXXXX.XXXXXXX
+1
+INTRODUCTION
+PCBs are key components of many modern electronic systems, from computers and mobile phones in the private
+sector to military and medical devices in the public sector. As outsourced manufacturing becomes increasingly common,
+electronic systems are left vulnerable to supply chain threats like malicious modification, reverse engineering and
+IP theft, and counterfeiting [1, 2, 3, 4]. Subsequently, malicious entities with even minor supply chain access can
+severely compromise national security through Trojan insertions and related device modifications. Hence, techniques
+for auditing PCB correctness and component authenticity are needed. Due to its favorable trade-offs between speed,
+accuracy, and cost compared to X-Ray and other wavelengths, optical inspection of PCB components stands out as a
+promising inspection modality [5].
+Since defects and Trojans are often highly complex, computer vision (CV) solutions alone cannot provide robust
+system-level assurance. Hence, optical solutions are trending toward artificial intelligence (AI) and ML methods for a
+generalizable, scalable approach. Outside of PCB analysis, most AI/ML developments occur in domains with numerous
+large datasets such as medical imaging, aerial imaging, generic object recognition, etc. Unfortunately, the same is not
+true for optical PCB assurance – remarkably few datasets are publicly available, and each possesses a relatively small
+number of images compared to other domains [6]. Transfer learning seems promising for mitigating this lack of large
+PCB data set, but it requires similarities between the source and target datasets. PCB data varies significantly from
+datasets like PascalVOC and ImageNet which are staples in other fields – this complicates the use of transfer learning
+to bootstrap larger datasets. As a result, there is a critical lack of available PCB data to train AI/ML solutions for robust
+PCB assurance.
+Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not
+made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components
+of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to
+redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org.
+© 2023 Association for Computing Machinery.
+Manuscript submitted to ACM
+1
+arXiv:2202.08414v2  [cs.CV]  14 Mar 2023
+
+===== Page 2 =====
+
+JETC ’23, XXX XXX 2023, XX, XX
+Jessurun et al.
+We contribute the FICS1 PCB Image Collection (FPIC) dataset to address this deficiency. First, FPIC contains
+more unique PCB images with labeled instances than any prior work in the PCB assurance domain. Further, it
+includes novel metadata such as semantic annotation boundaries and component-to-silkscreen correlations. Some
+representative annotations are shown in Figure 1. Finally, this paper outlines several ways the FPIC dataset provides
+a unique groundwork for advancing hardware assurance techniques. The dataset is available at https://www.trusthub.org/#/data/pcb-images. Critically, this dataset will grow over time to continually expand its breadth of PCB coverage.
+Regular updates are already planned for the next 12 months, with more contributions anticipated from the community
+once semi-automated data collection is fully enabled.
+Fig. 1. Representative text and surface-mount device (SMD) annotations. Precise contours, logo, text, and orientation information is
+captured along with additional metadata as described in Section 3.
+Section 2 discusses relevant threats to PCBs, argues that optical imaging is a promising solution, and explains the
+trend toward ML solutions to this problem. Section 3 discusses the newly collected FPIC dataset and fundamental optical
+PCB assurance challenges encountered through its development. Section 4 outlines methodological considerations
+resulting from the data collection procedure and hardware assurance ramifications. In Section 5, FPIC’s ramifications
+on state-of-the-art techniques are proposed, and how its data will propel the field of optical PCB assurance forward.
+Finally, Section 6 concludes with remarks about how the dataset will continue to grow and impact the field of AOI.
+2
+BACKGROUND
+Most aspects of cost-effective PCB assembly (PCBA) assurance center around AOI capabilities. The following
+subsections outline what threats are relevant, why this method is a popular approach toward a solution, and how AOI
+approaches trend toward machine learning tactics over time. The section concludes with a description of the datasets
+enabling ML-based AOI.
+1Florida Institute for Cybersecurity Research (FICS)
+2
+
+===== Page 3 =====
+
+FPIC: A Novel Semantic Dataset for Optical PCB Assurance
+JETC ’23, XXX XXX 2023, XX, XX
+2.1
+Threats to PCBAs
+Optical assurance has been proposed for identifying counterfeit and maliciously-modified (“trojan”) components and
+PCBAs. Automated optical inspection also has applications for PCBA reverse-engineering.
+The term counterfeit describes components and assemblies that are either a) misrepresented by suppliers as having
+different function, parameters, or performance or b) produced illegitimately, e.g., from stolen intellectual property
+(IP).2 Counterfeit electronics siphon revenue from legitimate manufacturers and threaten the reliability and security of
+electronic systems [4, 8, 7].
+Trojan hardware contains intentional malicious modifications that compromise confidentiality of sensitive information,
+system integrity or performance, or cause denial of service. Trojan integrated circuits have been extensively investigated,
+but attacks at the board-level have only recently garnered attention. Unlike integrated circuits (ICs), which are assumed
+vulnerable only during manufacturing due to challenges of IC editing, PCBAs are vulnerable to both manufacturing-time
+modifications (e.g., the electromigration modification proposed by [9]) and post-manufacturing attacks (e.g., video
+game modchips [10] and implants from the NSA ANT catalog [2]).
+Automated PCBA inspection has also been proposed to assist reverse engineering, e.g., by automatically extracting
+a PCBA’s bill of materials (BoM). Imaging-assisted reverse engineering could be used for good by helping repair or
+replace obsolete equipment or contribute to assurance, or for evil by cloning or pirating legitimate PCBs [11].
+2.2
+Automated optical inspection & AI/ML
+While some methods for hardware assurance have existed since the beginning of the digital age, other techniques
+have only grown popular in recent years due to increased computing power and advancements in AI. The sections
+below outline trends in the inspection process, and their relevance toward current inspection capabilities.
+2.2.1
+Overview. AOI is one of the oldest and most common methods for PCB assurance, with some of the earliest
+references in the 1960s [12, 5]. However, preliminary efforts were largely confined to pre-assembly inspection and
+photomask evaluation. As a result, aspects like surface-mount device (SMD) solder/placement inspection and counterfeit
+analysis were not considered. Furthermore, optical inspection was limited by several constraints including hard-coded
+specifications, limited-area inspection, and significant amounts of manual intervention [5, 13, 14]. Though exponential
+improvements in computing power alleviated some of these concerns, subject matter experts (SMEs) still played a
+prominent role in the process. As a result, despite several decades of published research on various aspects of AOI, fully
+integrated PCBA inspection remained heavily unexplored. Fortunately, recent developments in machine learning toward
+image recognition, defect detection, segmentation, localization, and more in other domains have been successfully
+translated to hardware assurance purposes, bridging several of these gaps.
+The relevance and drawbacks of these AI advancements change depending on whether assurance is performed with
+known genuine reference samples, as highlighted below. However, both mechanisms share the goal of characterizing
+fundamental aspects of given regions of interest, such as component type, (i.e. IC, resistor, capacitor, etc.) defect type
+(i.e. short, bridge, cavity, etc.), silkscreen / text information, etc. [15, 16, 17, 18, 19, 20, 21, 22].
+Component Inspection. Several works have considered how optical inspection could be used to spot defects caused
+by harsh counterfeiting processes. For example, in recycling, which is believed to be a leading source of counterfeit
+parts [23], workers heat PCBAs to melt solder and then pry, yank, or beat components off of PCBs. Harvested parts
+may be washed in the river, laid on the ground to dry, and thrown haphazardly into bins [4]. Guin et al. enumerate
+2See [7] for a detailed counterfeit electronics taxonomy.
+3
+
+===== Page 4 =====
+
+JETC ’23, XXX XXX 2023, XX, XX
+Jessurun et al.
+physical defects from recycling and other counterfeiting processes [23]. In practice, subject matter experts search
+for these defects [4, 24] but manual inspection is unscalable; application of computer vision and machine learning to
+automatically find evidence of counterfeiting is a topic of active research. An alternative approach aims to uniquely
+identify components using optical inspection. For example, Wu et al. also use an automated approach to identify
+components beyond tolerance for lead placement, orientation, and more [25].
+Assembly inspection. Rigorous detection of bogus PCBAs [8, 26] has received relatively little attention. Generally,
+unsophisticated counterfeits can be spotted by discrepancies between genuine and suspect systems (e.g., [27, 28]). A few
+whole-PCBA automated inspection projects are under development [29] but are immature. X-ray analysis of bare PCBs
+has been proposed but cannot be applied to assemblies because mounted components cause x-ray artifacts [30]. Often,
+optical PCBA assurance reduces to inspection of individual components. However, note that when the entire PCB image
+is wholly evaluated, rather than regional subsets, there is no need to individually identify surface-mounted components.
+This occurs in quality assurance processes when the entire PCB can be considered defective or non-defective rather
+than distinguishing integrity at the component level [31, 32].
+2.2.2
+AOI Using Golden Samples. When a known authentic PCBA (a “golden" sample) is available, defect and trojan
+analysis mainly consists of differential comparisons between the sample under test and the golden counterpart. Any
+change in optical characteristics between the two can be attributed either to environmental effects or component/board
+alterations. Because of its scalability, low cost, efficiency, and accuracy, this differential approach is the most popular form
+of AOI [5]. These inspections can take place at both the component and assembly level, incorporating information from
+computer-aided design (CAD) schematics and other available domain knowledge. In most cases, a test sample is aligned
+against the golden reference, features are extracted, and a comparison or feature classification is performed between
+the golden and test samples. Resulting classification differences indicate deviations between golden and test samples.
+For instance, De Oliviera et al. discovered modifications made to fuel pump controller PCBs by identifying differences
+between reference and modified samples using SIFT features and a support vector machine (SVM) classifier [33].
+Zhao et al. used a machine vision system to locate known optical test points in an online fashion to perform sample
+inspection. Once the correct location is identified, feature extraction and pattern matching are performed as previously
+described [34]. Wang et al. analyzed the correlation coefficient between reference and test samples to identify scratches
+and other defects on IC surfaces [35].
+2.2.3
+AOI without Golden Samples. The benefits of golden sample-based AOI are significant, but genuine PCBAs are
+often not available. When boards are past their supported life span (as is common for long-term government/military
+applications), highly customized, poorly documented, or of unknown origin, there is often little to no information
+available about the board, let alone golden images for differential image analysis. Alternative assurance methods must
+be employed to achieve necessary results. In contrast to golden-based AOI, these methods must localize / characterize
+regions of interest and extrapolate relevant information in place of differential analysis. This is typically performed
+using a machine learning backbone and significant amounts of labeled data, as shown in Figure 2.
+Component identification is responsible for analyzing previously acquired results and making an assurance assessment. During this process, elements of the physical sample are compared to ideal design standards to find likely
+evidence of manipulation or defects. In this manner, while the precise metrics for a genuine sample are not known
+beforehand, evidence of tampering will appear as regions which violate design rule checks (DRCs), fall outside Institute
+for Interconnecting and Packaging Electronic Circuits (IPC) standards, do not correspond to a logical netlist/BoM
+extraction, or exhibit related deviations from expected behavior. In this vein, AutoBoM is a proposed framework which
+4
+
+===== Page 5 =====
+
+FPIC: A Novel Semantic Dataset for Optical PCB Assurance
+JETC ’23, XXX XXX 2023, XX, XX
+Image Acquisition
+Domain Knowledge
+Annotation
+Knowledge Database
+Detection
+Classification
+Identification / Inspection
+Automated
+Inputs
+Human-in-the-loop
+Fig. 2. Overview of the stages present in most PCBA assurance workflows. Note the strong dependence on a wide variety of database
+samples and domain knowledge / experience.
+attempts to leverage this information, creating a tentative BoM from optically gleaned information and comparing it to
+known general component properties [29]. Lin et al. employ a coupled system of optical character recognition (OCR)
+and image analysis to identify ICs with clear and blurry text in PCB images [36].
+As described earlier, datasets play a critical role in the quality of machine learning-based assurance methods.
+Increasingly complex methods are developed for golden-less AOI, but these techniques are heavily stunted without
+prior growth in the associated datasets. Thus, a discussion of currently available datasets provides reasonable insight
+into how robust current methods can be expected to perform and how much room for model architecture growth exists.
+2.3
+Existing Datasets
+Several publications introduce datasets useful for AOI/ML methods, each highlighting different aspects of optical
+PCB inspection. While some focus on surface-mount devices, others provide information on connectivity such as traces
+and vias. The datasets are grouped into two categories below based on whether they are publicly accessible, ordered by
+the year they were introduced. These are summarized in addition to the proposed FPIC dataset in Table 1.
+Notably, there are far fewer datasets for PCB assurance than standard computer vision solutions, such as cell counting,
+aerial photos, and generic image segmentation [37]. This is a critical issue for a field like hardware assurance, since
+significant data is one of the few robust mechanisms to combat a dynamically evolving environment [5]. As of 2021,
+the largest publicly available datasets consist of at most 165 PCB samples and at most 8,016 unique SMD annotations
+(PCB-DSLR and WACV respectively, see Section 3). As a consequence, this increase in ML applications for PCB assurance
+without corresponding levels of data does not equate to increased reliability and confidence metrics. These concerns can
+be addressed either with smaller ML architectures or larger amounts of ground truth data. While data augmentation can
+partially address this issue, a large set of unique, representative data is essential for generalizable assurance, especially
+when tested on deep neural networks [38].
+2.3.1
+Publicly Available. CD-PCB (2021) [31]. Fridman et al. provide 17 image pairs where each set contains images
+with and without synthetic defects. This dataset can provide insight into the general, board-level characteristics of
+defective samples.
+5
+
+===== Page 6 =====
+
+JETC ’23, XXX XXX 2023, XX, XX
+Jessurun et al.
+Amazon lookout (2021) [32]. Ganapathy and Gupta demonstrate an AWS workflow to identify anomalous versus
+normal PCBs based on high-resolution optical images. Without instance-level labels, usability is constrained to high-level
+defect detection and general characteristic analysis. Nonetheless, they demonstrate reasonable accuracy in discriminating
+normal and anomalous samples with a given machine learning model.
+IC-ChipNet (2020) [39]. Reza and Crandall present a curated bank of over 6,000 IC images. While they do not provide
+general text annotations, each IC is labeled with its manufacturer and several unique logos per manufacturer are
+represented. This dataset is useful for fine-grained retrieval, recognition, and verification of IC images.
+PCBExperiment (2020) [40]. Not associated with a specific publication or method, this publicly available dataset
+consists of several hundred defective and non-defective PCB samples. Its category depends on whether it passed a
+manual quality assurance check. Similar to Amazon Lookout above, no other annotations or instance-level attributes
+are defined in this dataset. However, as with CD-PCB it can be useful for generalizing traits of poor-quality boards or
+defective samples.
+FICS-PCB (2020) [17]. Over 400 images were collected of 31 PCB samples in this work. A combined total of 30,000
+SMD bounding boxes are present across these duplicate images, with several pieces of metadata associated with each
+component. More information is visible in Table 1. The comprehensive data collected is useful for a variety of purposes,
+including resolution requirement analysis, component localization & classification, and character recognition.
+WACV (2019) [41]. Kuo et al. provide one of the first public datasets with board text annotations. With over 6,000
+component annotations and 10,000 text annotations across 41 PCB images, they allow for a dynamic array of new
+machine learning tasks in addition to component detection and localization.
+HRIPCB (2019) [22]. Huang and Wei present this dataset containing 10 PCB images with multiple synthetic defects. In
+each case, bounding box annotations around each defect location are provided. Compared to [40, 31], these annotations
+provide more precise and detailed information about defect compositions.
+PCB-DSLR (2015) [37]. One of the first public PCB datasets, Pramerdorfer and Kampel paved the way for machine
+learning applications with this contribution. The dataset contains 165 unique PCBs and over 2,000 labeled IC instances
+with text data for a small subset. More images are captured in different orientations, increasing the size of data when
+label repetitions are considered.
+2.3.2
+Out-of-Scope. Several additional works highlight datasets that either are not publicly available or do not directly
+handle PCB/SMD images. [42] presents a sizable dataset of PCB images at a production plant and labels “coresets” of
+OCR characters, which are building blocks for more flexible text-based model training. No public link is given, but the
+authors note in [43] that data is available upon request. DEEP-PCB (2019) provides a dataset of annotated substrate
+defects. Images consist of post-thresholding via/trace masks rather than the raw optical data [44]. A dataset of google
+images seeded by PCB-DSLR is presented by Chen et al. [45], but this curated and annotated list of images is not
+publicly available. [46] collects multimodal data including infrared (IR) and visible images of PCB defects, but is not
+publicly accessible. [47] demonstrates the performance of a new YOLO (v5) architecture specifically designed to locate
+tiny defects in high-resolution quality-control PCB images. PCB-METAL presents a large dataset of high-resolution
+PCB images similar to FICS-PCB, but there is no public link to the data and fewer representative component types are
+labeled [48].
+6
+
+===== Page 7 =====
+
+FPIC: A Novel Semantic Dataset for Optical PCB Assurance
+JETC ’23, XXX XXX 2023, XX, XX
+3
+FPIC DATASET
+As noted previously, the FPIC dataset was developed to address data availability bottlenecks in ML-based AOI
+methods. The dataset consists of 261 images of 93 separate PCBs. Note that more images exist than physical PCB
+samples since both front and back images can be acquired, and some PCBs are photographed in multiple settings. Both
+text and mounted components are annotated where applicable in most images, resulting in over 71,000 annotated
+instances. PCB samples were purchased online or disassembled from a variety of different devices, e.g. computer hard
+drive controllers, servers, and audio amplifiers. An example image with annotations is shown in Figure 3. FPIC’s creation
+and the rationale for included metadata is explained in the following subsections. Critically, this dataset will continue
+to grow larger over time as more samples are cataloged and annotated.
+Fig. 3. Sample annotated PCB. The image has roughly 4,000 text instances and 1,500 SMD instances.
+FPIC’s dataset statistics in comparison to other works is shown in Table 1, though fairly comparing FPIC to prior
+datasets is deceptively challenging. Comparing quantity of ground truth annotations between datasets requires that a
+distinction be made between unique and total instances: one PCB might be photographed and annotated four times, but
+only one set of those annotations provide new information because the remaining three images are simply geometric
+transforms of the first. Machine learning algorithms must be careful to distinguish between these when using training
+sets, otherwise they risk treating augmentations as unseen samples. In an effort to compare datasets as fairly as possible,
+Table 1 lists both the total and unique annotation quantities for datasets with duplicate annotations.
+3.1
+Imaging
+Images were taken in controlled conditions with a Nikon D850 DSLR camera. A two-second delay mitigated camera
+shake during acquisition, and a two-second exposure reduced image noise. Each time the camera position or zoom
+7
+
+===== Page 8 =====
+
+JETC ’23, XXX XXX 2023, XX, XX
+Jessurun et al.
+Dataset 
+# PCBs / 
+# Images 
+# Manual 
+Annotations 
+Annotation Type 
+FPIC 
+(Proposed) 
+97 / 271 
+Device: 
+52,582 total, 
+24,025 unique 
+Text: 23,218 
+Device: 
+ Semantic boundaries 
+ Designator 
+Text: 
+ Component locator 
+ Text orientation 
+ Bounding box 
+ Logo 
+ Board/device text 
+CD-PCB 
+(2021) 
+17 / 34 
+N/A 
+ Difference mask of 
+synthetic defects per image 
+Amazon Lookout
+(2021) 
+80 / 80 
+N/A 
+ Anomaly/normal 
+classification 
+IC-ChipNet 
+(2020) 
+N/A 
+6,387 
+ Manufacturer 
+FICS-PCB 
+(2020) 
+31 / 418 
+30,317 total*,
+6,865 unique 
+ Device bounding boxes 
+ 6 Component types 
+ Component text 
+ Logo presence/absence 
+PCBExperiment 
+(2020) 
+386 / 386 
+N/A 
+ Defective/non-defective 
+classification
+WACV 
+(2019) 
+32 / 47 
+Device: 8,016 
+Text: 10,185 
+ Device bounding boxes 
+ Board text bounding boxes 
+ 31 Component types 
+ Component text 
+ Board text
+HRIPCB 
+(2019) 
+10 / 1,386 
+2,953 
+ 6 defect types 
+PCB-DSLR 
+(2015) 
+165 / 165 
+2,048* 
+ IC bounding boxes 
+ IC text for 365 instances
+Table 1. Summary of PCB datasets in AOI / machine learning literature. Underlined fields are annotation types introduced for the
+first time in PCB dataset literature.
+* More annotations are present in the downloadable dataset, but they are simple geometric transforms of the number stated in this
+table. FICS-PCB lists 77,347 annotations but has several copies of the same microscope annotations applied to different imaging
+conditions. PCB-DSLR lists 9,313 annotations but uses several rotated versions of the same 2,048 annotations.
+changed, a calibration photo of an X-Rite Passport or Nano Color Checker was collected to normalize colors across
+changing environmental conditions (e.g., photographs taken with different amounts of natural light). A portion of the
+dataset consists of the same PCB samples imaged under several illumination and camera sensor parameters to study the
+effects of normalization [49].
+Each image in the database consists of a single photograph rather than a stitched sequence of tiles. While image
+stitching is common to increase resolution, it introduces defects such as distortion / warping, imperfect alignment,
+and noise at stitching boundaries. A thorough investigation of these defects can be found in [17]. FPIC optimizes for
+minimal processing and noise reduction at the expense of lower resolution for very large samples.
+3.2
+Contour Annotation
+Collected images were processed using S3A (https://gitlab.com/s3a/s3a) and SuperAnnotate (www.superannotate.
+com). The SuperAnnotate service was responsible for creating high-fidelity semantic outlines around components in
+a subset of PCB images as well as creating bounding boxes around device and board text. A significant number of
+images were annotated in-house using S3A, where assistance algorithms such as GrabCut and K-Means segmentation
+simplified this process. All contours (bounding box or otherwise) are represented as lists of polygons indicating either
+holes or foreground areas.
+8
+
+===== Page 9 =====
+
+FPIC: A Novel Semantic Dataset for Optical PCB Assurance
+JETC ’23, XXX XXX 2023, XX, XX
+3.3
+Metadata Annotation
+Once gathered, component and text boundaries were loaded into S3A where the remaining metadata (Text, Logo,
+Designator, etc.) was added locally. Since complex SMD contours were extraordinarily time-consuming to obtain, the
+only additional metadata associated with these instances was the “Designator": silkscreen board text containing the
+component identifier such as ‘C’, ‘L’, ‘R’, etc. If no designator was present, instead of attempting to infer the proper label,
+we opted not to assign a label to avoid adding potentially incorrect component labels. Figure 4 illustrates one scenario
+where similar-looking components could easily be misidentified if annotators tried to guess component identity instead
+of relying only on designators.
+Fig. 4. A thermistor, two inductors, ferrite bead, and a capacitor which all share similar visual characteristics. Non-SME annotators
+may easily confuse the component type without assistance from silkscreen designators.
+3.4
+Validation
+Each file underwent two rounds of manual validation and a logical check to minimize the number of human errors
+present in the final version. The logical check programmatically searched for edge cases such as replicated components
+in the same file, duplicate metadata, strongly overlapping regions, and other factors usually indicative of errors during
+annotation.
+Unlike SMD components, OCR instances have a host of associated metadata, including some fields that are present
+for the first time in PCB dataset literature. These are summarized in Table 2.
+Metadata 
+Description 
+Sample Values 
+Component 
+Locator 
+Nx2 (x,y) coordinates of associated SMD 
+components 
+[[500, 1000], [510, 10000]] indicates 
+two associated components 
+Class 
+Whether this text is on PCB substrate or an 
+SMD 
+“Board”, “Device” 
+Text 
+ASCII and latex letters contained in the 
+annotation boundaries 
+“R201”, “PWR”, “\Sigma”, etc. 
+Logo 
+Manufacturer of the logo contained in the 
+annotation boundaries
+“Texas Instruments”, “Advanced 
+Micro Devices”, etc.
+Orientation 
+Orientation of the characters contained in the 
+annotation boundaries with respect to the 
+horizontal (positive x) axis
+Integer in range [0, 359]. e.g. 0, 30, 
+45, 60, 359 
+Notes 
+Additional notes from the annotator either 
+indicating unsure values or defect descriptions 
+“Defect:Misprint”, 
+“Orientation:Unsure”, etc. 
+ 
+ 
+Table 2. Metadata collected during text annotation
+9
+
+===== Page 10 =====
+
+JETC ’23, XXX XXX 2023, XX, XX
+Jessurun et al.
+3.5
+Database insertion
+The FPIC dataset is stored on TrustHub; Table 3 summarizes the database’s directory structure. Beyond metadata
+for labeled instances, each image is associated with scale information to enable measurement of physical dimensions
+based on pixel counts, a color checker, and a camera model. The first 150 images in FPIC use the same PCB samples at
+different scales to evaluate the effects of resolution on component detectability as done in [17].
+Beyond color and scale calibration parameters, over three-fourths of the PCB samples also possess a brief functional
+description, i.e. “Honeywell 14500144-001 Module PLC PCB Board". This information enables searching for documents
+like data sheets or CAD files if desired.
+Folder 
+Description 
+pcb_image
+Optical images of each PCB surface and rear, tagged with a unique identifier. 
+Each image name also indicates which color checker should be used for 
+normalization if desired.
+color_checker
+Palette to account for environmental illumination factors as well as a scale 
+reference for the photo resolution. One color checker image may be used to 
+normalize multiple PCB images in the event each is taken in the same 
+environment.
+ocr_annotation
+Optical Character Recognition annotations. This includes polygon boundaries 
+around all relevant text on a PCB image. Whether the piece of text is on the 
+board or a device, whether it is a logo or not, orientation, and more are noted 
+within the columns of the csv.
+smd_annotation
+Surface-mount Device (SMD) annotations. This includes polygon boundaries 
+around all relevant SMD devices such as resistors, capacitors, inductors, 
+transistors, diodes, LEDs, and more. Along with each component, its 
+associated silkscreen designator ('L', 'R', 'C', 'U', etc.) is recorded.
+vtp_annotation
+Vias, traces, and pins (VTP) annotations. These are regions of connectivity 
+between SMDs on a PCB. Few annotations currently exist, this is considered 
+in 'beta' mode currently.
+metadata
+Holds two files corresponding to information about image files. 
+ pcb.csv: holds information about the physical PCB samples such as their 
+color, online item description, and any notes. 
+ color_checker.csv: indicates the pixels per millimeter (ppmm) of any image 
+associated with that color checker, whether an X-Rite ColorChecker 
+Passport or Nano was used, what camera performed the acquisition, and any 
+relevant notes.
+Table 3. Description of each folder present in the Trust-Hub hosted FPIC dataset. All annotation and metadata are stored as CSV
+files, while images are in PNG format.
+4
+METHODOLOGICAL INSIGHTS
+After years of data collection, we learned important lessons as a result of sample diversity, variance between
+annotators, and acquisition volume. The metadata collected by FPIC (namely, semantic contours and silkscreen-tocomponent association) that was not included in prior work also yielded useful insights. These are explained in
+the following paragraphs, separated into imaging and logistical categories. Each subsection provides a handful of
+recommendations for improving future data collection.
+10
+
+===== Page 11 =====
+
+FPIC: A Novel Semantic Dataset for Optical PCB Assurance
+JETC ’23, XXX XXX 2023, XX, XX
+Examples 
+(Reference PCB) 
+Sample Images 
+Notes 
+Occlusion 
+(85f, 42f) 
+ How is the “correct” ground 
+truth determined? 
+ Should context be used to 
+fill in occluded text? 
+ Is the interpolated data 
+defect-free / unaltered? 
+Reflection 
+(49b, 8f) 
+ Should reflected text be 
+annotated as text? 
+ Can violate several 
+assumptions about 
+component characteristics 
+Mounted status 
+(152f) 
+ Difficult to distinguish but 
+critical to correctly identify 
+during optical assurance 
+ Usually resolved with higher 
+imaging resolution 
+Optical masking 
+(120f, 118f, 
+142f) 
+ Cases where large portions 
+of the board are obscured 
+must be correctly detected to 
+prevent attackers from 
+obscuring relevant 
+information 
+Varying profiles 
+(180b, 150f) 
+ What is this component’s 
+shape? It changes depending 
+on how the leads are bent. 
+BoM analysis of component 
+characteristics must take this 
+into account to be accurate 
+ 
+ 
+Table 4. Overview of challenges faced by image acquisition parameters. In other words, it is possible to alleviate some of these
+concerns by altering various aspects of the imaging setup.
+4.1
+Imaging challenges
+Imaging challenges include imaging irregularities and particularities that can be resolved by altering the image
+acquisition setup. The examples below illustrate cases where artifacts of the imaging process alter ground truth markings
+depending on the details present in annotation instructions and annotator skill.
+Occluded components and markings. Some, but not all, occluded components and markings can be revealed by slightly
+adjusting the angle from the sample to the camera. Many markings that would be valuable for assurance, e.g., polarity
+markers, component symbols, or designators, are located directly beneath mounted components to assist in manual
+assembly or rework. Unfortunately, it is usually impossible to completely image these markings even when multiple
+camera angles are considered.The top row of Table 4 illustrates this challenge. When considering occluded components,
+the output segmentation often varies across annotators since some may consider only the visible portion of a device
+while others will extrapolate its position.
+Reflective components and conformal coating. Reflections also negatively impact the ease of annotation and feature
+detection. Conformal coating is typically applied to PCBAs requiring environmental hardening, resulting in a sheen
+across short components. This effect is stronger with direct lighting. As a result, it can be difficult to determine the
+true color or shape of the covered device, leading to misclassification or poor boundaries. Additionally, direct lighting
+11
+
+===== Page 12 =====
+
+JETC ’23, XXX XXX 2023, XX, XX
+Jessurun et al.
+across tall components can reflect bright areas of the board resulting in artifacts like the right side of row 2. Note
+that annotation instructions do not often outline a procedure for these cases, so artifacts may appear as ground truth
+annotations when working with low-cost or minimal QA annotation pipelines. However, applying a polarized filter to
+the camera can greatly reduce these specular side effects. If more control can be gained over the imaging environment,
+these effects can also be mitigated through precise lighting or stereophotographic acquisition.
+Ambiguity between mounted/unmounted pads. Components that share colors with the PCB substrate complicate the
+distinction between populated vs. unpopulated solder pads. As a result, annotators can mistake the two and increase
+the difficulty in training a neural network to locate SMDs. Row 3 illustrates the difference between a green SMD and
+silkscreen between empty pads. Note that the depicted example is straightforward to resolve due to the high-resolution
+image, but a low-resolution counterpart greatly increases the difficulty. Two simple methods exist for increasing
+resolution: adjusting the zoom or exposure time of the image. While increasing the zoom is often preferable, it can lead
+to more artifacts if image stitching is required as a result. Alternatively, increasing exposure time cuts down on some
+forms of sensor noise but cannot resolve all forms of resolution-based complexity.
+Masked PCB areas. While the first category addressed individually occluded components, another frequent scenario
+involves large swaths of a PCB covered by various objects like heat sinks, stickers, daughterboards, etc. Depending on
+the threat model, this eases a malicious actor’s difficulty inserting untrusted components since they can be trivially
+covered as seen in row 4. Thus, robust inspection mechanisms must determine a way to identify areas of the board
+likely to contain components masked by a secondary object. A minor amount of sample preparation can avoid several
+of these concerns. By removing stickers and disconnecting daughter boards before imaging, large amounts of previously
+obscured circuitry will become visible. When removal is not possible (e.g. heat sinks and daughter boards which must
+remain attached), subsurface imaging such as X-Ray can be incorporated.
+Widely varying component profiles. When components have long leads (i.e. transistors, diodes, crystal oscillators,
+etc.), they can be contorted into a variety of shapes as viewed from the top down. In these cases, similar to occluded
+component scenarios, width/length annotations from the top-down object view do not correspond to width/length
+values from a BoM reference. Annotating additional metadata, such as the location of leads in the image, can assist in
+determining whether component height, width, or length should be matched to the visible dimensions in the optical
+image.
+4.2
+Logistical insights
+In contrast to imaging challenges, the following discussion about methodological logistics does not depend on image
+quality or other environmental factors. Rather, these are fundamental characteristics of an annotation and assurance
+workflow that attempts to use flowchart rules to encode human design insights. Each heading illustrates the difficulties
+of correlating silkscreen information with PCB design characteristics.
+Greatly separated designators and SMDs. Ideally, designators are close to their associated components and unlikely
+to be confused with neighboring designators. However, this is not the case in densely populated PCB regions where
+component real estate imposes stringent requirements. In these scenarios, several designators are grouped together,
+placed in an open area on the board, and ‘linked’ in some manner to a corresponding group of components as shown in
+Table 5 row 1. The way in which links are formed depends entirely on the PCB designer; cluster labels, arrows, and
+orientation matching are common approaches, but there are others. These common approaches enable development of
+heuristics that may be able to associate designators with components in the common case, but as long as designator
+placement remains a stylistic decision it will be difficult to confidently automate associations.
+12
+
+===== Page 13 =====
+
+FPIC: A Novel Semantic Dataset for Optical PCB Assurance
+JETC ’23, XXX XXX 2023, XX, XX
+Examples 
+(Reference PCB) 
+Sample Image(s) 
+Notes 
+Greatly separated 
+designators and SMDs 
+(101f) 
+ 
+ Non-trivial to automatically 
+associate silkscreen annotations to 
+parts – requires a special heuristic 
+Reference designator 
+agglomeration 
+(113f, 36f, 1f) 
+ 
+ 
+ Silkscreen is often lain in an 
+irregular manner 
+ Results in one-to-many and manyto-one relationships between 
+components and designators 
+Run-on designator 
+clusters / markings 
+(135b) 
+ 
+ Complicates the separation of 
+designators into discrete units 
+Mismatched 
+silkscreen vs. 
+component 
+(2f, 9b, 9f) 
+ “Defect” isn’t enough of a label – 
+is the defect on the silkscreen, or 
+the SMD? 
+ Duplicated designators can either 
+be a designer’s mistake or a more 
+serious underlying issue 
+Non-text silkscreen 
+(101f, 42f, 2f) 
+ Alignment markers are difficult to 
+automatically codify 
+ Few unskilled annotators consider 
+these markings to be annotations 
+ Each alignment marker has highly 
+variable representations 
+Designators for 
+unmounted 
+components 
+(2f, 1f) 
+ No existing standard for correct 
+annotation – should each pad be 
+associated with the designator? 
+Should the association be blank 
+since no component is present? 
+ 
+Table 5. Overview of the methodological challenges encountered during data annotation. Regardless of image quality or inspection
+method, these issues will be present when creating a store of ground truth information.
+Reference designator agglomeration. When several designators are clustered as previously described and all refer to a
+sequential group of similar component types (i.e. a row of resistors/capacitors), one approach is to create a single label
+for all components. Various manifestations of this principle are illustrated in row 2. Since there are no design standards
+for how this grouping must take place, where silkscreen must be located relative to components, or how the association
+is made between a component and its text, understanding and annotating this association is difficult. Additionally, these
+cases demonstrate how silkscreen-to-component associations are not a one-to-one mapping: a single silkscreen can
+refer to multiple components and multiple silkscreens can belong to the same component (this is fairly common in IC
+or header pin annotations).
+Run-on designator clusters. The same space restrictions explained in the first paragraph can cause groups of designators
+to run into each other and appear as one long text string. Humans can usually intuit the designer’s intent, but these
+run-on designators can complicate automatic component designator extraction using off-the-shelf OCR methods. In the
+example shown in row 3, not only are designators prefixed with an integer character (“C4V"), but are close enough to
+nearby designators that whitespace cannot be used as token separator.
+13
+
+===== Page 14 =====
+
+JETC ’23, XXX XXX 2023, XX, XX
+Jessurun et al.
+Mismatched silkscreen vs. component. From an assurance perspective, this is one of the most challenging scenarios to
+address. In prior works, independent silkscreen and component annotations could both be considered valid as shown in
+the first two figures of row 4. However, the component in question clearly does not match its reference designator. “L"
+is most commonly reserved for inductors, while “R" is almost exclusively used for resistors. From their appearance, the
+associated SMDs are clearly a resistor and capacitor, respectively. As such, while the components are properly mounted
+and the text is legible, there is an error in their association. Similarly, the third figure in this row illustrates a duplicate
+silkscreen marking. Both are correct for their associated component and legible, but the duplicate reference is highly
+abnormal and likely indicates a silkscreen mistake. In cases like these, determining whether the error is with the design,
+silkscreen print, or mounted component creates challenges for assurance.
+Non-text silkscreen. Beyond alphanumeric characters, a host of various additional information is printed on the PCB
+substrate. As described in Section 4.1, silkscreen can also refer to mounting information. However, a common theme
+is that silkscreen is primarily intended for human evaluation and has no uniform representation. Hence, without a
+catalog of common templates, it can be complex to algorithmically derive alignment information as presented in row
+5 of Table 5. In the first instance, the polarity of a capacitor is presented with double arrows that should match the
+on-device markings present. Secondly, the obscured Zener diode symbol indicates polarity with a vertical line that
+should match the black bar present on the mounted component. Finally, the most complex case involves overlapping
+silkscreens where a left-facing triangle indicates the position of an IC’s first pin. In each case, a vastly different visual
+cue is used to indicate alignment. These complexities drastically complicate how features such as polarity should be
+represented in an annotation database.
+Designators for unmounted components. The final highlighted case for methodological insights involves designator
+associations with unpopulated solder pads. Technically, the designator does not refer to the pads, but the missing
+component meant to reside between them. At the same time, the pads are a reasonable approximation of the same spatial
+location associated with the text. Hence, there is justifiable reasoning for both including and excluding a correlation
+indicator for the silkscreen in question. Moreover, if a component association is created, it is unclear whether it belongs
+to one or multiple pads. Each of these considerations complicates the process of generating ground truth labels in this
+circumstance. during FPIC annotation, the pad closest to the designator is given the association.
+5
+NEWLY ENABLED RESEARCH
+FPIC is larger and contains more diverse PCB examples than prior PCB image datasets, making it a better input to
+ML training and a better benchmark for validating optical assurance techniques. Additionally, its annotations include
+novel information that enables new optical assurance research. The following paragraphs elucidate the connections
+between specific PCB assurance challenges and data that is collected for the first time in FPIC.
+5.1
+Dataset size and diversity
+The left-hand side of Figure 2 emphasizes that optical assurance must be calibrated for the PCB under inspection
+and the threat to be detected. PCBs exhibit tremendous diversity across many characteristics that could impact optical
+assurance performance. For example, densely-packed boards, smaller components, or more sophisticated counterfeiting
+might all require higher imaging resolution to enable successful assurance. If a dataset is systematically biased with
+regard to imaging-relevant characteristics (e.g., a dataset containing boards of a similar manufacturing year, similar
+application domain, similar types of components, etc.), this may bias ML networks trained on the data and limit the
+14
+
+===== Page 15 =====
+
+FPIC: A Novel Semantic Dataset for Optical PCB Assurance
+JETC ’23, XXX XXX 2023, XX, XX
+generality of performance claims that can be made for techniques that are validated against the dataset. Increasing the
+number and variety of represented PCBs and annotated components is the best hedge against these pitfalls.
+As summarized in Table 1, FPIC is significantly larger and more generalized than in prior work. It possesses more
+labeled PCB samples and drastically more unique component annotations than the leading prior work. Among several
+other significant benefits, we highlight that a larger dataset allows tighter confidence margins on statistical analysis,
+enables FPIC to display more optical inspection corner cases, and provides more data for training large AI networks.
+Notably, FPIC will continue to grow over time as more PCBs and annotations are added. As the technology landscape
+evolves, it is necessary to re-evaluate whether the dataset remains representative of boards to-be-assured.
+While dataset size is important, it cannot stand alone as a metric of dataset quality; diversity of examples in the
+dataset is equally important. FPIC was purposefully built to include PCBs from many application domains, built by
+different original equipment manufacturers (OEMs), manufactured in a range of years, and obtained from a variety
+of distributors in a variety of conditions. This intentional variation ensures that FPIC is representative of the broader
+population of printed circuit boards. This will help AI models trained on FPIC to perform well on systems they have
+never seen and reduces bias when FPIC is used to validate optical assurance techniques. Manufacturing date, PCB
+function, manufacturer, distributor, etc. are qualitative and imprecise proxies for dataset diversity. Currently, there are
+no precise, measurable characteristics for describing a population of PCBs from an imaging perspective, but additional
+research will be able to standardize such metrics. Here, too, FPIC can provide insight. Its size and diversity enable
+studies to determine the most imaging-relevant PCB characteristics.
+5.2
+Improved SMD contour analysis from semantic segmentation
+Overwhelming amounts of literature demonstrate the usefulness of semantically segmented ground truth for enhanced
+machine learning capabilities [50, 51, 52, 53, 54]. While segmentation is possible with automated methods, the outputs
+are not consistently defect-free without significant hyperparameter tuning. In other words, high-quality automated
+segmentation still requires a large amount of human oversight in the segmentation architecture and parametrization.
+However, neural networks trained on human-verified segmentation masks overcome these difficulties with enough
+diverse ground truth data. The paragraphs below detail several ways machine learning tasks trained using segmentation
+ground truth rather than bounding boxes yield significantly improved outputs.
+Component localization. While bounding box data can reasonably train a network to find components on a PCB,
+semantically trained networks can take this one step further. Figure 5 shows that predictions overlap for nearby
+components in a bounding-box-trained LinkNet architecture versus its semantic counterpart. All aspects of training
+were the same in both cases except the masks.
+BoM property extraction. Multiple component footprint properties such as pin count, pitch, width, and spacing can
+only be determined with accurate outlines. FPIC provides enough of these samples to allow property extraction on
+unseen data as well by training semantic segmentation networks on the ground truth information. This drastically
+improves the ability of assurance algorithms to cross-reference known component properties against IPC standards and
+datasheet specifications. Figure 5 also shows how a semantically trained ML model accurately represents IC contours
+with sufficient training data. Figure 6 illustrates how these contours can be directly translated into BoM properties.
+Assembly analysis. Beyond the component itself, how a device is mounted on the PCB can also be analyzed more fully
+with semantic contours. The difference between an oblong and right-angled device can yield insights as to whether the
+mount is within tolerance or is defective. Similarly, heavily skewed pins from tall through-hold components can be
+readily identified with precise boundaries and would otherwise not stand out with traditional bounding box annotations.
+15
+
+===== Page 16 =====
+
+JETC ’23, XXX XXX 2023, XX, XX
+Jessurun et al.
+Fig. 5. Comparison of predictions of a bounding-box trained LinkNet architecture vs. semantic masks. In the former case, regions
+next to each other were considered the same component while they were correctly distinguished in the latter.
+Fig. 6. Accurate semantic boundaries drastically ease the process of extracting relevant BoM characteristics of various components.
+5.3
+Schematic analysis from component locator association
+Often, silkscreen designator information is critical to identifying the function or type of component present in an
+optical image. As such, identifying which components are associated with what board text can result in a significant
+boost in identification capabilities.
+DRC Analysis. Text such as “PWR" or “GND" can be associated with the substrate itself rather than / along with a
+component. In these cases, aspects of the board layout can be analyzed in light of this silkscreen information to ensure
+both are in agreement. Figure 7 demonstrates how the larger width requirement for power traces can be evaluated in
+light of the associated silkscreen identifier.
+Designator Verification. Datasheets and BoMs often make heavy use of pin numbers and reference designators (i.e.
+“R101", “L2", etc.). Since the association between components and their text can be highly nontrivial (see Section 4.2),
+ground truth markers for this information are highly valuable for automated inspection efforts. When the designator is
+correct, and the SMD looks good, only the component locator can indicate whether there is a mismatch.
+Assembly verification. As noted in Table 5, several types of silkscreen identifiers assist in determining device orientation
+or polarization. Hence, additional research objectives can bring an orthogonal dimension of assurance inspection to the
+traditional optical image analysis workflow.
+16
+
+===== Page 17 =====
+
+FPIC: A Novel Semantic Dataset for Optical PCB Assurance
+JETC ’23, XXX XXX 2023, XX, XX
+Fig. 7. Traces for power lines require larger widths in general compared to normal signal traces to handle increased current flow. It
+can be helpful to verify this information against OCR information.
+Chatterjee et al. describe an augmented reality system that quickly correlates design schematics with hardware to
+simplify the process of quality assurance and HW/SW context switching [55]. Data from FPIC would allow such a
+system to rely less on software schematics for similar offerings when few design files are present.
+5.4
+Data balance through parametrized acquisition
+Beyond the annotated metadata, much information about the PCB samples themselves is also collected. By combining
+information about real-world image scale, PCB manufacturer, and board description, SMD information can be correlated
+against additional factors other than their optical appearance. For instance, novel research directions might include
+evaluating whether certain manufacturers prefer specific brands or ratings of passive components. Or, whether defects
+and annotation errors occur more frequently for some sample categories. Significantly, the descriptive information
+associated with each board can be tied to relevant datasheets and CAD information for multiple samples, allowing
+schematic-level verification of collected information.
+6
+CONCLUSION AND FUTURE WORK
+In conclusion, we have reviewed state-of-the-art techniques for AOI and observed the strong, rapid trend toward ML
+solutions. These require significant amounts of labeled ground truth data, which is lacking in the publicly available PCB
+data space. The FPIC dataset (https://www.trust-hub.org/#/data/pcb-images) is proposed to address this bottleneck in
+available large-volume, diverse annotations. Additionally, this work covers the potential increase in hardware security
+capabilities and observed methodological distinctions highlighted during data collection.
+Via, Trace, Pin Annotation. Future releases of the FPIC dataset will include annotations of vias, traces, and pins across
+a board’s surface. This will yield significant insights into cross-component connectivity, the relationship between
+components and substrates, signal frequency analysis through trace layout inspection, and much more.
+Synthesized PCB samples. Beyond annotating purchased physical samples, future iterations can include fully synthesized CAD renderings and compare digital versus real-world annotation results. In this manner, the FPIC dataset could
+be drastically increased by providing augmented virtual counterparts. Moreover, a subset of these samples could be
+fabricated to determine more accurate relationships between design schematics and the acquired optical data. In this
+17
+
+===== Page 18 =====
+
+JETC ’23, XXX XXX 2023, XX, XX
+Jessurun et al.
+vein, Calzada et al. demonstrated several challenges inherent in optical PCB inspection by designing custom samples
+with various intentional defects and Trojans, ranging from easy to difficult detection criteria [56].
+Track related CAD schematics and datasheets. Along with physical samples, the item description is associated with
+datasheets or development files in several cases. Collecting this information in addition to each board will greatly
+increase the ability to provide hardware (HW) assurance through cross-referencing against known circuit properties.
+Additionally, these files would increase the accuracy of ground truth annotations since they provide references for the
+type and characteristics of each mounted component.
+Multimodal data fusion. The FPIC dataset is a valuable resource for AOI research, but does little to address volumetric
+issues, material properties, etc. Toward this end, increased data acquisition and rigorous labeling in other modalities
+such as X-ray, Terahertz (THz), and similarly neglected modalities would greatly assist additional assurance objectives.
+Active efforts in this direction are underway by the FICS group [57], but as explained below it will be essential for
+additional collaborators to join this process.
+Continuous collection and collaboration. A major theme throughout this work is the importance of publicly available
+data from a diverse array of sources and annotators. Continuous collaboration with the hardware assurance and
+computer vision communities at large is essential for growth in AOI capabilities. More than just data alone, these
+enhancements would include code libraries, frameworks, standards, and evaluation mechanisms/metrics for improving
+the baseline for quality ground truth annotations. The FPIC dataset will continue to grow in the near future, and this
+increased coordination and collaboration will ensure the quality and fidelity of the dataset only improves in that course.
+REFERENCES
+[1]
+J. Robertson and M. Riley. The big hack: how China used a tiny chip to infiltrate U.S. companies, 2018.
+[2]
+J. Appelbaum, J. HORCHERT, O. REISSMANN, M. ROSENBACH, J. SCHINDLER, and C. STÖCKER. NSA’s Secret
+Toolbox: Unit Offers Spy Gadgets for Every Need. Der Spiegel, Dec. 2013.
+[3]
+J. Harrison, N. Asadizanjani, and M. Tehranipoor. On malicious implants in PCBs throughout the supply chain.
+Integration, 79:12–22, 2021.
+[4]
+Investigation into counterfeit electronic parts in the department of defense supply chain, Nov. 2012.
+[5]
+M. Moganti, F. Ercal, C. H. Dagli, and S. Tsunekawa. Automatic PCB Inspection Algorithms: A Survey. Computer
+Vision and Image Understanding, 63(2):287–313, Mar. 1, 1996.
+[6]
+J. Richter, D. Streitferdt, and E. Rozova. On the development of intelligent optical inspections. In 2017 IEEE 7th
+Annual Computing and Communication Workshop and Conference (CCWC). 2017 IEEE 7th Annual Computing
+and Communication Workshop and Conference (CCWC), pages 1–6, Jan. 2017.
+[7]
+U. Guin, K. Huang, D. DiMase, J. M. Carulli, M. Tehranipoor, and Y. Makris. Counterfeit integrated circuits: a
+rising threat in the global semiconductor supply chain. Proc. IEEE, 102(8):1207–1228, Aug. 2014.
+[8]
+B. Grow, C.-C. Tschang, C. Edwards, B. Burnsed, and K. Epstein. Dangerous fakes. Bloomberg Businessweek,
+(4103), Oct. 2008.
+[9]
+M. McGuire, U. Ogras, and S. Ozev. PCB Hardware Trojans: Attack Modes and Detection Strategies. In 2019 IEEE
+37th VLSI Test Symposium (VTS), pages 1–6, 2019.
+[10]
+A. Huang. Keeping secrets in hardware: the Microsoft XBox case study, May 2002. AI Memo 2002-08.
+[11]
+S. E. Quadir, J. Chen, D. Forte, N. Asadizanjani, S. Shahbazmohamadi, L. Wang, J. Chandy, and M. Tehranipoor. A
+survey on chip to system reverse engineering. J. Emerg. Technol. Comput. Syst., 13(1), Apr. 2016.
+18
+
+===== Page 19 =====
+
+FPIC: A Novel Semantic Dataset for Optical PCB Assurance
+JETC ’23, XXX XXX 2023, XX, XX
+[12]
+L. Watkins. Inspection of integrated circuit photomasks with intensity spatial filters. Proceedings of the IEEE,
+57(9):1634–1639, Sept. 1969.
+[13]
+W.-C. Wang, S.-L. Chen, L. Chen, and W.-J. Chang. A Machine Vision Based Automatic Optical Inspection System
+for Measuring Drilling Quality of Printed Circuit Boards. IEEE Access, 2017.
+[14]
+A. F. M. Hani, A. Malik, R. Kamil, and C. Thong. A review of SMD-PCB defects and detection algorithms. In
+Other Conferences, 2012.
+[15]
+P. Wei, C. Liu, M. Liu, Y. Gao, and H. Liu. CNN-based reference comparison method for classifying bare PCB
+defects, 2018.
+[16]
+L. Zhang, Y. Jin, X. Yang, X. Li, X. Duan, Y. Sun, and H. Liu. Convolutional neural network-based multi-label
+classification of PCB defects, 2018.
+[17]
+H. Lu, D. Mehta, O. Paradis, N. Asadizanjani, M. Tehranipoor, and D. L. Woodard. FICS-PCB: A Multi-Modal
+Image Dataset for Automated Printed Circuit Board Visual Inspection. 366, 2020.
+[18]
+S. Youn, Y. Lee, and T. Park. Automatic classification of SMD packages using neural network. In 2014 IEEE/SICE
+International Symposium on System Integration. 2014 IEEE/SICE International Symposium on System Integration,
+pages 790–795, Dec. 2014.
+[19]
+V. A. Adibhatla, J. Shieh, M. Abbod, H.-C. Chih, C. Hsu, and J. Cheng. Detecting Defects in PCB using Deep
+Learning via Convolution Neural Networks. 2018 13th International Microsystems, Packaging, Assembly and
+Circuits Technology Conference (IMPACT), 2018.
+[20]
+D.-u. Lim, Y.-G. Kim, and T.-H. Park. SMD Classification for Automated Optical Inspection Machine Using
+Convolution Neural Network. In 2019 Third IEEE International Conference on Robotic Computing (IRC). 2019 Third
+IEEE International Conference on Robotic Computing (IRC), pages 395–398, Feb. 2019.
+[21]
+Y.-G. Kim, D.-U. Lim, J.-H. Ryu, and T.-H. Park. SMD Defect Classification by Convolution Neural Network and
+PCB Image Transform. In 2018 IEEE 3rd International Conference on Computing, Communication and Security
+(ICCCS). 2018 IEEE 3rd International Conference on Computing, Communication and Security (ICCCS), pages 180–
+183, Oct. 2018.
+[22]
+W. Huang and P. Wei. A PCB dataset for defects detection and classification. 2019. url: https://arxiv.org/abs/
+1901.08204.
+[23]
+U. Guin, D. DiMase, and M. Tehranipoor. A comprehensive framework for counterfeit defect coverage analysis
+and detection assessment. Journal of Electronic Testing, 30(1):25–40, Feb. 2014.
+[24]
+M. Goetz and R. Varma. Counterfeit Electronic Components Identification: A Case Study. In 2017.
+[25]
+H. Wu, G. Feng, H. Li, and X. Zeng. Automated visual inspection of surface mounted chip components. In
+2010 IEEE International Conference on Mechatronics and Automation. 2010 IEEE International Conference on
+Mechatronics and Automation, pages 1789–1794, Aug. 2010.
+[26]
+M. Tehranipoor, U. Guin, and S. Bhunia. Invasion of the hardware snatchers: cloned electronics pollute the
+market. IEEE Spectrum, Apr. 2017.
+[27]
+Pangolin Laser Systems. Recognize counterfeit FB3-QS.
+[28]
+L. H. Newman. The Anatomy of a Cisco Counterfeit Shows Its Dangerous Potential, July 2020.
+[29]
+M. Azhagan, D. Mehta, H. Lu, S. Agrawal, P. Chawla, M. Tehranipoor, D. L. Woodard, and N. Asadizanjani. A
+new framework for automatic bill of material generation and visual inspection. In 2019.
+19
+
+===== Page 20 =====
+
+JETC ’23, XXX XXX 2023, XX, XX
+Jessurun et al.
+[30]
+N. Asadizanjani, M. Tehranipoor, and D. Forte. Pcb reverse engineering using nondestructive x-ray tomography
+and advanced image processing. IEEE Transactions on Components, Packaging and Manufacturing Technology,
+7(2):292–299, 2017.
+[31]
+Y. Fridman, M. Rusanovsky, and G. Oren. Changechip: a reference-based unsupervised change detection for pcb
+defect detection. arXiv:2109.05746 [cs], Sept. 2021. arXiv: 2109.05746.
+[32]
+P. Ganapathy and A. Gupta. Defect detection and classification in manufacturing using Amazon Lookout for
+Vision and Amazon Rekognition Custom Labels. Amazon Web Services. July 13, 2021. url: https://aws.amazon.
+com/blogs/machine-learning/defect-detection-and-classification-in-manufacturing-using-amazon-lookoutfor-vision-and-amazon-rekognition-custom-labels/ (visited on 12/02/2021).
+[33]
+T. J. Mazon De Oliveira, M. A. Wehrmeister, and B. T. Nassu. Detecting Modifications in Printed Circuit Boards
+from Fuel Pump Controllers. In 2017 30th SIBGRAPI Conference on Graphics, Patterns and Images (SIBGRAPI). 2017
+30th SIBGRAPI Conference on Graphics, Patterns and Images (SIBGRAPI), pages 87–94, Oct. 2017.
+[34]
+H. Zhao, J. Cheng, and J. Jin. NI vision based automatic optical inspection (AOI) for surface mount devices:
+Devices and method. In 2009 International Conference on Applied Superconductivity and Electromagnetic Devices.
+2009 International Conference on Applied Superconductivity and Electromagnetic Devices, pages 356–360, Sept.
+2009.
+[35]
+C.-C. Wang, B. C. Jiang, J.-Y. Lin, and C.-C. Chu. Machine Vision-Based Defect Detection in IC Images Using the
+Partial Information Correlation Coefficient. IEEE Transactions on Semiconductor Manufacturing, 26(3):378–384,
+Aug. 2013.
+[36]
+C. H. Lin, S. H. Wang, and C. J. Lin. Using Convolutional Neural Networks for Character Verification on Integrated
+Circuit Components of Printed Circuit Boards. Springer, 2019.
+[37]
+C. Pramerdorfer and M. Kampel. A dataset for computer-vision-based PCB analysis. 2015 14th IAPR International
+Conference on Machine Vision Applications (MVA), 2015.
+[38]
+H. Larochelle, Y. Bengio, J. Louradour, and P. Lamblin. Exploring Strategies for Training Deep Neural Networks.
+Journal of machine learning research, 10(1):40, 2009.
+[39]
+M. A. Reza and D. J. Crandall. IC-ChipNet: deep Embedding Learning for Fine-grained Retrieval, Recognition,
+and Verification of Microelectronic Images. 2020 IEEE Applied Imagery Pattern Recognition Workshop (AIPR), 2020.
+[40]
+N. Karanth. Pcbexperiment, Aug. 2020.
+[41]
+C.-W. Kuo, J. Ashmore, D. Huggins, and Z. Kira. Data-efficient graph embedding learning for pcb component
+detection. In 2019 IEEE Winter Conference on Applications of Computer Vision (WACV). IEEE, 2019.
+[42]
+S. Gang, N. Fabrice, and J. Lee. Coresets for PCB Character Recognition based on Deep Learning. In 2020
+International Conference on Artificial Intelligence in Information and Communication (ICAIIC). 2020 International
+Conference on Artificial Intelligence in Information and Communication (ICAIIC), pages 637–642, Feb. 2020.
+[43]
+S. Gang, N. Fabrice, D. Chung, and J. Lee. Character Recognition of Components Mounted on Printed Circuit
+Board Using Deep Learning. Sensors, 2021.
+[44]
+S. Tang, F. He, X. Huang, and J. Yang. Online PCB Defect Detector On A New PCB Defect Dataset. Feb. 16, 2019.
+url: http://arxiv.org/abs/1902.06197 (visited on 11/18/2021).
+[45]
+Z. Chen, T. Wanyan, R. Rao, B. Cutilli, J. Sowinski, D. Crandall, and R. Templeman. Addressing supply chain risks
+of microelectronic devices through computer vision. In 2017 IEEE Applied Imagery Pattern Recognition Workshop
+(AIPR). 2017 IEEE Applied Imagery Pattern Recognition Workshop (AIPR), pages 1–8, Washington, DC, USA.
+IEEE, Oct. 2017.
+20
+
+===== Page 21 =====
+
+FPIC: A Novel Semantic Dataset for Optical PCB Assurance
+JETC ’23, XXX XXX 2023, XX, XX
+[46]
+M. Li, N. Yao, S. Liu, S. Li, Y. Zhao, and S. G. Kong. Multisensor Image Fusion for Automated Detection of Defects
+in Printed Circuit Boards. IEEE Sensors Journal, 21(20):23390–23399, Oct. 2021.
+[47]
+J.-S. Shieh. Applying deep learning to defect detection in printed circuit boards via a newest model of you-onlylook-once. Mathematical Biosciences and Engineering, 18(4):4411–4428, May 21, 2021.
+[48]
+G. Mahalingam, K. Gay, and K. Ricanek. PCB-METAL: a PCB Image Dataset for Advanced Computer Vision
+Machine Learning Component Analysis. 2019 16th International Conference on Machine Vision Applications (MVA),
+2019.
+[49]
+O. P. Paradis, N. T. Jessurun, M. Tehranipoor, and N. Asadizanjani. Color Normalization for Robust Automatic
+Bill of Materials Generation and Visual Inspection of PCBs. In ISTFA 2020, pages 172–179. ASM International,
+Dec. 1, 2020.
+[50]
+A. Garcia-Garcia, S. Orts-Escolano, S. Oprea, V. Villena-Martinez, and J. Garcia-Rodriguez. A Review on Deep
+Learning Techniques Applied to Semantic Segmentation. Apr. 22, 2017. url: http://arxiv.org/abs/1704.06857
+(visited on 01/08/2022).
+[51]
+P. Wang, P. Chen, Y. Yuan, D. Liu, Z. Huang, X. Hou, and G. Cottrell. Understanding Convolution for Semantic
+Segmentation. In 2018 IEEE Winter Conference on Applications of Computer Vision (WACV). 2018 IEEE Winter
+Conference on Applications of Computer Vision (WACV), pages 1451–1460, Mar. 2018.
+[52]
+H. Zhang, K. Dana, J. Shi, Z. Zhang, X. Wang, A. Tyagi, and A. Agrawal. Context Encoding for Semantic Segmentation. In 2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2018 IEEE/CVF Conference on
+Computer Vision and Pattern Recognition (CVPR), pages 7151–7160, Salt Lake City, UT, USA. IEEE, June 2018.
+[53]
+J. Long, E. Shelhamer, and T. Darrell. Fully Convolutional Networks for Semantic Segmentation. In Proceedings
+of the IEEE Conference on Computer Vision and Pattern Recognition, pages 3431–3440, 2015.
+[54]
+C. Yu, J. Wang, C. Peng, C. Gao, G. Yu, and N. Sang. BiSeNet: Bilateral Segmentation Network for Real-time
+Semantic Segmentation. In Proceedings of the European Conference on Computer Vision (ECCV), pages 325–341,
+2018.
+[55]
+I. Chatterjee, O. Khvan, T. Pforte, R. Li, and S. N. Patel. Augmented Silkscreen: Designing AR Interactions for
+Debugging Printed Circuit Boards. Conference on Designing Interactive Systems, 2021.
+[56]
+P. Calzada, J. Harrison, N. Asadizanjani, M. Tehranipoor, and P. Chawla. PCB trojan detection using optical
+imaging. In 46th GOMAC Tech, Miami, FL, Mar. 2022.
+[57]
+D. Mehta, J. True, O. P. Dizon-Paradis, N. Jessurun, D. L. Woodard, N. Asadizanjani, and M. Tehranipoor. FICS
+PCB X-ray: A dataset for automated printed circuit board inter-layers inspection, 2022.
+ACRONYMS
+AI artificial intelligence
+AOI automated optical inspection
+BoM bill of materials
+CAD computer-aided design
+CV computer vision
+DRC design rule check
+FICS Florida Institute for Cybersecurity Research
+FPIC FICS PCB Image Collection
+HW hardware
+21
+
+===== Page 22 =====
+
+JETC ’23, XXX XXX 2023, XX, XX
+Jessurun et al.
+IC integrated circuit
+IP intellectual property
+IPC Institute for Interconnecting and Packaging Electronic Circuits
+IR infrared
+ML machine learning
+OCR optical character recognition
+OEM original equipment manufacturer
+PCB printed circuit board
+PCBA PCB assembly
+SMD surface-mount device
+SME subject matter expert
+SVM support vector machine
+THz Terahertz
+22

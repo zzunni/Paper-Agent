@@ -1,0 +1,484 @@
+
+
+===== Page 1 =====
+
+Utilizing Generative Adversarial Networks for Image
+Data Augmentation and Classification of
+Semiconductor Wafer Dicing Induced Defects
+Zhining Hu 1,*, Tobias Schlosser 1,*, Michael Friedrich 1,*,
+André Luiz Vieira e Silva 2, Frederik Beuth 1, and Danny Kowerko 1
+1 Junior Professorship of Media Computing, Chemnitz University of Technology, 09107 Chemnitz, Germany
+2 Voxar Labs, Centro de Informática, Universidade Federal de Pernambuco, Brazil
+* Zhining Hu, Tobias Schlosser, and Michael Friedrich contributed equally to this work
+{firstname.lastname}@cs.tu-chemnitz.de
+Abstract—In semiconductor manufacturing, the wafer dicing
+process is central yet vulnerable to defects that significantly
+impair yield – the proportion of defect-free chips. Deep neural
+networks are the current state of the art in (semi-)automated
+visual inspection. However, they are notoriously known to require
+a particularly large amount of data for model training. To
+address these challenges, we explore the application of generative
+adversarial networks (GAN) for image data augmentation and
+classification of semiconductor wafer dicing induced defects to
+enhance the variety and balance of training data for visual
+inspection systems. With this approach, synthetic yet realistic
+images are generated that mimic real-world dicing defects.
+We employ three different GAN variants for high-resolution
+image synthesis: Deep Convolutional GAN (DCGAN), CycleGAN,
+and StyleGAN3. Our work-in-progress results demonstrate that
+improved classification accuracies can be obtained, showing an
+average improvement of up to 23.1 % from 65.1 % (baseline
+experiment) to 88.2 % (DCGAN experiment) in balanced
+accuracy, which may enable yield optimization in production.
+Index Terms—Computer Vision, Pattern Recognition, Visual
+Inspection, Data Synthesis, Deep Learning, Convolutional Neural
+Networks
+I. INTRODUCTION AND MOTIVATION
+Semiconductors, materials with electrical conductivity between conductors and insulators, are crucial for integrated circuits or chips, used in numerous electronic products. The global
+semiconductor market is projected to reach $588.36 billion
+in 2024, highlighting the sector’s economic significance and
+the growing global focus on semiconductor manufacturing [1].
+The industry, characterized by high technical costs, emphasizes
+quality control and yield optimization – the ratio of flawless to
+total chips produced post-dicing [2]. The semiconductor wafer
+dicing process is a critical manufacturing step that involves
+complex procedures where defects within the dicing streets –
+separations created during chip dicing – significantly impact
+the chips’ quality (Fig. 1) [3]. Various defect patterns can arise
+from machine errors or human error, necessitating robust defect
+detection and classification systems to maintain yield [4].
+Traditional defect detection methods include manual inspections and contact needle tests, which are especially timeWafer segment
+Chips and streets
+Flawless (t.) and faulty (b.) dicing streets
+Figure 1: Wafer overview with chips and dicing streets
+(reprinted and adapted from [5], copyright IEEE).
+consuming, potentially inaccurate, or can damage the wafer [6].
+Advances in artificial intelligence (AI), particularly machine
+learning (ML) and deep learning (DL), have led to the
+development of (semi-)automated visual inspection systems
+that offer an effective solution for identifying and classifying
+dicing street defects [4]. However, deep neural networks (DNN)
+are notoriously known for requiring a significant amount
+of data to be trained successfully. To complicate matters
+further, data samples must be available for all types of defects
+(denoted as class defects). For example, the popular ImageNet
+data set contains 1 000 sample images for each object type
+(class). However, in industry applications, obtaining such a
+magnitude of defect images is very challenging. Thus, despite
+technological advances, data scarcity and imbalance in wafer
+image data remain major difficulties. The industry’s reliance
+on proprietary rights and significant barriers to entry hinder
+the acquisition of high-quality, labeled data sets comparable
+to those in other fields [7], [8], further hindering research and
+development within the field. To overcome these challenges,
+data augmentation techniques such as geometric transformations, noise injection, and the use of generative adversarial
+networks have been employed. GANs [9], in particular, have
+shown promising results for a wide variety of application areas
+by generating high-quality synthetic images to enhance the
+performance and generalization capabilities of learning-based
+classification models [10]. This includes novel applications
+of image super-resolution, medical image synthesis, protein
+structure generation, and astronomical image simulation [11].
+arXiv:2407.20268v1  [cs.CV]  24 Jul 2024
+
+===== Page 2 =====
+
+Wafer data
+Street extraction
+Street synthesis
+Data set creation
+Street classification
+Figure 2: Designed visual fault synthesis and inspection system
+for dicing street generation and classification.
+Table I: Data set overview with wafer types, number of streets,
+and widths and image resolutions of the dicing streets [4].
+Wafer type
+1
+2
+3
+4
+5
+Streets
+4 436
+13 504
+7 024
+428
+2 368
+Flawless Streets
+3 983
+12 624
+6 891
+297
+2 094
+Faulty Streets
+453
+880
+133
+131
+274
+Street width [px]
+15 or 25
+4
+20
+19
+23
+Street image resolution [px]
+379 × 56
+384 × 36
+372 × 51
+378 × 44
+374 × 62
+To address data imbalance and scarcity in training learningbased models for (semi-)automated visual inspection in semiconductor wafer dicing, this contribution introduces a data
+augmentation methodology that utilizes GANs. This involves
+selecting a set of suitable GAN models, their training on
+existing dicing street imagery, and using them to enhance the
+original data set with generated images to create an extended
+and balanced hybrid data set. This extended data set is then used
+to train our classification model. The possible benefits of this
+approach in terms of classification capabilities are demonstrated
+by our results, which align with our previous works in the field
+of semiconductor wafer data sets, such as Schlosser et al. [4].
+II. FUNDAMENTALS AND IMPLEMENTATION
+A. Generative adversarial networks
+GANs are based on a two-player zero-sum game involving
+a generator and a discriminator in a min-max optimization
+setup. The generator aims to produce data mimicking a true
+distribution to fool the discriminator, whereas the discriminator
+tries to distinguish between generated and real samples. This
+methodology elevates GANs in generating complex, highquality data, which has been transformative across various
+data augmentation applications [12].
+Radford et al. (2016) [13] introduced deep convolutional
+GANs, which combine convolutional neural networks (CNN)
+with GANs, improving sample quality and training stability.
+Table II: Overview of our experimental configurations for our
+evaluation with experiment IDs 1 to 3.
+Experiment ID
+Training set
+Test set
+Oversampling?
+1 (Baseline)
+Original train set
+Original test set
+No
+2 (Oversampling)
+Baseline,
+balanced via
+oversampling
+Original test set
+Yes
+3
+3.1 DCGAN
+Baseline,
+balanced with
+synthetic samples
+Original test set
+No
+3.2 CycleGAN
+3.3 StyleGAN3
+DCGANs have been effectively applied in fields including
+pedestrian recognition and medical image classification, significantly increasing model accuracy and diagnostic precision [14],
+[15]. In comparison, CycleGAN (2017) [16] facilitates imageto-image translation tasks without needing paired samples,
+which simplifies training data preparation. CycleGANs have
+proven effective in style transfer, medical imaging, and even
+in generating facial expressions or remote sensing images,
+demonstrating their utility in domain adaptation [17], [18].
+The introduction of StyleGAN by Karras et al. (2019) [19]
+optimized the GAN architecture for generating high-resolution
+images, which is crucial for tasks requiring detailed visual
+fidelity such as medical imaging or object detection. StyleGAN
+uses adaptive instance normalization and a novel style-based
+loss function to refine image quality progressively from low
+to high resolution, enhancing the realism of generated images
+and thereby the effectiveness of data augmentation [20], [21].
+With its most recent version, StyleGAN3 (2021) [22], Karras
+et al. further optimized the architecture and training efficiency,
+effectively addressing aliasing issues within the generator
+network. However, GANs are not universally applicable. They
+require substantial initial data for effective training and can
+suffer from training instabilities.
+B. Designed system
+Fig. 2 details our designed system for wafer-based street
+extraction and synthesis, data set creation, and street classification, for which the semiconductor wafer dicing data set
+summarized in Table I is deployed. For the synthesis of street
+imagery, our implementation includes three GAN variants,
+DCGAN, CycleGAN, and StyleGAN3, which are trained with
+minimal initial parameter tuning as out-of-the-box models. All
+street images were scaled to an image resolution of 192 × 64
+pixels. Subsequently, we mainly follow the methodology of our
+previous work of Schlosser et al. (2022) [4], whereby cuttings
+of the chips (streets) are fed to a DNN for street classification,
+simulating a process of focusing on relevant chip regions via
+visual attention as shown by Beuth et al. (2021) [23]. For
+classification, the residual neural network ResNet152V2 [24] is
+employed as classification model to obtain classification results
+comparable to [4]. Our implementations leverage Python with
+PyTorch for image generation, whereas the Hexnet framework
+[25] is deployed for image classification.
+III. TEST RESULTS, EVALUATION, AND DISCUSSION
+A. Data sets and experimental configurations
+Table I details the baseline data set used within this
+contribution. Initially, the data set of dicing street samples
+is split, allocating 80 % to form the original training set (of
+which 10 % form our validation set), with the remaining 20 %
+forming the original test set. The original data sets function
+as our reference for creating hybrid data sets. In addition, our
+test sets exclusively consist of original data for all experiments.
+Here, the inclusion of generated faulty samples in the original
+training sets facilitates the creation of balanced hybrid data
+sets.
+2/4
+
+===== Page 3 =====
+
+Table III: Overview of our original and generated flawless and faulty street samples per wafer type.
+Wafer type
+Original
+DCGAN
+CycleGAN
+StyleGAN3
+Flawless
+Faulty
+Flawless
+Faulty
+Flawless
+Faulty
+Flawless
+Faulty
+1
+2
+3
+4
+5
+Table IV: Overview of different faulty street classes that have been generated per wafer type.
+Error type
+Original
+DCGAN
+CycleGAN
+StyleGAN3
+Chip excess
+Undersize
+Nose
+Chipping
+Wafer border
+Imaging error
+Three experimental configurations have been established to
+evaluate the efficiency of different data balancing strategies on
+classification performance (Table II). (1) Baseline experiment.
+Does not utilize any data balancing techniques. (2) Oversampling experiment. The impact of class balancing within the
+training set is tested by sample duplication. This configuration
+aims to determine the effectiveness of data oversampling.
+(3) Hybrid experimental configuration, in which GANs are
+employed for training data generation within the training set.
+This configuration is subdivided via our three GAN variants,
+DCGAN, CycleGAN, and StyleGAN3.
+B. Results
+Similar to [4], our proposed ResNet152V2-based training
+setup included the following: the Glorot initializer for weight
+initialization, the Adam optimizer with a standard learning rate
+of 0.001 and exponential decay rates of 0.9 and 0.999, as well
+as a batch size of 32. Training was performed over 20 epochs,
+for which the results of five training runs were assessed. We
+used the balanced accuracy and unbalanced weighted F1-score
+as metrics. The generated samples per model and occurring
+defect classes are shown in Tables III and IV. Our key findings
+are summarized in Table V.
+1) Impact of data balancing on model performance:
+Oversampling: Traditional oversampling has shown limited
+effectiveness as evidenced by minor improvements across all
+wafer types. Hybrid balancing: GANs for data augmentation can
+significantly enhance the classification performance, surpassing
+the results achieved with oversampling. Averaged over all five
+wafers, our best result was obtained in experiment 3.1 with
+DCGAN, showing an improvement of up to 23.1 % from
+65.1 % (experiment ID 1, baseline) to 88.2 % (experiment ID
+3.1 with DCGAN) in balanced accuracy.
+2) Comparative analysis of GAN architectures: Our experiments highlight the increased performance of DCGAN and
+CycleGAN over StyleGAN3, with DCGAN outperforming
+CycleGAN. Therefore, DCGAN is recommended for practical
+implementation because of its potentially lower computational
+demands and faster training times, making it more cost-effective
+for large-scale applications.
+3) Effectiveness across different wafer types: Varied responses to GAN-based data augmentation were observed among
+different wafer types. Wafer types 3 and 4 showed the most
+significant improvement in balanced accuracy. In contrast, wafer
+types 1 and 2 exhibited in turn fewer improvements. These
+findings emphasize a correlation between the effectiveness
+of data augmentation strategies and the initial data sets’ size
+(Table I). Analyzing this correlation, GANs seem to yield
+the best results when only a reduced number of faulty or
+total samples are provided within the original data set. This is
+evident from the notable improvement observed in wafer type
+4 (428 total samples, 131 faulty class samples) and wafer type
+3 (7 024 total samples, yet only 133 faulty class samples).
+IV. CONCLUSION AND OUTLOOK
+Our work-in-progress results confirm that generative adversarial networks are a viable solution to the prevalent challenges
+of data scarcity and imbalance in semiconductor manufacturing
+for semiconductor wafer dicing. By generating synthetic yet
+realistic image data sets, GANs can improve the classification
+capabilities of deep learning models by enhancing defect
+detection accuracies. All three studied GAN architectures offer
+advantages over our baseline experiments. DCGAN offers
+slight advantages over CycleGAN and StyleGAN3. Therefore,
+DCGAN is our recommendation due to its efficiency and
+potentially lower operational costs.
+This research not only aimed at advancing the understanding
+of GAN applications in industrial settings, but also aimed
+to set a benchmark for future studies aiming to optimize
+data-intensive inspection processes within semiconductor wafer
+dicing. For this purpose, unified image resolutions per wafer
+3/4
+
+===== Page 4 =====
+
+Table V: Overview of the results obtained from our three experimental configurations described in Table II based on the street
+data sets displayed in Table III. Shown are the results over five test runs in balanced accuracy (BA) and weighted F1-score (F1)
+[%] per experiment. Color-coded scores emphasize the change in classification performance from the oversampling experiment
+(exp. 2): green and red highlight increased and decreased scores. The best overall results are highlighted in bold.
+Wafer type 1
+Wafer type 2
+Wafer type 3
+Wafer type 4
+Wafer type 5
+Average
+Experiment ID
+BA
+F1
+BA
+F1
+BA
+F1
+BA
+F1
+BA
+F1
+BA
+F1
+1 (Baseline)
+76.2 ± 8.9 86.0 ± 4.9 73.5 ± 2.9 85.1 ± 12.3 53.9 ± 2.6 92.6 ± 0.6 55.4 ± 9.8 42.8 ± 15.9 66.7 ± 2.1 81.4 ± 1.5
+65.1 ± 5.3 77.6 ± 7.0
+2 (Oversampling)
+81.4 ± 2.4 89.9 ± 1.0 83.6 ± 3.8 89.5 ± 8.4 57.0 ± 8.3 92.7 ± 1.1 64.8 ± 13.3 58.2 ± 20.9 67.0 ± 1.5 81.6 ± 0.9
+70.8 ± 5.9 82.4 ± 6.5
+3.1 DCGAN
+92.9 ± 2.8 94.3 ± 3.4 88.1 ± 4.3 95.1 ± 0.9 80.5 ± 9.9 96.2 ± 1.2
+92.9 ± 7.9 92.7 ± 8.5 86.6 ± 9.7 93.0 ± 5.3
+88.2 ± 6.9 94.3 ± 3.9
+3.2 CycleGAN
+89.6 ± 4.6 90.8 ± 6.0 86.8 ± 3.3 91.0 ± 7.0
+82.0 ± 11.5 94.8 ± 4.0 86.7 ± 14.1 85.1 ± 16.8 81.8 ± 11.7 89.7 ± 6.3
+85.4 ± 9.0 90.3 ± 8.0
+3
+3.3 StyleGAN3
+80.0 ± 14.4 75.5 ± 29.5
+90.9 ± 4.2 96.1 ± 0.7 79.3 ± 5.8 94.8 ± 4.1 81.7 ± 20.0 77.7 ± 25.9
+86.9 ± 5.3 90.9 ± 5.7
+83.8 ± 9.9 87.0 ± 13.2
+type should be generated to allow the combination of different
+wafer types within one data set. Future work should also
+explore the integration of hybrid data augmentation strategies
+that combine the strengths of different GAN architectures and
+further refine the balance between computational efficiency
+and model performance. Expanding the scope to include more
+diverse wafer types and defect categories could unveil further
+insights into the scalability and adaptability of GAN-based
+data augmentation within this domain.
+ACKNOWLEDGMENT
+The European Union via the European Social Fund for Germany partially funded this research (grant number 100670286).
+REFERENCES
+[1] Statista (May 26, 2024)., “Semiconductor market revenue worldwide from
+1987 to 2024 [Online].” https://www.statista.com/statistics/266973/globalsemiconductor-sales-since-1988/.
+[2] K. B. Lee, S. Cheon, and C. O. Kim, “A Convolutional Neural Network
+for Fault Classification and Diagnosis in Semiconductor Manufacturing
+Processes,” IEEE Transactions on Semiconductor Manufacturing, vol. 30,
+no. 2, pp. 135–142, May 2017.
+[3] S.-H. Huang and Y.-C. Pan, “Automated visual inspection in the
+semiconductor industry: A survey,” Computers in Industry, vol. 66, pp.
+1–10, Jan. 2015.
+[4] T. Schlosser, M. Friedrich, F. Beuth, and D. Kowerko, “Improving
+automated visual fault inspection for semiconductor manufacturing
+using a hybrid multistage system of deep neural networks,” Journal of
+Intelligent Manufacturing, vol. 33, no. 4, pp. 1099–1123, Apr. 2022.
+[5] T. Schlosser, F. Beuth, M. Friedrich, and D. Kowerko, “A Novel
+Visual Fault Detection and Classification System for Semiconductor
+Manufacturing Using Stacked Hybrid Convolutional Neural Networks,”
+in 2019 24th IEEE International Conference on Emerging Technologies
+and Factory Automation (ETFA), Sep. 2019, pp. 1511–1514.
+[6] K. C.-C. Cheng, L. L.-Y. Chen, J.-W. Li, K. S.-M. Li, N. C.-Y. Tsai, S.-J.
+Wang, A. Y.-A. Huang, L. Chou, C.-S. Lee, J. E. Chen, H.-C. Liang, and
+C.-L. Hsu, “Machine Learning-Based Detection Method for Wafer Test
+Induced Defects,” IEEE Transactions on Semiconductor Manufacturing,
+vol. 34, no. 2, pp. 161–167, May 2021.
+[7] L. Deng, “The MNIST Database of Handwritten Digit Images for
+Machine Learning Research [Best of the Web],” IEEE Signal Processing
+Magazine, vol. 29, no. 6, pp. 141–142, Nov. 2012.
+[8] J. Deng, W. Dong, R. Socher, L.-J. Li, K. Li, and L. Fei-Fei, “ImageNet:
+A large-scale hierarchical image database,” in 2009 IEEE Conference on
+Computer Vision and Pattern Recognition, Jun. 2009, pp. 248–255.
+[9] I. J. Goodfellow, J. Pouget-Abadie, M. Mirza, B. Xu, D. Warde-Farley,
+S. Ozair, A. Courville, and Y. Bengio, “Generative adversarial nets,”
+Jun. 2014.
+[10] T. Karras, T. Aila, S. Laine, and J. Lehtinen, “Progressive Growing of
+GANs for Improved Quality, Stability, and Variation,” Feb. 2018.
+[11] A. Dash, J. Ye, and G. Wang, “A review of generative adversarial networks
+(gans) and its applications in a wide variety of disciplines: from medical
+to remote sensing,” IEEE Access, 2023.
+[12] A. Creswell, T. White, V. Dumoulin, K. Arulkumaran, B. Sengupta, and
+A. A. Bharath, “Generative Adversarial Networks: An Overview,” IEEE
+Signal Processing Magazine, vol. 35, no. 1, pp. 53–65, Jan. 2018.
+[13] A. Radford, L. Metz, and S. Chintala, “Unsupervised Representation
+Learning with Deep Convolutional Generative Adversarial Networks,”
+Jan. 2016.
+[14] Z. Zheng, L. Zheng, and Y. Yang, “Unlabeled Samples Generated by
+GAN Improve the Person Re-identification Baseline in vitro,” Aug.
+2017.
+[15] M. Frid-Adar, I. Diamant, E. Klang, M. Amitai, J. Goldberger, and
+H. Greenspan, “GAN-based Synthetic Medical Image Augmentation
+for increased CNN Performance in Liver Lesion Classification,”
+Neurocomputing, vol. 321, pp. 321–331, Dec. 2018.
+[16] J.-Y. Zhu, T. Park, P. Isola, and A. A. Efros, “Unpaired image-to-image
+translation using cycle-consistent adversarial networks,” in Proceedings
+of the IEEE international conference on computer vision, 2017, pp.
+2223–2232.
+[17] Y. Hiasa, Y. Otake, M. Takao, T. Matsuoka, K. Takashima, A. Carass,
+J. L. Prince, N. Sugano, and Y. Sato, “Cross-Modality Image Synthesis
+from Unpaired Data Using CycleGAN,” in Simulation and Synthesis in
+Medical Imaging, ser. Lecture Notes in Computer Science, A. Gooya,
+O. Goksel, I. Oguz, and N. Burgos, Eds.
+Cham: Springer International
+Publishing, 2018, pp. 31–41.
+[18] X. Zhu, Y. Liu, J. Li, T. Wan, and Z. Qin, “Emotion Classification
+with Data Augmentation Using Generative Adversarial Networks,” in
+Advances in Knowledge Discovery and Data Mining, ser. Lecture Notes in
+Computer Science, D. Phung, V. S. Tseng, G. I. Webb, B. Ho, M. Ganji,
+and L. Rashidi, Eds.
+Cham: Springer International Publishing, 2018,
+pp. 349–360.
+[19] T. Karras, S. Laine, and T. Aila, “A Style-Based Generator Architecture
+for Generative Adversarial Networks,” Mar. 2019.
+[20] K. Su, E. Zhou, X. Sun, C. Wang, D. Yu, and X. Luo, “Pre-trained
+StyleGAN Based Data Augmentation for Small Sample Brain CT Motion
+Artifacts Detection,” in Advanced Data Mining and Applications, ser.
+Lecture Notes in Computer Science, X. Yang, C.-D. Wang, M. S. Islam,
+and Z. Zhang, Eds.
+Cham: Springer International Publishing, 2020, pp.
+339–346.
+[21] K. Wada and B. Chakraborty, “Performance Study of Image Data
+Augmentation by Generative Adversarial Networks,” in 2021 IEEE 12th
+Annual Information Technology, Electronics and Mobile Communication
+Conference (IEMCON), Oct. 2021, pp. 1022–1026.
+[22] T. Karras, M. Aittala, S. Laine, E. Härkönen, J. Hellsten, J. Lehtinen,
+and T. Aila, “Alias-free generative adversarial networks,” Oct. 2021.
+[23] F. Beuth, T. Schlosser, M. Friedrich, and D. Kowerko, “Improving
+Automated Visual Fault Detection by Combining a Biologically Plausible
+Model of Visual Attention with Deep Learning - Extended ArXiv
+Version,” arXiv preprint arXiv:2102.06955, pp. 1–15, 2021.
+[24] K. He, X. Zhang, S. Ren, and J. Sun, “Deep residual learning for image
+recognition,” in Proceedings of the IEEE conference on computer vision
+and pattern recognition, 2016, pp. 770–778.
+[25] T. Schlosser, M. Friedrich, and D. Kowerko, “Hexagonal image processing
+in the context of machine learning: Conception of a biologically inspired
+hexagonal deep learning framework,” in 2019 18th IEEE International
+Conference on Machine Learning and Applications (ICMLA).
+IEEE,
+2019, pp. 1866–1873.
+4/4

@@ -1,0 +1,4630 @@
+
+
+===== Page 1 =====
+
+DESY 02-199                                                                                  
+physics/0211118                                                                                        
+December 2002 
+ 
+Radiation Damage in Silicon Detectors                                       
+Caused by Hadronic and Electromagnetic Irradiation 
+E. Fretwurst1, G. Lindstroem1, I. Pintilie1,2, J. Stahl1 
+1University of Hamburg, Germany,                                                                               
+2National Institute for Material Physics, Bucharest 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+===== Page 2 =====
+
+ 
+ 
+1
+ 
+ 
+ 
+ 
+ 
+Contents 
+ 
+ 
+1. Introductory Note……………………………………………………………………………………  2
+ 
+ 
+2. G. Lindström, Radiation damage in silicon detectors………………………………………………. 3 
+Invited talk, presented at the 9th  European Symposium on Semiconductor Detectors,  
+Schloß Elmau, June 23-27, 2002, accepted for publ. In NIM A 
+ 
+3. J. Stahl et al., Deep defect levels in standard and oxygen enriched silicon………………………… 16 
+detectors before and after 60Co-γ-irradiation 
+Paper presented at the 9th  European Symposium on Semiconductor Detectors, Schloß Elmau,  
+June 23-27, 2002, accepted for publ. In NIM A 
+ 
+4. E. Fretwurst et al., Bulk damage effects in standard and oxygen enriched…………………………  22 
+silicon detectors induced by 60Co-gamma radiation 
+paper presented at the 4th International Conference on Radiation Effects on Semiconductor 
+Materials, Detectors and Devices, Firenze, Italy, July 10-12, 2002, subm. for publ. In NIM A 
+ 
+5. I. Pintilie et al., Results on defects induced by 60Co-gamma irradiation in………………………… 29 
+standard and oxygen enriched silicon 
+paper presented at the 4th International Conference on Radiation Effects on Semiconductor 
+Materials, Detectors and Devices, Firenze, Italy, July 10-12, 2002, subm. for publ. In NIM A 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+===== Page 3 =====
+
+ 
+ 
+2
+Introductory Note 
+ 
+Segmented silicon detectors (microstrip and pixel devices) are widely used in High Energy Physics 
+applications. Due to their unsurpassed quality they play a major role in the tracking area of present and future 
+collider experiments. However in the forthcoming experiments at LHC and TESLA they are subject to extremely 
+harsh hadronic resp. electromagnetic radiation environments thus threatening their operability. 
+ 
+In the past years considerable effort had been undertaken in order to improve the radiation tolerance of these 
+devices and thus guarantee an operational lifetime of e.g. 10 years in the LHC inner detector. Most of this work 
+had been carried out by the CERN-RD48 (ROSE) collaboration (1996-2000).  It had been shown that radiation 
+damage effects in silicon detectors could be considerably reduced by using a defect engineering approach, 
+consisting in an oxygen enrichment of the float zone wafers during detector processing. This technique is now 
+employed e.g. in the ATLAS pixel and part of the strip layers. In future experiments like for an upgraded LHC 
+(SLHC) the present luminosity of 1034 is envisioned to be increased by a factor of 10 and hence a hadronic 
+fluence integrated over the operational period will reach 1016 equivalent n/cm². Presently there are no techniques 
+available to ensure the necessary radiation tolerance of tracking detectors up to such high values. Possible 
+improvements of the ROSE results as well as completely new approaches are necessary and will be the goal of 
+the newly founded R&D collaboration CERN-RD50. 
+ 
+Our group is engaged in long term R&D projects in the development and radiation hardness of silicon 
+detectors. The group participated in  RD48 and is presently also a member of RD50. Our main object is the 
+systematic investigation of damage consequences for the operation of silicon detectors and its complete 
+understanding. Although considerable improvement had been achieved in the systematic analysis of radiation 
+induced changes of macroscopic detector properties only little was gained so far in the correlation with 
+responsible defects on the microscopic scale. The first paper in this report gives an overview of the present 
+knowledge as resulting largely from RD48-experiments and recent own upgrades for hadron induced damage. 
+Both confirmed results showing the improvements to be gained by the oxygen enrichment as also still open 
+questions in the available systematics are covered. As hadronic interactions give rise to both “cluster” and “point 
+defects” in silicon, low energy electromagnetic irradiation can only produce point defects, offering a much more 
+direct correlation between defect generation and detector performance. All other 3 papers are dealing with this 
+issue. In the second one we investigate existing point defects in as processed detectors and additional defect 
+formation after gamma irradiation. The last two paper are concentrating on a close correlation between gamma 
+induced deep defects and their consequences for the detector performance. For the very first time it is shown that 
+both the change of the effective doping concentration (depletion voltage) and the free charge carrier generation 
+(reverse current) can be completely understood by the microscopically investigated formation of deep defects, 
+largely suppressed by oxygen enrichment. This is regarded to be a major breakthrough for the long searched for 
+understanding of radiation damage and will hopefully also pave the road for an optimum of radiation tolerant 
+detectors including hadronic damage. 
+ 
+The Work of our group is supported by the DFG (German Research Foundation) and BMBF (Ministry for 
+Research). Part of the work had been performed in collaboration with industry (CiS Erfurt), supported by the 
+BMWI (Ministry for Economy).   
+ 
+ 
+
+===== Page 4 =====
+
+ 
+ 
+3
+ 
+Radiation Damage in Silicon Detectors† 
+Gunnar Lindström* 
+Institute for Experimental Physics, University of Hamburg, 22761 Hamburg, Germany 
+ 
+ 
+Abstract 
+Radiation damage effects in silicon detectors under severe hadron- and γ–irradiation are surveyed, focusing on 
+bulk effects. Both macroscopic detector properties (reverse current, depletion voltage and charge collection) as 
+also the underlying microscopic defect generation are covered. Basic results are taken from the work done in the 
+CERN-RD48 (ROSE) collaboration updated by results of recent work. Preliminary studies on the use of 
+dimerized float zone and Czochralski silicon as detector material show possible benefits. An essential progress in 
+the understanding of the radiation induced detector deterioration had recently been achieved in gamma 
+irradiation, directly correlating defect analysis data with the macroscopic detector performance.  
+ 
+Keywords: silicon detectors; defect emgineering; radiation damage; NIEL; proton-, neutron-,  π-irradiation; defect analysis  
+——— 
+† Invited talk presented at the 9th European Symposium on Semiconductor Detectors, Schloss Elmau, Germany, June 23-27, 2002; accepted 
+  for publication in Nucl. Instr. and Meth. A      
+* Corresponding author. Tel.: +49-40-8998-2951; fax: +49-40-8998-2959;  e-mail: gunnar.lindstroem@desy.de 
+
+===== Page 5 =====
+
+ 
+ 
+4 
+Fig. 1.  Simulation results: Sample distribution of 
+vacancies induced by a 50 keV recoil silicon atom; 
+insert shows transverse projection [6]. 
+1. Introduction 
+Silicon pixel and microstrip detectors are today’s 
+best choices for meeting the requirements of tracking 
+applications in the forthcoming LHC experiments. 
+However, due to the extreme harsh radiation 
+environment the required prolonged operability poses 
+an unprecedented challenge to their radiation 
+tolerance. At the expected yearly level of up to 
+several 1014 hadrons per cm² during the foreseen 10 
+years of operation the damage induced changes in the 
+silicon bulk will cause an increase of both the reverse 
+current and the necessary depletion voltage as well as 
+a decrease of the charge collection efficiency. Using 
+standard silicon material and present detector 
+technology these damage induced effects lead to not 
+tolerable deteriorations in the detector performance. 
+Possible strategies for improving the radiation 
+hardness of these devices consist of using suitable 
+defect engineering of the silicon material,  as 
+introduced 
+by 
+the 
+CERN-RD48 
+(ROSE) 
+collaboration [1], operation at very low temperatures 
+under investigation by the CERN-RD39 group [2] or 
+a specialized design of detector geometry, presently 
+proposed or under test by several other groups, see 
+e.g. [3] and literature cited there.  
+This report is based on the results of the ROSE 
+collaboration showing the appreciable improvements 
+which had been achieved by diffusing oxygen from 
+the SiO2-Si interface into the silicon bulk after initial 
+oxidation of the silicon wafers. This so called DOFZ 
+(Diffusion Oxygenated Float Zone) technology had 
+proven to be the most cost effective way of 
+adequately 
+modifying 
+the 
+standard 
+process 
+technology (see section 4.1).  
+In the following different aspects  of hadron and 
+gamma/lepton 
+induced 
+bulk 
+damage 
+effects, 
+originating from the Non Ionizing Energy Loss 
+(NIEL) are summarized, especially comparing 
+standard with oxygenated silicon detectors, as 
+extracted from numerous publications of the ROSE 
+collaboration [4]. In contrast to bulk effects surface 
+and interface related changes, produced by the 
+ionizing energy loss (radiation dose), play a minor 
+role for lifetime limitations of silicon detectors. The 
+discussion of such effects can e.g. be found in [5]. 
+2.  Primary damage effects  
+The bulk damage in silicon detectors caused by  
+hadrons or higher energetic leptons respectively 
+gammas is primarily due to displacing a Primary 
+Knock on Atom PKA out of its lattice site. The 
+threshold energy for this process is ~ 25 eV. Such 
+single displacements resulting in a pair of a silicon 
+interstitial and a vacancy (Frenkel pair) can be 
+generated by e.g. neutrons or electrons with an 
+energy above 175 eV and 260 keV respectively. Low 
+energy recoils above these threshold energies will 
+usually create fixed point defects. However for recoil 
+energies above about 5 keV a dense agglomeration of 
+defects is formed at the end of the primary PKA 
+track. Such disordered regions are referred to as 
+defect clusters. The kinematic lower limits for the 
+production of clusters are ~35 keV for neutrons and 
+~8 MeV for electrons. In figure 1 the simulation 
+result for a 50 keV PKA (average recoil produced by 
+1 MeV neutrons) is shown, clearly  distinguishing 
+between discretely distributed vacancies (point 
+defects) and dense agglomerates (clusters) [6]. It 
+should be noted here that the radiation damage 
+caused by Co-60 gammas is primarily due to the 
+interaction of Compton electrons having a maximum 
+energy of only 1 MeV. Hence in this case cluster 
+production is not possible and the damage is 
+exclusively due to point defects.  
+
+===== Page 6 =====
+
+ 
+ 
+5
+Both point defects and clusters can have severe 
+effects on the detector performance, depending on 
+their concentration, energy level and the respective 
+electron and hole capture cross section. Defects with 
+deep energy levels in the middle of the forbidden gap 
+could act as recombination/generation centers and are 
+hence responsible for an increase of the reverse 
+detector current. The removal of dopants by 
+formation of complex defects as well as the 
+generation of charged centers changes the effective 
+doping concentration and the needed operating 
+voltage to fully deplete the detector thickness. Finally 
+such defects could also act as trapping centers 
+affecting the charge collection efficiency.  In view of 
+the LHC operational scenario it has also to be noted 
+that the primary produced defects may be subject to 
+changes after long term storage at room temperature. 
+Such annealing effects may very likely be caused by 
+changes due to the dissolution of clusters releasing 
+migrating vacancies and interstitials [7]. The 
+observed time constants for such “reverse annealing” 
+processes are rather large (for standard silicon at 
+room temperature e.g. ~ 1year).  A reliable projection 
+of damage results on the LHC operational scenario is 
+hence only possible if annealing effects are included 
+comparable to those expected in 10 years of LHC 
+operation.  This task had been successfully attacked 
+by performing studies at elevated temperatures thus 
+accelerating the kinetic effects being responsible for 
+such long term changes. Related basic studies are 
+found in [8-10]. 
+3.  NIEL scaling of bulk damage 
+The 
+preceding 
+discussion 
+and 
+numerous 
+experimental observations have led to the assumption 
+that damage effects produced in the silicon bulk by 
+energetic particles can be described as being 
+proportional to the so called displacement damage 
+cross section D. This quantity is equivalent to the 
+Non Ionizing Energy Loss (NIEL) and hence the 
+proportionality between the NIEL-value and the 
+resulting damage effects is referred to as the NIELscaling hypothesis (for deviations to this rule see 
+section 4.5.1). The displacement damage cross 
+section D is normally quantified in MeVmb, whereas 
+the NIEL-value is given in keVcm²/g.  For silicon 
+with A=28.086 g/mol the relation between D and 
+NIEL is:  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 2. Non ionising energy loss NIEL for different particles. 
+100 MeVmb = 2.144 keVcm²/g. The D or NIEL 
+value is depending on the particle type and energy. 
+According to an ASTM standard, the displacement 
+damage cross section  for 1 MeV neutrons is set as a 
+normalizing value: Dn(1MeV) = 95 MeVmb [11]. On 
+the basis of the NIEL scaling the damage efficiency 
+of any particle with a given kinetic energy  can then 
+be described by the hardness factor κ. Applying the 
+NIEL hypothesis, one may replace the actual particle 
+energy spectrum dΦ/dE by a NIEL folded spectrum 
+and the damage effect, caused by its total fluence Φp 
+by a 1MeV neutron equivalent fluence  Φeq = κ . Φp, a 
+more detailed discussion is found in [12, 13].  
+Fig. 3.  NIEL folded energy spectra for neutrons and pions in the 
+SCT region (silicon counter tracker) of the LHC ATLAS detector. 
+10-6
+10-5
+10-4
+10-3
+10-2
+10-1
+100
+101
+102
+103
+104
+E[MeV]   
+0
+2.10-4
+4.10-4
+E*D*dN/dE/95MeV mb[n/cm2 event]
+neutrons
+neutrons
+pions
+pions
+10-10 10-9 10-8 10-7 10-6 10-5 10-4 10-3 10-2 10-1 100 101 102 103 104
+particle energy [MeV]
+10-5
+10-4
+10-3
+10-2
+10-1
+100
+101
+102
+103
+104
+D(E) / (95 MeV mb)
+neutrons
+neutrons
+pions
+pions
+protons
+protons
+electrons
+electrons
+100
+101
+102
+103
+104
+0.4
+0.6
+0.8
+1
+2
+4
+neutrons
+neutrons
+pions
+pions
+protons
+protons
+
+===== Page 7 =====
+
+ 
+ 
+6 
+In figure 2 the normalized NIEL values are 
+plotted as function of energy. The data are taken from 
+[14-17]. More recent calculations can be found in [6],  
+[18]. NIEL scaling and its limitations is extensively 
+discussed in [6]. Regardless of possible deviations in 
+certain cases, the NIEL scaling should always be 
+applied as a first order approximation of  the damage 
+efficiency. Hence it is useful to display the NIEL 
+folded energy spectra for the most abundant particles 
+(neutrons and pions) in the LHC experiments, as 
+done for the SCT region of ATLAS in figure 3 [12]. 
+Finally the resulting equivalent fluences as function 
+of radius are shown in figure 4.  
+From figure 3 we conclude that reactor neutrons, 
+ranging mainly from 1 to 10 MeV, are adequate for 
+reliable damage tests and that indeed irradiations with 
+250 MeV pions, available at PSI-Villigen, should 
+result in similar damage as expected in LHC. Many 
+of the past and present irradiation tests have however 
+been performed using the 23 GeV proton beam at 
+CERN-PS. In view of reliable predictions for the 
+LHC performance it is therefore reassuring that 
+damage results from 23 GeV proton and 250 MeV 
+pion irradiation agree pretty well, if proper NIEL 
+scaling is used. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 4. Hadron fluences expected in the ATLAS inner detector. 
+4.  Survey of damage results 
+4.1.   DOFZ technology 
+The key idea of the RD48 strategy implied that 
+the  radiation tolerance of silicon can be improved by 
+adequate defect engineering. Defect engineering 
+involves the deliberate addition of impurities in order 
+to reduce the damage induced formation of 
+electrically active defects. Based on early attempts at 
+the Instrumentation Division of BNL [19], RD48 
+relied on carbon and oxygen as the key ingredients 
+for reaching this goal [1]. A wide range of oxygen 
+and carbon concentrations had been investigated 
+using several different process technologies.  
+It was finally found that an oxygen enrichment 
+can best be achieved by a post-oxidation diffusion of 
+oxygen into the silicon bulk. This DOFZ process 
+(Diffusion Oxygenated Float Zone) has been 
+performed at temperatures between 1100 and 1200°C 
+and with durations between several hours and 10 
+days, reaching an oxygen concentration between 1 
+and 4.1017 O/cm³ (see also figure 23). 
+Practical applications are employing a diffusion at 
+1150°C for 24-72h. The O-concentration reached this 
+way is around 2.1017 O/cm³, see figure 5.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 5. Depth profiles of O-concentration for three different DOFZ 
+processes, from bottom: 24, 48, 72 h at 1150 ºC; in comparison: 
+Czochralski silicon; measured by SIMS [20, 21]. 
+It should be emphasized that the DOFZ process can 
+easily be included in the standard detector process 
+ 
+0
+10
+20
+30
+40
+50
+60
+R [cm]
+1012
+1013
+1014
+1015
+Φeq [cm-2] 
+total Φeq
+neutrons Φeq
+pions Φeq
+ 
+other charged
+hadrons Φeq
+SCT - barrel
+SCT - barrel
+Pixel
+Pixel
+3x1014cm-2
+3x1014cm-2
+SCT - barrel
+SCT - barrel
+Pixel
+Pixel
+0
+5.101
+102
+1.5.102
+2.102
+2.5.102
+depth [µm]
+1015
+5
+1016
+5
+1017
+5
+1018
+O-concentration [cm-3]
+Cz as grown
+Cz as grown
+DOFZ 72h/1150oC
+DOFZ 72h/1150oC
+DOFZ 48h/1150oC
+DOFZ 48h/1150oC
+DOFZ 24h/1150oC
+DOFZ 24h/1150oC
+O-concentration for DOFZ and Cz Si-wafers
+
+===== Page 8 =====
+
+ 
+ 
+7
+technology and had proven to be a most cost effective 
+technique. It was meanwhile successfully transferred 
+to several manufacturing companies, see [22] and is 
+e.g. employed in the design and processing of pixel 
+and microstrip detectors for the ATLAS experiment 
+[23]. 
+ 
+4.2.   bulk generation current 
+The damage induced increase of the bulk 
+generation current ∆I exhibits a quite simple 
+dependence on the irradiating particle type and 
+fluence. 
+If normalized to the sensitive volume V (best 
+defined by using a guard ring structure around the 
+diode 
+pad), 
+the 
+current 
+increase 
+is 
+strictly 
+proportional to the 1 MeV neutron equivalent fluence 
+Φeq (see section 3), as demonstrated in figure 6 [10]. 
+Therefore a “current related damage rate α” can be 
+defined by: 
+∆I/V = αּΦeq  
+(1) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 6. Damage induced bulk current as function of particle fluence 
+for different detector types. 
+The measured value of the reverse current 
+depends exponentially on the operating temperature 
+in a straight forward way and α-values are therefore 
+always normalized to 20°C. Details for this 
+normalization 
+and 
+the 
+temperature 
+dependent 
+beneficial annealing, depicted in figure 7, can be 
+found in [10, 24]. At any given temperature and  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 7. Annealing function of current related damage parameter α 
+for standard (solid line) and DOFZ (dots) silicon detectors. 
+annealing time the damage rate α, if temperature 
+normalized, is a universal constant, not depending on 
+the material type (n- or p-type, FZ, epi or Cz silicon, 
+resistivity), or irradiating particles (neutrons, protons, 
+pions). Therefore α is often used to reliably monitor 
+the accumulated particle fluence. A recommendation 
+for this task is its measurement after an annealing of 
+80 min at 60°C. In this situation α is independent of 
+the detailed history of the actual irradiation. The 
+ROSE adapted value is: α80/60 = 4.0.10-17 A/cm. For 
+an annealing temperature of 80°C the same value 
+would be reached after an annealing time of ~10 
+minutes [10, 25].  
+It should be emphasized that the  bulk current 
+increase and its annealing function follow strictly the 
+NIEL scaling. This and the observation, that the large 
+current values cannot be explained by any known 
+discrete point defects led to the assumption of a 
+cluster related effect. The correlation with the 
+enhanced density of double vacancies in clusters as 
+observed in [25] and a possible interstate charge 
+transfer mechanism, as proposed in [26], are likely 
+explanations.     
+4.3.   effective doping and depletion voltage 
+The depletion voltage Vdep, necessary to fully 
+extend the electric field throughout the depth d of the 
+detector (asymmetric junction) is related with the 
+effective doping concentration Neff of the silicon bulk  
+ 
+1011
+1012
+1013
+1014
+1015
+Φeq [cm-2]
+10-6
+10-5
+10-4
+10-3
+10-2
+10-1
+∆I / V   [A/cm3]
+n-type FZ - 7 to 25 KΩcm
+n-type FZ - 7 to 25 KΩcm
+n-type FZ - 7 KΩcm
+n-type FZ - 7 KΩcm
+n-type FZ - 4 KΩcm
+n-type FZ - 4 KΩcm
+n-type FZ - 3 KΩcm
+n-type FZ - 3 KΩcm
+n-type FZ - 780 Ωcm
+n-type FZ - 780 Ωcm
+n-type FZ - 410 Ωcm
+n-type FZ - 410 Ωcm
+n-type FZ - 130 Ωcm
+n-type FZ - 130 Ωcm
+n-type FZ - 110 Ωcm
+n-type FZ - 110 Ωcm
+n-type CZ - 140 Ωcm
+n-type CZ - 140 Ωcm
+p-type EPI - 2 and 4 KΩcm
+p-type EPI - 2 and 4 KΩcm
+p-type EPI - 380 Ωcm
+p-type EPI - 380 Ωcm
+100
+5 101
+5 102
+5 103
+5 104
+5 105
+annealing time at 60oC [minutes]
+0
+2.10-17
+4.10-17
+6.10-17
+α(t)
+0
+2.10-17
+4.10-17
+6.10-17
+oxygen enriched silicon [O] = 2.1017 cm-3
+oxygen enriched silicon [O] = 2.1017 cm-3
+parameterisation for standard silicon 
+parameterisation for standard silicon 
+
+===== Page 9 =====
+
+ 
+ 
+8 
+                                                                             
+by 
+Vdep = (q0/2εε0)|Neff|d² 
+(2) 
+This equation holds not only for the original ntype silicon (donor doped) but also after severe 
+irradiation when the effective doping concentration 
+changes its sign by increased generation of “acceptor 
+like” defects. In any case one can describe the change 
+of the depletion voltage by the related change in |Neff| 
+= |Nd – Na| with Nd and Na as the positively charged 
+donor and negatively charged acceptor concentration. 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 8.  Change of the effective doping concentration in standard 
+silicon, as measured immediately after neutron irradiation. 
+The result of a first systematic study of the 
+extremely large change of  |Neff| as measured 
+immediately after irradiation of  standard silicon 
+detectors is depicted in  figure 8 [8]. The not tolerable 
+increase of the needed depletion voltage after “type 
+inversion” had then been the major impact for 
+radiation hardening. 
+ 
+4.3.1.   CERN-scenario measurements 
+In real applicational scenarios damage induced 
+“immediate” changes of Neff  as displayed in figure 8 
+will 
+always 
+be 
+connected 
+with 
+subsequent 
+“annealing” effects. It was therefore found useful to 
+devise an almost online possibility for rapidly 
+comparing the radiation tolerance between different 
+materials, taking the yearly expected annealing into 
+account. The so called CERN-scenario experiments 
+consist of consecutive irradiation steps with a short 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 9. Influence of  carbon and oxygen enrichment to changes of 
+the effective doping concentration after proton irradiation. 
+term annealing in between [27]. The annealing steps 
+(4 minutes at 80°C) are chosen such that the observed 
+change in Neff corresponds to what would be expected 
+after about 10 days at 20°C. Thus the operational 
+LHC scenario can be approximated this way. The 
+chosen annealing time corresponds also to the 
+minimum of the annealing curve as measured for 
+80ºC and is therefore closely related to the “stable 
+component” of the change in Neff  (see below). 
+Figure 9 shows a comparison between standard, 
+carbon- and oxygen enriched silicon as irradiated by 
+23 GeV protons at the CERN PS irradiation facility 
+[27]. It is clearly seen, that the O-enrichment reduces 
+the change in Neff and likewise in the depletion 
+voltage considerably to about 1/3 of that for standard 
+silicon while carbon-enrichment proves to have an 
+adverse effect. However, although pion and proton 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 10.   Particle dependance of radiation damage for standard and 
+oxygenated silicon detectors. 
+0
+1
+2
+3
+4
+5
+Φ24GeV/c proton [1014 cm-2]
+0
+2
+4
+6
+8
+10
+|Neff|  [1012cm-3]
+100
+200
+300
+400
+500
+600
+Vdep [V] (300 µm)
+Carbon-enriched (P503)
+Carbonated
+Standard (P51)
+Standard
+O-diffusion 24 hours (P52)
+Oxygenated
+O-diffusion 48 hours (P54)
+O-diffusion 72 hours (P56)
+10-1
+100
+101
+102
+103
+Φeq  [ 1012 cm-2 ]
+1
+5
+10
+50
+100
+500
+1000
+5000
+Udep [V]  (d = 300µm)
+10-1
+100
+101
+102
+103
+| Neff |  [ 1011 cm-3 ] 
+≈ 600 V
+≈ 600 V
+1014cm-2
+1014cm-2
+"p - type"
+"p - type"
+type inversion
+type inversion
+n - type
+n - type
+[Data from R. Wunstorf 92]
+0
+0.5
+1
+1.5
+2
+2.5
+3
+3.5
+Φeq [1014cm-2]
+1
+2
+3
+4
+5
+6
+7
+|Neff| [1012 cm-3]
+100
+200
+300
+400
+Vdep [V]   (300µm)
+neutrons
+neutrons
+neutrons
+neutrons
+pions
+pions
+protons
+protons
+pions
+pions
+protons
+protons
+oxygen rich FZ                  
+standard FZ
+standard FZ
+
+===== Page 10 =====
+
+ 
+ 
+9
+irradiation exhibit the same superiority of DOFZ 
+material, neutron damage does not result in a similar 
+improvement, see figure 10 [27]. This discrepancy 
+with the simple NIEL scaling assumption (section 3) 
+is often been referred to as the “p-n-puzzle”. A 
+discussion  of this point will be given in section 4.5.1. 
+4.3.2. Annealing experiments and modeling 
+As already mentioned, the CERN scenario tests 
+allow only the measurement of one relevant damage 
+parameter,  namely the change of the effective doping 
+concentration around the minimum of the annealing 
+function. A different but much more time consuming 
+approach, introduced by the Hamburg group, uses a 
+set of diodes which are irradiated individually with 
+different fluences and are then subjected to full 
+annealing cycles at an elevated temperature for 
+accelerating the annealing kinetics (see [13] and 
+literature cited there). The result of such an annealing 
+experiment is shown in figure 11. ∆Neff  is the 
+damage induced change in the effective doping 
+concentration: 
+∆Neff(Φeq, t(Ta)) = Neff,0 -Neff(Φeq, t(Ta)) 
+(3) 
+As function of the equivalent fluence Φeq and the 
+annealing time t at temperature T ∆Neff  can be 
+described as: 
+∆Neff = NA(Φeq, t(Ta)) + NC(Φeq) + NY(Φeq, t(Ta)) (4) 
+∆Neff  consists of three components, a short term 
+beneficial annealing NA, a stable damage part NC and 
+the reverse annealing component NY. Both time 
+constants for the beneficial as well as reverse 
+annealing depend strongly on the temperature. A 
+more detailed discussion can be found in [10, 13]. 
+Recent results for the stable damage component NC 
+have shown that there is no pronounced difference 
+between a moderate 24 h and an enlarged 72 h 
+oxygen diffusion and in fact the improvement with 
+respect to standard material is also only marginal as 
+to be seen in figure 12 [20]. This surprising effect 
+will be further discussed in section 4.6. 
+A much more general behavior regarding the 
+DOFZ benefits is seen for the reverse annealing 
+amplitude. Standard silicon reveals an almost linear 
+behavior of the reverse annealing amplitude NY with 
+fluence while DOFZ silicon shows strong saturation  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 12. Stable damage related Neff in minimum of annealing curve 
+after PS-p-irradiation for standard and DOFZ silicon. 
+at large fluences. This effect as well as an observed 
+increased time constant [1, 20] offer an additional 
+safety margin for detectors kept at room temperatures 
+every year during maintenance periods. As shown in 
+[20] and documented in figure 13, the difference 
+between 24 and 72 h O-diffusion is again not very 
+large. It is however interesting that there are, contrary 
+to previous investigations, also some benefits after 
+neutron irradiation.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 13. Reverse annealing amplitude as function of equivalent 
+flunence after n- (open symbols) and PS-p-irradiation (filled 
+symbols). For neutrons the data are normalized to those for protons 
+for the standard process [20]. 
+With all parameters of eq. (4) it is then possible to 
+calculate the expected change of the necessary 
+depletion voltage throughout prolonged operation in 
+any given hadron radiation environment. Such 
+projections on the 10 year LHC operational scenario 
+0
+1014
+2.1014
+3.1014
+4.1014
+5.1014
+6.1014
+7.1014
+Φeq [cm-2]         
+0
+1012
+2.1012
+3.1012
+4.1012
+5.1012
+Neff [1/cm3]        
+0
+100
+200
+300
+Vdep [V] for d = 280 µm
+standard process
+standard process
+DOFZ 24h/1150oC
+DOFZ 24h/1150oC
+DOFZ 72h/1150oC
+DOFZ 72h/1150oC
+Neff after p-irradiation, 8min/80C anneal
+0
+1014
+2.1014
+3.1014
+4.1014
+5.1014
+6.1014
+7.1014
+Φeq.[cm-2]         
+0
+1013
+2.1013
+NY [1/cm3]        
+0
+200
+400
+600
+800
+1000
+∆Vdep [V] for d = 280 µm
+standard process
+standard process
+DOFZ 24h/1150C, p-irrad.
+DOFZ 24h/1150C, p-irrad.
+DOFZ 72h/1150C, p-irrad.
+DOFZ 72h/1150C, p-irrad.
+DOFZ 24h/1150oC, n-irrad
+DOFZ 24h/1150oC, n-irrad
+comparison between standard and oxygenated FZ <111>
+
+===== Page 11 =====
+
+ 
+ 
+10
+are finally shown in figure 14. It is obvious that only 
+the DOFZ method guarantees the required lifetime 
+expectancy of 10 years for the innermost pixel layer 
+of the ATLAS experiment (see also [23]). It should 
+however be emphasized that the damage projection 
+shown here is based on the parameters listed in [1]  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 14.  Damage projections for the ATLAS pixel detector at          
+r = 4cm (B-layer) as an example. Curves from bottom to top: 
+yearly maintenance period at 20ºC: 14, 30 and 60 days [1]. 
+thus may underestimate the beneficial DOFZ effect 
+according to recent results as shown in figure 13 (see 
+also [20]). The actual values seem also to depend on 
+the individual manufacturing process (see section 
+4.5). It should also be mentioned that annealing 
+experiments have to include a long known bi-stable 
+effect [28]. Thus final conclusions can only be drawn 
+after some proper quality assurance check of  the 
+actual detectors. 
+4.4. Charge collection efficiency 
+For any application of silicon detectors in vertex 
+detectors the prime focus is on the operating voltage 
+needed to guarantee a sufficiently good S/N ratio for 
+detection of mip’s. The signal noise is controlled by 
+operating the detectors at low temperature (–10°C). 
+Such, a good charge collection efficiency is then the 
+prime objective. For best performance full depletion 
+of the detector thickness is needed and therefore the 
+considerations outlined in section 4.3 are of great 
+importance.  However, in order to keep trapping and 
+ballistic deficit effects low, the operating voltage has 
+to be even larger than the depletion voltage.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 15.  Annealing curves as measured from charge collection 
+(open symbols) and C/V-measurements (closed ones). 
+Measurements of charge collection in test diodes 
+have been performed with β-sources and long 
+wavelength infrared laser light pulses, which ensure a 
+near mip like charge track generation throughout the 
+depth of the device (see e.g. [29]). Other experiments 
+have used short wavelength IR laser beams 
+illuminating the test diode from either p+ or n+ side 
+for investigation of the electron resp. hole dominated 
+pulse signals separately. This allows the study of 
+charge carrier trapping effects and these results could 
+then again be included in model calculations for LHC 
+or other applications [30-33].  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 16.  Time resolved diode signals for 1 nsec IR-laser injection 
+(λ=830 nm) on p+-electrode, after 1.65·1014 p/cm² irradiation [1]. 
+The analysis of charge collection as function of 
+bias voltage should, similar to capacitance/voltage 
+measurements, also reveal the depletion voltage. It is 
+reassuring that in fact both techniques have led to the 
+same results (figure 15) [1]. Examples of time 
+resolved signal pulse shapes are shown in figure 16 
+[1]. The double peaking is attributed to a double 
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+time [years]
+500
+1000
+1500
+2000
+Vdep (200µm) [V]
+500
+1000
+1500
+2000
+oxygenated silicon
+standard silicon
+operation voltage: 600V
+operation voltage: 600V
+100
+101
+102
+103
+104
+annealing time  at 800C [min]
+0
+2.1012
+4.1012
+6.1012
+8.1012
+1013
+∆Neff [1/cm3]
+NC=2.75e12 cm-3, NY=6.93e12 cm-3
+NC=2.75e12 cm-3, NY=6.93e12 cm-3
+3.91.1014 p/cm2
+3.91.1014 p/cm2
+NC=2.28e12 cm-3, NY=4.44e12 cm-3
+NC=2.28e12 cm-3, NY=4.44e12 cm-3
+1.65.1014 p/cm2
+1.65.1014 p/cm2
+NC=1.95e12 cm-3, NY=2.37e12 cm-3
+NC=1.95e12 cm-3, NY=2.37e12 cm-3
+8.49.1013 p/cm2
+8.49.1013 p/cm2
+NC=1.25e12 cm-3, NY=1.65e12 cm-3
+NC=1.25e12 cm-3, NY=1.65e12 cm-3
+4.03.1013 p/cm2
+4.03.1013 p/cm2
+0
+10
+20
+30
+40
+50
+60
+time [ ns ]
+0
+10
+20
+30
+40
+current [arb. units]
+35 V
+35 V
+55 V → V dep
+55 V → V dep
+125 V
+125 V
+Φ p=1.65 10 14 cm -2
+Φ p=1.65 10 14 cm -2
+80 0C / 8 min
+80 0C / 8 min
+
+===== Page 12 =====
+
+ 
+ 
+11
+junction structure of the kind p+npn+. This is a 
+generally  observed effect and still needs its complete 
+explanation, a likely explanation as also other details 
+of the signal shape are discussed in [34, 35]. 
+The application of charge collection results as 
+obtained with test diodes to segmented detectors is 
+not straight forward but incorporates  a more complex 
+calculation involving the geometrical structure of the 
+detector by using a “weighting field”. This point had 
+long been neglected and only recently caught more 
+attention, for detailed discussion see [36]. 
+ 
+4.5. Microscopic understanding of damage effects 
+Systematic studies for defect engineering are 
+finally only possible if the correlation between defect 
+formation and the detector performance would be 
+known. 
+Numerous 
+investigations 
+have 
+been 
+undertaken for characterization of damage induced 
+defects in detector grade silicon, especially using 
+DLTS (Deep Level Transient Spectroscopy) and TSC 
+(Thermally Stimulated Current) techniques, showing 
+a lot of relevant results [9, 10, 25, 37-40]. A 
+promising correlation has been reported between the 
+cluster formation as visible in the double vacancy 
+defect and the damage related current [25]. Other 
+studies have given a lot of detailed information of 
+defect kinetics visible in the changes during 
+prolonged annealing or as function of temperature 
+(see e.g. [9, 10, 37]). However despite many partially 
+useful attempts it was so far not possible to 
+quantitatively fully understand the (macroscopic) 
+detector 
+performance 
+on 
+the 
+basis 
+of 
+such 
+(microscopic) data. In the following two examples 
+are given, which are regarded to be promising in this 
+respect. 
+4.5.1. p-n puzzle, violation of NIEL scaling 
+As outlined in section 3, originally all damage 
+effects had been assumed to be simply proportional to 
+the displacement damage cross section and hence to 
+obey a universal behavior  not depending on the 
+particle type and energy if NIEL scaling is applied. 
+NIEL scaling is still valid for the damage induced 
+bulk generation current of high energy hadron 
+irradiated detectors (section 4.2) but is strongly 
+violated for the change of the effective doping 
+concentration (see section 3, figure 10 and 13).  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 17. Generation rates for E2 and E4 as obtained from neutron, 
+pion and proton irradiation (see text): g(E2)/g(E4) = 0.6 (5 MeV 
+neutrons), 1.0 (192 MeV pions and 23 GeV protons) and 1.3 (27 
+MeV protons). 
+Although this so called proton-neutron puzzle is 
+still not completely understood, the following 
+remarks may be useful. Figure 17 shows the 
+experimental results of point defect generation rates 
+after n-, p- and pion irradiation [25].  The double 
+vacancy defect E4 is surely related to cluster 
+formation while E2 is composed of the A-center 
+(VOi) and a carbon complex (CiCs), both being 
+discrete point defects. Therefore the ratio of 
+g(E2)/g(E4) measures the point defect generation 
+with respect to cluster formation.  These findings 
+may be compared with the simulation results shown 
+in figure 18 [6].  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 18. Initial distribution of vacancies produced by 24GeV/c 
+protons (left) and 1 MeV neutrons (right), corresponding to a 
+fluence of 1·1014cm-2. Simulation result from Huhtinen [6]. 
+E2              E3               E4
+trap number
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+introduction rate [ cm-1   ]
+5.3 MeV neutrons
+5.3 MeV neutrons
+192 MeV pions
+192 MeV pions
+23 GeV protons
+23 GeV protons
+VV=/-
+VV=/-
+27 MeV protons
+27 MeV protons
+VOi + CiCs
+VOi + CiCs
+VV-/0 + ?
+VV-/0 + ?
+
+===== Page 13 =====
+
+ 
+ 
+12
+1 MeV neutron damage is obviously dominated 
+by 
+the 
+production 
+of 
+cluster 
+like 
+vacancy 
+agglomerates with typical dimensions of 100Å or less 
+while high energy protons lead to an additional 
+concentration 
+of 
+isolated 
+and 
+homogeneously 
+distributed vacancies and interstitials, responsible for 
+point defects. The p-n-puzzle is just a result of the 
+different primary interactions, which are in the case 
+of neutrons caused by hard core nuclear scattering 
+with energy transfers likely larger than the cluster 
+formation threshold of 5 keV. For charged hadrons 
+the Coulomb interaction prevails leading to much 
+lower recoil energies below the cluster threshold thus  
+responsible for more point defects. This clear picture 
+may have to be changed if high energy pion or proton 
+damage would be compared to that produced by 
+neutrons with much larger energies than those 
+accessible in reactors. In fact the neutron energy 
+spectrum in the inner detector of LHC experiments 
+covers a range up to about 100 MeV (figure 3). At 
+this energy secondary nuclear reaction products as  
+e.g. α-particles, protons and even those with larger 
+mass could contribute to low energy recoils due to 
+their Coulomb interaction much more than resulting 
+from 1 MeV neutrons (elastic nuclear scattering 
+only). Thus the p-n-puzzle could  indeed be less 
+pronounced if damage studies would be performed 
+with higher energetic neutrons. As a result, if the 
+DOFZ related benefits are closely related to point 
+defect formation as it presently looks (see next 
+section), the actual neutron damage for the tracking 
+detectors might also be reduced by using DOFZ 
+silicon. 
+4.5.2. microscopic picture of gamma induced damage 
+Although a lot of microscopic investigations on 
+defect generation induced by hadron irradiation had 
+been performed, it has yet not been possible to relate 
+the macroscopic change in Neff to any such defects in 
+a quantitative way. The long suspected candidate 
+which could explain also the improvement obtained 
+by oxygen enrichment is the acceptor like V2Ocenter, a deep defect in the middle of the forbidden 
+gap [41]. In contrast to hadron irradiation low energy 
+gamma damage leads only to the generation of point 
+defects revealing a much cleaner picture not 
+complicated by cluster effects. Co-60 γ-irradiation 
+studies have shown that the improvement obtained 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 19.  DLTS spectra  showing a close to midgap level at Ea=0.54 
+eV (V2O) in standard silicon and suppressed in DOFZ [42, 43]. 
+with DOFZ silicon is in this case much more 
+pronounced than observed after hadron irradiation 
+[42]. Only recently a defect had been measured by 
+DLTS and TSC techniques very likely to be 
+identified as the  long searched V2O center [43, 44]. 
+Its generation is largely suppressed in DOFZ silicon, 
+see figure 19. Effective doping concentration does 
+not show any type inversion as seen in standard 
+material, see figure 20. Using the analyzed defect 
+parameters as function of the gamma dose it was then 
+shown that both the change in the effective doping 
+concentration and reverse current of standard silicon 
+detectors can largely be attributed to the generation of 
+the V2O center [45]. This result can rightfully be 
+regarded as an absolute first in the long and 
+sometimes frustrating search for an understanding of 
+macroscopic damage effects by defect analysis. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+ 
+Fig. 20. Effective doping concentration as function of gamma dose 
+for standard (closed) and DOFZ silicon  (open symbols) [43]. 
+220
+230
+240
+250
+260
+270
+280
+290
+300
+-10
+-8
+-6
+-4
+-2
+0
+TW = 200 ms
+IE
+42.55 Mrad dose
+ standard FZ
+ DOFZ
+DLTFS signal - b1 coef. (fF)
+Temperature (K)
+0
+200
+400
+600
+800
+1000
+dose [Mrad]
+0
+50
+100
+150
+Vdep [V]
+0
+5
+10
+15
+20
+25
+Neff [1011 cm-3]
+CA: FZ standard
+CA: FZ standard
+CB: DOFZ 24 h/11500C
+CB: DOFZ 24 h/11500C
+CC: DOFZ 48 h/11500C
+CC: DOFZ 48 h/11500C
+CD: DOFZ 72 h/11500C
+CD: DOFZ 72 h/11500C
+
+===== Page 14 =====
+
+ 
+ 
+13
+4.6.   Open questions 
+Although it looks that the final results have led to 
+an almost universal recipe for improving the radiation 
+tolerance in a predictable way and a possibility to 
+perform projections to any operational scenario, a 
+number of problems remain still open.  
+One of the most asked questions is: how much 
+oxygen is enough? New results suggest that the main 
+positive effect is already achievable with a diffusion 
+for 24 hours at 1150°C ([20], see figures 12 and 13). 
+However such a short diffusion process leads to a 
+pronounced non-homogeneity in the depth profile of 
+the O-concentration (see figure 5), the effect of which 
+is not yet known. A detailed comparison with the 
+BNL HTLT (High Temperature Long Time) DOFZ 
+process resulting in a homogeneous oxygen depth 
+profile would be very interesting [46]. 
+Most test damage experiments have been 
+performed with irradiations of diodes at room 
+temperature and  unbiased and hence much different 
+from the actual situation. Only in a few cases the real 
+operational conditions (-10ºC and under bias) had 
+been included. Examples are reported e.g. in [47], 
+[48]. More systematic studies are needed, especially 
+with proton resp. pion irradiation. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 21.  Stable damage component for DOFZ detectors from 
+different material, manufactured by ST Microelectronics (Italy). 
+A worrying result of principal importance is 
+illustrated in figures 21 and 22 [49]. CERN scenario 
+experiments with different material have shown that 
+the “stable damage” component as function of 
+fluence varies widely for standard FZ silicon (figure 
+21), whereas for DOFZ silicon  the variations are 
+small (figure 22). The results, shown here only for 
+diodes of one manufacturer, are much more generally  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 22. Same as in Fig. 21 but for various DOFZ silicon. 
+Valid, including different sources. A likely reason for 
+the effect could be a different carbon content. 
+Reliable material characterization before and after 
+processing will be essential. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 23.  Depth profiles for oxygen enrichment obtained by 
+different DOFZ processes at various manufacturers: ST: ST 
+Microelectronics (Italy), SINTEF (Norway), CiS (Germany). The 
+bottom 2 curves are for a standard oxidation process, all others 
+diffusion oxygenated as labelled. 
+Another riddle is displayed in figures 23 and 24 
+[50]. Here the correlation between the oxygen 
+enrichment and its results for the saturation of the 
+reverse annealing is demonstrated. In general one 
+observes the expected effect: a larger O-concentration 
+leads to lower reverse annealing amplitudes. E.g. the  
+standard ST Microelectronics process (bottom most 
+curve in figure 23) reveals the lowest Oconcentration and shows the largest NY values (top 
+0
+5.101
+102
+1.5.1
+1016
+5
+1017
+5
+1018
+O-concentration [atoms/cm3)
+5
+5
+ST 30h/1200oC
+ST 30h/1200oC
+SINTEF
+SINTEF
+80h/1150oC
+80h/1150oC
+72h/1150oC
+72h/1150oC
+CiS 16h/1150oC
+CiS 16h/1150oC
+ST
+ST
+SINTEF
+SINTEF
+SIMS profiles of O-concentration 
+DOFZ-process
+DOFZ-process
+standard
+standard
+process
+process
+DOFZ-process
+DOFZ-process
+standard
+standard
+process
+process
+0
+2
+4
+6
+8
+10
+Φproton [1014 cm-2]
+0
+2
+4
+6
+8
+10
+|Neff|  [1012cm-3]
+100
+200
+300
+400
+500
+600
+700
+Vdep [V] (300 µm)
+<111> 15 kΩcm W339
+standard FZ silicon
+<111> 2 kΩcm  W336 
+<111> 1 kΩcm  W333
+<100> 2 kΩcm  W330
+<100> 1 kΩcm  W335
+0
+2
+4
+6
+8
+10
+Φproton [1014 cm-2]
+0
+2
+4
+6
+8
+10
+|Neff|  [1012cm-3]
+100
+200
+300
+400
+500
+600
+700
+Vdep [V] (300 µm)
+<111> 15 kΩcm W324
+DOFZ silicon
+<111> 2 kΩcm W316
+<111>
+<100> 2.2 kΩcm W311
+<100> 2 kΩcm W320
+<100>
+
+===== Page 15 =====
+
+ 
+ 
+14
+curve in figure 24). Also the ST-process with the 
+largest O-concentration (30h at 1200°C, top curve in 
+figure 23) results in the best reverse annealing 
+performance (bottom most curve in figure 24). 
+Although the CiS process (16h at 1150°C, 3rd curve 
+from bottom in figure 23) and the SINTEF process 
+(72 resp. 80h at 1150°C, 4th and 5th from bottom in 
+figure 23) show the expected difference in the Oconcentration , the reverse annealing obtained with 
+the CiS diodes (2nd from bottom in figure 24) is better 
+than that for the SINTEF process (3rd and 4th from 
+bottom in figure 24). This quite confusing result may 
+be understood by differences induced from the 
+individual process. Characterization of the material 
+after processing is therefore urgently needed, an 
+example is given in [51]. 
+5. Recent studies for improvements  
+The normal oxygen enrichment via the DOFZ 
+process makes use of the diffusion of oxygen present 
+as single atoms on interstial lattice sites. A 
+modification had been introduced by the Brunel 
+group generating oxygen dimers (2 closely related 
+interstitial O-atoms). First damage studies with such 
+material have shown promising results with evidence 
+for the reduction of cluster related damage [52]. 
+ The BNL group, using their HTLT technique 
+have additionally doped the material with thermal 
+donors. An appreciable improvement had been 
+reported showing no increase of the stable damage 
+component of Neff at proton fluences above 2⋅1014 
+p/cm² [46]. 
+Finally the Hamburg group had performed 
+damage tests with diodes fabricated from high 
+resistivity  Czochralski silicon, which has an as 
+grown O-concentration of 8⋅1017/cm³ (see also figure 
+5), much larger than possible with any DOFZ 
+process. First damage experiments with pion and 
+proton irradiation have shown no type inversion after 
+large fluences, an effect which is in contrast to all FZ 
+results and could indeed be very profitable for 
+detector applications [20]. 
+6. Conclusions 
+• Diffusion oxygenation of float zone silicon 
+(DOFZ) has proven to be a powerful technique for 
+reducing damage effects in silicon. Model 
+parameterization of damage effects allows the 
+calculation of detector performance for long term 
+LHC operation.  
+• The DOFZ method had been successfully 
+transferred to several detector manufacturers. It 
+will be used for part of LHC strip and pixel 
+detectors.  
+• There are still a number of open questions 
+regarding the ROSE results. Among them are:  
+ 
+Optimization of the O-enrichment, a possible 
+dependence of damage effects on the initial silicon 
+material and on the individual process technology.  
+• Recent updates of ROSE results have shown that 
+the DOFZ process reveals also benefits for neutron 
+irradiation. It is argued that these will even be 
+larger if tests would extended to higher neutron 
+energies, relevant for the LHC tracking area. 
+• An absolute first in understanding the diode 
+performance on a microscopic level is reported for 
+Co-60 gamma irradiated silicon. 
+• New studies have shown further improvements for 
+the radiation tolerance of silicon by oxygen 
+dimerization, dedicated doping with thermal 
+donors and by replacing float zone with 
+Czochralski grown silicon.   
+• Finally it should be mentioned that a new 
+international collaboration had been initiated and 
+approved by CERN as RD50, which will focus on 
+the development of radiation hard semiconductor 
+devices for very high luminosity colliders [53]. 
+ 
+Acknowledgements 
+The author wishes to express his thanks to the 
+whole ROSE community for their numerous 
+contributions, which have been reviewed in this 
+report. I am very grateful to M. Moll (CERN) for 
+many comments and help in collecting the presented 
+
+===== Page 16 =====
+
+ 
+ 
+15
+material. The most recent results have been obtained 
+in collaboration with CiS (Erfurt, Germany) under 
+contract CiS-SRD 642/06/00. Finally many thanks 
+are especially due to E. Fretwurst, I. Pintilie, J. Stahl 
+and the whole Hamburg group for many invaluable 
+discussions and untiring technical assistance.  
+References 
+[1]   RD48 Status report, CERN/LHCC 2000-009, December 1999; 
+G. Lindström et al.(ROSE), Nucl. Instr. and Meth. A 466 
+(2001) 308; The ROSE Collaboration in: 
+http://rd48.web.cern.ch/RD48 
+[2]   CERN-RD39 in: http://rd39.web.cern.ch/RD39 
+[3]   S. Parker et al.; Performance of 3D architectured silicon 
+sensors after severe proton irradiation, to be publ. in IEEE 
+TNS and refernces cited there. 
+[4]   ROSE publications, status reports, technical reports and 
+workshops, in: http://rd48.web.cern.ch/RD48 
+[5]   J. Wüstenfeld, Ph.D. thesis, Dortmund  2001, Internal Report 
+UniDo PH-E4 01-06, August 2001, see also ROSE/TN/200005 in [4] 
+[6]   M. Huhtinen, Simulation of non-ionizing energy loss and 
+defect formation in silicon, Nucl. Instr. And Meth. A, to be 
+publ., see also ROSE/TN/2001-02 in [4] 
+[7]   S.J. Watts in: 5th ROSE workshop (2000) 452, CERN/LEB 
+2000-005; Radiation Effects in Silicon Detectors, 1st 
+ENDEASD workshop April 21-22 (1999) 93  
+[8]   R. Wunstorf, Ph.D. Thesis, University of Hamburg 1992, 
+DESY FH1K-92-01, 1992 
+[9]   H. Feick, Ph.D. thesis, University of Hamburg 1997, DESY 
+F35D-97-08, 1997 
+[10]   M. Moll, Ph.D. thesis, Hamburg University, 1999, DESYTHESIS-1999-040, ISSN-1435-8085 
+[11]   ASTM E722-85,  ASTM E722-93 (revised)1993  
+[12] A. Vasilescu and G. Lindström, ROSE TN/2000-02 in [4] 
+[13] G. Lindström et al., Nucl. Instr. and Meth. A 426 (1999) 1 
+[14] P.J. Griffin et al., SAND92-0094 (Sandia Natl. Lab. 93) and 
+private communication 
+[15] A. Konobeyev, J. Nucl. Mater. 186 (1992) 117 
+[16] M. Huhtinen and P.A. Aarnio, Nucl. Instr. and Meth. A335  
+(1993) 580 and HU-SEFT-R-1993-02 (1993) 
+[17] G.P. Summers et al., IEEE NS40 (1993) 1372 
+[18] A. Akkerman et al., Radiat. Phys. Chem. 62 (2001) 301 
+[19] Z.Li and H.W. Kraner, BNL-46198, J. Electron. Mater. 21 (7) 
+(1992) 701 
+[20] E. Fretwurst et al., Developments for radiation hard silicon 
+detectors; 4th International Conference Radiation Effects on 
+Semiconductor Materials, Detectors and Devices, July 10-12, 
+Florence, Italy, to be publ. In Nucl. Instr. and Meth. A 
+[21] A. Barcz et al., Extremely deep SIMS profiling : Oxygen in 
+silicon, SIMS XIII conference, Nov. 2001, Nara (Japan), to be 
+publ. in Applied Surface Science 
+[22] SINTEF (Norway), CiS (Germany), STMicroelectronics 
+(Italy), IMB-CNM (Spain); see also:  L. Fonseca et al., 
+Microelectronics Reliability Vol 40 (4-5) (2000) 791 
+[23] R. Wunstorf, Nucl. Instr. and Meth. A 466 (2001) 327 
+[24] M. Moll et al., Nucl. Instr. and Meth. A 426 (1999) 87 
+[25] M. Moll et al., Nucl. Instr. and Meth. B 186 (2002) 100  
+[26] B. C. MacEvoy et al., Physica B: Condensed Matter 273 
+(1999) 1045; F. Moscatelli et al., Nucl. Instr. and Meth. B 186 
+(2002) 171 
+[27] A. Ruzin et al., Nucl. Instr. and Meth. A 447 (2000) 116 
+[28] M. Moll et al., Nucl. Phys. B 44 (Proc. Suppl.) (1995) 468 
+[29] G .L. Casse et al., Nucl. Instr. and Meth. A 426 (1999) 140  
+[30] G. L. Casse et al., Nucl. Instr. and Meth. A 466 (2001) 335 
+[31] E. Fretwurst et al., Nucl. Instr. and  Meth. A 388 (1997) 356 
+[32] T.J. Brodbeck et al., Nucl. Instr. and Meth. A 455 (2000) 645 
+[33] G. Kramberger et al., Nucl. Instr. and Meth. A 476 (2002) 645 
+[34] V. Eremin et al., Nucl. Instr. and Meth. A 476 (2002) 537 
+[35] E. Verbitskaja, 6th ROSE workshop October 2000, 
+CERN/LEB 2000-06 (2000) 363 
+[36] G. Kramberger, Ph.D. thesis University of Ljubljana 2001 and 
+IEEE-TNS 49 (4) August 2002, to be published 
+[37] M. Moll et al., Nucl. Instr. and Meth. A 388 (1997) 335 
+[38] I. Pintilie et al., APL 78 (2001) 550  
+[39] M. Kuhnke et al., Nucl. Instr. and Meth. B 186 (2002) 144 
+[40] Z. Li et al., Nucl. Instr. and Meth. A 476 (2002) 628 
+[41] B. C. MacEvoy, Nucl. Instr. and Meth. A 388 (1997) 365 
+[42] Z. Li et al., Nucl. Instr. and Meth. A 461 (2001) 126 
+[43] I. Pintilie et al., Appl. Phys. Lett. 81, No 1 (2002) 165 
+[44] I. Pintilie et al., Preliminary results on defects induced by Co60 gamma irradiation in oxygenated and standard silicon, 
+conference contribution presented at the 4th International 
+Conference on Radiation Effects on Semiconductor Materials, 
+Detectors and Devices, July 10-12, Florence, Italy, to be publ. 
+in Nucl. Instr. and Meth. A 
+[45] E. Fretwurst et al., Bulk damage in standard and oxygen 
+enriched silicon detectors induced by Co-60 gamma 
+irradiation, conference contribution presented at the 4th 
+International Conference on Radiation Effects on 
+Semiconductor Materials, Detectors and Devices, July 10-12, 
+Florence, Italy, to be publ. in Nucl. Instr. and Meth. A 
+[46] Z. Li et al., Nucl. Instr. and Meth. A 461 (2001) 126 
+[47] F. Anghinolfi et al. (RD2 collaboration), Nucl. Instr. and 
+Meth. A 326 (1993) 365 
+[48] V. Cindro et al., Nucl. Instr. and Meth. A 476 (2002) 565 
+[49] M. Moll, private communication, data compiled from ROSE 
+results, see M. Moll, CERN Detector Seminar, 14-Sep-01 
+[50] G. Lindström et al., Nucl. Instr. and Meth. A 465 (2001) 60 
+[51] J. Stahl et al., Deep defect levels in standard and oxygen 
+enriched silicon before and after gamma irradiation, this 
+conference 
+[52] C. daVia and S. J. Watts, Nucl. Instr. and Meth. B 186 (2002) 
+111 
+[53] R&D proposal: Development of radiation hard semiconductor  
+devices for very high luminosity colliders, CERN report, 
+LHCC 2002-003/P6 (Feb. 2002) http://www.cern.ch/rd50/ 
+ 
+
+===== Page 17 =====
+
+ 
+ 
+16
+Deep defect levels in standard and oxygen enriched silicon 
+detectors before and after 60Co-γ- irradiation† 
+J.Stahl*, E.Fretwurst, G. Lindström, I. Pintiliex 
+Institute for Experimental Physics, Hamburg University, Germany 
+xNational Institute for Material Physics, Bucharest-Margurele, Romania 
+ 
+ 
+ 
+ 
+ 
+Abstract 
+Capacitance Deep Level Transient Spectroscopy (C-DLTS) measurements have been performed on standard and oxygen 
+doped silicon detectors manufactured from high resistivity n-type float zone material with <111> and <100> orientation. 
+Three different oxygen concentrations were achieved by the so-called DOFZ process (diffusion oxygenated float zone) 
+initiated by the CERN-RD48 (ROSE)-collaboration. Before the irradiation a material characterization has been performed. In 
+contrast to radiation damage by neutrons or high energy charged hadrons, were the bulk damage is dominated by a mixture of 
+clusters and point defects, the bulk damage caused by 60Co-γ-radiation is only due to the introduction of point defects. The 
+dominant electrically active defects which have been detected after 60Co-γ-irradiation by C-DLTS are the electron traps VOi, 
+CiCs, V2(=/-), V2(-/0) and the hole trap CiOi. The main difference between standard and oxygenated silicon at low dose values 
+can be seen in the introduction rate of CiCs compared to CiOi. For highly oxygenated silicon the introduction of CiCs is fully 
+suppressed, while the sum of the introduction rates g(CiCs) + g(CiOi) is independent on the oxygen concentration.  
+Keywords: radiation hardness; γ-irradiation, DLTS 
+_____________________________________________________________________________________________________ 
+ 
+ 
+——— 
+† Paper presented at 9th European Symposium on Semiconductor Detectors, Schloss Elmau, Germany, June 23-27, 2002, accepted for 
+publication in Nucl. Instr. and Meth. A 
+*Corresponding author. Tel.: 49-40-8998-4726; fax: 49-40-8998-2959; e-mail: joerg.stahl@desy.de  
+
+===== Page 18 =====
+
+ 
+ 
+17
+1. Introduction  
+The CERN RD48 (ROSE) [1,2] collaboration had 
+shown that oxygen enrichment of the silicon bulk 
+leads to a considerable decrease of damage effects, 
+induced primarily by charged hadrons and γirradiation.  But so far it had been shown, that the 
+observed changes of the macroscopic properties like 
+the change of the effective doping concentration as 
+well as the leakage current cannot be fully explained 
+by the dominant induced defects, which have been 
+investigated by DLTS-, TSC- and other methods    
+[3-6]. 
+In this work we report on DLTS-studies on 60Coγ- irradiated silicon detectors in order to avoid the 
+complications caused by the generation of clusters 
+and to search for possible defects, which might be 
+responsible for the observed changes in the 
+macroscopic properties.  
+2 Experimental procedures 
+2.1. DLTS 
+The measuring method, which has been mainly 
+used in this work, is the Capacitance-Deep-LevelTransient-Spectroscopy (C-DLTS), which was at first 
+introduced by D.V. Lang [7]. The principle of this 
+method is based on the temperature dependence of 
+the emission process of trapped charge carriers in 
+defect centers in the space charge region of a reverse 
+biased diode. For an isolated defect level the 
+emission process is an exponential function in time 
+with a single emission time constant and is measured 
+via the corresponding space charge capacitance 
+transient. In our DLTS-system a Fast Fourier 
+Transformation is applied to the measured transient 
+for data reduction and evaluation of the emission time 
+constant and trap concentration [8]. Performing a socalled 
+temperature 
+scan 
+(repetetion 
+of 
+the 
+measurement as function of temperature) the  
+determination of virtually all parameters associated 
+with traps like activation energy, capture cross 
+section, and trap concentration is possible. However 
+the application of this method is limited by the 
+requirement that the concentration of traps NT has to 
+be 
+small 
+compared 
+to 
+the 
+shallow 
+doping 
+concentration NS. This limit can be pushed to higher 
+trap 
+concentrations 
+by 
+using 
+the 
+ConstantCapacitance-DLTS (CC-DLTS) technique [9]. Here 
+the capacitance of the space charge region is kept 
+constant by using a feedback scheme in the bias 
+voltage-capacitance measurement system and the 
+change of the bias voltage in the feedback loop is the 
+DLTS-signal. 
+For DLTS peaks, which correspond to defect 
+levels with similar activation energies and capture 
+cross sections a special deconvolution technique, 
+developed by the company PhysTech [10] had been 
+used. 
+ In general the  CDLTS spectra had been obtained 
+with a time window of TW = 200 ms, a filling pulse 
+duration of tfill = 100 ms and a reverse bias of UR = 
+20 V. 
+  
+2.2 Material 
+The p+nn+ diodes investigated in this work are 
+manufactured from high resistivity (ρ=3-4 kΩcm) ntype float zone (FZ) silicon grown in the <111> and 
+<100> direction from Wacker. The processing and 
+oxygen enrichment has been performed by the 
+company CiS [11]. The oxygen doping was achieved 
+by diffusion for 24h, 48h and 72h at 1150°C in 
+nitrogen. This oxygenated material will be named 
+DOFZ while the standard material will be labeled as 
+STFZ. A detailed description of the material is given 
+in [12]. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 1 CDLTS measurements of electron and hole traps in an 
+oxygenated (24h) <100> sample before irradiation 
+
+===== Page 19 =====
+
+ 
+ 
+18
+2.3. Irradiation 
+Irradiations had been performed at the high 
+intensity 60Co-γ-source of the Brookhaven National 
+Laboratory (BNL) in the US at room temperature. 
+The samples were irradiated for this investigation in a 
+dose range from 0.2 Mrad up to 10 Mrad. 
+3. Experimental results 
+3.1. Defects before irradiation 
+A search for process-induced defects had been 
+performed before irradiation. Five different  defect 
+levels have been discovered in the material. 
+As an example figure 1 shows DLTS spectra for 
+electron and hole injection. The properties of these 
+defects are listed in table 1, their concentrations are 
+listed in table 2. 
+ 
+Table 1 Electric properties of the material defects 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Table 2 Concentration of material defects 
+  One of these defects is the so-called thermal double 
+donor TD. The introduction of TD's depends strongly 
+on the oxygen concentration [13]. As can be seen in 
+table 2 the amount of TD's  is correlated with the 
+oxygen content of the differently oxygenated devices, 
+but the concentrations in the material with <100> 
+orientation (CF-CH) are smaller compared to the 
+material with <111> orientation. There is no 
+measurable amount of thermal donors observed in 
+STFZ-material (Wafers CA and CE).  
+  The other four defects are so far unknown. The 
+electron trap E(120) appears only in oxygenated 
+<100> material. This defect has an activation energy 
+and capture cross section which are close to the 
+values of the double charged state of the divacancy 
+V2(=/-) as will be shown later. 
+   The defect E(240) is a very deep level and from its 
+properties this level is mainly responsible for the 
+measured generation current. 
+   H(160) is a hole trap. It was just visible in the 
+<100> wafer with 24h oxygenation by optical carrier 
+injection. 
+   H(220) is also a hole trap. It was already seen in 
+former material investigations [5]. The concentration 
+of this defect is independent of the oxygenation 
+concentration and orientation of the wafer, but 
+depends on the position of the diode on the wafer, i.e. 
+the concentration increases with the distance from the 
+center of the wafer to the edge. According to the 
+material investigation the <111> material contains 
+less defects than the <100> material. 
+ 
+Name 
+sign 
+Ea[eV] 
+σn,p[cm2]
+TD 
+e 
+-0.137 
+1.58*10-13 
+E(120) 
+e 
+-0.236 
+1.00*10-14 
+E(240) 
+e 
+-0.545 
+5.41*10-15 
+H(160) 
+h 
++0.370 
+2.88*10-13 
+H(220) 
+h 
++0.494 
+1.65*10-14 
+Name 
+CA 
+CB 
+CC 
+CD 
+CE 
+CF 
+CG 
+CH 
+Orientation 
+<111> 
+<111> 
+<111> 
+<111> 
+<100> 
+<100> 
+<100> 
+<100> 
+O-diff  [h] 
+0 
+24 
+48 
+72 
+0 
+24 
+48 
+72 
+O [cm-3] 
+ 
+6.2*1016 
+1.0*1017 
+1.2*1017 
+ 
+2*1017 
+3.2*1017 
+3.1*1017 
+C [cm-3] 
+ 
+2.8*1015 
+5.8*1015 
+3.9*1015 
+ 
+3.3*1015 
+3.9*1015 
+3.9*1015 
+TD [cm-3] 
+<109 
+6.0*109 
+1.6*1010 
+2.4*1010 
+<109 
+6.9*109 
+7.2*109 
+1.5*1010 
+E (120) [cm-3] 
+x 
+x 
+x 
+x 
+x 
+1.7*1010 
+5.0*109 
+2.0*109 
+E (240) [cm-3] 
+0.8*109 
+x 
+x 
+x 
+x 
+1.2*1010 
+7.9*109 
+3.7*109 
+H (160) [cm-3] 
+x 
+x 
+x 
+x 
+x 
+9.7*109 
+x 
+x 
+H (220) [cm-3] 
+2.4*109 
+4.0*109 
+5.2*109 
+2.7*109 
+<109 
+6.3*109 
+5.7*109 
+1.0*1010 
+
+===== Page 20 =====
+
+ 
+ 
+19
+3.2. Radiation induced defects 
+The irradiation with a 60Co-γ-source has the 
+advantage that only point defects and no clusters are 
+generated, while an irradiation with hadrons would 
+also cause clusters. In figure 2 a DLTS-spectrum is  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 2 CDLTS measurement of electron traps of a <100> STFZ 
+detector irradiated with 0.5 Mrad 
+shown for a standard detector irradiated with a dose 
+of 0.5 Mrad. The small peak at about 60 K is caused 
+by the thermal double donor TD already observed 
+before irradiation. The dominant peak at 85 K can be 
+attributed to the creation of the VOi (vacancy + 
+oxygen 
+interstitial) 
+and 
+the 
+CiCs(A) 
+(carbon 
+interstitial + carbon substitutional, state A) defects, 
+while the small peaks at 120 K ant 200 K are 
+associated with the different charge states of the 
+divacancy (V2(=/-) and V2(-/0)). The superposition of 
+the VOi and the CiCs signal at 85 K cannot be 
+resolved by high resolution techniques, since their 
+activation energies and capture cross sections are 
+nearly identical. But measurements of the amplitude 
+of the DLTS signal as function of the filling pulse 
+duration tfill at constant temperature allow to separate 
+the signals arising from the CiCs(A) and VOi by 
+making use of the bistability of the CiCs defect[4] as 
+demonstrated in figure 3 (upper curves). The first 
+increase corresponds to the filling of the VOi while 
+the second one reflects the configurational change 
+from state CiCs(B) to state CiCs(A). For this change 
+an activation energy has to be overcome and 
+therefore the tfill value at which this step occurs 
+depends on the temperature (see curves at T=85 K 
+and T= 75 K). The lower curve in figure 3 was  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 3 Capture measurement of a standard and oxygenetaed 
+detector irradiated with 0.5 Mrad 
+measured for an oxygenated sample where such step 
+could not be detected. This indicates that in 
+oxygenated material the CiCs defect is strongly 
+suppressed. For the extraction of the level parameters 
+and the concentration of the double charged 
+divacancy  V2(=/-) in the <100> material this defect 
+had to be separated from the material defect that 
+appears at the same temperature in the spectra as 
+mentioned before. This was possible by using the 
+high resolution DLTS method. As an example figure 
+4 shows the measurement of the DLTS signal as 
+function of the transient time window (open squares) 
+and the separation of both levels by a special 
+refolding technique (solid line) [10]. Measurements 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 4 Isothermal measurement at 112 K for a 24 h oxygenated 
+<100> detector 
+0
+50
+100
+150
+200
+250
+300
+T [K]
+-0.25
+-0.2
+-0.15
+-0.1
+-0.05
+0
+0.05
+DLTS signal [pF]
+Electron spectrum
+Electron spectrum
+TD
+TD
+VO+CiCs(A)
+VO+CiCs(A)
+VV(=/-)
+VV(=/-)
+VV(-/0)
+VV(-/0)
+10-5
+5
+10-4
+5
+10-3
+5
+10-2
+5
+10-1
+5
+100
+tfill [s]
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+DLTS signal [pF]
+CB (ox) 80 K TW= 1 s
+CB (ox) 80 K TW= 1 s
+CA0734 85 K TW= 200 ms
+CA0734 85 K TW= 200 ms
+CA0734 75 K TW = 5 s
+CA0734 75 K TW = 5 s
+VOi
+VOi
+CiCs B   A
+CiCs B   A
+tau [s]
+10-2
+10-1
+100
+norm. b1 [fF]
+0
+40
+80
+120
+
+===== Page 21 =====
+
+ 
+ 
+20
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig.5 Arrhenius plot of the separation levels shown in figure 4 
+at different temperatures result in the corresponding 
+Arrhenius plot demonstrated in figure 5. Here level 1 
+corresponds to the material defect E(120) while level 
+2 is attributed to the V2(=/-) level. Figure 6 shows 
+spectra for the hole trap CiOi for samples irradiated 
+with different doses up to 10 Mrad. As can be seen in  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 6 CDLTS spectrum after hole injection for STFZ samples 
+irradiated with different doses 
+the spectra the peak shifts slightly for higher doses to 
+lower temperatures which is mainly caused by the 
+fact that the concentration of this defect exceeds 
+already at 4 Mrad the shallow doping concentration 
+and thus the DLTS requirement is not fulfilled 
+anymore. The activation energies and the capture 
+cross sections of all radiation induced trap levels are 
+summarized in table 3 and compared with values 
+given in [4]. 
+The extracted introduction rates for the impurity 
+related defects VOi, CiCs and CiOi are presented in 
+table 4 for standard and oxygenated devices (72 h) 
+manufactured from <111> and <100> material. For 
+the creation of VOi no dependence on the oxygen 
+concentration is seen while the generation of CiCs  is 
+fully suppressed in oxygenated material. This 
+suppression is due to the fact that in oxygen rich 
+material the probability of the reaction Ci + Oi → 
+CiOi is much larger compared to the reaction Ci + Cs 
+→ CiCs. But it is expected that the sum of the 
+introduction rates g(CiCs)+g(CiOi) stays constant for 
+all materials. This holds with the exception observed 
+for the standard <100> material (device CE) which 
+shows a slightly lower introduction rate. 
+ 
+Table 3: Properties of radiation induced defects 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ On the other hand the introduction  of 
+divacancies V2 is about two orders of magnitude 
+smaller compared to the introduction of the impurity 
+related defects as can be seen from table  5. A very 
+small dependence on the oxygen concentration 
+cannot be excluded. Furthermore, it is clear that the 
+introduction rate for both charge states should be the 
+same. This holds for all extracted values within the 
+error limit of 10 %. 
+ 
+Table 4: Introduction rates for the impurity related defects. 
+Values given in 104rad-1cm-3 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+It is instructive to compare the introduction rates of 
+all Ci related defects with the vacancy related ones.    
+Assuming that the introduction of Ci related defects 
+Defect
+Ea 
+[eV] 
+σn,p 
+[cm2] 
+Ea [4] 
+[eV] 
+σ n,p  [4]
+[cm2] 
+VOi 
+-0.172 
+1.6*10-14 
+-0.175 
+1.5*10-14 
+V2(=/-) 
+-0.251 
+3.0*10-14 
+-0.224 
+7.1*10-16 
+V2(-/0) 
+-0.426 
+3.1*10-15 
+-0.423 
+2.1*10-15 
+CiOi 
++0.351 
+7.3*10-16 
++0.357 
+1.7*10-15 
+Name
+CA
+stand. 
+<111> 
+CD 
+72h 
+<111> 
+CE 
+stand. 
+<100> 
+CH
+72h 
+<100>
+g(VO) 
+70.5 
+58 
+67.3 
+80.6
+g1(CiCs) 
+17.1 
+0 
+16.3 
+0 
+g2(CiOi) 
+47.8 
+63.4 
+33.4 
+58.5
+Σ(g1+g2) 
+64.9 
+63.4 
+49.7 
+58.5
+1 0 0 0 /T [1 /K ]
+8 .8
+9 .2
+ln(tau*vth*NC)
+5 7
+5 9
+6 1
+1
+2
+L e v e l
+E C- E T
+[ e V ]
+s i g m a
+[ c m 2]
+N T
+[ c m - 3]
+C o r r e l
+1
+0 . 2 3 1
+5 . 8 2 E - 1 5
+1 . 5 1 E + 1 0
+0 . 9 9 7 7 5
+2
+0 . 2 4 1
+3 . 3 1 E - 1 5
+6 . 9 0 E + 0 9
+0 . 9 9 7 1 6
+100
+150
+200
+250
+T [K]
+-0.6
+0
+0.6
+1.2
+1.8
+2.4
+3
+DLTS signal [pF]
+CA0725 (0.2 Mrad)
+CA0725 (0.2 Mrad)
+CA0734 (0.5 Mrad)
+CA0734 (0.5 Mrad)
+CA0741 (4 Mrad)
+CA0741 (4 Mrad)
+CA0735 (10 Mrad)
+CA0735 (10 Mrad)
+Hole spectra
+Hole spectra
+
+===== Page 22 =====
+
+ 
+ 
+21
+Table 5: Introduction rates for the divacancies.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+reflects the primary generation of silicon interstitials I 
+via the Watkins replacement mechanism I+ Cs → Si+ 
+Ci and the subsequent formation of CiCs and CiOi , the 
+sum of the introduction rates g(CiCs) + g(CiOi) should 
+be equal to the total introduction of Interstitials g(I). 
+On the other hand each primary interaction will 
+create the same number of vacancies and hence the 
+total number of vacancy related defects should 
+balance the interstitial related ones. As a consequence 
+the following equation for the introduction rates 
+should be fulfilled. 
+ 
+ 
+ 
+ 
+This relation holds for <111> material with a ratio 
+of 0.91 +/- 0.12 but for <100> material the extracted 
+ratio of 0.71 +/- 0.02 is too small. An explanation of 
+such a small value can so far not be given. 
+All these defects descibed above are well known 
+and characterized, but they still cannot explain the 
+macroscopic properties like the increase in the 
+leakage current and the change in the effective 
+doping. In recent studies of our group on these 
+devices at larger doses a close to midgap level at EC0.545 eV was observed which can mainly explain the 
+radiation induced changes of the macroscopic 
+detector properties[14]. 
+4. Conclusions 
+After irradiation with 
+60Co-γ- radiation we 
+observed for the different materials the dominant 
+introduction of carbon and oxygen related defects and 
+a much smaller generation of divacancies. The main 
+influence of oxygen in the defect formation is seen in 
+the formation of CiCs and CiOi where already oxygen 
+enriched material by a diffusion of 24 h shows a full 
+suppression of the CiCs defect. In this report no 
+difference is seen in material with different 
+orientation. For the creation of divacancies the 
+introduction rate is about two orders of magnitude 
+smaller compared to the creation of impurity related 
+defects and a very small dependence on the oxygen 
+concentration was observed. A difference between 
+<111> and <100> material had only been established 
+in the ratio of introduction rates for interstitial related 
+defects. All of these defects seen by DLTS in the 
+investigated dose range are not responsible for the 
+change of the macroscopic device properties. Only a 
+recently detected deep level close to midgap can 
+explain the macroscopic parameters. 
+5. Acknowledgments 
+Many thanks are due to Z. Li and E. Verbitskaja 
+for providing the 
+60Co facility at Brookhaven 
+National Laboratory  and help in the gamma 
+irradiations. The detectors were provided by CiS and 
+the work was financed by the DFG under the contract 
+FR 1547/1-1. 
+6. References  
+[1] G. Lindström et al (ROSE collaboration), Nucl Instr. and Meth. 
+A 465 (2001) 60 
+[2] G. Lindström et al (ROSE collaboration), Nucl. Instr. and 
+Meth. A 466 (2001) 308 
+[3] H.Feick, PhD thesis, University of Hamburg, 1997 
+[4]  M. Moll, University of Hamburg, 1999 
+[5] M. Kuhnke, PhD thesis, University of Hamburg, 2001 
+[6]  V. Eremin et al., Nucl. Instr. and Meth A426 (1999) 120 
+[7] D.V. Lang, J. Appl.Phys. 45 (1974) 3023 
+[8] S. Weiss, PhD thesis, University of Kassel, 1991 
+[9] D.V. Lang, Space Charge Spectroscopy in Semiconductors, 
+Topics in Applied Physics Volume 37, Thermally Stimulated 
+Relaxation in Solids, Editor: P. Bräunlich, Springer Verlag 
+(1979), 93 
+[10]  S.Weiss, PhysTech GmbH, Moosburg 
+[11] CiS Institut für Mikrosensorik GmbH, Erfurt, Germany 
+[12] G. Lindström, Radiation Damage in Silicon Detectors, this 
+conference 
+[13] J. Michel and L.C. Kimerling, Electrical Properties of Oxygen 
+in Silicon, Oxgen in Silicon, Ed. F. Shimura, Semiconductors 
+and Semimetals Volume 42, Acad. Press, (1994), 251 
+[14]  I. Pintilie et al, Appl. Phys. Lett. 81, No 1 (2002) 165
+Oxygenation 
+g (V2(=/-)) 
+104rad-1cm-3 
+g (V2(-/0)) 
+104rad-1cm-3 
+standard 
+1.8 
+1.8 
+24 h 
+1.7 
+1.5 
+48 h 
+1.5 
+1.4 
+72 h 
+1.5 
+1.4 
+1
+)
+(
+*
+2
+)
+(
+)
+(
+)
+(
+2
+=
++
++
+V
+g
+VO
+g
+O
+C
+g
+C
+C
+g
+i
+i
+i
+s
+i
+ 
+
+===== Page 23 =====
+
+ 22
+Bulk damage effects in standard and oxygen enriched silicon 
+detectors induced by 60Co-gamma radiation† 
+E. Fretwursta*, G. Lindströma, J. Stahla, I. Pintiliea,b 
+Z. Lic, J. Kiersteadc, E. Verbitskayad, R. Rödere 
+ 
+aInstitute for Experimental Physics, University of Hamburg, 22761 Hamburg, Germany 
+bNational Institute of Material Physics, Bucharest-Magurele, P.O. Box MG-7, Romania 
+cBrookhaven National Laboratory, Upton, NY 11973, USA 
+dIoffe Physico-Technical Institute of Russian Academy of Sciences, St. Petersburg, Russia 
+eCiS Institute for Microsensors, 99099 Erfurt, Germany 
+Abstract 
+The influence of oxygen in silicon on bulk damage effects induced by 60Co-gamma irradiation has been studied in a dose 
+range between 0.2 Mrad to 900 Mrad. The detector processing and oxygen enrichment were carried out in a common project 
+by the Institute of Micro-sensors CiS using n-type high resistivity FZ silicon (3-6 kΩcm) with <111> and <100> orientation. 
+Different oxygen concentrations were achieved by diffusion at 1150 °C for 24, 48 and 72 hours. This report on bulk damage 
+effects is focused on the observed changes in the reverse current, the effective space charge density Neff extracted from C/V 
+measurements and investigations using the transient current technique (TCT). A substantial improvement of radiation 
+hardness concerning the development of the macroscopic properties was found for detectors manufactured on oxygenated 
+material compared to standard material. It will be demonstrated that the change of the effective space charge density as well as 
+the increase of the reverse current can be attributed to the creation of two deep acceptor levels and a shallow donor level.              
+Keywords: silicon detectors; oxygen in silicon; radiation damage; 60Co-gamma radiation; defects 
+——— 
+ † Paper presented at the 4th Intern. Conf. on Radiation Effects on Semiconductor Materials, Detectors and Devices, Firenze, Italy, July 10-12, 
+2002, submitted for publication in Nucl. Instr. and Meth. A 
+* Corresponding author. Tel.: +49-40-8998-2956; Fax: +49-40-8998-2959; e-mail: eckhart.fretwurst@desy.de 
+ 
+
+===== Page 24 =====
+
+ 
+23
+1. Introduction 
+It was demonstrated by the CERN RD48 (ROSE) 
+collaboration that a considerable improvement in the 
+change of the effective space charge concentration 
+can be achieved in oxygen enriched silicon for 
+charged hadron damage and gamma irradiation while 
+after exposure to neutrons no or only little 
+suppression was found [1-3]. The beneficial effect of 
+oxygen had been discussed and modeled under the 
+assumption that most probably the V2O defect is 
+responsible for a main part of the radiation induced 
+negative space charge and that the formation of V2O 
+is suppressed in oxygen rich material [4, 5]. The 
+model predictions support also the experimental 
+observation that the oxygen effect is correlated with 
+the radiation induced formation of point defects. This 
+means that in neutron damage the oxygen effect is 
+suppressed since the damage is dominated by the 
+creation of defect clusters. On the other hand a 
+maximal oxygen effect is expected when only point 
+defects are created which is the case in 60Co-gamma 
+irradiation [2, 6-7]. Here we report on new results of 
+bulk damage effects in standard and different oxygen 
+enriched high resistivity float zone silicon with 
+different orientation (<111> and <100>) for a wide 
+dose range up to 900 Mrad. The experimental results 
+for the radiation induced change of the effective 
+doping concentration and the reverse current will be 
+discussed in the frame work of recent microscopic 
+studies [8,9]. 
+2. Experimental procedure 
+The 
+oxygen 
+enrichment 
+and 
+the 
+detector 
+processing was carried out in a common project by 
+the Institute for Microsensors CiS (Erfurt, Germany) 
+using n-type high resistivity float zone (FZ) silicon 
+from Wacker with <111> and <100> orientation. 
+Different oxygen concentrations were achieved by 
+diffusion at 1150 0C in N2 atmosphere for 24, 48 and 
+72 hours. The oxygen depth profiles were measured 
+by a special SIMS-technique and compared with IR 
+absorption measurements [10]. In Table 1 the 
+averaged concentrations of oxygen and carbon are 
+listed for all samples under investigation. The p+nn+-
+detectors have an active area of 0.25 cm2 surrounded 
+by a guard ring with a gap of 10µm between the outer 
+edge of the central diode and the inner rim of the 
+guard ring. The thickness of the different samples 
+varies between 291µm and 295µm. 
+The irradiation had been performed at the high 
+intensity 60Co-gamma source at the Brookhaven 
+National Laboratory (BNL/USA) with a dose rate of 
+about 600 krad per hour. The temperature during 
+exposure was typically 27 °C. A set of 8 different 
+samples was irradiated in consecutive steps of about 
+50 Mrad up to 500 Mrad and followed by larger steps 
+up to 900 Mrad. Between each step standard I/V and 
+C/V 
+measurements 
+were 
+undertaken 
+for 
+the 
+evaluation of the bulk generation current and the 
+change of the depletion voltage Vdep needed to fully 
+extend the space charge region to the depth d of the 
+diode. This voltage is related with the effective space 
+charge density q0Neff by: 
+ 
+ 
+ 
+ 
+ 
+ 
+     (1) 
+ 
+where εε0  is the permittivity of silicon, q0 the 
+elementary charge and Vbi the build in voltage. Both 
+I/V and C/V characteristics were measured at room 
+temperature with the guard ring of the device 
+properly connected to ground. All presented reverse 
+current data are normalized to 20 °C.  
+In order to prove the reliability of the extracted 
+values for the effective space charge density current 
+pulse shape measurements have been performed 
+using the transient current technique (TCT) [11,12]. 
+For these measurements 6 sets of 8 samples each 
+were exposed to fixed dose values. 
+3. Experimental results 
+Fig. 1 demonstrates the development of the 
+depletion voltage Vdep or effective space charge 
+concentration Neff and the reverse current at total 
+depletion Irev with the accumulated dose, for standard 
+float-zone (STFZ) and three differently oxygenated 
+float-zone (DOFZ) devices manufactured from 
+<111> and <100> material. The main differences in 
+the behavior of standard and oxygen enriched devices 
+are: 
+(
+)
+bi
+dep
+eff
+V
+V
+d
+q
+N
+−
+=
+2
+0
+0
+2εε
+
+===== Page 25 =====
+
+ 
+24
+ 
+Table 1 
+Impurity concentrations of standard and oxygen enriched devices under investigation.  
+Device acronym. 
+CA 
+CB 
+CC 
+CD 
+CE 
+CF 
+CG 
+CH 
+Orientation 
+<111> 
+<111> 
+<111> 
+<111> 
+<100> 
+<100> 
+<100> 
+<100> 
+O-diffusion [h] 
+0 
+24 
+48 
+72 
+0 
+24 
+48 
+72 
+Neff [1011 cm-3] 
+7.97 
+10.5 
+10.1 
+10.2 
+7.75 
+8.06 
+7.90 
+7.79 
+[O] [1016 cm-3] 
+≤3 
+6.2 
+10 
+12 
+≤3 
+2.0 
+3.2 
+3.1 
+[C] [1015 cm-3] 
+<3 
+2.8 
+5.8 
+3.9 
+<3 
+3.3 
+3.9 
+3.9 
+ 
+Fig 1: Dose dependence of the full depletion voltage (a) and the 
+reverse current (b) for standard (<111>:full circle, <100> full 
+triangle) and oxygenated (<111>:open symbols, <100>: crosses) 
+devices. 
+• 
+The detectors manufactured from standard 
+material (CA,CE) show the well known effect of 
+space charge sign inversion (SCSI). Initially the 
+depletion voltage drops to a minimum value at a 
+specific dose of about 200 Mrad before it 
+increases again with increasing dose. This 
+behavior is usually interpreted as a result of the 
+creation of deep acceptor like defects and donor 
+removal (e.g. formation of E-centers (VPs)) which 
+leads to a decrease of the initially positive space 
+charge followed by a total compensation at a 
+certain dose and thereafter to an inversion of the 
+space charge sign. In contrast to this behavior, for 
+all oxygenated devices (CB-CD, CF-CH) a small, 
+monotonically and non-linear increase in the 
+effective space charge density is observed. This 
+implies that the effective space charge density 
+becomes more positive possibly caused by an 
+introduction of donor like defects. 
+• 
+While the leakage current increase for standard 
+material is found to be non-linear, all oxygenated 
+detectors show a linear dose dependence. For an 
+accumulated dose of 700 Mrad the estimated 
+increase is about 3 times smaller compared to that 
+of the standard devices. But no differences in the 
+reverse current increase could be observed 
+between the differently oxygenated sensors 
+themselves. 
+The findings for the effective space charge density 
+and in particular the speculation about the inversion 
+had been proven by investigations of current pulse 
+shapes recorded for injection of short (≈1 ns) 670 nm 
+laser light pulses to the p+- and the n+-contact of the 
+diodes. This way time-resolved electron and hole 
+transport can be investigated separately. As an 
+example Fig. 2a presents current pulse shapes of 
+irradiated standard <111> devices for p+-illumination 
+and an applied bias voltage of 60 V that was set to be 
+well above the full depletion voltages for this set of 
+devices irradiated within the dose range of 43 to 284 
+Mrad. Since the 670 nm light is absorbed within a 
+few microns near to the surface the presented pulse 
+0
+200
+400
+600
+800
+1000
+dose [Mrad]
+0
+50
+100
+150
+200
+250
+Vdep [V]
+0
+10
+20
+30
+40
+Neff [1011 cm-3]
+CA: <111> STFZ 
+CA: <111> STFZ 
+CB: <111> DOFZ 24 h
+CB: <111> DOFZ 24 h
+CC: <111>DOFZ 48 h
+CC: <111>DOFZ 48 h
+CD: <111> DOFZ 72 h
+CD: <111> DOFZ 72 h
+CE: <100> STFZ
+CE: <100> STFZ
+CF: <100> DOFZ 24h
+CF: <100> DOFZ 24h
+CG: <100> DOFZ 48h
+CG: <100> DOFZ 48h
+CH: <100> DOFZ 72h
+CH: <100> DOFZ 72h
+(a)
+(a)
+0
+200
+400
+600
+800
+1000
+dose [Mrad]
+0
+500
+1000
+1500
+Irev [nA]
+CA: <111> STFZ
+CA: <111> STFZ
+CB: <111> DOFZ 24h
+CB: <111> DOFZ 24h
+CC: <111> DOFZ 48h
+CC: <111> DOFZ 48h
+CD: <111> DOFZ 78h
+CD: <111> DOFZ 78h
+(b)
+(b)
+CE: <100> STFZ 
+CE: <100> STFZ 
+CF: <100> DOFZ 24h
+CF: <100> DOFZ 24h
+CG: <100> DOFZ 48h
+CG: <100> DOFZ 48h
+CH: <100> DOFZ 72h
+CH: <100> DOFZ 72h
+(b)
+ 
+
+===== Page 26 =====
+
+ 
+25
+shapes are dominated by the transport of electrons in 
+the electric field zone of the detector. In this case the 
+negative slope of the pulse shape for doses up to 190 
+Mrad reflects an electric field distribution of a 
+positive space charge and the flattening of the slope 
+with increasing dose indicates a decrease of the space 
+charge density as already demonstrated in the 
+development 
+of 
+Neff 
+extracted 
+from 
+C/V 
+measurements. For dose values larger than 200 Mrad 
+the slope switches to positive values indicating the 
+inversion to a negative space charge. For the same 
+dose values and illumination of the p+-electrode Fig. 
+2b shows current pulses recorded for an oxygenated 
+<100> sensor for a constant bias voltage of 80 V.  
+Fig. 2: Current pulse shapes after irradiation with different dose 
+values (bottom: 43 Mrad, top: 284 Mrad) for standard <111> 
+devices (a) and oxygen enriched <100> devices (b) 
+ 
+For all dose values the changes in slope of the pulses 
+in the drift region are very small. The overall change 
+of the slope in the range between 43 Mrad and 284 
+Mrad corresponds to a variation of the effective space 
+charge concentration of ∆Neff = 1.4×1011 cm-3 only. 
+4. Discussion 
+According to C. B. MacEvoy et al [7] it is assumed 
+that the V2O defect, which was first identified in 
+electron paramagnetic resonance (EPR) studies in 
+heavily electron irradiated silicon [13, 14], plays the 
+dominant role with respect to both the change of Neff 
+and the generation current increase induced by 60Co 
+gamma radiation. In his paper it is also demonstrated 
+that the model predicts a non-linear increase of V2O 
+with dose. If this model is correct we should find a 
+correlation between the reverse current increase and 
+the 
+change 
+of 
+the 
+effective 
+space 
+charge 
+concentration. In Fig. 3 the reverse current of a 
+standard <111> detector (CA) is plotted as function 
+of the corresponding change of the extracted effective 
+space charge concentration defined by ∆Neff = Neff,0 − 
+Neff(D). As indicated by the solid line we found an 
+excellent correlation in the range below ∆Neff = 
+1.3×1012 cm-3 which corresponds with the dose range 
+up to 300 Mrad. At higher doses the current increases 
+more rapidly than the space charge concentration 
+which cannot be explained by an introduction of only 
+one deep acceptor like V2O. Therefore, we suspect a 
+possible compensation of the negative space charge 
+due to the introduction of shallow donors that are 
+positively charged in the depletion region. 
+Fig. 3: Reverse current versus the change of the effective doping 
+concentration for a standard <111> diode. 
+We will discuss now the experimental findings 
+presented in chapter 3 according to recent results of 
+detailed microscopic studies on the same material 
+0
+10
+20
+30
+40
+i
+[
+]
+0
+10
+20
+30
+40
+50
+current [arb. units]
+ 43 Mrad
+ 43 Mrad
+ 96 Mrad
+ 96 Mrad
+150 Mrad
+150 Mrad
+190 Mrad
+190 Mrad
+245 Mrad
+245 Mrad
+(a)
+(a)
+284 Mrad
+284 Mrad
+CIS-111-STFZ, p+-illumination
+CIS-111-STFZ, p+-illumination
+ 
+0
+10
+20
+30
+40
+time [ns]
+0
+20
+40
+60
+current [arb. units]
+ 43 Mrad
+ 43 Mrad
+ 96 Mrad
+ 96 Mrad
+150 Mrad
+150 Mrad
+190 Mrad
+190 Mrad
+245 Mrad
+245 Mrad
+(b)
+(b)
+284 Mrad
+284 Mrad
+CIS-100-DOFZ, p+-illumination
+CIS-100-DOFZ, p+-illumination
+ 
+0
+10
+20
+30
+∆Neff [1011 cm-3]
+0
+500
+1000
+1500
+Irev [nA]
+    exp. data
+    exp. data
+fit, dose range: 0-300 Mrad
+fit, dose range: 0-300 Mrad
+fit, dose range: 0-900 Mrad
+fit, dose range: 0-900 Mrad
+CIS-111-STFZ
+CIS-111-STFZ
+
+===== Page 27 =====
+
+ 
+26
+obtained by C-DLTS- and TSC-measurements [8,9]. 
+Two close to midgap acceptor levels were discovered 
+which are labeled as DA-I and DA-Γ. The DA-I level 
+is most likely the V2O defect while the DA-Γ level 
+cannot be attributed so far to a known defect. As 
+expected for the V2O the DA-I defect is strongly 
+reduced in oxygen rich diodes and the same behavior 
+is also observed for the DA-Γ defect. Furthermore, in 
+oxygen doped sensors an introduction of shallow 
+donors (SD) had been detected in TSC-spectra. This 
+defect is most probably the known bistable thermal 
+double donor TDD2 [15, 16]. For the calculation of 
+Neff and the reverse current Irev as a function of dose 
+the defect parameters and introduction rates given in 
+[8,9] have been used. 
+Fig. 4: Contributions of deep acceptors DA-I and DA-Γ and 
+shallow donor SD to the effective space charge Neff  (a) and the 
+reverse current (b) for standard material as function of dose. 
+Since most of the microscopic studies were 
+performed on irradiated samples from <111> 
+standard and oxygenated material, we present here 
+only calculations for the corresponding detectors 
+taken from the same wafer. 
+4.1. Standard material 
+ In Fig. 4a the effective space charge concentration 
+defined by Neff = ND − NA is plotted versus the 
+accumulated 
+dose. 
+Here 
+ND 
+represents 
+the 
+concentration of all donors which are positively 
+charged in the depleted zone, i.e. the initial 
+concentration of phosphorus and radiation induced 
+shallow donors, and NA is the concentration of 
+charged shallow and deep acceptors. It is obvious that 
+both deep acceptors DA-I and DA-Γ are responsible 
+for the inversion of the space charge sign. Their 
+contributions to Neff as evaluated from DLTS- and 
+TSC-measurements are also included in Fig. 4a. As 
+can be seen, the dose dependence of the DA-I 
+contribution is non-linear while that of the DA-Γ 
+defect is linear. Taking only both acceptors into 
+account the experimental data should follow a nonlinear development in the total dose range. This is 
+obviously not observed, moreover in the high dose 
+range the experimental data points favor a linear 
+dependence. Such development can only be achieved 
+if one includes a small contribution of radiation 
+induced shallow donors (SD), and a non-linear 
+increase is needed in order to reproduce the 
+experimental data. It should be mentioned that from 
+TSC- measurements on standard material one can 
+only find an indication for the creation of shallow 
+donors 
+but 
+quantitative 
+estimations 
+of 
+their 
+concentrations were not possible [9].  
+Fig. 4b shows once more the experimental data for 
+the reverse current of the standard <111> detector 
+where the contributions of both deep acceptors are 
+included. Also in this case the different response of 
+the DA-I and the DA-Γ defect on the dose is clearly 
+seen and the agreement between the measured 
+reverse current values and the evaluated values for 
+both defects can be stated to be excellent. 
+Taking these results into account, the following 
+parameterization for the dependence of Neff as 
+function of dose D was used: 
+ 
+Neff(D) = Neff,0 + NSD(D) − NA(D) 
+(2) 
+with Neff,0 = ND,0−NA,0 being the effective doping 
+concentration before irradiation. 
+For the calculation of NSD we assume that the shallow 
+donors are thermal double donors and, therefore, their 
+contribution to the space charge has to be counted 
+-40
+-30
+-20
+-10
+0
+10
+20
+Neff [1011 cm-3]
+exp. data
+exp. data
+DA-I, DLTS+TSC
+DA-I, DLTS+TSC
+DA-Γ, TSC
+DA-Γ, TSC
+global fit
+global fit
+DA-I fit
+DA-I fit
+(a)
+(a)
+DA-Γ fit
+DA-Γ fit
+SD fit
+SD fit
+Neff,0=7.97*1011 cm-3
+Neff,0=7.97*1011 cm-3
+CIS-111-STFZ
+CIS-111-STFZ
+ 
+0
+200
+400
+600
+800
+dose [Mrad]
+0
+500
+1000
+reverse current [nA]
+   exp. data
+   exp. data
+   DA-I
+   DA-I
+   DA-Γ
+   DA-Γ
+global fit
+global fit
+DA-I fit
+DA-I fit
+DA-Γ fit
+DA-Γ fit
+(b)
+(b)
+CIS-111-STFZ
+CIS-111-STFZ
+
+===== Page 28 =====
+
+ 
+27
+twice since they are double positively charged when 
+not occupied. Furthermore, the introduction is 
+supposed to be non-linear. This leads to the relation: 
+ 
+NSD(D) = gSD×DγSD , 
+ 
+(3) 
+and the contribution of both deep acceptors is 
+supposed to be: 
+ 
+NA(D) = gDA-I ×DγDA-I + gDA-Γ×D 
+(4) 
+The g factors denote the effective introduction rates 
+for the defects SD, DA-I and DA-Γ which are 
+charged in the depleted volume (see also [9]) and the 
+γ values describe the non-linearity of the defect 
+introduction as function of dose. A possible donor 
+removal has been neglected here since the 
+phosphorus concentration is very small and from 
+defect kinetic simulations a very small removal 
+constant is expected [17]. 
+The bulk generation current Irev is caused by both 
+deep acceptors only and is parameterized by: 
+ 
+Irev/V = αDA-I ×DγDA-I + αDA-Γ ×D 
+(5) 
+Here V is the volume of the fully depleted detector 
+and α describes the current related damage 
+coefficients for both deep acceptor levels.  
+According to these parameterizations the data 
+presented in Fig. 4a and b have been fitted. The 
+dotted and broken lines represent the fits to the 
+specific contributions of the defects to the effective 
+space charge density Neff and the generation current 
+Irev respectively. The full lines are the result of a 
+fitting procedure which reproduces the experimental 
+data for Neff and Irev at the same time. This procedure 
+is denoted as "global fit". 
+4.2. Oxygen enriched material 
+The same fitting procedures were applied to the 
+experimental data derived for the oxygenated device 
+CD manufactured from <111> material. The results 
+are shown in Fig. 5. In this case instead of Neff the 
+change of the effective doping concentration defined 
+by ∆Neff = Neff (D) − Neff,0 is plotted as function of the 
+dose. For this oxygenated material the contribution of 
+shallow donors could be estimated from TSCmeasurements making use of the bi-stabitity of this 
+defect [9]. It can be clearly seen that the shallow 
+donors overcompensate the introduction of the deep 
+acceptors DA-I and DA-Γ. On the other hand the 
+introduction of both deep acceptors is strongly 
+suppressed compared to standard material.  
+Fig. 5: Contributions of deep acceptors DA-I and DA-Γ and a 
+shallow donor SD to the effective space charge Neff (a) and the 
+reverse current (b) for oxygenated material as function of dose. 
+As already mentioned before the generation current 
+increases linearly with dose (see Fig. 5b) which is 
+expected from the observed introduction of both deep 
+acceptors in Fig. 5a and the increase is much smaller 
+compared to that of standard material. But the 
+contribution of both defects to the generation current 
+cannot fully reproduce the measured values. As 
+pointed out in [9] possible reasons might be an 
+underestimation of the concentration for the DA-Γ 
+defect and/or a contribution of other deep defect 
+centers which possibly could not be detected by TSCmeasurements. 
+A further point of interest is the question whether any 
+dependence on the oxygen concentration could be 
+seen in the macroscopic parameters. From Fig. 1b we 
+0
+200
+400
+600
+800
+1000
+-5
+0
+5
+10
+15
+20
+∆Neff  [1011 cm-3]
+    exp. data
+    exp. data
+(a)
+(a)
+   DA-I, DLTS+TSC
+   DA-I, DLTS+TSC
+   DA-Γ, TSC
+   DA-Γ, TSC
+   SD, TSC
+   SD, TSC
+global fit
+global fit
+CIS-111-DOFZ/ 72h 1150 oC
+CIS-111-DOFZ/ 72h 1150 oC
+0
+200
+400
+600
+800
+1000
+dose [Mrad]
+0
+100
+200
+300
+400
+500
+reverse current [nA]
+   exp. data
+   exp. data
+global fit
+global fit
+   DA-I+DA-Γ
+   DA-I+DA-Γ
+DA-I+DA-Γ fit
+DA-I+DA-Γ fit
+(b)
+(b)
+CIS-111-DOFZ/ 72h 1150 oC
+CIS-111-DOFZ/ 72h 1150 oC
+
+===== Page 29 =====
+
+ 
+28
+can see that the generation current is obviously not 
+influenced by the different oxygen diffusion. This 
+implies that already an oxygenation of 24 hours leads 
+to the observed suppression in the creation of both 
+deep acceptors. But an analysis of the dose 
+dependence of ∆Neff for all oxygenated detectors 
+processed on <111> material show a very small 
+variation of the increase with the oxygen content 
+although the fluctuation of the data points is quite 
+large. The result is that the introduction of shallow 
+donors seems to be influenced by the oxygen 
+concentration of the material but it is so far not 
+possible to decide whether the introduction rate gSD 
+or the exponent γSD is the more sensitive parameter. 
+All parameters of the parameterization given by 
+eq.(3-5) which had been evaluated from the described 
+fitting procedures are summarized in Table 2.  
+Further studies of these and other differently 
+processed detectors were perfomed for irradiations up 
+to ultra-high dose values between 0.9 and 1.76 Grad. 
+The results are described separately in [18]. 
+ 
+Table 2 
+Extracted parameters according to eq.(3-5); g-values are given in 
+units [108 cm-3 Mrad-1] and α values in [10-8 cm-3 Mrad-1]. 
+Device 
+CA 
+CB 
+CC 
+CD 
+Oxygenation Standard 
+24 h 
+48 h 
+72 h 
+gDA-I  
+4.80 
+3.90 
+3.90 
+3.90 
+γDA-I  
+1.29 
+1.0 
+1.0 
+1.0 
+gDA-Γ  
+1.31 
+0.559 
+0.559 
+0.559 
+gSD  
+0.0065 
+5.45 
+5.59 
+3.25 
+γSD 
+2.12 
+1.12 
+1.14 
+1.23 
+αDA-I 
+1.83 
+1.48 
+1.48 
+1.48 
+αDA-Γ 
+3.90 
+3.76 
+3.76 
+3.76 
+5. Conclusions 
+The presented study on bulk damage effects after 
+60Co gamma irradiation up to 900 Mrad had 
+substantiated the strong influence of oxygen in 
+silicon for the development of more radiation tolerant 
+detectors. For the first time the observed changes of 
+the macroscopic detector properties concerning the 
+effective doping concentration as well as the reverse 
+current can be explained by radiation induced deep 
+acceptors and the creation of shallow donors which 
+had been discovered in microscopic studies. 
+Acknowledgements 
+This work has been performed in the frame work of 
+the CiS-SRD project under contract 642/06/00. 
+Financial 
+support 
+of 
+the 
+German 
+Research 
+Foundation DFG under contract FR1547/1-1 and 
+partly by the German Ministry for Education and 
+Research BMBF under contract WTZ-ROM 00/01 is 
+gratefully acknowledged. 
+References 
+[1] RD48 3rd Status report, CERN/LHCC 2000-009, December 
+1999 
+[2] B. Dezillie, Z. Li, V. Eremin, W. Chen and L.J. Zhao, IEEE 
+Trans. Nucl. Sci. Vol. 47, No.6 (2000) 1892 
+[3] G. Lindström et al. (The RD48 Collaboration), Nucl. Instr. 
+and Meth. A 466 (2001) 308 
+[4] B.C. MacEvoy, A. Santocchia, G. Hall, Physica B 273-274 
+(1999) 1045 
+[5] M. Huhtinen, Simulation of non-ionizing energy loss and 
+defect formation in silicon, ROSE/TN/2001-02, to be publ. in 
+Nucl. Instr. and Meth. A 
+[6] E. Fretwurst et al., Damage results from Co-60 gamma 
+irradiation in Si-diodes from different materials, 4th ROSE 
+workshop on radiation hardening of silicon, CERN/LEB 9811, p 221 
+[7] B. C. MacEvoy and G. Hall, Mater. Sci. in Semicon. Process. 
+3 (2000) 243 
+[8] I. Pintilie, E. Fretwurst, G. Lindström, J. Stahl, Appl. Phys. 
+Letters 81, No. 1 (2002) 165 
+[9] I. Pintilie, E. Fretwurst, G. Lindström, J. Stahl, Results on 
+defects induced by 60Co-gamma irradiation in oxygenated 
+and standard silicon, 4th Intern Conf. on Radiation Effects on 
+Semiconductor Materials, Detectors and Devices, Firenze, 
+Italy, July 10-12, 2002, to be publ. in Nucl. Instr. and Meth. 
+A 
+[10] A. Barcz et al., Extremely deep SIMS profiling: Oxygen in 
+silicon, SIMS XIII conference, Nov. 2001, Nara (Japan), to 
+be publ. in Applied Surface Science 
+[11] V. Eremin et al., Nucl. Instr. and Meth. A 372 (1996) 388 
+[12] E. Fretwurst et al., Nucl. Instr. and Meth. A 388 (1997) 356 
+[13] Y. H. Lee and J. W. Corbett, Phys. Rev. B13 (6) (1976) 2653 
+[14] Y. H. Lee, T. D. Bilash and J. W. Corbett, Radiation Effects 
+29 (1976) 7 
+[15] Ya. I. Latushko et al., Phys. Stat. Sol. (a) 93 (1996) K181 
+[16] A. Chantre, Appl. Phys. Lett. Vol. 50, No. 21 (1987) 1500 
+[17] C. MacEvoy, PhD-Thesis, Imperial College London, RALTH-97-003 (1997) 
+[18] Z. Li et al., Paradoxes of steady-state and pulse operational 
+mode characteristics of silicon detectors irradiated by ultrahigh doese of γ-rays, , 4th Intern Conf. on Radiation Effects 
+on Semiconductor Materials, Detectors and Devices, Firenze, 
+Italy, July 10-12, 2002, to be publ. in Nucl. Instr. & Meth. A 
+ 
+
+===== Page 30 =====
+
+ 
+ 
+29
+ 
+Results on defects induced by Co60-gamma irradiation in standard 
+and oxygen enriched silicon† 
+I. Pintiliea)b)* E. Fretwurst b), G. Lindström b) and J. Stahl b) 
+ 
+a) National Institute of Materials Physics, Bucharest-Magurele, P.O.Box MG-7, Romania 
+b) Institute for Experimental Physics, Hamburg University, D-22761, Germany 
+ 
+Abstract 
+Radiation induced defects in silicon diodes were investigated after exposure to high doses of Co-60 gamma 
+irradiation, using Deep Level Transient Fourier Spectroscopy and Thermally Stimulated Current methods. The 
+main focus was on differences between standard and oxygen enriched material and the impact of the observed 
+defect generation on the diode properties. Two close to mid gap trapping levels and a bi-stable donor level have 
+been characterized as function of dose. These defects explain the main macroscopic deterioration effects both in 
+standard and oxygen enriched float zone diodes. Radiation damage effects in silicon detectors under severe 
+hadron- and γ–irradiation are surveyed, focusing on bulk effects. Both macroscopic detector properties (reverse 
+current, depletion voltage and charge collection) as also the underlying microscopic defect generation are 
+covered. Basic results are taken from the work done in the CERN-RD48 (ROSE) collaboration updated by results 
+of recent work. Preliminary studies on the use of dimerized float zone and Czochralski silicon as detector 
+material show possible benefits. An essential progress in the understanding of the radiation induced detector 
+deterioration had recently been achieved in gamma irradiation, directly correlating defect analysis data with the 
+macroscopic detector performance. 
+ 
+Keywords: silicon detectors; defect emgineering; point defects defect analysis 
+ 
+† Paper presented at 4th Internatl. Conf. On Radiation Effects on Semiconductor Materials, Detectors and Devices, Firenze, Italy, July 10-12, 
+2002, submitted for publication  to Nucl. Instr. and Meth. A 
+* Corresponding author. Tel.: +49-40-8998-4726; Fax: +49-40-8998-2959; e-mail: ioana.pintilie@desy.de , ioana@alpha1.infim.ro  
+  
+
+===== Page 31 =====
+
+ 
+ 
+30
+1. Introduction 
+High resistivity silicon particle detectors will  be 
+used extensively in the tracking areas of the CERN 
+Large Hadron Collider (LHC) experiments. Since for 
+this application the detectors are subject to extremely 
+high hadron fluences the radiation tolerance of the 
+bulk material became of prime importance. In all 
+cases high resistivity silicon (ρ > 1 kΩcm) was 
+chosen to allow for  low operating voltages. 
+A lot of investigations on hadron induced damage 
+and the impact on detector performance had been 
+extensively studied by the CERN RD48 (ROSE) 
+collaboration [1-6]. It had especially been proven that 
+the deliberate addition of oxygen ([O]>1017 cm-3) in 
+the bulk material is beneficial for the radiation 
+tolerance to charged particle and gamma exposure. 
+The clearest benefit is gained in the case of 60Co 
+gamma irradiation. No change in the initial doping 
+concentration was reported up to a dose of 400 Mrad 
+for high resistivity Diffusion Oxygenated Float Zone 
+(DOFZ) silicon while in the case of Standard Float 
+Zone (STFZ) silicon  the type inversion takes place 
+around 250 Mrad [2]. Many radiation induced point 
+defects (VV=/-, VV-/0, CiCs
+-/0, VOi
+-/0, CiOi
++/0 etc. ) were 
+already well characterized by various methods [5-17]. 
+However, 
+these 
+defects 
+cannot 
+explain 
+the 
+irradiation-induced change in the macroscopic 
+parameters of the detector performance (doping 
+concentration 
+and 
+leakage 
+currents) 
+and 
+the 
+improvement of the radiation tolerance for oxygenenriched silicon. Present defect models attribute the 
+beneficial oxygen effect in gamma irradiated DOFZ 
+silicon to a lower probability of V2O formation by an 
+enhanced production of VO defects [17-20]. The V2O 
+defect was identified in Czochralski (CZ) silicon after 
+electron 
+irradiation 
+by 
+Electron 
+Paramagnetic 
+Resonance (EPR) [21] and Photo-EPR measurements 
+[20]. An activation enthalpy of (0.50±0.05) eV from 
+the conduction band was evaluated for the V2O defect 
+in the neutral charge state [22]. Recently, we have 
+reported on a deep level located at 0.545 eV from the 
+conduction band (Ec) and having electron and hole 
+capture cross sections of σn = (1.7±0.2)x10-15 cm2 and 
+σp = (9±1)x10-14 cm2  respectively detected in floatzone silicon after Co60-gamma irradiation with doses 
+up to 42.5 Mrad [23].  This close to midgap trap (the 
+I level in ref.[23]) is strongly generated in STFZ 
+diodes but largely suppressed in DOFZ devices and 
+was suggested to be related to the V2O complex in 
+the single charge state. According to our results it can 
+explain about 90% of the change in the effective 
+doping concentration (Neff) and 50% of the leakage 
+current (LC) in STFZ silicon. Considering that the I 
+level was also detected in DOFZ material together 
+with the still unexplained difference in the measured 
+and calculated leakage current call for further 
+investigations, especially after higher doses of 
+irradiation. In the following we report on the 
+detection 
+by 
+Deep 
+Level 
+Transient 
+Fourier 
+Spectroscopy 
+(DLTFS) 
+[24] 
+and 
+Thermally 
+Stimulated Current (TSC) [13] methods of other 
+trapping levels induced by gamma irradiation, which 
+together with the mentioned I level can better explain 
+the differences observed between STFZ and DOFZ 
+diodes. The devices investigated in this work are 
+STFZ and DOFZ p+nn+ diodes processed by CiS [25] 
+on Wacker silicon with high resistivity (4 kΩcm) and 
+exposed to Co60- gamma irradiation doses of 10 to 
+300 Mrad. The average oxygen concentration in the 
+DOFZ material is 1.2x1017 cm-3 while in the STFZ 
+ones it is less than 3x1016 cm--3 [26]. 
+2. Experimental results and discussions 
+2.1. DLTFS results 
+ The DLTFS method was applied for doses up to 
+42.5 Mrad whereas the higher irradiated samples 
+were investigated by the TSC method. After 
+irradiation all dides were kept at room temperature 
+for at least 4 weeks. DLTFS measurements were 
+performed on both STFZ and DOFZ samples exposed 
+to 10 and 42.5 Mrad irradiation doses. For these high 
+doses the DLTFS spectra can be well analyzed only 
+for temperatures above 240 K where the most 
+abundant irradiation induced point defects (e.g. VO 
+and VV) do not contribute anymore to the recorded 
+capacitive transients. In addition to the mentioned I 
+level (possibly the V2O-/0 complex) another very deep 
+level, labeled as Γ, was detected in these samples as 
+shown in Fig. 1a. An activation enthalpy of ∆Hv = 
+
+===== Page 32 =====
+
+ 
+ 
+31
+0.66eV ±1% with respect to the valence band and an 
+effective capture cross-section of σ* = (5±3)x10-15 
+cm2 were evaluated for the Γ defect from the 
+Arrhenius plot (Fig. 1b). The filling was done using 
+forward bias injection and therefore σ* does not 
+represent the capture cross section for holes only (σp) 
+but includes also the electron capture cross section 
+(σn). The σ* is given by the following formula [27]: 
+ 
+ 
+ (1) 
+ 
+ 
+ 
+where vth,p, vth,n are the thermal velocities of holes and 
+electrons respectively.  
+ 
+Fig. 1 a) Majority and minority carrier DLTFS spectra recorded on 
+STFZ diode after a gamma dose of 42.5 Mrad. A reverse bias of 
+RB=-16 V was applied during the measurement.b) Arrhenius plot 
+for the Γ level with the evaluation of the activation enthalpy and 
+capture cross section. 
+The concentration evaluated from DLTFS spectra or 
+by direct analysis of transients after forward injection 
+does not represent the total concentration of defects 
+(NT) but a quantity given by [27]: 
+ 
+ 
+ 
+ 
+ 
+(2) 
+ 
+ 
+where nT(T) is the steady state occupancy of the Γ 
+level, cn,p(T) = σn,p(T)* νth,n,p(T) are the respective 
+capture coefficients, NC,V  are the effective densities 
+of states in the conduction band. 
+Due to its position in the band gap, the Γ level 
+might have a strong influence on the detector 
+performances – the leakage current per unit volume 
+(LC) and the effective doping concentration (Neff). In 
+order to estimate it correctly both capture cross 
+sections (σn and σp) should be known. Because of the 
+high 
+concentration 
+of 
+VV-/0 
+states 
+a 
+direct 
+investigation of electron emission from the Γ defect 
+is not possible. By direct analysis of transients at 
+different temperatures the 
+)
+(T
+p DLTS
+T
+ values were 
+determined to be 9.60x109cm-3, 9.44x109cm-3 and 
+9.36x109cm-3 at 273 K, 293 K and 298 K 
+respectively. Assuming that there is no temperature 
+dependence of σp and σn between 273 K and 298 K 
+then eq. 2 results in σp/σn~100. With such a large 
+difference between the two capture cross sections a 
+good approximation is σp = σ* = (5±3)x10-15 cm2 as 
+was evaluated from the Arrhenius plot in fig.1b. 
+2.2. TSC results 
+The samples irradiated with higher doses (up to 
+284 Mrad) were investigated by the TSC method. 
+Also in this case the diodes stayed at room 
+temperature for more than 4 weeks prior to the 
+measurements. The standard experimental procedure 
+consists in cooling down from room temperature 
+(RT) to 20 K under 0 bias, followed by forward 
+injection (1mA) for 30 sec. and then heating up with 
+reverse bias (RB) applied. The heating rate for the 
+TSC experiments was always 0.183 K/s.  The  filling 
+T
+k
+E
+T
+E
+T
+N
+T
+c
+T
+e
+p
+T
+c
+n
+T
+c
+T
+e
+T
+e
+e
+n
+T
+c
+N
+T
+n
+with
+T
+c
+T
+c
+T
+c
+T
+n
+N
+T
+p
+b
+V
+C
+a
+V
+C
+p
+n
+p
+n
+p
+n
+p
+n
+p
+n
+T
+T
+n
+p
+p
+T
+T
+DLTS
+T
+,
+,
+,
+,
+)
+(
+exp(
+*
+)
+(
+*
+)
+(
+)
+(
+*
+)
+(
+*
+)
+(
+)
+(
+)
+(
+*
+)
+(
+*
+)
+(
+)
+(
+)
+(
+)
+(
+*
+))
+(
+(
+)
+(
+−
+±
+=
++
++
++
++
+=
++
+−
+=
+ 
+240
+250
+260
+270
+280
+290
+300
+-15
+-10
+-5
+0
+5
+10
+15
+20
+25
+30
+a)
+Tw = 1 s
+ΓH
+IE
+DLTFS signal - b1 coef. (fF) 
+Temperature (K)
+STFZ - 42.5 Mrad
+ electron injection (VP = -2 V)
+ forward injection (VP = +3 V)
+p
+th
+v
+n
+th
+v
+n
+p
+,
+,
+*
+σ
+σ
+σ
++
+=
+3.3
+3.4
+3.5
+3.6
+3.7
+3.8
+3.9
+58
+59
+60
+61
+62
+63
+b)
+    Γ level
+∆Hv = EV+0.66 eV
+σ
+* = 5 x 10
+-15 cm
+2
+correlator = 0.99586
+ln(τvthNc)
+1000/T (K
+-1)
+
+===== Page 33 =====
+
+ 
+ 
+32
+of traps was done either by forward biasing or using 
+hole injection by 670 nm LED illumination from the 
+rear side of the reverse biased diode. 
+In Fig. 2 the recorded TSC spectra for STFZ and 
+DOFZ diodes exposed to a dose of 284 Mrad are 
+presented. In DOFZ diodes the generation of I and Γ 
+defects are strongly suppressed, while the VOi center 
+exhibits a larger concentration. This may suggest that 
+the VOi center plays a major role in the formation of I 
+and Γ defects. In fact, it had been discussed that the 
+V2O complex results from the reaction VOi+V ⇒ 
+V2O [17-20]. In addition, there are some features 
+characteristic only for the STFZ or DOFZ material 
+neither reported so far in the literature nor seen in our 
+low dose DLTFS measurements [28].  
+Fig. 2. TSC spectra for STFZ and DOFZ diodes irradiated with 284 
+Mrad dose recorded after exposure to day light. 
+Fig. 3.  TSC spectra in STFZ for only hole injection or after 
+forward biasing. 
+Fig. 4. TSC spectra in DOFZ diodes after forward biasing 
+following different exposures. 
+Fig. 5. Annealing at 150 0C . a) TSC spectra for DOFZ after 
+keeping the diode in the dark at RT for 2 days;.b) TSC spectra for 
+DOFZ after exposure to day light 
+50
+100
+150
+200
+250
+0
+10
+20
+30
+40
+50
+60
+BD
+ΓH(240K)
+IH(200K)
+L(147K)
+BD(98K)
+VOi
+-/0
+L(50K)
+L(42K)
+DOFZ - 284 Mrad
+Cooling from RT under 0 V after:
+ exposure to the day light
+ keeping in the dark at RT for 2 days
+TSCurrent (pA)
+Temperature (K)
+50
+100
+150
+200
+250
+0
+20
+40
+L(50K)
+RB = 300 V
+Γh
+Ih (V2O?)
+L(147K)
+H(97K)
+VOi + CiCs
+BD tail
+284 Mrad dose
+  STFZ
+  DOFZ
+TSCurrent (pA)
+Temperature (K)
+20
+40
+60
+80
+100
+120
+140
+160
+0
+10
+20
+30
+b)
+BD tail
+L(147K)
+H(87K)
+VOi
+-/0
+L(50K)
+DOFZ - 284 Mrad
+after exposure to day light
+ no annealing
+ 2 h at 150 C
+TSCurrent (pA)
+Temperature (K)
+50
+100
+150
+200
+250
+0
+10
+20
+30
+40
+50
+60
+ΓH(240K)
+IH(200K)
+L(147K)
+H(97K)
+VOi
+-/0
+RB = 300 V
+STFZ - 284 Mrad
+ forward injection
+ holes injection
+TSCurrent (pA)
+Temperature (K)
+20
+40
+60
+80
+100
+120
+140
+160
+0
+20
+40
+a)
+L(147K)
+BD(98K)
+L(87)
+VO
+-/0
+L(47K)
+L(50K)
+L(42K)
+DOFZ - 284 Mrad
+ no annealing
+ 2 h at 150
+0 C
+TSCurrent (pA)
+Temperature (K)
+
+===== Page 34 =====
+
+ 
+ 
+33
+In the STFZ material a strong peak is observed at 
+97 K which proved to act as a trapping level for holes 
+(see Fig. 3). In the DOFZ case we see a peak at 50 K 
+overlapping a very low temperature signal labeled 
+“BD tail”. The BD tail disappears after keeping the 
+diode in the dark for 2 days at room temperature 
+(RT). Instead, the L(42K) and BD(98K) levels appear 
+in the TSC spectrum (see Fig. 4). A level with similar 
+trapping parameters like L(50K) was already 
+investigated by DLTS and IR- Absorption methods in 
+oxygen rich Si and was associated with the single 
+negative charge state of the interstitial silicon-oxygen 
+dimer complex (IO2
+-/0) annealing out completely at 
+150 0C [15]. Our experiments revealed that both 
+L(50K) and L(42K) levels anneal out after 1500 C 
+heat treatment (Fig. 5). Instead of these two levels 
+another peak labeled L(87K) appears in the spectrum. 
+The L(47K) peak is not a result of the annealing. It 
+can already be seen  as a shoulder in the L(50K) peak 
+prior to annealing. 
+It is worth to mention here that no change in the 
+magnitude of the leakage current or Neff was 
+measured after the annealing at 1500 C. Depending 
+on the experimental TSC procedure (cooling after  
+exposure to day light or after keeping the sample in 
+the dark) a direct correlation between the BD tail and 
+BD(98K) level was observed (see Fig. 5). It is well 
+known that such bi-stability is characteristic for the 
+thermal double donors TDD1 and TDD2 (associated 
+with small size oxygen clusters) [29-31]. 
+Fig. 6. Change of the activation enthalpy of BD(98K) with 
+different reverse bias applied during TSC measurement. 
+The donor activity of the BD(98K) level was 
+proven observing the Poole Frenkel effect when 
+different RB-values were applied during the TSC 
+measurements. The change in the activation enthalpy 
+was evaluated from Arrhenius plots of the increasing 
+part of the peak (see Fig. 6) resulting in a zero field 
+activation enthalpy of 0.225 eV for BD(98K) . Thus, 
+contrary to the effect of I and Γ the BD centers will 
+contribute with positive space charge to Neff. These 
+properties of the BD centers (donor activity, bistability, zero field activation energy) together with 
+their strong generation in oxygen enriched material 
+suggest a possible identification with the thermal 
+double donors TDD2. 
+3. The impact of I, Γ and BD defects on the 
+detector performance 
+The following relations were used to calculate the 
+contribution of the I, Γ and BD centers to LC (αE) 
+and Neff (nT): 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+         (3) 
+ 
+ 
+ 
+where q0 is the free electron charge. 
+ 
+The concentrations of I, Γ and BD centers in STFZ 
+and DOFZ for different dose values are given in Tab. 
+I. The errors are less than 5% in the case of I level 
+and around 20% for the Γ level.  
+The experimental values of Neff and LC as 
+determined  from C-V and I-V measurements as well 
+as the calculated ones are given in Fig. 7. There is a 
+very good agreement between measured and 
+calculated values of Neff for both STFZ and DOFZ 
+diodes. However, the LC cannot be fully described by 
+taken only the I and Γ level into account (especially 
+in the case of DOFZ). Possible reasons for that can be 
+that other deep centers (e.g. VV-/0) have not been 
+included. 
+10.0
+10.5
+11.0
+11.5
+12.0
+12.5
+0.1
+1
+ RB = 500 V; Ea
+TSC = 0.128 eV; correlator = 0.99737
+ RB = 300 V; Ea
+TSC = 0.139 eV; correlator = 0.9967
+ RB = 100 V; Ea
+TSC = 0.160 eV; correlator = 0.98787
+TSCurrent (pA)
+1000/T (K
+-1)
+p
+T
+c
+n
+T
+c
+T
+e
+T
+e
+e
+n
+T
+c
+N
+T
+n
+and
+T
+n
+T
+e
+q
+T
+p
+n
+p
+n
+p
+n
+T
+T
+T
+n
+E
+*
+)
+(
+*
+)
+(
+)
+(
+)
+(
+*
+)
+(
+*
+)
+(
+)
+(
+*
+)
+(
+*
+)
+(
+0
++
++
++
++
+=
+=
+α
+
+===== Page 35 =====
+
+ 
+ 
+34
+Table I. Total concentration of I, Γ and BD defects as function of 
+irradiation dose in STFZ and DOFZ silicon 
+Dose 
+(Mrad) 
+I level  
+STFZ 
+x109 
+(cm-3) 
+I level 
+DOFZ 
+x1010 
+(cm-3) 
+Γ level  
+STFZ 
+x1012 
+(cm-3) 
+Γ level  
+DOFZ 
+x1012 
+(cm-3) 
+BD  
+DOFZ 
+x1011 
+(cm-3) 
+4 
+6.08 
+ 
+ 
+ 
+ 
+10 
+11.45 
+ 
+ 
+ 
+ 
+42 
+62  
+1.6  
+ 
+ 
+ 
+96 
+120  
+ 
+1.9  
+ 
+ 
+150 
+276  
+5  
+3.2  
+ 
+1.48  
+190 
+380 
+7.5  
+2.4  
+1.5  
+2.04  
+245 
+700 
+11.5  
+5  
+2.1  
+2.96  
+284 
+920 
+16  
+6  
+3  
+3.8  
+4. Conclusions 
+The DLTFS method applied to gamma irradiated 
+STFZ and DOFZ silicon diodes with doses up to 42 
+Mrad allowed us to characterize a new close to 
+midgap trapping level (Γ center) in addition to the 
+already reported I defect (V2O-/0?).The trapping 
+parameters of the Γ level are: an activation enthalpy 
+of ∆Hv = 0.66eV ±1% from the valence band and a 
+capture cross-sections of σp = 100xσn = (5±3)x10-15 
+cm2. The dependence of the I and Γ concentrations 
+with increasing dose was investigated by the TSC 
+method. It was shown that both defects are largely 
+suppressed in  DOFZ diodes. In STFZ the I and Γ 
+level can almost fully explain the change in both the 
+leakage 
+current 
+ 
+and 
+the 
+effective 
+doping 
+concentration . In the case of DOFZ diodes the 
+negative space charge due to I and Γ centers is 
+overcompensated by the positive charge introduced 
+by some bi-stable donors (TDD2 ?) leading even  to a 
+slight increase of the effective donor concentration. 
+Acknowledgements 
+Many thanks are due to Z. Li and E. Verbitskaja 
+for help in the gamma irradiations at Brookhaven 
+National Laboratory. This work has been performed 
+in the frame of the CiS-SRD project under contract 
+642/06/00. Financial support of the German Ministry 
+for Education and Research BMBF and of the 
+Romanian Ministry for Education and Research 
+under contract WTZ-ROM 00/01 and of the German 
+Research Foundation DFG under contract FR1547/11 is gratefully acknowledged. 
+References 
+1. A. Ruzin et al., IEEE Trans. Nucl. Sci. 46 (5) (1999) 1310 
+2. Z. Li, B. Dezillie, M. Bruzzi, W. Chen, V. Eremin, E. 
+Verbitskaya, P. Weilhammer, Nucl. Instr. and Meth. A 461 
+(2001) 126. 
+3. G. Lindström et al. (ROSE collaboration), Nucl. Instr. and Meth. 
+A 465 (2001) 60 
+4. G. Lindström et al. (ROSE collaboration), Nucl. Instr. and Meth. 
+A 466 (2001) 308 
+5. V. Eremin, E. Verbitskaya, Z. li, ), Nucl. Instr. and Meth. A 476, 
+3, (2002) 556 
+0
+50
+100
+150
+200
+250
+300
+-1.4x10
+12
+-1.2x10
+12
+-1.0x10
+12
+-8.0x10
+11
+-6.0x10
+11
+-4.0x10
+11
+-2.0x10
+11
+0.0
+a)
+293 K
+from C-V
+ DOFZ
+ STFZ
+calculated
+ DOFZ
+ STFZ
+∆Neff (cm
+-3)
+Co
+60- gamma irradiation dose
+0
+50
+100
+150
+200
+250
+300
+0
+5
+10
+15
+20
+25
+30
+35
+40
+b)
+293 K
+experimental
+ DOFZ
+ STFZ
+calculated (I&Γ levels)
+ DOFZ
+ STFZ
+∆LC (µA/cm
+3)
+Co
+60- gamma irradiation dose
+Fig. 7. Experimental and calculated dose dependence 
+of: a) effective doping concentration                             
+b) leakage current per unit volume  
+
+===== Page 36 =====
+
+ 
+ 
+35
+6. V. Eremin, A. Ivanov, E. Verbitskaya, Z. Li, S. U. pandey, Nucl. 
+Instr. and Meth. A 426, 1,  (1999) 834 
+7. L. C. Kimerling, in Radiation Effects in Semiconductors 1976, 
+edited by N. B. Urli and J. W. Corbett (Conference Series No. 
+31, The Institute of Physics, Bristol, 1977), p. 221 
+8. O. O. Awadelkarim, H. Weman, B. G. Svensson and J. L. 
+Lindström, J. Appl. Phys. 60 (6) (1986) 1974 
+9. A. Hallen, N. Keskitalo, F. Masszi and V. Nagl, J. Appl. Phys. 
+79 (8) (1996) 3906 
+10. M. Moll et al., Nucl. Instr. and Meth. A 388 (1997) 335 
+11. E. Fretwurst et al., Nucl. Instr. and Meth. A 388 (1997) 356 
+12. S. J. Watts and M. Ahmed, CERN/LEB 98-11, (1998) 432 
+13. I. Pintilie et al., APL 78 (2001) 550 
+14. C.daVia and S. Watts, Nucl. Instr. and Meth. B 186 (2002) 111 
+15. J. L. Lindström et al., Physica B 308-310 (2001) 284 
+16. M. Vujicic, V. Borjanovic and B. Pivac, Mat. Sci. and Eng. B 
+71 (2000) 92 
+17. G. Davies, E. C. Lighttowlers, R. C. Newman and A. S. Oates, 
+Semic. Sci. Technol. 2 (1987) 524 
+18. B. MacEvoy, G. Hall and K. Gill, Nucl. Instr. and Meth. A 374 
+(1996) 12 
+19. K. Gill, G. Hall and B. MacEvoy, J. Appl. Phys. 82 (1997) 126 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+20. B. MacEvoy and G. Hall, Mater. Sci. in Semicon. Process. 3 
+(2000) 243 
+21. Y. H. Lee and J. Corbett, Phys. Rev. B 13 (6) (1976) 2653 
+22. Y. H. Lee, T. D. Bilash and J. Corbett, Radiat. Eff. 29 (1976) 7 
+23. I. Pintilie, E. Fretwurst, G. Lindstroem and J. Stahl, Appl. 
+Phys. Lett. 81, No 1 (2002) 165 
+24. S. Weiss and R. Kassing, Solid-State Electronics, 31 , No 12, 
+(1988), 1733. 
+25. CiS Institut für Mikrosensorik gGmbH, Erfurt, Germany 
+26. A. Barcz et al., SIMS XIII conference, Nov. 2001, Nara 
+(Japan), to be published in Applied Surface Science 
+27. D. V. Lang in Thermally Stimulated Relaxation in Solids, 
+editor P. Bräunlich, (Springer-Verlag Berlin 1979) Chapt. 3, 
+pp. 93-128 
+28. J. Stahl, E. Fretwurst, G. Lindstroem and I. Pintilie, Deep 
+defect levels in standard and oxygen enriched silicon detectors 
+before and after 60Co-γ- irradiation, 9th European Symposium 
+on Semiconductor Detectors, Schloss Elmau, June 23 - 27, 
+2002, to be publ. in Nucl. Instr. and Meth. A 
+29. P. Wagner and J. Hage, J. Appl. Phys. A 49, (1989)123 
+30. YA. I. Latushko et al., Phys. Stat. Sol. (a) 93, (1986) K181 
+31. A. Chantre, Appl. Phys. Lett. 50 (21) (1987) 1500 
+ 

@@ -1,0 +1,1092 @@
+
+
+===== Page 1 =====
+
+SST-105156.R1 (accepted in Semiconductor Science and Technology, 2018) 
+1 
+ 
+Fabrication technology for high light-extraction ultraviolet thin-film 
+flip-chip (UV TFFC) LEDs grown on SiC 
+Burhan K. SaifAddin1*, Abdullah Almogbel1,3, Christian J. Zollner1, Humberto Foronda1, 
+Ahmed Alyamani3, Abdulrahman Albadri3, Michael Iza1, Shuji Nakamura1,2, Steven P. 
+DenBaars1,2, and James S. Speck1 
+1Materials Department, UCSB, CA 93106, USA 
+2Department of Electrical and Computer Engineering, UCSB, CA 93106, USA 
+3King Abdulaziz City of Science and Technology (KACST), Saudi Arabia 
+*bks@ucsb.edu 
+ 
+ 
+Abstract 
+The light output of deep ultraviolet (UV-C) AlGaN light-emitting diodes (LEDs) is limited 
+due to their poor light extraction efficiency (LEE).  To improve the LEE of AlGaN LEDs, 
+we developed a fabrication technology to process AlGaN LEDs grown on SiC into thinfilm flip-chip LEDs (TFFC LEDs) with high LEE.  This process transfers the AlGaN LED 
+epi onto a new substrate by wafer-to-wafer bonding, and by removing the absorbing SiC 
+substrate with a highly selective SF6 plasma etch that stops at the AlN buffer layer.  We 
+optimized the inductively coupled plasma (ICP) SF6 etch parameters to develop a substrateremoval process with high reliability and precise epitaxial control, without creating 
+micromasking defects or degrading the health of the plasma etching system.  The SiC etch 
+rate by SF6 plasma was ~46 µm/hr at a high RF bias (400 W), and ~7 µm/hr at a low RF 
+bias (49 W) with very high etch selectivity between SiC and AlN.  The high SF6 etch 
+selectivity between SiC and AlN was essential for removing the SiC substrate and exposing 
+a pristine, smooth AlN surface.  We demonstrated the epi-transfer process by fabricating 
+high light extraction TFFC LEDs from AlGaN LEDs grown on SiC.  To further enhance 
+the light extraction, the exposed N-face AlN was anisotropically etched in dilute KOH.  
+The LEE of the AlGaN LED improved by ~3X after KOH roughening at room temperature.  
+This AlGaN TFFC LED process establishes a viable path to high external quantum 
+efficiency (EQE) and power conversion efficiency (PCE) UV-C LEDs.  
+ 
+Keywords: epi-transfer and heterogeneous integration technology, deep ultraviolet lightemitting diodes (UV-C LEDs), UV TFFC LEDs, light sources, light extraction efficiency, 
+AlGaN, AlN, semiconductor devices. 
+ 
+1. Introduction  
+ 
+AlGaN ultraviolet light-emitting diodes (UV LEDs) and ultraviolet laser diodes (UV 
+LDs) in the range of 265–280 nm are needed to develop novel disinfection and sterilizing 
+technologies (water, air, and surfaces) to improve access to clean water [1–4], improve 
+public health [5,6], and enable other biotech applications [7–10].  UV LEDs are a viable 
+technology for replacing mercury gas discharge lamps in disinfection and biotechnology 
+applications [11–18].  Hospitals, for example,  reduced the rates of hospital-acquired drugresistant infections by 25% using ultraviolet disinfection (via mercury lamps (254 nm)), as 
+reported by various clinical trials [19,20].  Furthermore, the AlN or AlGaN epi-transfer 
+
+===== Page 2 =====
+
+SST-105156.R1 (accepted in Semiconductor Science and Technology, 2018) 
+2 
+ 
+and heterogeneous integration technology can be employed to enhance the performance of 
+photodiodes (PDs) [21], high electron mobility transistors (HEMTs) [22,23], bulk acoustic 
+resonators (BARs) [24–26], and high-aspect-ratio SiC microstructures and devices [27–
+30]. 
+ 
+Researchers developing AlGaN LEDs have made significant progress in the last 30 
+years [11,18,31–44]; however, the technology is limited by light extraction efficiency 
+(LEE) [45–54].  The LEE of AlGaN LEDs is less than that of InGaN blue LEDs for five 
+main reasons.  First, the absence of a transparent current spreading layer over p-GaN, such 
+as indium tin oxide (ITO) for blue LEDs, requires the use of flip-chip (FC) LEDs 
+architecture with a highly-reflective p-side down.  Second, the poor conductivity of Mgdoped AlGaN necessitates the use of an optically absorbing p+-GaN layer for hole injection 
+into the Mg-doped AlGaN and the formation of an ohmic p-contact; GaN has an absorption 
+coefficient of 1.5x105 cm-1 at 275 nm [55].  Third, the reflectivity of ohmic p-contacts, is 
+limited to ~70-80% , in the 265-280 nm range.  Fourth, the light from the AlGaN MQW 
+emitters at these wavelengths is ~40% transverse magnetic (TM) polarized [47,48,56–58], 
+which propagates laterally; finite-difference time-domain (FDTD) calculations estimate 
+that the extraction of TM emission is >10X less efficient than transverse electric (TE) 
+polarization in typical volumetric FC LEDs [48] (in volumetric FC LEDs light has to travel 
+through the transparent growth substrate) [48].  Lastly, the encapsulants used to enhance 
+LEE in blue LEDs suffer low transparency, poor stability, and a low refractive index in 
+deep ultraviolet LEDs [59–63]. 
+ 
+The most commonly employed substrates for AlGaN UV-C LEDs are sapphire and 
+AlN but they yield LEDs with low LEE.  Although sapphire substrates are transparent, 
+their thermal conductivity is limited, and they lack efficient ways to extract TM 
+polarization because roughening the sidewalls of sapphire LEDs dies is challenging [46].  
+AlN substrates grown by physical vapor transport (PVT) are limited by an absorption 
+around 264 nm (4.7 eV) with an absorption coefficient of about ~35 cm-1 [64] whereas 
+hydride vapor phase epitaxy (HVPE) grown AlN substrates have less absorption (~10 cm1) [65].  Researchers have largely overlooked AlGaN LEDs grown on SiC substrates [66–
+74] because SiC absorbs strongly below its optical bandgap (3.2 eV and 3.0 eV for 4H-SiC 
+and 6H-SiC, respectively), but this disadvantage can be overcome with a novel thin-film 
+flip-chip (TFFC) LED architecture in which the SiC is removed with a highly selective SF6 
+chemical plasma etch between SiC and AlN.  
+  
+Growing AlN on SiC substrates is promising due to their similar crystallographic 
+structure, polarity, chemical stability, and low lattice mismatch (0.8%) [75–80].  AlN 
+grown on SiC with low threading dislocations has been demonstrated with MOCVD 
+[78,81] and plasma-assisted MBE [71,76].  Furthermore, we demonstrate in this paper that 
+AlGaN LEDs grown on SiC can be processed into thin-film LEDs with high LEE [82–85]; 
+for example, FDTD simulations by Ryu et al. show that TM emission’s LEE in textured 
+thin-film LEDs is significantly higher (>6X) than in volumetric AlGaN FC-LEDs [48].  
+InGaN thin-film blue LEDs were developed with very high LEE using laser lift-off for 
+substrate removal, N-face GaN KOH photoelectrochemical (PEC) roughening, and a pside reflective mirror [86–88].  Several methods for laser lift-off of AlGaN UV-C LEDs 
+
+===== Page 3 =====
+
+SST-105156.R1 (accepted in Semiconductor Science and Technology, 2018) 
+3 
+ 
+have been developed [89–94]; however, laser-induced melting of the Al in the dislocated 
+interface of the AlN buffer layer in AlGaN LEDs causes more cracks than laser lift-off of 
+the GaN buffer layer in InGaN LEDs [95] because the Al melts at 660 °C, whereas Ga 
+melts at 30 °C [91].  Employing PEC etching to lift-off thin-film LEDs from their growth 
+substrates [70,71] is more difficult with AlN than with GaN because N-face AlN etches 
+anisotropically in KOH (without above-bandgap light assistance) considerably faster 
+(~20x) than N-face GaN does [98].  Thus, KOH roughening can damage the active region 
+before the lateral lift-off etch is completed.  
+ 
+In this paper, we demonstrate a process to fabricate high extraction efficiency TFFC 
+LEDs grown on SiC.  We characterize SiC and AlN etching using inductively coupled 
+plasma (ICP) SF6 plasma.  The SF6 gas flow, process pressure, and sample RF bias power 
+were investigated to determine first-order trends between the etch parameters and the etch 
+rates of SiC and AlN.  Next, the etch parameters were optimized to develop a highly reliable 
+SiC substrate-removal process with no micromasking defects and precise epitaxial control, 
+without degrading the plasma etching system health.  A highly selective SF6 etch between 
+SiC and AlN (90:1) was achieved which was essential for removing the SiC substrate and 
+exposing a smooth AlN surface (roughness ~0.6 nm).  We demonstrate high LEE thin-film 
+flip chip (TFFC) AlGaN LEDs grown on SiC.  We compare the power output of TFFC 
+AlGaN LEDs before and after KOH roughening of the exposed AlN surface.  The AlGaN 
+LED’s LEE improved by ~3X after roughening in KOH [0.25 M] for 70 sec at room 
+temperature.  
+ 
+2. SiC substrate thinning characteristics 
+ 
+AlN was grown on quartered 2-inch 6H-SiC substrates (SiCrystal AG) by MOCVD as 
+described elsewhere [81].  A one-step lapping process was used to thin the SiC substrates 
+after bonding them to a carrier with high thermal conductivity (4.9 W/cm a-plane, 3.9 
+W/cm c-plane) with n- and p- bonding pads using Au/Au thermocompression bonding 
+[73,74].  The SiC based samples were mounted episide-down on a 2-inch  stainless-steel 
+chuck using a wax (that melts at 120 °C), which provides mechanical adhesion during 
+lapping.  The lapping process was performed using South Bay Technologies multipurpose 
+lapping system (Model 920).  The SiC growth substrates were thinned from 250 µm to 75 
+µm by lapping with a 9 µm Dia-Grid Diamond Disc (Allied High Tech Products, Inc.).  
+The water-cooled lapping tool had a lapping rate of 29 µm/hr using 9 µm grit diamond 
+discs.  A summary of the thinning parameters is shown in Table 1.  The lapping damage 
+generated by lapping with a 9 µm grit was approximately 3 x 9 µm = 27 µm, which avoids 
+damage to the active region.  The mechanical lapping yields a total thickness variation 
+(TTV) of about 15–20 µm across a quartered 2-inch wafer.   
+ 
+3. SF6 etch chemistry characteristics 
+ 
+The SiC substrates  were plasma etched in a Panasonic ICP etching system (E6261) 
+using SF6 plasma [67,68,101–103].  ICP etching systems have independent ICP and RF 
+bias sources.  The ICP plasma (generated by a current flowing in a planner coil above the 
+etch chamber) power controls the ions and radicals densities.  The RF bias power controls 
+
+===== Page 4 =====
+
+SST-105156.R1 (accepted in Semiconductor Science and Technology, 2018) 
+4 
+ 
+the ions bombardment energy and thus is proportional to sputter (physical) etching.  The 
+samples were mounted episide-down on a 6-inch carrier wafer using a vacuum diffusion 
+pump fluid, which provides thermal conduction between the sample and the carrier wafer.  
+The sample surface temperature depends on the lower electrode temperature and on the 
+plasma ions’ energies and densities.  The lower electrode of the ICP system was backside 
+cooled by pressurized He, and the carrier wafer temperature was kept at 11 °C during all 
+etches.  The 6-inch carrier wafer was a 1.5 mm thick fused silica wafer with a 100 nm Al 
+backside coating to hold the fused silica carrier wafer to the electrostatic chuck.  The 
+chamber and carrier wafer were cleaned in O2 plasma and then seasoned with a 2 min SF6 
+etch at 1000 W ICP power and low RF bias (49 W).  We found that chamber and carrier 
+wafer seasoning suppressed the formation of SiC pillars.  The SiC etch rates were 
+determined by profilometry (Dektak) and scanning electron microscopy (SEM).  
+ 
+Etching SiC with SF6 plasma produces the volatile products SiF4, SiF2, CF2 and CF4 
+[104]; the absence of etch-induced polymer generation renders the long etching (for several 
+hours, if needed) consistent and reliable.  Thus, long SF6 etching does not need to be 
+interrupted to clean the etch chamber because the etch chemistry does not cause polymer 
+accumulation.  However, the carrier wafer’s temperature in the ICP etch chamber should 
+be controlled during long etches because elevated temperatures can increase the SiC etch 
+rate.  
+ 
+We developed a two step SF6 ICP etch process to remove SiC: (1) high SiC etch 
+rate process; (2) high selectivity SiC:AlN etch process.  The two-step etch parameters are 
+summarized in Table 2.   
+ 
+To achieve the highest etch rates of bulk SiC, we observed SiC etch rate as a 
+function of SF6 flow and process pressure.  Figure 1(a) shows that the SiC etch rate 
+increased as SF6 flow increased, with improved etch uniformity.  Figure 1(b) shows that 
+the etch rate was sensitive to the process pressure.  Increasing the process pressure, 
+increases the ions’ densities but decreases the ions’ energies, by decreasing its mean free 
+path.  The SiC etch rate data in figure 2(b) shows that a chamber pressure of 1.33 Pa 
+resulted in the highest SiC etch rate at the following process parameters: 1000 W ICP 
+power, 400 W RF bias power, and 50 sccm SF6 flow. 
+ 
+To achieve high etch selectivity, we utilized the fact that SiC etches chemically in 
+SF6, whereas AlN does not etch chemically in SF6 and is only etched at a low rate by SF6 
+sputter etching (at low RF bias).  Figure 2(a) shows that the SiC etch rate increased as the 
+RF bias power increased.  At high RF bias power, SF6 sputter etch dominates whereas at 
+low RF bias (below 60 W), SF6 chemical etch dominates and the sputter etch rate for SiC 
+and AlN is very low.  The etch rate at 400 W was about ~40 µm/hr when measured over 
+40 min and 46 µm/hr when measured over 2 hr.  The SiC substrate was etched first at ~46 
+µm/hr over 1.2 hr to remove about 60 µm of SiC; the temperature of the He-cooled carrier 
+wafer increased slightly from 11 °C  to 15 °C.  Achieving higher SiC etch rate is possible 
+in plasma etch systems that have higher ICP power and RF bias power. 
+ 
+
+===== Page 5 =====
+
+SST-105156.R1 (accepted in Semiconductor Science and Technology, 2018) 
+5 
+ 
+Figure 2(b) shows that the SiC:AlN etch selectivity was very sensitive to RF bias, 
+especially below 60 W. .  At high RF bias, the etch selectivity was low (10:1 at 400 W) 
+because at this regime, sputter etching has low selectivity between SiC and AlN.  On the 
+other hand, the SiC:AlN etch selectivity increased significantly as the RF bias decreased 
+below 60 W, where the SF6 chemically etches SiC but does not etch AlN due to the 
+formation of the low-volatility species AlF3, which was demonstrated previously in studies 
+of selective reactive ion etching of GaAs on AlGaAs and GaP on AlGaP in fluorine 
+containing plasma [105–108].  However, the strong dependence of the SiC:AlN etch 
+selectivity on the RF bias power decreased when the RF bias power was less than 47 W, 
+as the SiC etch rate decreased more than the AlN etch rate did.  
+ 
+SiC:AlN etch selectivity is essential for removing the SiC substrate without 
+damaging the active layer by stopping at the AlN buffer layer with precise epitaxial control.  
+The etch selectivity was dependent on the substrate temperature (maintained at 11 °C), 
+process pressure, and the RF bias power, especially in the 47–49 W region.  For a thinned, 
+quartered 2-inch SiC substrate with ~15–20 µm in TTV, a SiC:AlN etch selectivity of 90:1 
+at 49 W RF bias and 1.33 Pa was sufficient to reliably and selectively etch SiC and expose 
+a pristine surface of N-face AlN.  At a lower process pressure of 0.8 Pa, the SiC:AlN etch 
+selectivity increased to 150:1.  This indicates that the selectivity can be increased further 
+by optimizing the process pressure.  Senesky et al. [27] reported an SF6 etch selectivity (at 
+a low RF bias) of 16:1 (SiC:AlN) using AlN deposited with reactive sputtering; the higher 
+bulk SiC etch selectivities obtained with MOCVD-grown AlN (at a low RF bias) indicate 
+that AlN grown by MOCVD could replace Ni as a hard mask in fabricating high-aspectratio SiC microstructures and devices [28,29]. 
+ 
+We optimized the SF6 ICP etch to ensure that it removed the thick SiC substrate 
+without producing micromasking defects on the thin-film LEDs surface and without 
+degrading the plasma etching system health.  First, we avoided the use of commonly used 
+metal carriers inside the etch chamber (refer to Table 3).  In ICP plasma etch systems, SF6 
+etching is typically performed using a 6-inch Ni or Al carrier wafer because: both have low 
+etch rates in SF6 [101,109], as shown in Table 3.  However, the use of metal carrier wafers 
+increases micro-masking defects (which produces 40+ µm SiC pillars, as shown in figure 
+3(a)) that will not etch completely, even with the selective etch.  Furthermore, sputtered 
+metal from metal carriers can affect subsequent etches or cause electrical shorting [27], and 
+require manual cleaning of the etch chamber after every etch.  The use of fused silica (SiO2) 
+or sapphire carrier wafers minimized the micro-masking defects (SiC pillars) on the etched 
+surface and did not affect the ICP etch chamber walls.  The suppression of SiC pillars is 
+shown in SEM images in figure 3(b).  Selective etching of a SiC surface with suppressed 
+micromasking defects exposed a smooth AlN surface (refer to figure 4(e) for an AFM scan 
+of the exposed AlN surface with RMS roughness < 1 nm) that was free of SiC pillars, as 
+shown in the optical and SEM micrographs of the TFFC LEDs in figure 5.  Some literature 
+indicates that the etch pressure requires optimization to remove SiC pillars; however, we 
+found that pillar formation can be suppressed with appropriate selection of the carrier wafer, 
+combined with the seasoning of both the carrier wafer and the etch chamber. 
+ 
+ 
+
+===== Page 6 =====
+
+SST-105156.R1 (accepted in Semiconductor Science and Technology, 2018) 
+6 
+ 
+4. TFFC UV-C LED (278 nm) demonstration  
+ 
+The thin-film transfer technology was demonstrated on a high LEE TFFC UV-C 
+LED, as shown in figures 4-6. 
+ 
+Figure 4 shows the process flow to fabricate TFFC LEDs from LED grown on SiC.  
+The AlGaN LED structure was first grown on a quartered 2-inch 6H-SiC substrate 
+(SiCrystal AG) by MOCVD as reported elsewhere [85].  The LED structure is shown in 
+figure 6(a) and consisted of AlN (3.2 μm), Al0.8Ga0.2N (180 nm), n-Al0.6Ga0.4N (1.1 μm), 
+278 nm MQWs 4x(Al0.39Ga0.61N/ Al0.6Ga0.4N), p-Al0.53Ga0.47N (50 nm), and p-GaN (5 nm).  
+The samples were cleaved into 1.1 x 1.1 cm2 samples and were processed into LEDs.  The 
+n-contact was V/Al/V/Au (20/80/20/200 nm); the p-contact was unannealed Ni/Al/Ni/Au 
+(1/150/100/1000 nm) (refer to [85] for details).  After a 3 min solvent clean and 30 sec O2 
+plasma clean (100 W), the LEDs were bonded to a thermally conductive substrate (semiinsulating 4H-SiC, Cree, Inc.) with n- and p- bonding pads (20/1500 nm Ti/Au were 
+deposited by e-beam).  The samples were bonded using low-temperature Au/Au 
+thermocompression bonding.  A Finetech flip-chip bonder (FINEPLACER lambda) was 
+employed for aligned wafer-to-wafer bonding.  The bond was performed at 30 N/cm2 for 
+5 min at 275 °C in air.  Then, the samples were bonded further in custom-designed graphite 
+fixtures that applied ~300 N/cm2 pressure while the sample was annealed at 200 °C for 2 
+hr in air (the pressure was maintained during a 5 min cooldown); refer to Table 4 for a 
+summary of the low-temperature Au/Au thermocompression bonding parameters. The 6HSiC growth substrate was lapped mechanically to 75 µm and removed by a two-step SF6 
+plasma etch, as previously described.  Figure 5(a) shows plain-view optical micrograph 
+images of processed UV LEDs with partially exposed AlN during an etch interrupt.  The 
+exposed TFFC LEDs had no visible cracks or chipping.  The complete removal of SiC and 
+exposure of pristine AlN surface was visible to the eye — a colorful interference pattern 
+was observed as the light incident, and reflected from different surfaces in the TFFC LED 
+interferes [110].  Also, the wettability of the surface changed as the N-face AlN was 
+exposed.  Namely, the surface of the etched carbon-face SiC was hydrophilic, and the 
+surface of the exposed AlN was hydrophobic, as shown in figure 5(a).  The TFFC LED 
+contacts design is shown in figure 5(b) which shows a 5-finger topology for p-contact, 
+surrounded by n-contact, with p-contact area of 0.093 mm2.  The 5-finger p-contact 
+topology was adopted to avoid current crowding in the n-AlGaN layer [111], which had a 
+relatively high resistivity (~60 mΩ-cm2). 
+ 
+After complete removal of the SiC growth substrate, the suspended AlN/AlGaN/nAlGaN thin-film in-between the TFFC LEDs, which is above the n- and p-pads (as shown 
+in figure 5(b)), can be removed via a patterned hard mask (SiO2) and KOH, or by etching 
+a wider and deeper mesa around the LEDs mesa (into 80% of the AlN thickness) — before 
+FC bonding.  However, we relied on the residual tensile stress in the AlN/AlGaN/n-AlGaN 
+film, which caused it to slightly concave upward [98].  Thus, after the TFFC LEDs were 
+singulated, the n- and p- pads becomes accessible to wire bonding, as shown in figure 5(c).  
+The TFFC LEDs were singulated by mechanical sawing using an ADT 7100 Dicing Saw.  
+The TFFC LEDs were covered by photoresist for protection from the cooling/cleaning 
+water jets that are needed during mechanical sawing.  Subsequently, the TFFC LEDs were 
+
+===== Page 7 =====
+
+SST-105156.R1 (accepted in Semiconductor Science and Technology, 2018) 
+7 
+ 
+mounted on TO headers using a Ni-Au epoxy from Dexerials Corp., and the light output 
+of the LEDs was measured in a 75 mm integrating sphere (Digital Instruments, Inc.).  
+ 
+Figure 6(b) compares the dependence a TFFC LED’s light output power (L) on the 
+injected DC current (I) before and after optimized KOH roughening of the exposed AlN 
+surface [85].  The slope of the power versus current increased by ~3X after KOH 
+roughening of the exposed AlN layer in dilute KOH (0.25 M) for 70 sec (refer to the bird’seye-view SEM image of the resulting hexagonal pyramids in figure 6(c)).  The LEE 
+enhancement after KOH roughening was limited to ~3X  (as estimated from the 
+enhancement in the L-I slope) due to the limited p-contact reflectivity and the use of a 5 
+nm p+-GaN layer (a strongly absorbing layer) to inject holes into the LED active region.  
+Further LEE enhancement is possible without using p-GaN and by using a more reflective 
+p-contacts.  For example, the photoluminescence (PL) of MQW wells in an n-i-n structure 
+(n-Al0.6Ga0.4N/286-nm-MQWs/n-Al0.6Ga0.4N/Al0.6GaN/AlN) could be enhanced by ~3.9X 
+[112] after KOH roughening by using a highly reflective p-contact (a Pt/Al/Ni/Au p-contact 
+with a Pt thickness of 0.26 nm and reflectivity of 90% at 286 nm was used to produce a 
+~3.9X intensity enhancement in PL after KOH roughening).  
+ 
+The LEE of TM emissions in KOH-roughened TFFC LEDs are expected to be 
+higher than in bulk FC LEDs.  For example, Lee et al. studies on LEE in AlGaN UV LEDs 
+[113] showed that LEE from a PSS sapphire AlGaN LED die was limited by sidewall 
+roughness, more so than in InGaN-based bulk FC LEDs, and that LEE from sidewalls is 
+significant in thick (e.g., 300 m thick sapphire) bulk FC AlGaN LED but becomes 
+negligible in relatively thin bulk FC AlGaN LEDs (e.g., 90 m thick sapphire).  However, 
+in TFFC LEDs, the contribution of sidewall emissions is negligible because the thin-film 
+LED widths are much larger than its thickness, which is only 2–3 µm, and both TE and 
+TM light emission couple into the roughened AlN surface; for example, FDTD simulations 
+by Ryu et al. showed that the LEE of TM emission in roughened AlGaN thin-film LEDs is 
+significantly higher (>6X) than in bulk AlGaN FC-LEDs [48].  The TE/TM emissions ratio 
+depends on the MQWs strain and the Al composition in the wells and barriers [114–116].  
+We speculate that the strain state of the MQWs grown on SiC will be similar to MQWs 
+grown on sapphire because (1) the AlN buffer layer is normally relaxed in both sapphire 
+and SiC substrates, and therefore the AlGaN MQWs are similarly compressively strained 
+by the AlN lattice; and (2) the piezoelectric component due to thermal coefficient of 
+expansion (TCE) mismatch (compressive in sapphire, and slightly tensile in SiC) between 
+the AlN and AlGaN layers is negated because it affects them similarly.   
+ 
+Estimating the LEE in unroughened thin-film LEDs could be challenging.  For 
+example, thin-film blue LEDs with KOH-roughened GaN buffer layers, ray tracing 
+simulations estimate 13 % LEE for each single-pass extraction (6 bounces for full 
+extraction) [117], whereas wave optics simulations estimate 31% LEE for each single-pass 
+extraction (3 bounces for full extraction) [118]. We will discuss our estimates for the LEE 
+of TFFC LEDs in a future publication. 
+ 
+After the optimized KOH roughening, the LED CW power was 7.8 mW at 95 mA, emitting 
+at 278.5 nm, which yielded an EQE of 2%.  Stable encapsulation [61] can further enhance 
+
+===== Page 8 =====
+
+SST-105156.R1 (accepted in Semiconductor Science and Technology, 2018) 
+8 
+ 
+the LEE from TFFC LEDs; however, most resins absorb strongly below 330 nm and 
+decompose over time, which renders them commercially unviable.  A higher LEE for 
+AlGaN TFFC LEDs is also achievable if the p-GaN layer is replaced with a transparent 
+hole injector [119–121] or if the reflectivity of the p- and n-metal contacts is increased 
+[48,117,122,123].  The IV characteristics do not change with KOH etching as discussed in 
+details elsewhere [98] (refer to Figure 6c); however, in the device discussed here the 
+voltage increased by ~ 1V after 50 sec KOH etching (refer to Figure 6d) which was 
+probably due to a crack in the TFFC LED; however, further KOH etching did not affect 
+the IV.  
+ 
+5. Conclusions 
+ 
+We developed a highly selective SF6 plasma etch of SiC over AlN and a viable 
+manufacturing method for epitaxial transfer from SiC to another substrate via wafer 
+bonding and SiC substrate-removal by SF6 etching.  Then, we demonstrated it on UV-C 
+LEDs that were grown on SiC to fabricate high LEE TFFC LEDs.  The SiC substrate was 
+bonded via Au-Au thermocompression bonding to another n- and p-patterned thermally 
+conductive substrate.  The growth substrate was removed by a two-step ICP etching 
+without micromasking defects on the etched surface.  The first step was a high SiC etch 
+rate (~46 μm/hr) at a high RF bias power (400 W).  The second step was a selective SiC 
+etch rate (~7 μm/hr) at a low RF bias power ( 49 W), with an etch selectivity of SiC:AlN 
+~90:1 at a process pressure of 1.33 Pa; higher SiC:AlN etch selectivity of ~150:1 was also 
+achieved at a lower process pressure.  The highly selective SF6 etch at low bias was 
+essential for removing all SiC by reliably stopping at the LEDs’ AlN buffer layer, which 
+acts as an etch stop layer.  We demonstrated a TFFC manufacturing method for UV-C 
+LEDs that were grown on SiC.  The LEE was significantly enhanced via KOH roughening 
+of the exposed N-face AlN.  KOH roughening enhanced the LEE by ~3X for UV LEDs 
+without encapsulation and despite the use of 5 nm p-GaN as a p-contact layer. 
+ 
+Acknowledgements 
+ 
+This work was funded by the King Abdulaziz City for Science and Technology (KACST), 
+the Technology Innovations Center (TIC) program, and the KACST-KAUST-UCSB Solid 
+State Lighting Program.  The authors are appreciative of the support of the Solid State 
+Lighting and Energy Electronics Center (SSLEEC) at UCSB.  A portion of this work was 
+conducted in the UCSB nanofabrication facility and part of the NSF NNIN network (ECS0335765), as well as the UCSB MRL, which is supported by the NSF MRSEC Program 
+(DMR05-20415).  The authors acknowledge the UCSB-Collaborative Research in 
+Engineering, Science and Technology (CREST) Malaysia project.  This work was also 
+supported by the National Science Foundation Graduate Research Fellowship Program 
+(Grant No. 1650114).  Any opinions, findings, and conclusions or recommendations 
+expressed in this material are those of the author(s) and may not reflect the views of the 
+National Science Foundation.  The authors would also like to thank the cleanroom staff at 
+UCSB nanofabrication facility, especially  Brian Thibault  for helpful discussions. 
+ 
+
+===== Page 9 =====
+
+SST-105156.R1 (accepted in Semiconductor Science and Technology, 2018) 
+12/2/2018 
+9 
+6:32:48 PM 
+List of Figures 
+ 
+ 
+(a) Bulk SiC etch rate (µm/hr) vs SF6 flow rate (sccm).  
+Higher flow rate increases the etch rate and improves the 
+lateral etch uniformity. 
+(b) Bulk SiC etch rate (µm/hr) vs pressure (Pa).  The etch rate 
+peaks at 1.33 Pa when the product of the ions’ energies and 
+the ion densities is maximum. 
+Figure 1. The SF6 flow and process pressure, were examined to determine the trends between the etch parameters to optimize for 
+a high SiC etch rate.  The process parameters were fixed at 1000 W ICP, 400 RF bias, and SF6 50 sccm flow.  The etch rates were 
+measured for bulk SiC over a period of ~40 min – on a fused silica carrier wafer.  
+ 
+ 
+ 
+(a) Bulk SiC etch rate (µm/hr) vs RF bias (W).   
+(b) SiC:AlN etch selectivity as function of RF bias power 
+(W).   
+Figure 2. In figure 2(a), at high RF bias, the SiC etch rate was dominated by sputter etching, however, at low RF bias sputter etch 
+rate is minimal, and SiC is primarily chemically etched.  Figure 2(b) shows that SiC:AlN etch selectivity has a strong dependence 
+on RF bias below 60 W.  The SiC:AlN etch selectivity at 49 W RT bias was 90:1 during a 2 hr etch, however, the selectivity 
+decreased below 47 W.  A higher SiC:AlN etch selectivity 150:1 (shown in red) was measured at a lower process pressure (0.8 Pa). 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+===== Page 10 =====
+
+SST-105156.R1 (accepted in Semiconductor Science and Technology, 2018) 
+12/2/2018 
+10 
+6:32:48 PM 
+Table 1. Summary of lapping parameters used to mechanically thin SiC substrate with 9 µm diamond grid disc. 
+Lapping settings   
+Lapping etch rate 
+ 
+CCW 
+5 wafer rotation/ min 
+6 pad rotation /min 
+ 
+ 25-30 µm/min 
+ 
+Table 2. Summary of etch parameters for the two-steps ICP SF6 etch to selectively remove SiC (using fused silica as a carrier). 
+Process parameter 
+Fast SiC etch 
+Selective SiC etch (slow) 
+Pressure   
+1.33 Pa 
+1.33 Pa 
+ICP power  
+1000 W 
+1000 W 
+SF6 Flow  
+50 sccm 
+50 sccm 
+ICP bias   
+400 W 
+49 W 
+Etch rate  
+40 µm/hr (40 min) 
+46 µm/hr (90 min) 
+47 µm/hr (2 hr) 
+ 
+~7 µm/hr  
+(2 hr) 
+SiC:AlN Selectivity 
+10:1 
+~90:1 
+(~150:1 at 0.8 Pa) 
+ 
+Impact on  
+SiC surface  
+Rough hydrophilic 
+SiC surface  
+After SiC is completely etched, the surface 
+changes from hydrophilic to hydrophobic; smooth 
+N-face AlN surface (RMS roughness < 1 nm) is 
+exposed.  
+ 
+ 
+Table 3. Summary of the etch rate, and selectivity of SiC and various 6-inch carrier wafers used in the ICP system (at 1000 W 
+ICP, 400 W RF bias, 1.33 Pa).  
+6” Carrier 
+wafer  
+Etch rate 
+(µm/hr) 
+SiC:Carrier wafer 
+etch selectivity 
+at 400 W RF bias 
+Cost   
+Comments 
+SiC  
+ 40 
+ 1:1 
+$1000 
+-- 
+Satisfactory selectivity but expensive. 
+Satisfactory selectivity and inexpensive. 
+ 
+Sapphire 
+5 
+8:1 
+$400 
+Fused Silica  
+ 
+20 
+1.9:1 
+$30 
+Al wafer 
+ 
+1.5-2 
+25:1 
+$200 
+Sputter into sample and etch chamber 
+walls 
+Ni wafer  
+1 
+40:1 
+$200 
+Sputter into sample and etch chamber 
+walls. 
+ 
+Cu film on 
+Si wafer  
+ 
+NA 
+NA 
+NA 
+ 
+Sputter contaminating and nonvolatile 
+etch byproducts into sample and etch 
+chamber walls 
+Ni film on Si 
+wafer 
+ 
+1 
+40:1 
+NA 
+Sputter into sample and etch chamber 
+walls.  Also, Ni films thicker than 2 µm 
+buckle and delaminate due to high 
+compressive stress. 
+  
+ 
+ 
+ 
+ 
+
+===== Page 11 =====
+
+SST-105156.R1 (accepted in Semiconductor Science and Technology, 2018) 
+12/2/2018 
+11 
+6:32:48 PM 
+ 
+Table 4. Summary for Au-Au thermo-compression bonding  characteristics with Finetech flip-chip bonder. 
+Bonding type 
+Temperature and Force  
+Sample size 
+Au-Au thermo-compression 
+bonding 
+To minimize p-mirror 
+damage: 
+1-275 ºC, 5 min (30 N/cm2) 
+2- 200 ºC, 2 hr (300 N/cm2 
+with graphite fixture) 
+0.3x0.3 cm2 to 1.5x1.5 cm2 
+ 
+ 
+(a) 
+(b) 
+Figure 3. SiC pillars can be completely removed from the surface if appropriate process controls are applied.  The image on 
+the left (a) shows SiC pillars (40+ µm mircomasking defects) that can form during etching and that will not be completely 
+etched even when the highly selective etch is subsequently applied.  The SiC pillars formation was suppressed as shown on the 
+right (b) by an optimized etch and process controls: 1) Metal carrier wafers were avoided (fused silica carrier was employed).  
+2) The carrier wafer and etch chamber were seasoned with SF6 plasma prior to etching. 
+ 
+ 
+ 
+ 
+ 
+
+===== Page 12 =====
+
+SST-105156.R1 (accepted in Semiconductor Science and Technology, 2018) 
+12/2/2018 
+12 
+6:32:48 PM 
+ 
+ 
+ 
+ 
+(a) UV LED grown on SiC 
+(b) wafer-to-wafer FC bonding 
+(c) thinning and etching of SiC 
+with selective SF6 plasma 
+(d) TFFC LED singulation 
+and KOH roughening 
+ 
+ 
+(e) AFM image of the surface of exposed AlN surface as 
+(roughness ~0.6 nm) after complete etching of SiC in step (c). 
+ 
+(f) Cross-sectional SEM image of nano-sharp hexagonal 
+pyramids that are produced after KOH roughening of N-face 
+AlN in step (d). 
+Figure 4. Process flow (a-d) demonstrate UV-C thin-film flip-chip (TFFC) grown on SiC and (e) shows AFM of exposed AlN 
+surface after completing SiC growth substrate-removal in step (c).  The hexagonal pyramids shown in (f) expand the effective angle 
+of the light-extraction-cones. Figure adapted, with permission, from Ref. [85]. 
+ 
+ 
+ 
+ 
+ 
+ 
+
+===== Page 13 =====
+
+SST-105156.R1 (accepted in Semiconductor Science and Technology, 2018) 
+12/2/2018 
+13 
+6:32:48 PM 
+ 
+(a) Differential interference contrast (DIC) micrograph shows eight TFFC LEDs during an etch stop before the substrate is 
+completely etched by the SF6 plasma.  In the top four LEDs, a thin layer of SiC remained. In the bottom four LEDs, no SiC 
+remained and the N-face AlN was exposed.  The colorful fringes in the lower four LEDs were due to thinfilm interference. 
+(b) Optical micrograph of UV-C TFFC LED (278 nm). 
+(c) SEM image of a packaged UV-C TFFC LED (278 nm). 
+Figure 5. Optical microscope micrographs of a processed thin film LED (5-finger topology) with no cracks or chipping in the 
+active region in (a) and (b).  After dicing, the suspended AlN/AlGaN/n-AlGaN between the TFFC LEDs concave up due to 
+residual tensile stresses in the AlN/AlGaN/n-AlGaN film which renders the n- and p- pads accessible as shown in (c). 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+===== Page 14 =====
+
+SST-105156.R1 (accepted in Semiconductor Science and Technology, 2018) 
+12/2/2018 
+14 
+6:32:48 PM 
+ 
+ 
+ 
+(a) 278 nm LED structure on SiC.  The TDD was ~1x109 
+cm-2 in the AlN buffer and AlGaN layers. 
+(b) The light-current (L-I) curve before, and after KOH 
+roughening.  The enhancement in the L-I slope KOH 
+roughening was ~ 200%.  The area of the p-contact 
+(Ni/Al/Ni/Au) was 0.093 mm2 ~0.1 mm2.  
+ 
+ 
+(c) The voltage-current (I-V) curve before, and after KOH 
+roughening, for a 298 nm TFFC LED. The inset shows a 
+298 nm EL spectrum at 60 mA with FWHM of 12.7 nm. 
+The area of the p-contact (Ni/Al/Ni/Au) was 0.013 mm2. 
+(d) The voltage-current (I-V) curve before, and after KOH 
+roughening, for the 278 nm TFFC LED. The inset shows a 
+278.5 nm EL spectrum at 95 mA with FWHM of 10 nm. The 
+DC power was 7.6 mW at 95 mA. 
+Figure 6. TFFC LEDs demonstration had high LEE.  The LEE was enhanced significantly via KOH roughening  of the 
+exposed N-face AlN layer of TFFC LED.  The L-I slope increased by ~3X with optimized KOH roughening without 
+encapsulation, and despite using 5 nm p-GaN as p-contact layer.  
+ 
+ 
+ 
+ 
+  
+
+===== Page 15 =====
+
+SST-105156.R1 (accepted in Semiconductor Science and Technology, 2018) 
+12/2/2018 
+15 
+6:32:48 PM 
+References 
+ 
+[1] 
+ Lui G Y, Roser D, Corkish R, Ashbolt N J and Stuetz R 2016 Point-of-use water 
+disinfection using ultraviolet and visible light-emitting diodes Sci. Total Environ. 553 
+626–35 
+[2] 
+ Song K, Mohseni M and Taghipour F 2016 Application of ultraviolet light-emitting 
+diodes (UV-LEDs) for water disinfection: A review Water Res. 94 341–9 
+[3] 
+ Kheyrandish A, Mohseni M and Taghipour F 2017 Development of a method for the 
+characterization and operation of UV-LED for water treatment Water Res. 122 570–9 
+[4] 
+ Vilhunen S, Särkkä H and Sillanpää M 2009 Ultraviolet light-emitting diodes in water 
+disinfection Environ. Sci. Pollut. Res. 16 439–42 
+[5] 
+ Alkire B C, Raykar N P, Shrime M G, Weiser T G, Bickler S W, Rose J A, Nutt C T, 
+Greenberg S L M, Kotagal M, Riesel J N, Esquivel M, Uribe-Leitz T, Molina G, Roy N, 
+Meara J G and Farmer P E 2015 Global access to surgical care: a modelling study Lancet 
+Glob. Heal. 3 e316–23 
+[6] 
+ Reygadas F, Gruber J S, Ray I and Nelson K L 2015 Field efficacy evaluation and posttreatment contamination risk assessment of an ultraviolet disinfection and safe storage 
+system Water Res. 85 74–84 
+[7] 
+ Hutchens M P, Drennan S L and Cambronne E D 2015 Calibration of optimal use 
+parameters for an ultraviolet light-emitting diode in eliminating bacterial contamination on 
+needleless connectors. J. Appl. Microbiol. 118 1298–305 
+[8] 
+ Messina G, Fattorini M, Nante N, Rosadini D, Serafini A, Tani M and Cevenini G 2016 
+Time Effectiveness of Ultraviolet C Light (UVC) Emitted by Light Emitting Diodes 
+(LEDs) in Reducing Stethoscope Contamination. Int. J. Environ. Res. Public Health 13 
+[9] 
+ Bolton J R and Linden K G 2003 Standardization of Methods for Fluence (UV Dose) 
+Determination in Bench-Scale UV Experiments J. Environ. Eng. 129 209–15 
+[10]  Destiani R, Templeton M R and Kowalski W 2018 Relative Ultraviolet Sensitivity of 
+Selected Antibiotic Resistance Genes in Waterborne Bacteria Environ. Eng. Sci. 35 770–4 
+[11]  Muramoto Y, Kimura M and Nouda S 2014 Development and future of ultraviolet lightemitting diodes: UV-LED will replace the UV lamp Semicond. Sci. Technol. 29 084004 
+[12]  Hirayama H 2016 Growth Techniques of AlN/AlGaN and Development of HighEfficiency Deep-Ultraviolet Light-Emitting Diodes pp 75–113 
+[13]  HIRAYAMA H, FUJIKAWA S and KAMATA N 2015 Recent Progress in AlGaNBased Deep-UV LEDs Electron. Commun. Japan 98 1–8 
+[14]  Khan A, Balakrishnan K and Katona T 2008 Ultraviolet light-emitting diodes based on 
+group three nitrides Nat. Photonics 2 77–84 
+[15]  Wernicke T, Martens M, Kuhn C, Reich C, Mehnke F, Jeschke J, Feneber M, Rass J, 
+Enslin J, Lapeyrade M, Zeimber U, Mogilatenko A, Einfeldt S, Kueller V, Hagedorn S, 
+Knauer A, Hartmann C, Wollweber J, Goldhahn R, Bickermann M, Weyers M and 
+Kneissl M 2015 Challenges for AlGaN Based UV Laser Diodes Light, Energy and the 
+Environement 2015 (Washington, D.C.: OSA) p DM2D.4 
+[16]  Kneissl M, Kolbe T, Chua C, Kueller V, Lobo N, Stellmach J, Knauer A, Rodriguez H, 
+Einfeldt S, Yang Z, Johnson N M and Weyers M 2011 Advances in group III-nitridebased deep UV light-emitting diode technology Semicond. Sci. Technol. 26 014036 
+[17]  Martens M, Mehnke F, Kuhn C, Reich C, Kueller V, Knauer A, Netzel C, Hartmann C, 
+Wollweber J, Rass J, Wernicke T, Bickermann M, Weyers M and Kneissl M 2014 
+
+===== Page 16 =====
+
+SST-105156.R1 (accepted in Semiconductor Science and Technology, 2018) 
+12/2/2018 
+16 
+6:32:48 PM 
+Performance characteristics of UV-C AlGaN-based lasers grown on sapphire and bulk 
+AlN substrates IEEE Photonics Technol. Lett. 
+[18]  Kneissl M and Rass J III-nitride ultraviolet emitters : technology and applications 
+[19]  Pegues D A, Han J, Gilmar C, McDonnell B and Gaynes S 2017 Impact of Ultraviolet 
+Germicidal Irradiation for No-Touch Terminal Room Disinfection on Clostridium difficile 
+Infection Incidence Among Hematology-Oncology Patients Infect. Control Hosp. 
+Epidemiol. 38 39–44 
+[20]  Haas J P, Menz J, Dusza S and Montecalvo M A 2014 Implementation and impact of 
+ultraviolet environmental disinfection in an acute care setting. Am. J. Infect. Control 42 
+586–90 
+[21]  S. M. Iftiquar Y L M J N B S K D and J Y 2012 Photodiodes - From Fundamentals to 
+Applications ed I Yun (InTech) 
+[22]  Lu B and Palacios T 2010 High Breakdown (>1500 V) AlGaN/GaN HEMTs by 
+Substrate-Transfer Technology IEEE Electron Device Lett. 31 951–3 
+[23]  Meyer D J, Downey B P, Katzer D S, Nepal N, Wheeler V D, Hardy M T, Anderson T J 
+and Storm D F 2016 Epitaxial Lift-Off and Transfer of III-N Materials and Devices from 
+SiC Substrates IEEE Trans. Semicond. Manuf. 29 384–9 
+[24]  Shealy J B, Shealy J B, Patel P, Hodge M D, Vetury R and Shealy J R 2016 Single crystal 
+aluminum nitride film bulk acoustic resonators 2016 IEEE Radio and Wireless Symposium 
+(RWS) (IEEE) pp 16–9 
+[25]  Chen G, Zhao X, Wang X, Jin H, Li S, Dong S, Flewitt A J, Milne W I and Luo J K 2015 
+Film bulk acoustic resonators integrated on arbitrary substrates using a polymer support 
+layer Sci. Rep. 5 9510 
+[26]  Buchine B A, Hughes W L, Degertekin F L and Wang Z L 2006 Bulk Acoustic Resonator 
+Based on Piezoelectric ZnO Belts Nano Lett. 6 1155–9 
+[27]  Senesky D G and Pisano A P 2010 Aluminum nitride as a masking material for the 
+plasma etching of silicon carbide structures 2010 IEEE 23rd International Conference on 
+Micro Electro Mechanical Systems (MEMS) (IEEE) pp 352–5 
+[28]  Luna L E, Tadjer M J, Anderson T J, Imhoff E A, Hobart K D and Kub F J 2017 Dry 
+Etching of High Aspect Ratio 4H-SiC Microstructures ECS J. Solid State Sci. Technol. 6 
+P207–10 
+[29]  Dowling K M, Ransom E H and Senesky D G 2017 Profile Evolution of High Aspect 
+Ratio Silicon Carbide Trenches by Inductive Coupled Plasma Etching J. 
+Microelectromechanical Syst. 26 135–42 
+[30]  Choi J H, Latu-Romain L, Bano E, Dhalluin F, Chevolleau T and Baron T 2012 
+Fabrication of SiC nanopillars by inductively coupled SF 6 /O 2 plasma etching J. Phys. D. 
+Appl. Phys. 45 235204 
+[31]  Keller S and DenBaars S P 2003 Metalorganic chemical vapor deposition of group III 
+nitrides—a discussion of critical issues J. Cryst. Growth 248 479–86 
+[32]  Simon J, Protasenko V, Lian C, Xing H and Jena D 2010 Polarization-induced hole 
+doping in wide-band-gap uniaxial semiconductor heterostructures. Science 327 60–4 
+[33]  Inoue S, Tamari N and Taniguchi M 2017 150 mW deep-ultraviolet light-emitting diodes 
+with large-area AlN nanophotonic light-extraction structure emitting at 265 nm Appl. 
+Phys. Lett. 110 141106 
+[34]  Jo M, Maeda N and Hirayama H 2016 Enhanced light extraction in 260 nm light-emitting 
+diode with a highly transparent p-AlGaN layer Appl. Phys. Express 9 012102 
+
+===== Page 17 =====
+
+SST-105156.R1 (accepted in Semiconductor Science and Technology, 2018) 
+12/2/2018 
+17 
+6:32:48 PM 
+[35]  Shatalov M, Sun W, Lunev A, Hu X, Dobrinsky A, Bilenko Y, Yang J, Shur M, Gaska R, 
+Moe C, Garrett G and Wraback M 2012 AlGaN Deep-Ultraviolet Light-Emitting Diodes 
+with External Quantum Efficiency above 10% Appl. Phys. Express 5 082101 
+[36]  Ichikawa M, Fujioka A, Kosugi T, Endo S, Sagawa H, Tamaki H, Mukai T, Uomoto M 
+and Shimatsu T 2016 High-output-power deep ultraviolet light-emitting diode assembly 
+using direct bonding Appl. Phys. Express 9 072101 
+[37]  Hirayama H 2017 Chapter Three – Growth of High-Quality AlN on Sapphire and 
+Development of AlGaN-Based Deep-Ultraviolet Light-Emitting Diodes Semiconductors 
+and Semimetals vol 96 pp 85–120 
+[38]  Asif Khan M, Shatalov M, Maruska H P, Wang H M and Kuokstis E 2005 III–Nitride UV 
+Devices Jpn. J. Appl. Phys. 44 7191–206 
+[39]  Allerman A A, Crawford M H, Fischer A J, Bogart K H A, Lee S R, Follstaedt D M, 
+Provencio P P and Koleske D D 2004 Growth and design of deep-UV (240–290nm) light 
+emitting diodes using AlGaN alloys J. Cryst. Growth 272 227–41 
+[40]  Moustakas T D and Paiella R 2017 Optoelectronic device physics and technology of 
+nitride semiconductors from the UV to the terahertz Rep. Prog. Phys 80 
+[41]  Crawford M H 2017 Chapter One – Materials Challenges of AlGaN-Based UV 
+Optoelectronic Devices Semiconductors and Semimetals vol 96 pp 3–44 
+[42]  Shatalov M, Jain R, Saxena T, Dobrinsky A and Shur M 2017 Development of Deep UV 
+LEDs and Current Problems in Material and Device Technology Semicond. Semimetals 96 
+45–83 
+[43]  Pernot C, Fukahori S, Inazu T, Fujita T, Kim M, Nagasawa Y, Hirano A, Ippommatsu M, 
+Iwaya M, Kamiyama S, Akasaki I and Amano H 2011 Development of high efficiency 
+255-355 nm AlGaN-based light-emitting diodes Phys. status solidi 208 1594–6 
+[44]  Li D, Jiang K, Sun X and Guo C 2018 AlGaN photonics: recent advances in materials 
+and ultraviolet devices Adv. Opt. Photonics 10 43 
+[45]  Takano T, Mino T, Sakai J, Noguchi N, Tsubaki K and Hirayama H 2017 Deepultraviolet light-emitting diodes with external quantum efficiency higher than 20% at 275 
+nm achieved by improving light-extraction efficiency Appl. Phys. Express 10 031002 
+[46]  Guo Y, Zhang Y, Yan J, Xie H, Liu L, Chen X, Hou M, Qin Z, Wang J and Li J 2017 
+Light extraction enhancement of AlGaN-based ultraviolet light-emitting diodes by 
+substrate sidewall roughening Appl. Phys. Lett. 111 011102 
+[47]  Yun J and Hirayama H 2017 Investigation of the light-extraction efficiency in 280 nm 
+AlGaN-based light-emitting diodes having a highly transparent p-AlGaN layer J. Appl. 
+Phys. 121 013105 
+[48]  Ryu H-Y, Choi I-G, Choi H-S and Shim J-I 2013 Investigation of Light Extraction 
+Efficiency in AlGaN Deep-Ultraviolet Light-Emitting Diodes Appl. Phys. Express 6 
+062101 
+[49]  Rass J and Lobo-Ploch N 2016 Optical Polarization and Light Extraction from UV LEDs 
+(Springer, Cham) pp 137–70 
+[50]  Grandusky J R, Chen J, Gibb S R, Mendrick M C, Moe C G, Rodak L, Garrett G A, 
+Wraback M and Schowalter L J 2013 270 nm Pseudomorphic Ultraviolet Light-Emitting 
+Diodes with Over 60 mW Continuous Wave Output Power Appl. Phys. Express 6 032101 
+[51]  Inazu T, Fukahori S, Pernot C, Kim M H, Fujita T, Nagasawa Y, Hirano A, Ippommatsu 
+M, Iwaya M, Takeuchi T, Kamiyama S, Yamaguchi M, Honda Y, Amano H and Akasaki 
+I 2011 Improvement of Light Extraction Efficiency for AlGaN-Based Deep Ultraviolet 
+
+===== Page 18 =====
+
+SST-105156.R1 (accepted in Semiconductor Science and Technology, 2018) 
+12/2/2018 
+18 
+6:32:48 PM 
+Light-Emitting Diodes Jpn. J. Appl. Phys. 50 122101 
+[52]  Tran B T and Hirayama H 2017 Growth and Fabrication of High External Quantum 
+Efficiency AlGaN-Based Deep Ultraviolet Light-Emitting Diode Grown on Pattern Si 
+Substrate Sci. Rep. 7 12176 
+[53]  Zhang Y, Allerman A A, Krishnamoorthy S, Akyol F, Moseley M W, Armstrong A M 
+and Rajan S 2016 Enhanced light extraction in tunnel junction-enabled top emitting UV 
+LEDs Appl. Phys. Express 9 052102 
+[54]  Zhang Y, Krishnamoorthy S, Akyol F, Bajaj S, Allerman A A, Moseley M W, Armstrong 
+A M and Rajan S 2017 Tunnel-injected sub-260 nm ultraviolet light emitting diodes Appl. 
+Phys. Lett. 110 201102 
+[55]  Muth J F, Lee J H, Shmagin I K, Kolbas R M, Jr. H C C, Keller B P, Mishra U K and 
+DenBaars S P 1997 Absorption coefficient, energy gap, exciton binding energy, and 
+recombination lifetime of GaN obtained from transmission measurements Appl. Phys. 
+Lett. 71 2572 
+[56]  Nam K B, Li J, Nakarmi M L M, Lin J Y and Jiang H X 2004 Unique optical properties 
+of AlGaN alloys and related ultraviolet emitters Appl. Phys. Lett. 84 5264 
+[57]  Nakashima T, Takeda K, Iwaya M, Takeuchi T, Kamiyama S, Akasaki I and Amano H 
+2014 Improvement of light extraction efficiency of 350-nm emission UV light-emitting 
+diodes Phys. status solidi 11 836–9 
+[58]  Rass J and Lobo-Ploch N 2016 Optical Polarization and Light Extraction from UV LEDs 
+pp 137–70 
+[59]  Schubert E F 2015 Physical Foundations of Solid-State Devices (E. Fred Schubert) 
+[60]  Kitai A 2011 Principles of Solar Cells, LEDs and Diodes: The role of the PN junction 
+(Chichester, UK: John Wiley & Sons, Ltd) 
+[61]  Yamada K, Furusawa Y, Nagai S, Hirano A, Ippommatsu M, Aosaki K, Morishima N, 
+Amano H and Akasaki I 2015 Development of underfilling and encapsulation for deepultraviolet LEDs Appl. Phys. Express 8 012101 
+[62]  Nagai S, Yamada K, Hirano A, Ippommatsu M, Ito M, Morishima N, Aosaki K, Honda 
+Y, Amano H and Akasaki I 2016 Development of highly durable deep-ultraviolet AlGaNbased LED multichip array with hemispherical encapsulated structures using a selected 
+resin through a detailed feasibility study Jpn. J. Appl. Phys. 55 082101 
+[63]  Peng Y, Guo X, Liang R, Cheng H and Chen M 2017 Enhanced Light Extraction from 
+DUV-LEDs by AlN-Doped Fluoropolymer Encapsulation IEEE Photonics Technol. Lett. 
+1–1 
+[64]  Grandusky J R, Chen J, Gibb S R, Mendrick M C, Moe C G, Rodak L, Garrett G A, 
+Wraback M and Schowalter L J 2013 270 nm Pseudomorphic Ultraviolet {LightEmitting} Diodes with Over 60 {mW} Continuous Wave Output Power Appl. Phys. 
+Express 6 
+[65]  Kinoshita T, Hironaka K, Obata T, Nagashima T, Dalmau R, Schlesser R, Moody B, Xie 
+J, Inoue S, Kumagai Y, Koukitu A and Sitar Z 2012 Deep-Ultraviolet Light-Emitting 
+Diodes Fabricated on AlN Substrates Prepared by Hydride Vapor Phase Epitaxy Appl. 
+Phys. Express 5 122101 
+[66]  Adivarahan V, Chitnis A, Zhang J P, Shatalov M, Yang J W, Simin G, Khan M A, Gaska 
+R and Shur M S 2001 Ultraviolet light-emitting diodes at 340 nm using quaternary 
+AlInGaN multiple quantum wells Appl. Phys. Lett. 79 4240–2 
+[67]  Moe C G 2007 Growth and fabrication of deep ultraviolet light emitting diodes on silicon 
+
+===== Page 19 =====
+
+SST-105156.R1 (accepted in Semiconductor Science and Technology, 2018) 
+12/2/2018 
+19 
+6:32:48 PM 
+carbide substrates ProQuest Diss. Theses; Ph.D. 
+[68]  Vampola K 2009 Improvement of III-N visible and ultraviolet light-emitting diode 
+performance, including extraction efficiency, electrical efficiency, thermal management 
+and efficiency maintenance at high current densities. ProQuest Diss. Theses; Ph.D. 
+[69]  Park J-S, Fothergill D W, Wellenius P, Bishop S M, Muth J F and Davis R F 2006 
+Origins of Parasitic Emissions from 353 nm AlGaN-based Ultraviolet Light Emitting 
+Diodes over SiC Substrates Jpn. J. Appl. Phys. 45 4083–6 
+[70]  Chakraborty A, Moe C G, Wu Y, Mates T, Keller S, Speck J S, DenBaars S P and Mishra 
+U K 2007 Electrical and structural characterization of Mg-doped p-type Al0.69Ga0.31N 
+films on SiC substrate J. Appl. Phys. 101 053717 
+[71]  Zhang W, Nikiforov A Y, Thomidis C, Woodward J, Sun H, Kao C-K, Bhattarai D, 
+Moldawer A, Zhou L, Smith D J and Moustakas T D 2012 Molecular beam epitaxy 
+growth of AlGaN quantum wells on 6H-SiC substrates with high internal quantum 
+efficiency J. Vac. Sci. Technol. B, Nanotechnol. Microelectron. Mater. Process. Meas. 
+Phenom. 30 02B119 
+[72]  Liang H, Tao P, Xia X, Chen Y, Zhang K, Liu Y, Shen R, Luo Y, Zhang Y and Du G 
+2016 Vertically conducting deep-ultraviolet light-emitting diodes with interband tunneling 
+junction grown on 6H-SiC substrate Jpn. J. Appl. Phys. 55 031202 
+[73]  Taniyasu Y, Kasu M and Makimoto T 2006 An aluminium nitride light-emitting diode 
+with a wavelength of 210 nanometres Nature 441 325–8 
+[74]  Kawanishi H, Senuma M and Nukui T 2006 Anisotropic polarization characteristics of 
+lasing and spontaneous surface and edge emissions from deep-ultraviolet (λ≈240nm) 
+AlGaN multiple-quantum-well lasers Appl. Phys. Lett. 89 041126 
+[75]  Okumura H, Kimoto T and Suda J 2014 Formation mechanism of threading-dislocation 
+array in AlN layers grown on 6H-SiC (0001) substrates with 3-bilayer-high surface steps 
+Appl. Phys. Lett. 105 071603 
+[76]  Okumura H, Kimoto T and Suda J 2012 Over-700-nm Critical Thickness of AlN Grown 
+on 6H-SiC(0001) by Molecular Beam Epitaxy Appl. Phys. Express 5 105502 
+[77]  Okumura H, Kimoto T and Suda J 2011 Reduction of Threading Dislocation Density in 
+2H-AlN Grown on 6H-SiC(0001) by Minimizing Unintentional Active-Nitrogen Exposure 
+before Growth Appl. Phys. Express 4 025502 
+[78]  Chen Z, Newman S, Brown D, Chung R, Keller S, Mishra U K, Denbaars S P and 
+Nakamura S 2008 High quality AlN grown on SiC by metal organic chemical vapor 
+deposition Appl. Phys. Lett. 93 191906 
+[79]  Liu L and Edgar J H 2002 Substrates for gallium nitride epitaxy Mater. Sci. Eng. R 
+Reports 37 61–127 
+[80]  Edmond J, Abare A, Bergman M, Bharathan J, Lee Bunker K, Emerson D, Haberern K, 
+Ibbetson J, Leung M, Russel P and Slater D 2004 High efficiency GaN-based LEDs and 
+lasers on SiC J. Cryst. Growth 272 242–50 
+[81]  Foronda H M, Wu F, Zollner C, Alif M E M E, SaifAddin B, Almogbel A, Iza M, 
+Nakamura S, DenBaars S P and Speck J S 2018 Low threading dislocation density 
+aluminum nitride on silicon carbide through the use of reduced temperature interlayers J. 
+Cryst. Growth 483 134–9 
+[82]  SaifAddin B, Foronda H, Yonkee B, Cantore M, Oh S H, Farrell R, Margalith T, Young 
+E C, Nakamura S, DenBaars S P and Speck J S 2015 Nanostructure Patterning of AlN 
+Surface and Removal of SiC Substrates for High Extraction Efficiency Thin Film UV 
+
+===== Page 20 =====
+
+SST-105156.R1 (accepted in Semiconductor Science and Technology, 2018) 
+12/2/2018 
+20 
+6:32:48 PM 
+LEDs (Late News) 42nd Int. Symp. Compd. Semicond. St. Barbar. CA. 
+[83]  SaifAddin B K, Foronda H, Michael Iza, Nakamura S, DenBaars S P and Speck J S 2016 
+Epi-Transfer Technology for High EQE UV LEDs Grown on SiC (Late News) MRS Int. 
+Work. Nitride Semicond. (IWN 2016). Orlando, Fl. 
+[84]  SaifAddin B K, Foronda H, Almogbel A, Zollner C J, Iza M, Nakamura S, Denbaars S P 
+and Speck J S 2017 First demonstration of lateral thin-film flip-chip ultraviolet light 
+emitting diodes grown on SiC (Late News) 12th International Conference on Nitride 
+Semiconductors (ICNS 12) (Strasbourg, France) 
+[85]  SaifAddin B K, Zollner C J, Almogbel A, Foronda H, Wu F, Albadri A, Al Yamani A, 
+Iza M, Nakamura S, Denbaars S P and Speck J S 2018 Developments in AlGaN and UVC LEDs grown on SiC Proceedings of SPIE - The International Society for Optical 
+Engineering vol 10554 
+[86]  Fujii T, Gao Y, Sharma R, Hu E L, DenBaars S P and Nakamura S 2004 Increase in the 
+extraction efficiency of GaN-based light-emitting diodes via surface roughening Appl. 
+Phys. Lett. 84 855 
+[87]  Shchekin O B, Epler J E, Trottier T A, Margalith T, Steigerwald D A, Holcomb M O, 
+Martin P S and Krames M R 2006 High performance thin-film flip-chip InGaN–GaN 
+light-emitting diodes 89 071109 
+[88]  Krames M R, Shchekin O B, Mueller-Mach R, Mueller G O, Zhou L, Harbers G and 
+Craford M G 2007 Status and future of high-power light-emitting diodes for solid-state 
+lighting IEEE/OSA J. Disp. Technol. 
+[89]  Zhou L, Epler J E, Krames M R, Goetz W, Gherasimova M, Ren Z, Han J, Kneissl M and 
+Johnson N M 2006 Vertical injection thin-film AlGaN∕AlGaN multiple-quantum-well 
+deep ultraviolet light-emitting diodes Appl. Phys. Lett. 89 241113 
+[90]  Adivarahan V, Heidari A, Zhang B, Fareed Q, Hwang S, Islam M and Khan A 2009 280 
+nm Deep Ultraviolet Light Emitting Diode Lamp with an AlGaN Multiple Quantum Well 
+Active Region Appl. Phys. Express 2 102101 
+[91]  Hwang S, Morgan D, Kesler A, Lachab M, Zhang B, Heidari A, Nazir H, Ahmad I, Dion 
+J, Fareed Q, Adivarahan V, Islam M and Khan A 2011 276 nm Substrate-Free Flip-Chip 
+AlGaN Light-Emitting Diodes Appl. Phys. Express 4 032102 
+[92]  Aoshima H, Takeda K, Takehara K, Ito S, Mori M, Iwaya M, Takeuchi T, Kamiyama S, 
+Akasaki I and Amano H 2012 Laser lift-off of AlN/sapphire for UV light-emitting diodes 
+Phys. status solidi 9 753–6 
+[93]  Lachab M, Asif F, Zhang B, Ahmad I, Heidari A, Fareed Q, Adivarahan V and Khan A 
+2013 Enhancement of light extraction efficiency in sub-300nm nitride thin-film flip-chip 
+light-emitting diodes Solid. State. Electron. 89 156–60 
+[94]  Cho H K, Krüger O, Külberg A, Rass J, Zeimer U, Kolbe T, Knauer A, Einfeldt S, 
+Weyers M and Kneissl M 2017 Chip design for thin-film deep ultraviolet LEDs fabricated 
+by laser lift-off of the sapphire substrate Semicond. Sci. Technol. 32 12LT01 
+[95]  Wong W S, Sands T, Cheung N W, Kneissl M, Bour D P, Mei P, Romano L T and 
+Johnson N M 1999 Fabrication of thin-film InGaN light-emitting diode membranes by 
+laser lift-off Appl. Phys. Lett. 75 1360 
+[96]  Yonkee B P, SaifAddin B K, Leonard J T, DenBaars S P and Nakamura S 2016 Flip-chip 
+blue LEDs grown on bulk GaN substrates utilizing photoelectrochemical etching for 
+substrate removal Appl. Phys. Express 9 56502 
+[97]  Hwang D, Yonkee B P, Burhan SaifAddin, Farrell R M, Nakamura S, Speck J S and 
+
+===== Page 21 =====
+
+SST-105156.R1 (accepted in Semiconductor Science and Technology, 2018) 
+12/2/2018 
+21 
+6:32:48 PM 
+DenBaars S 2016 Photoelectrochemical liftoff of LEDs grown on freestanding c-plane 
+GaN substrates Opt. Express 24 22875–80 
+[98]  SaifAddin Burhan, Iza Michael, Foronda Humberto, Almogbel Abdullah, Zollner Chris, 
+Albadri Abdulrahman, AlYamani Ahmed, Nakamura Shuji, DenBaars Steven P. S J S 
+2018 First demonstration of high light-extraction thin-film flip-chip ultraviolet light 
+emitting diodes grown on silicon carbide Opt. Express 
+[99]  Tsau C H, Spearing S M and Schmidt M A 2004 Characterization of Wafer-Level 
+Thermocompression Bonds J. Microelectromechanical Syst. 13 963–71 
+[100]  Goorsky M S, Schjølberg-Henriksen K, Beekley B, Bai T, Mani K, Ambhore P, Bajwa A, 
+Malik N and Iyer S S 2018 Characterization of interfacial morphology of low temperature, 
+low pressure Au–Au thermocompression bonding Jpn. J. Appl. Phys. 57 02BC03 
+[101]  Leerungnawarat P, Hays D C, Cho H, Pearton S J, Strong R M, Zetterling C-M and 
+Östling M 1999 Via-hole etching for SiC J. Vac. Sci. Technol. B Microelectron. Nanom. 
+Struct. Process. Meas. Phenom. 17 2050 
+[102]  Khan F A and Adesida I 1999 High rate etching of SiC using inductively coupled plasma 
+reactive ion etching in SF[sub 6]-based gas mixtures Appl. Phys. Lett. 75 2268 
+[103]  Cho H, Leerungnawarat P, Hays D C, Pearton S J, Chu S N G, Strong R M, Zetterling CM, Östling M and Ren F 2000 Ultradeep, low-damage dry etching of SiC Appl. Phys. Lett. 
+76 739 
+[104]  Chabert P, Cunge G, Booth J-P and Perrin J 2001 Reactive ion etching of silicon carbide 
+in SF6 gas: Detection of CF, CF2, and SiF2 etch products Appl. Phys. Lett. 79 916–8 
+[105]  Salimian S and III C B C 1988 Selective dry etching of GaAs over AlGaAs in SF6/SiCl4 
+mixtures J. Vac. Sci. Technol. B Microelectron. Nanom. Struct. 6 1641 
+[106]  Seaward K L, Moll N J, Coulman D J and Stickle W F 1987 An analytical study of etch 
+and etch‐stop reactions for GaAs on AlGaAs in CCl 2 F 2 plasma J. Appl. Phys. 61 2358–
+64 
+[107]  Epple J H, Sanchez C, Chung T, Cheng K Y and Hsieh K C 2002 Dry etching of GaP 
+with emphasis on selective etching over AlGaP J. Vac. Sci. Technol. B Microelectron. 
+Nanom. Struct. 20 2252 
+[108]  Hönl S, Hahn H, Baumgartner Y, Czornomaz L and Seidler P 2018 Highly selective dry 
+etching of GaP in the presence of Al x Ga 1–x P with a SiCl 4 /SF 6 plasma J. Phys. D. Appl. 
+Phys. 51 185203 
+[109]  Nishino S, Ibaraki A, Matsunami H and Tanaka T 1980 Blue-Emitting Diodes of 6H-SiC 
+Prepared by Chemical Vapor Deposition Jpn. J. Appl. Phys. 19 L353–6 
+[110]  Feynman R P, Leighton R B and Sands M L 1986 The Feynman lectures on physics 
+(Narosa Pub. House) 
+[111]  Hao G-D, Taniguchi M, Tamari N and Inoue S 2016 Enhanced wall-plug efficiency in 
+AlGaN-based deep-ultraviolet light-emitting diodes with uniform current spreading p -
+electrode structures J. Phys. D. Appl. Phys. 49 235101 
+[112]  SaifAddin B K 2018 Development of Deep Ultraviolet (UV-C) Thin-Film Light-Emitting 
+Diodes Grown on SiC ProQuest Diss. Theses; Ph.D. 
+[113]  Lee K H, Park H J, Kim S H, Asadirad M, Moon Y-T, Kwak J S and Ryou J-H 2015 
+Light-extraction efficiency control in AlGaN-based deep-ultraviolet flip-chip lightemitting diodes: a comparison to InGaN-based visible flip-chip light-emitting diodes Opt. 
+Express 23 20340 
+[114]  Northrup J E, Chua C L, Yang Z, Wunderer T, Kneissl M, Johnson N M and Kolbe T 
+
+===== Page 22 =====
+
+SST-105156.R1 (accepted in Semiconductor Science and Technology, 2018) 
+12/2/2018 
+22 
+6:32:48 PM 
+2012 Effect of strain and barrier composition on the polarization of light emission from 
+AlGaN/AlN quantum wells Appl. Phys. Lett. 100 021101 
+[115]  Reich C, Guttmann M, Feneberg M, Wernicke T, Mehnke F, Kuhn C, Rass J, Lapeyrade 
+M, Einfeldt S, Knauer A, Kueller V, Weyers M, Goldhahn R and Kneissl M 2015 
+Strongly transverse-electric-polarized emission from deep ultraviolet AlGaN quantum 
+well light emitting diodes Appl. Phys. Lett. 
+[116]  Lachab M, Sun W, Jain R, Dobrinsky A, Gaevski M, Rumyantsev S, Shur M and 
+Shatalov M 2017 Optical polarization control of photo-pumped stimulated emissions at 
+238 nm from AlGaN multiple-quantum-well laser structures on AlN substrates Appl. 
+Phys. Express 10 012702 
+[117]  Lalau Keraly C, Kuritzky L, Cochet M and Weisbuch C 2013 Light Extraction Efficiency 
+Part A. Ray Tracing for Light Extraction Efficiency (LEE) Modeling in Nitride LEDs 
+(Springer, Dordrecht) pp 231–69 
+[118]  David A 2013 Surface-Roughened Light-Emitting Diodes: An Accurate Model J. Disp. 
+Technol. 9 301–16 
+[119]  Zhang Y, Krishnamoorthy S, Akyol F, Allerman A A, Moseley M W, Armstrong A M 
+and Rajan S 2016 Design and demonstration of ultra-wide bandgap AlGaN tunnel 
+junctions Appl. Phys. Lett. 109 121102 
+[120]  Rajan S and Takeuchi T 2017 III-Nitride Tunnel Junctions and Their Applications 
+(Springer, Singapore) pp 209–38 
+[121]  Yonkee B P, Young E C, DenBaars S P, Nakamura S and Speck J S 2016 Silver free IIInitride flip chip light-emitting-diode with wall plug efficiency over 70% utilizing a GaN 
+tunnel junction Appl. Phys. Lett. 109 191104 
+[122]  Lee K H, Moon Y-T, Song J-O and Kwak J S 2015 Light interaction in 
+sapphire/MgF2/Al triple-layer omnidirectional reflectors in AlGaN-based near ultraviolet 
+light-emitting diodes. Sci. Rep. 5 9717 
+[123]  David A 2013 Surface-Roughened Light-Emitting Diodes: An Accurate Model J. Disp. 
+Technol. 9 301–16 
+ 

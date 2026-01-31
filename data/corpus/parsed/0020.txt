@@ -1,0 +1,713 @@
+
+
+===== Page 1 =====
+
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021
+1
+Soft Sensing Regression Model: from Sensor to
+Wafer Metrology Forecasting
+Angzhi Fan ∗†, Yu Huang ∗, Fei Xu ∗†, Sthitie Bom ∗
+∗Seagate Technology, MN, USA
+{yu.1.huang, sthitie.e.bom}@seagate.com
+† University of Chicago, IL, USA
+{fana, feixu}@uchicago.edu
+Abstract—The semiconductor industry is one of the most
+technology-evolving and capital-intensive market sectors. Effective inspection and metrology are necessary to improve product
+yield, increase product quality and reduce costs. In recent years,
+many semiconductor manufacturing equipments are equipped
+with sensors to facilitate real-time monitoring of the production
+process. These production-state and equipment-state sensor data
+provide an opportunity to practice machine-learning technologies
+in various domains, such as anomaly/fault detection, maintenance
+scheduling, quality prediction, etc. In this work, we focus on the
+task of soft sensing regression, which uses sensor data to predict
+impending inspection measurements that used to be measured
+in wafer inspection and metrology systems. We proposed an
+LSTM-based regressor and designed two loss functions for model
+training. Although engineers may look at our prediction errors
+in a subjective manner, a new piece-wise evaluation metric was
+proposed for assessing model accuracy in a mathematical way.
+The experimental results demonstrated that the proposed model
+can achieve accurate and early prediction of various types of
+inspections in complicated manufacturing processes.
+Index Terms—soft sensing, deep learning, wafer manufacturing, industrial big data.
+I. INTRODUCTION
+T
+HE development of AI technologies is of strategic signiﬁcance to the semiconductor industry because of their
+potential for reducing the capital footprint and improving cycle
+time and yields. There is a signiﬁcant opportunity to innovate
+novel machine learning techniques to make our manufacturing processes and controls smarter and more efﬁcient. Soft
+sensing, being one of those emerging techniques, plays an
+important role in monitoring industrial processes. In general
+terms, soft sensing models can be deﬁned as inferential models
+that use easy-to-measure variables (e.g. online available sensors) for online estimation of hard-to-measure variables (e.g.
+quality variables). However, the development of AI-based soft
+sensing models is extremely sluggish and erratic. The major
+concern is that most semiconductor manufacturing systems are
+customized for speciﬁc applications with limited scalability.
+The AI model development in semiconductor industries suffered from poor ﬂexibility and always involved extensive prior
+knowledge of semiconductor manufacturing mechanisms. In
+this paper, we aim at developing a purely data-driven machinelearning-based soft sensing model for regression applications,
+This work was produced when the authors worked in the Global Wafer
+Systems organization at Seagate Technology from June to September, 2022.
+Manuscript received Jan XX, 2023; revised Jan XX, 2023.
+speciﬁcally for semiconductor metrology, providing a practicable solution for semiconductor industries.
+Soft sensing for regression applications are predictive models that use online available sensors recordings (e.g. pressure,
+voltage, etc.) to predict quality indicators that cannot be
+automatically measured at all, or can only be measured at
+the follow-up metrology stage which is time-consuming, high
+cost, or sporadically. During the wafer manufacturing process
+at Seagate factories, there are a lot of sensor data stored
+from the processes. This is the basis for the subsequent use
+of such data for the development of related data-driven softsensing models. The semiconductor manufacturing process is
+becoming increasingly more complex and longer, resulting
+in a signiﬁcant increase in cost and difﬁculty in measuring
+the key quality indicators. After a wafer is manufactured,
+the engineers use metrology tools to do the time-consuming
+laboratory analysis. It is highly desirable to develop a softsensing system for defective wafer detection, to save the time
+and capacity those metrology tools.
+There are two categories of soft-sensing models, white-box
+physical models and black-box data-driven models. Modeling
+by physical approach requires prior solid knowledge and
+usually focuses on the ideal steady-state processing, which is
+not feasible for complex systems. The data-driven models are
+based on historical observations of the process and are able to
+predict the real conditions of the process while physical models are unable to do. According to the sensor data collected in
+Seagate factories, it’s impossible to have a physical model for
+regression application in metrology. Therefore, the remaining
+difﬁculties are related to the difﬁculty of choosing the correct
+model type and structure necessary for the development.
+There are several difﬁculties in soft sensing regression. First,
+the dependencies between sensor readings and measurements
+might be very complicated. Second, there is variability in
+the engineering decision of whether a wafer is pass or fail.
+Third, there are a lot of missing data and even measurement
+errors in the dataset. Due to the above characteristics in data,
+a nonlinear data-driven model should be the best choice.
+Our approach to dealing with soft sensing regression is
+based on deep learning methods. For a wafer, its sensor
+readings include one or multiple time steps, and we call
+them sensor time steps. More details are explained in section
+IV. Deep learning models, such as Long Short-term Memory
+(LSTM) [1] network, GRU [2], and Transformer [3], are
+popular tools to tackle sequential data. The recurrent structure
+arXiv:2301.08974v2  [cs.LG]  1 Feb 2023
+
+===== Page 2 =====
+
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021
+2
+in LSTM [1] is capable of handling sequential data of different
+lengths. The input gate, output gate and forget gate in LSTM
+[1] prevent the vanishing gradient problem to some degree.
+LSTM-based models are widely applied in Natural Language
+Processing (NLP) and related tasks, such as text classiﬁcation
+[4], machine translation [5] and speech recognition [6]. Since
+our sensor time steps are also sequential data like sentences in
+NLP, it’s a natural idea to apply these NLP tools into our task.
+A sensor time step corresponds to a word in the sentence.
+The main contributions of this work include the following:
+First, we present the wafer soft sensing regression dataset in
+detail, and provide a way of understanding and preprocessing
+it. Second, we design two loss functions to handle the different
+precision requirements of the wafers. Third, we formulate
+the somewhat subjective evaluation criteria by engineers into
+several mathematical evaluation criteria.
+The rest of this article is organized as follows. Section II
+summarizes some existing works related to our soft sensing
+regression problem. Section III introduces our model architecture and loss functions. Our data and our data preprocessing
+method are explained in section IV. Experiments are shown
+in section V. Finally, we have our discussions and conclusion
+in section VI.
+II. RELATED WORK
+In the ﬁeld of soft sensing, a recent survey paper [7]
+summarizes many deep learning techniques. This paper emphasizes the use of four techniques: Autoencoder (AE) [8],
+[9], Restricted Boltzmann Machine (RBM) [10], [11], Convolutional Neural Network (CNN) [12] and Recurrent Neural
+Network (RNN) [13]. Among these four techniques, RNN
+and its variants are very closely related to our soft sensing
+regression task.
+RNN-based or LSTM-based soft sensors have a lot of
+applications on soft sensing data which has strong sequential
+characteristics, like chemical industrial processes [14] and the
+contact area between tires and the ground [15]. Researchers
+have also made some attempts to modify the model architectures. LSTM-FCN [16] combines fully convolutional neural
+networks (FCN) with LSTM to improve the performance.
+SLSTM [17], DLSTM [18] and SBiLSTM [19] utilize quality
+information in the modeling. Our task is different in that
+we may have various types of measurements for each wafer
+and we may want to train them jointly. These measurement
+types are characterized by several categorical variables. And
+because of this, soft sensing regression needs to include those
+categorical variables as input.
+One task similar to ours is soft sensing classiﬁcation. Soft
+Sensing Transformer (SST) [20] demonstrates the similarities
+between sensor readings and text data, and applies Transformer
+encoder [3] into this task. ConFormer [21] integrates the
+structures of both CNN and Transformer. Soft Sensing Model
+Visualization [22] put more focus on model interpretation.
+GraSSNet [23] is a ﬂexible Graph Neural Network (GNN)
+[24], [25] model applied on soft sensing classiﬁcation.
+There are two big differences between soft sensing regression and classiﬁcation. First, the class imbalanced issue can
+...
+sensor time steps for a wafer
+LSTM Encoder
+measurement features for that wafer
+MLP
+prediction
+Regressor
+Fig. 1. LSTM model.
+be a major issue bothering soft sensing classiﬁcation, but a
+regression task does not suffer that much from it. Second,
+soft sensing regression can tell us how far the measurement
+deviates from acceptable values, but soft sensing classiﬁcation
+only tells us the wafer is pass or fail.
+III. METHOD
+The inputs to our model consist of sensor features and measurement features, where measurement features are referred
+to as the categorical variables in measurements. A wafer may
+be measured at multiple locations, and the median of those
+measurement results is called meas med. In this work our
+target variable is meas med, and the output of our model is
+trying to predict our target.
+To deal with sequential data like sensor time steps, we
+choose LSTM to build our model as explained in section III-A.
+Loss function is another important factor in this task.
+In section III-B, we introduce two loss functions for our
+soft sensing regression task. The usual L2 does not make
+much sense in our task because different wafers usually have
+different precision requirements.
+A. Model architecture
+As shown in Figure 1, for a uniquely identiﬁed wafer, we
+use an encoder to encode its sensor time steps into a ﬁxeddimensional sensor vector. Our sensor encoder is a one-layer
+LSTM encoder with an embedding layer, and our encoded
+sensor vector is the last cell state of the LSTM encoder. The
+embedding layer between the sensor time steps and the LSTM
+structure can help dealing with the categorical variables in the
+sensor time steps.
+For every one of the measurements from the same wafer,
+we concatenate the measurement features with the encoded
+sensor vector and use an Multiple Layer Perceptron (MLP) to
+predict the target.
+This procedure is consistent with the chronological order of
+the wafer manufacturing process, because a wafer ﬁrst goes
+through the machines where we get sensor readings and then
+gets measured by metrology tools.
+B. Loss functions
+1) Relative Error Loss: For ground truth y and prediction
+ˆy, the Relative Error is deﬁned as
+η = |ˆy −y|
+|y|
+(1)
+
+===== Page 3 =====
+
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021
+3
+It is a popular metric of evaluating a regression model. After
+observing the upper and lower control limits mentioned in
+section IV, we found that the gap between upper and lower
+control limits is usually smaller if the ground truth has smaller
+absolute value. In other words, higher precision is usually
+needed if the ground truth has smaller absolute value. This
+motivates us to minimize the loss
+LRE(ˆy, y) =
+|ˆy −y|
+max(|y|, c)
+(2)
+In equation 2, because we need to avoid the divisor being
+0 and avoid some samples being too inﬂuential, we use
+max(|y|, c) instead of |y| as our denominator, where c is a
+positive constant. And we choose c = 10 in our experiments.
+2) Normalized L1 Loss: Relative Error Loss is simple and
+easy to use. It is a special case of weighted L1 loss.
+To be more general, we can normalize each meas med using
+two constants b1 and b2, where b1 < b2, then train with
+L1 loss. Ideally, b1 and b2 should be determined by some
+categorical variables within the measurement features.
+The formula to normalize the target y is
+˜y = y −b1
+b2 −b1
+(3)
+Given a model output ˆ˜y, our Normalized L1 loss function is
+LNL1(ˆ˜y, y) = |ˆ˜y −˜y|
+(4)
+During prediction, we can transform our model output back
+to the original scale by using
+ˆy = ˆ˜y ∗(b2 −b1) + b1
+(5)
+Intuitively, b1 and b2 should be similar to the lower and
+upper control limits mentioned in section IV-C, but in reality
+people may change the lower and upper control limits from
+time to time. Therefore, the choice of b1 and b2 for each wafer
+should be very careful. We need to specify (b1, b2) so that it
+performs the normalization we want and at the same time do
+not confuse the model.
+IV. DATA
+In this section, we introduce our datasets collected from
+Seagate factories and provide a way to preprocess this dataset.
+A. Sensor data and measurements data
+During manufacturing, a wafer goes through several processing stages including polishing, deposition, lithography, and
+etching. After each processing stage, the wafer is sent to
+metrology tools for quality control inspection. Multiple critical
+measurements are estimated, which are key quality indicators
+(KQIs). Accordingly, we get two mapping datasets, a sensor
+dataset and a metrology dataset.
+After dropping duplicated samples, the sensor dataset has
+a shape of (1301234, 144), and the metrology dataset has a
+shape of (4579232, 32). Both sensor and metrology datasets
+contain ID columns, i.e. processing ID and product ID. Each
+wafer can be uniquely identiﬁed by a unique pair of processing
+and product IDs.
+Sensor Data for a Wafer
+time step 1
+time step 2
+Measurement Data for a Wafer
+measurement 1
+measurement 2
+measurement 3
+Fig. 2. Sensor and measurement data.
+run num 23941108
+(23941108, HF118481), KQI-1, TYPE-2, ..., 20.3315
+(23941108, HF118481),
+(23941108, HF211188),
+(23941108, HF118481),
+(23941108, HF211188),
+(23941108, HF211188),
+...
+KQI-1, TYPE-3, ..., 126.268
+KQI-1, TYPE-1, ..., 19.3292
+KQI-MON-1, TYPE-2, ..., 20.3315
+KQI-MON-1, TYPE-3, ..., 126.268
+KQI-MON-1, TYPE-1, ..., 19.3292
+Fig. 3. An exemplary illustration of Data.
+In the sensor dataset, except the hard sensor types of data, it
+also contains the soft contextual sensor data – textual reports,
+such as textual information of the multi-stage manufacturing
+process, tools, processing modules, etc. These are referred
+to as categorical variables. There are 7 textual categorical
+columns in the sensor dataset and 8 categorical columns in
+the metrology dataset.
+A wafer may have multiple sensor readings, we sort them
+in chronological order and call each row a (sensor) time step.
+As shown in Figure 2, a wafer may have multiple metrology
+records as well, measured in different inspection stages using
+different measuring methods.
+B. Monitor data and non-monitor data
+In the metrology process, a batch of wafers are fed into a
+tool which are a combination of product wafers and a monitor
+wafer. The actual measurements are taken on the monitor
+wafer. The other wafers’ measurements data inherit the metrology measurements from that monitor wafer’s measurements
+data. However, the speciﬁcations that deﬁne the pass/fail for
+wafer are based on the product wafer.
+We thus use monitor data for training the regression model
+and use non-monitor (product wafer) data for checking the
+pass/fail results of wafers.
+An example can be seen in Figure 3. They all belong to
+processing id 23941108, but the KQIs of some rows are KQI1, while some other rows have KQI-MON-1. There are two
+samples with measuring method TYPE-1, and their measuring
+results are both 19.3292. This is because engineers assume that
+these two samples should be the same. Only the sample with
+KQI-1 has a real metrology measurement, so the sample with
+KQI-MON-1 inherits the results from the sample with KQI-1.
+After our data preprocessing, there are 2601336 rows in the
+monitor data and 1845720 rows in the non-monitor data.
+
+===== Page 4 =====
+
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021
+4
+C. Lower and upper control limits
+There are two datasets that are related to lower and upper
+control limits. One dataset provides two numbers lcl and ucl
+for each type of wafer. The other dataset is the measurements
+data, which provides two numbers targ min and targ max in
+some rows. Both (lcl, ucl) and (targ min, targ max) are meant
+to be the lower and upper control limits.
+Because targ min and targ max are usually more accurate
+than lcl and ucl, if targ min and targ max exist, we assume
+them to be the lower and upper control limits. Otherwise we
+use lcl and ucl as the lower and upper control limits.
+D. Pass/fail labels
+The passfail column in measurements data contains different
+types of labels. Since we only predict meas med, we only focus on predicting three types of labels: PASS, FAIL AVG HI
+and FAIL AVG LOW. FAIL AVG HI means the meas med
+is larger than the upper control limit, and FAIL AVG LOW
+means the meas med is less than the lower control limit.
+E. Data preprocessing
+1) Before joining sensor and measurements data: The data
+is split into training, validation and test set by ratio 7:2:1. Due
+to the constraint of storage and computing resources, we only
+focus on 33 most common (KQI, TYPE) of wafers.
+In order to deal with date and time information in the sensor
+data, we convert it into two features: time in the current day
+and date in the current year.
+Because different columns have different scales, we normalize each column in the sensor training set to be between
+0 and 1. Then use the same min-max scaler to transform the
+validation and test set.
+There are lots of missing values in the sensor readings. we
+decide to ﬁll in these missing values with the medians in the
+columns they belong to. But we drop those columns which
+contains only missing values or has no variability.
+Those samples with meas med outside the range [-1,1000]
+are dropped in the training set because they are likely to be
+measurement errors. The dropped samples only represent less
+than 1% of the whole dataset.
+One-Hot Encoding are performed on the 5 categorical
+columns in the sensor data and 5 categorical columns in the
+measurements data. After that, we have 267 and 552 features
+in each sensor row and measurement row.
+2) Join sensor and measurements data: During model
+training, for every sample we need to use both the sensor
+data and measurements data, so it would be helpful if we can
+join them before model training. Note that we only need nonmonitor measurements data in our regression task, we only
+need to join sensor data and non-monitor measurements data.
+An example can be found in Figure 4. Let’s consider a
+wafer which has two time steps and three measurements.
+We concatenate these two time steps in a row and join it
+with every one of the three measurements. So we end up
+getting three samples. Each sample consists of a row which
+has 267*2+552=1086 features. We apply this join operation
+to wafers which have two time steps and stack the samples.
+measurement 2
+measurement 3
+measurement 1
+time step 1
+time step 2
+sample 2
+time step 1
+time step 2
+sample 3
+time step 1
+time step 2
+sample 1
+Fig. 4. Join sensor data and measurement data.
+However, if another wafer has ﬁve time steps, then after this
+operation it will have 267*5+552=1887 features. So we need
+to store these 1887-feature samples in another ﬁle.
+In the training set and validation set, the number of time
+steps of wafers can be 1, 2, 3, 4, 5, 6, 7, 8 or 9. In the test
+set, we only see 1, 2, 3, 4, 5 and 8 time steps. Most wafers
+have two or three time steps.
+When we load our joined data and do the training or
+evaluation, each batch should contain wafers which have the
+same number of time steps. And it’s not difﬁcult to reshape
+the sensor features back into sensor time steps.
+V. RESULTS
+A. Evaluation metrics
+1) Error Grouping: When |y| is small, Relative Error η
+can easily get very large and can be meaningless, but Absolute
+Error ϵ = |ˆy−y| may still work. So we propose the following
+grouping criteria for prediction errors:
+• Group 1: η < 1% or ϵ < 0.1.
+• Group 2: η < 5% or ϵ < 0.5, and not in Group 1.
+• Group 3: η < 10% or ϵ < 1, and not in Group 1 or 2.
+• Group 4: η < 50% or ϵ < 5, and not in Group 1 to 3.
+• Group 5: η < 100% or ϵ < 10, and not in Group 1 to 4.
+• Group 6: not in Group 1 to 5.
+Apparently, a group with smaller index is a better group. We
+report grouping results in our experiments, and deﬁne ‘decent
+predictions’ as those predictions in group 1 and group 2.
+2) Recall and false positive rate: The passfail column and
+human inspection results both give us insights into the pass
+or fail status of wafers, as introduced in section IV-D. In our
+evaluation, we use the monitor data in measurements data and
+deﬁne a fail wafer as a wafer which satisﬁes all the following
+conditions:
+• The value in its passfail column is FAIL AVG HI or
+FAIL AVG LOW.
+• The result of human inspection is REWORK or SCRAP.
+• Its meas med is either larger than the upper control limit
+or smaller than the lower control limit.
+The pass and fail labels in our dataset is very imbalanced.
+We only have a small number of fail wafers. Fail wafers are
+regarded as positive samples. We mostly care about the recall
+rate of fail wafers and the false positive rate.
+B. Compare two losses
+In this subsection, we compare the Relative Error Loss
+with the Normalized L1 Loss. We group the data by
+(KQI,TYPE,stage) and call each group a normalization group.
+In the Normalized L1 Loss, we normalize meas med within
+
+===== Page 5 =====
+
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021
+5
+TABLE I
+LSTM-SMALL MODEL ON (KQI-1, TYPE-1)
+Model
+Loss
+Relative Error Grouping
+LSTM-small
+RE
+[2554, 2859, 257, 68, 10, 1]
+LSTM-small
+NL1
+[2544, 2726, 319, 100, 36, 24]
+each (KQI,TYPE,stage) normalization group, then train with
+L1 loss like what we mentioned in section III-B. Although
+there are two other categorical variables: equipid and prod, it
+seems that they are not as important as (KQI,TYPE,stage).
+Another reason we did not use equipid and prod is that,
+we do not want to have too many normalization groups
+in the normalization. Using (KQI,TYPE,stage), we have 74
+normalization groups in the entire training set, which we think
+is acceptable compared to our sample size.
+Within each (KQI,TYPE,stage) normalization group, the
+constants pair (b1, b2) is chosen to be the pair of lower and
+upper control limits which has the smallest b2 −b1.
+1) LSTM-small model: Our model architecture is explained
+in section III-A. If we want to train on only one (KQI, TYPE),
+we can use relatively less parameters to deﬁne a LSTM-small
+model. Later when we train on all data, we deﬁne a LSTMlarge model with more parameters.
+In the LSTM-small model, our input size and hidden size
+of LSTM are both 128. In the MLP regressor, we have two
+hidden layers, each with 256 hidden units. In total there
+are approximately 0.4 million parameters in the LSTM-small
+model. Our activation function in the MLP regressor is ReLU.
+We stop the training if we observe no improvement of the
+validation loss for more than 10 continuous epochs. Our
+optimizer is Adam with learning rate 0.0001. After some
+hyperparameter tuning, we set the batch size to be 16. We
+keep the model with the best validation loss.
+Table I summarizes the test set results when we train our
+LSTM-small model on KQI KQI-1 and TYPE TYPE-1. We
+choose this (KQI, TYPE) because it is one of the most common
+(KQI, TYPE)s. In the table, RE means the training loss is the
+Relative Error Loss. And NL1 means the Normalized L1 Loss.
+Each row in the last column contains a list of six numbers,
+representing the number of test samples in each group under
+our grouping criteria.
+According to our experiments, Relative Error Loss gives
+us better results. Since we have already deﬁned predictions
+within group 1 and group 2 as decent predictions, we have
+5413/5749 ≈94.16% decent predictions using RE loss, while
+we only have 5270/5749 ≈91.67% decent predictions using
+NL1 loss. Considering that our ground truth can vary from
+0 to as much as 900, 94.16% of the predictions are decent
+predictions is a pretty good result.
+2) LSTM-large model: Because we have 33 different (KQI,
+TYPE)s in our dataset, it may be interesting to train all (KQI,
+TYPE)s jointly and see if we can improve the results.
+In order to do this, we use a much larger model called
+LSTM-large model. Its input size and hidden size of LSTM
+are both 1024. Its MLP regressor still has 2 hidden layers
+but each hidden layer has 2048 units. LSTM-large model has
+approximately 16 million parameters in total. We stll use batch
+TABLE II
+LSTM-LARGE MODEL ON ALL DATA
+Model
+Loss
+Relative Error Grouping
+LSTM-large
+RE
+[10763, 12311, 2122, 2899, 32, 7]
+LSTM-large
+NL1
+[12812, 9606, 2071, 3458, 98, 89]
+TABLE III
+LSTM-LARGE MODEL ON (KQI-1, TYPE-1)
+Model
+Loss
+Relative Error Grouping
+LSTM-large
+RE
+[2380, 3039, 231, 78, 19, 2]
+LSTM-large
+NL1
+[2626, 2791, 210, 55, 42, 25]
+size 16 and Adam optimizer with learning rate 0.0001.
+The results are displayed in Table II. By Relative Error Loss
+23074/28134 ≈82.01% predictions are decent predictions.
+This is worse than the 94.16% for LSTM-small model on
+(KQI-1, TYPE-1), perhaps because (KQI-1, TYPE-1) is a
+relatively easy (KQI, TYPE).
+By Normalized L1 Loss, we have 22418/28134 ≈79.68%
+decent predictions, which is still worse than the result by
+Relative Error Loss. However, if we only care about the
+number of predictions within group 1, model trained with
+Normalized L1 Loss has 12812 samples in group 1, which
+is better than the 10763 samples by Relative Error Loss.
+Another experiment we ﬁnd interesting is using the same
+LSTM-large model trained on all 33 (KQI, TYPE)s but test
+only on (KQI-1, TYPE-1). We have 5419/5749 ≈94.26%
+decent predictions by RE Loss and 5417/5749 ≈94.23%
+decent predictions by NL1 Loss, see Table III. Both 94.26%
+and 94.23% are better than their counterparts in LSTM-small
+model, which makes sense because we have much more
+training data when we train all 33 (KQI, TYPE)s jointly.
+Comparing the percentage of decent predictions, we think
+Relative Error Loss is slightly better than Normalized L1
+Loss in our settings. But Normalized L1 Loss has its own
+advantages. For example, after the same normalization, we
+can easily replace the L1 loss by L2 loss or Huber loss so
+Normalized L1 Loss is more general. Besides, the Normalized
+L1 Loss utilizes the lower and upper control limits while
+the Relative Error Loss does not. This may be beneﬁcial if
+accurate lower and upper control limits are available.
+C. Pass/fail evaluation
+The deﬁnition of a fail wafer can be found in section V-A2.
+Under that deﬁnition, we only have 162 fail wafers among
+550239 training samples.
+Using the LSTM-large model trained on all (KQI, TYPE),
+and we predict a wafer to be a fail wafer if and only if the
+predicted meas med ˆy is outside the interval (b∗
+1, b∗
+2), we get
+recall rate as 0.3580 and false positive rate as 0.01434. The
+b∗
+1 and b∗
+2 are the lower and upper control limits introduced in
+section IV-C.
+However, people may want to sacriﬁce false positive rate
+for a better recall rate, so we apply the following trick here:
+Consider a constant 0 < f < 0.5, and r = b∗
+2 −b∗
+1, we can
+predict the wafer as a fail wafer if and only if
+ˆy /∈(b∗
+1 + f ∗r, b∗
+2 −f ∗r)
+(6)
+
+===== Page 6 =====
+
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021
+6
+TABLE IV
+RECALL AND FALSE POSITIVE RATE
+f
+Recall
+False Positive Rate
+0.0
+0.3580
+0.01434
+0.1
+0.4506
+0.07219
+0.2
+0.4938
+0.1084
+0.3
+0.6975
+0.2075
+0.35
+0.8086
+0.2981
+0.4
+0.8395
+0.4321
+When f increases, the recall rate and false positive rate of the
+given model should both increase because we predict more
+and more wafers to be fail wafers.
+The results can be found in Table IV, where a f = 0.35
+gives us a recall rate above 0.8. At this time the false positive
+rate is 0.2981, which is pretty high. But our model is still
+useful because if we think 80% recall rate is good enough, then
+Table IV shows that we now only need to apply metrology
+tools on only approximately 30% of the wafers where ˆy /∈
+(b∗
+1 + 0.35r, b∗
+2 −0.35r).
+Due the fact that there seems to have some wrong fail wafers
+in our dataset, the actual recall rate should be higher. And our
+results will be more accurate if we collect more test data in
+the future.
+VI. DISCUSSIONS AND CONCLUSION
+For our soft sensing regression problem, we have designed
+two different loss functions, i.e. Relative Error Loss and
+Normalized L1 Loss. We have also designed a model based on
+LSTM. From the evaluation perspective, we have established
+a few criteria on evaluating a model in soft sensing regression.
+Our results shows that using deep learning to predict measurements based on sensor time steps is not only possible but
+also promising. With deep learning, we can help the factories
+rely less on metrology tools and save a lot of time and energies.
+In order to improve the model, we think the most important
+thing is to remove outliers in the data. We have observed some
+measurements in the data that are apparently wrong. These
+wrong data can cause damages in both model training and
+model evaluation. After removing outliers, it may be helpful to
+assign more weights to those fail wafers in the model training
+because we care more about the recall rate.
+Another interesting direction is to do transfer learning on
+different soft sensing datasets which come from different tool
+sets at Seagate, and improve our model’s generalization ability.
+ACKNOWLEDGMENTS
+The authors would like to thank Seagate Technology for
+providing the data and the computational resources. We should
+especially thank the engineers in Seagate Technology who
+helped us a lot in understanding the data.
+REFERENCES
+[1] S. Hochreiter and J. Schmidhuber, “Long short-term memory,” Neural
+computation, vol. 9, pp. 1735–80, 12 1997.
+[2] K. Cho, B. van Merrienboer, D. Bahdanau, and Y. Bengio, “On the
+properties of neural machine translation: Encoder–decoder approaches,”
+in SSST@EMNLP, 2014.
+[3] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N.
+Gomez, L. Kaiser, and I. Polosukhin, “Attention is all you need,” 2017.
+[Online]. Available: https://arxiv.org/abs/1706.03762
+[4] K. Kowsari, K. Jafari Meimandi, M. Heidarysafa, S. Mendu, L. Barnes,
+and D. Brown, “Text classiﬁcation algorithms: A survey,” Information,
+vol. 10, no. 4, p. 150, 2019.
+[5] S. A. Mohamed, A. A. Elsayed, Y. Hassan, and M. A. Abdou, “Neural
+machine translation: past, present, and future,” Neural Computing and
+Applications, vol. 33, no. 23, pp. 15 919–15 931, 2021.
+[6] A. B. Nassif, I. Shahin, I. Attili, M. Azzeh, and K. Shaalan, “Speech
+recognition using deep neural networks: A systematic review,” IEEE
+access, vol. 7, pp. 19 143–19 165, 2019.
+[7] Q. Sun and Z. Ge, “A survey on deep learning for data-driven soft
+sensors,” IEEE Transactions on Industrial Informatics, vol. 17, no. 9,
+pp. 5853–5866, 2021.
+[8] M. A. Kramer, “Nonlinear principal component analysis using autoassociative neural networks,” Aiche Journal, vol. 37, pp. 233–243, 1991.
+[9] D. P. Kingma and M. Welling, “Auto-encoding variational bayes,” CoRR,
+vol. abs/1312.6114, 2014.
+[10] P. Smolensky, “Information processing in dynamical systems: Foundations of harmony theory,” Colorado Univ at Boulder Dept of Computer
+Science, Tech. Rep., 1986.
+[11] G. E. Hinton, “A practical guide to training restricted boltzmann
+machines,” in Neural Networks: Tricks of the Trade, 2012.
+[12] I. Goodfellow, Y. Bengio, and A. Courville, Deep learning. MIT press,
+2016.
+[13] D. E. Rumelhart, G. E. Hinton, and R. J. Williams, “Learning representations by back-propagating errors,” nature, vol. 323, no. 6088, pp.
+533–536, 1986.
+[14] W. Ke, D. Huang, F. Yang, and Y. Jiang, “Soft sensor development
+and applications based on lstm in deep neural networks,” in 2017 IEEE
+Symposium Series on Computational Intelligence (SSCI), 2017, pp. 1–6.
+[15] C. A. Duchanoy, M. A. Moreno-Armend´ariz, L. Urbina, C. A. CruzVillar, H. Calvo, and J. d. J. Rubio, “A novel recurrent neural network
+soft sensor via a differential evolution training algorithm for the tire
+contact patch,” Neurocomputing, vol. 235, pp. 71–82, 2017.
+[16] F. Karim, S. Majumdar, H. Darabi, and S. Chen, “Lstm fully convolutional networks for time series classiﬁcation,” IEEE Access, vol. 6, pp.
+1662–1669, 2018.
+[17] X. Yuan, L. Li, and Y. Wang, “Nonlinear dynamic soft sensor modeling
+with supervised long short-term memory network,” IEEE Transactions
+on Industrial Informatics, vol. 16, no. 5, pp. 3168–3176, 2020.
+[18] J. Zhou, X. Wang, C. Yang, and W. Xiong, “A novel soft sensor modeling
+approach based on difference-lstm for complex industrial process,” IEEE
+Transactions on Industrial Informatics, vol. 18, no. 5, pp. 2955–2964,
+2022.
+[19] C. F. Lui, Y. Liu, and M. Xie, “A supervised bidirectional long shortterm memory network for data-driven dynamic soft sensor modeling,”
+IEEE Transactions on Instrumentation and Measurement, vol. 71, pp.
+1–13, 2022.
+[20] C. Zhang, J. Yella, Y. Huang, X. Qian, S. Petrov, A. Rzhetsky, and
+S. Bom, “Soft sensing transformer: Hundreds of sensors are worth a
+single word,” in 2021 IEEE International Conference on Big Data (Big
+Data), 2021, pp. 1999–2008.
+[21] J. Yella, C. Zhang, S. Petrov, Y. Huang, X. Qian, A. A. Minai,
+and S. Bom, “Soft-sensing conformer: A curriculum learning-based
+convolutional transformer,” in 2021 IEEE International Conference on
+Big Data (Big Data), 2021, pp. 1990–1998.
+[22] X. Qian, C. Zhang, J. Yella, Y. Huang, M.-C. Huang, and S. Bom,
+“Soft sensing model visualization: Fine-tuning neural network from what
+model learned,” in 2021 IEEE International Conference on Big Data
+(Big Data), 2021, pp. 1900–1908.
+[23] Y. Huang, C. Zhang, J. Yella, S. Petrov, X. Qian, Y. Tang, X. Zhu, and
+S. Bom, “Grassnet: Graph soft sensing neural networks,” in 2021 IEEE
+International Conference on Big Data (Big Data), 2021, pp. 746–756.
+[24] F. Scarselli, M. Gori, A. C. Tsoi, M. Hagenbuchner, and G. Monfardini,
+“The graph neural network model,” IEEE Transactions on Neural
+Networks, vol. 20, no. 1, pp. 61–80, 2009.
+[25] T. N. Kipf and M. Welling, “Semi-supervised classiﬁcation with graph
+convolutional networks,” in International Conference on Learning
+Representations,
+2017.
+[Online].
+Available:
+https://openreview.net/
+forum?id=SJU4ayYgl

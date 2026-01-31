@@ -1,0 +1,602 @@
+
+
+===== Page 1 =====
+
+Benchmarking Feature Extractors for Reinforcement
+Learning-Based Semiconductor Defect Localization
+Enrique Dehaerne1, 2, Bappaditya Dey2, Sandip Halder2, Stefan De Gendt1, 2
+1 Faculty of Science, KU Leuven, 3001 Leuven, Belgium
+2 Interuniversity Microelectronics Centre (imec), 3001 Leuven, Belgium
+enrique.dehaerne@kuleuven.be
+Abstract—As semiconductor patterning dimensions shrink,
+more advanced Scanning Electron Microscopy (SEM) imagebased defect inspection techniques are needed. Recently, many
+Machine Learning (ML)-based approaches have been proposed
+for defect localization and have shown impressive results. These
+methods often rely on feature extraction from a full SEM image
+and possibly a number of regions of interest. In this study, we
+propose a deep Reinforcement Learning (RL)-based approach
+to defect localization which iteratively extracts features from
+increasingly smaller regions of the input image. We compare the
+results of 18 agents trained with different feature extractors. We
+discuss the advantages and disadvantages of different feature
+extractors as well as the RL-based framework in general for
+semiconductor defect localization.
+Keywords—Feature extraction, metrology, object detection,
+reinforcement learning, semiconductor device manufacture
+I. INTRODUCTION
+The shrinking dimensions of semiconductor patterns have
+resulted in increased complexity during manufacturing. This
+complexity has led to a need for more advanced inspection
+techniques to detect and analyze wafer defects. Scanning
+Electron Microscopy (SEM) is a valuable imaging tool capable of high resolution and high throughput. However, SEM
+images inherently suffer from noise. Capturing many frames to
+reduce noise can be time-consuming and potentially damaging
+to resist coatings. Consequently, researchers are increasingly
+focusing on Machine Learning (ML)-based SEM defect detection methods, which demonstrate superior performance on
+noise handling capabilities compared to traditional image
+processing algorithms. Moreover, ML-based approaches offer
+greater adaptability to variations in patterns (such as shape
+geometry and CD/Pitch) and imaging conditions (such as
+contrast and field-of-view).
+We propose a deep Reinforcement Learning (RL)-based
+framework to automatically localize defects in SEM images.
+Compared to related works that don’t use RL, the proposed
+method can iteratively inspect increasingly smaller regions of
+interest in the image to localize defects. Each step of this
+search process relies on image features of the current Region
+of Interest (RoI), which means that feature extraction is a
+critical component of an RL-based system. The two main
+contributions of this research work are: (i) to the best of the
+authors’ knowledge, this is the first work to propose an RLbased semiconductor defect localization framework and (ii)
+we benchmark 18 different feature extractor networks for our
+framework and compare the best one to state-of-the-art MLbased defect detection methods.
+II. RELATED WORK
+Due to the advantages explained in the previous section,
+ML-based models have recently become a popular research
+topic for defect localization in SEM images. These include
+single-stage models which only extract features from an image
+once and predict defect locations [1–3]. Related to single-stage
+models are reconstruction-based models which extract condensed features from an input. Using these features, the model
+attempts to reconstruct the image and compares it to the input
+image to localize defects [4], [5]. On the other hand, multistage models extract features from the input image to first
+propose RoIs and then inspect each RoI again individually to
+finalize defect location predictions [1], [6]. Some related works
+focus on data-centric development such as data augmentation
+[7], [8] and labeling [9].
+Different from these approaches, RL-based object localization methods [10–12] iteratively inspect different input-image
+crops to localize objects. To the best of our knowledge, RLbased object localization methods have not yet been applied to
+the domain of semiconductor defect inspection. We believe RL
+has the potential to find defects efficiently in relatively large
+regions of wafers, by intelligently deciding which sub-regions
+to inspect more closely.
+III. METHODOLOGY
+A. Dataset
+The dataset used for our study was a collection of after-etchinspection, line-space pattern semiconductor SEM images.
+Each image contained at least one defect. Each defect was
+categorized as belonging to one of six different defect classes.
+An example defect of each class is shown in Figure 1. The
+images were split 80% / 20% for training/testing, respectively.
+Table I shows statistics for defect instance counts and image
+counts of the total dataset and for each split of the dataset.
+Most images contain only one defect but 103 images contained two defects. All but one of these double-defect images
+include at least one line collapse defect. All line break defects
+are located next to a line collapse defect (similar to the bottomleft example in Figure 1).
+© 2023 IEEE. Personal use of this material is permitted. Permission from IEEE must be obtained for all other uses, in any current or future
+media, including reprinting/republishing this material for advertising or promotional purposes, creating new collective works, for resale or
+redistribution to servers or lists, or reuse of any copyrighted component of this work in other works.
+arXiv:2311.11145v1  [cs.CV]  18 Nov 2023
+
+===== Page 2 =====
+
+Figure 1. Examples of each defect type in the SEM dataset. Top row (left to
+right): Single Bridge (SB), Thin Bridge (TB), and Line Collapse (LC). Bottom
+row (left to right): Line Break (LB) (along with an LC, all LBs in our dataset
+appear next to an LC like in this example), Multi-Bridge Horizontal (MBH),
+and Multi-Bridge Non-Horizontal (MBNH).
+TABLE I. SEM image dataset statistics for each split.
+Sample Counts
+Train
+Test
+All
+Single Bridge (SB)
+483
+121
+604
+Thin Bridge (TB)
+4033
+996
+5029
+Line Collapse (LC)
+392
+106
+498
+Line Break (LB)
+15
+5
+20
+Multi-Bridge Horizontal (MBH)
+66
+20
+86
+Multi-Bridge Non-Horizontal (MBNH)
+76
+22
+98
+Total defects
+5065
+1270
+6335
+Total images
+4985
+1247
+6232
+B. Deep RL Agent
+The RL agent used in our study is similar to that of [10].
+An overview of the deep RL-based defect localization system
+is shown in Figure 2. The RL-Agent is a Deep Q-Network
+(DQN) [13] that chooses from 9 possible actions on the state.
+Each action modifies a bounding box (initially set to cover the
+entire input image) to localize the defect. These actions are:
+(i) up translation, (ii) down translation, (iii) right translation,
+(iv) left translation, (v) bigger scale, (vi) smaller scale, (vii)
+thicker aspect ratio, (viii) thinner aspect ratio, and (ix) a trigger
+action that finalizes the localization prediction. An action is
+chosen at each step based on the agent’s learned policy and
+given inputs.
+The agent takes as input a concatenation of two vectors. The
+first and largest vector contains the flattened, pooled features
+of the current state calculated by a frozen feature extractor
+network. The states for each subsequent step are equivalent to
+the crop of the image contained within the current bounding
+box resized to a size of 224×224. Figure 3 shows an example
+of such a sequence of steps with the current bounding box,
+state, and corresponding action taken. The second vector is
+an encoding of the agent’s action history. The RL agent is
+trained via a reward signal that is positive if the Intersectionover-Union (IoU) of the model’s predicted bounding box and
+the closest annotated bounding box is above 0.5 (a commonly
+used IoU threshold). Otherwise, the reward is negative.
+The action space of our model only allows for single-defect
+localization for every sequence of steps until the trigger action.
+To facilitate the localization of multiple objects in an image at
+inference time, a black cross is used as a mask to obfuscate the
+previously detected defect after the agent chooses the trigger
+action (similarly to [10]). The partially-masked image is then
+given back to the localization framework for another sequence
+of steps to potentially localize other defects.
+Our implementation is based on a publicly-available GitHub
+implementation1. Most of the code and hyperparameters were
+kept the same besides three main modifications. First, the
+number of training episodes was set to 25 for each agent.
+Second, we modified the code to stop prediction on an image
+as soon as an agent takes 40 actions without triggering a final
+localization. Third, we train each agent on all defect classes.
+The class information was used only after testing to analyze
+the per-class results.
+C. Feature extractors
+The feature extractor is a core component of our RL-based
+defect localization framework. It produces feature embeddings
+of the current state which is the primary input to the RL agent.
+The better the feature embeddings, the better the RL agent
+should be able to learn to localize defects.
+In this study, we investigate different feature extractor
+architectures, size variants, and pretraining datasets. The six
+architectures can be categorized as either legacy CNNs (VGG
+[14], MobileNetV2 [15], ResNet [16]), recent CNNs (ConvNext [17]), or Transformers (SwinV2 [18] and ViT [19]).
+Torchvision’s [20] pretrained ImageNet 1K weights were used
+for each model. Weights pretrained on MicroNet and ImageMicroNet (ImageNet then MicroNet) [21] were available for
+the legacy CNN feature extractors. MicroNet is a collection
+of class-annotated SEM images from various materials. We
+hypothesized that these weights would be better optimized for
+SEM images in general and therefore may lead to better feature
+extraction for our real fab semiconductor defect dataset.
+IV. RESULTS & DISCUSSION
+Table II shows the test Average Precision (AP) results for
+each model trained with different feature extractors. The agent
+trained with the ConvNext base feature extractor achieved the
+best mean AP (mAP) of almost 94.9. Figure 4 shows a truepositive defect localization for each defect class (except for LB
+since no true positive prediction was made for LB) as predicted
+by this agent. The ConvNext tiny variant follows closely
+behind, achieving an mAP of 94.5. The agent trained with a
+resnet101 pretrained on ImageNet achieved the third-best mAP
+of 93.1. The SwinV2 models were the best transformer feature
+extractors. Both the base and tiny SwinV2 variants performed
+just under the best legacy CNNs. The ViT model did not
+perform well. This suggests that the coarse feature outputs of
+transformer models are not optimal for capturing features of
+1https://github.com/rayanramoul/Active-Object-Localization-DeepReinforcement-Learning (last cloned 27-04-2023).
+
+===== Page 3 =====
+
+Figure 2. Overview of the proposed RL-based defect localization framework. Given an image (state), interpreted using a feature extractor, the RL agent chooses
+an action to modify the state. The final trigger action is chosen when the agent wants to finalize the current bounding box as its localization prediction. The
+IoU of the final state region and expert annotation is used as a reward signal that the RL agent uses to learn an optimal localization policy.
+Figure 3. Sampled actions an RL agent took with corresponding states and bounding boxes to localize a single bridge defect. The states for each action are
+equivalent to the crop of the bounding box prediction resized to 224×224 and is given back to the RL agent (via a feature extractor) to choose the next action.
+Figure 4. True positive localization examples for each of the SB, TB, LC,
+MBH, and MBNH defect types (from top left to bottom right, respectively)
+as predicted by the agent trained with the ConvNext base feature extractor
+[17].
+small details [23], which is required for semiconductor defect
+inspection.
+These results suggest that recent, more advanced CNN
+feature extractors work best for training an RL agent on the
+given dataset. The relative weakness of the ViT model could
+be because it was shown to perform optimally for very large
+datasets and very large model variants. In general, the sizes
+of annotated datasets in the semiconductor defect inspection
+domain are small. For this study, we only investigate the base
+variant of ViT to keep parameter sizes consistent with the other
+models.
+For all legacy CNN feature extractors, except for VGG16,
+the best pretraining dataset was ImageNet. The MicroNet
+and Image-MicroNet variants performed substantially worse.
+These results are unexpected since MicroNet images seem
+
+===== Page 4 =====
+
+TABLE II. Test Average Precision (AP) and the average number of steps taken per image for each model trained with a different feature extractor. The names
+of the feature extractors correspond to their model identifiers in the torchvision model hub [20]. Numbers in bold indicate the best result for a given column.
+Feature extractor
+Pretrain data
+AP (@0.5 IoU)
+Avg no. steps
+SB
+TB
+LC
+LB
+MBH
+MBNH
+All (mAP)
+(steps/image)
+vgg16_bn [14]
+ImageNet [22]
+96.7
+90.0
+53.8
+0.0
+80.0
+72.7
+87.3
+23.3
+MicroNet [21]
+95.9
+90.3
+51.9
+0.0
+80.0
+77.3
+87.4
+21.4
+Image-MicroNet [21]
+93.4
+93.0
+67.9
+0.0
+85.0
+77.3
+90.7
+21.6
+mobilenet_v2 [15]
+ImageNet [22]
+92.6
+89.1
+63.2
+0.0
+85.0
+90.9
+87.4
+42.7
+MicroNet [21]
+87.6
+75.0
+58.49
+0.0
+85.0
+81.8
+75.3
+25.0
+Image-MicroNet [21]
+81.0
+63.5
+65.1
+0.0
+50.0
+50.0
+64.9
+27.9
+resnet50 [16]
+ImageNet [22]
+96.7
+93.27
+60.4
+0.0
+85.0
+77.3
+90.7
+17.7
+MicroNet [21]
+71.1
+59.6
+29.2
+0.0
+70.0
+72.7
+58.7
+23.0
+Image-MicroNet [21]
+80.2
+53.2
+60.4
+0.0
+70.0
+86.4
+57.4
+40.1
+resnet101 [16]
+ImageNet [22]
+95.0
+94.4
+77.4
+0.0
+95.0
+90.9
+93.1
+22.1
+MicroNet [21]
+75.2
+61.7
+50.9
+0.0
+75.0
+68.2
+62.6
+53.0
+Image-MicroNet [21]
+65.3
+44.7
+35.8
+0.0
+55.0
+50.0
+46.2
+16.7
+convnext_tiny [17]
+ImageNet [22]
+97.5
+96.3
+74.5
+0.0
+80.0
+95.5
+94.5
+16.4
+convnext_base [17]
+96.7
+96.0
+80.2
+0.0
+90.0
+100.0
+94.9
+17.9
+swin_v2_t [18]
+ImageNet [22]
+94.2
+91.5
+70.8
+20.0
+90.0
+81.8
+89.9
+17.0
+swin_v2_b [18]
+95.0
+89.3
+73.6
+0.0
+85.0
+95.5
+88.7
+21.4
+vit_b_16 [19]
+ImageNet [22]
+81.8
+75.2
+67.9
+0.0
+60.0
+72.7
+75.1
+30.2
+more similar to SEM defect images than ImageNet images.
+One possible reason for the increased performance of ImageNet pretraining is that it extracts more general features
+because ImageNet has far more classes than MicroNet (1000
+vs 54). For VGG16, Image-MicroNet performed better than the
+ImageNet or MicroNet variants. This suggests that pretraining
+on SEM images from other domains could still be beneficial
+in some cases.
+Along with AP, Table II also shows the average number
+of steps taken by each agent per image. Note that this
+metric counts steps for each predicted defect instance in an
+image together. The tiny ConvNext model, the second most
+precise model, obtains the lowest average step count of 16.4
+steps/image. The base ConvNext model, the most precise
+model, achieves the fourth lowest step count of 17.9. This
+seems to suggest that model precision and average step counts
+are negatively correlated. Indeed, we find a moderate negative
+Spearman correlation [24] of -0.50 between the mAP and the
+average number of steps.
+LBs were not able to be localized by almost all agents
+(an exception is the agent trained with tiny SwinV2 that was
+able to localize one of the five LBs in the test dataset). Class
+imbalance is a possible factor for this since LB is the least
+frequently occurring defect type in our dataset (15 instances in
+the training split). Upon further inspection, we believe another
+factor for the poor performance comes from the added cross
+used during testing to obfuscate previously detected defects.
+Figure 5 shows an example of such a scenario on a pair of
+LC and LB defects. The LC defect is localized first and a
+cross is added to hide the LC after the agent triggers it has
+found a defect. This cross breaks neighboring lines similar to
+how actual LB defects do, making it very confusing for the
+agent to know what is a true LB. The confusion from the
+black crosses and the fact that the overwhelming majority of
+images with two defects contain LCs could have contributed
+to the lower overall prediction precision for LCs compared to
+the other defect types.
+Figure 5. A failed example of a multiple-object prediction case
+TABLE III. Bounding box mAP test results for the models from [6] and
+our agent trained on the same dataset from [6]. All feature extractors were
+pretrained on ImageNet.
+Model
+Feature Extractor
+mAP (@0.5 IoU)
+Mask R-CNN [25]
+resnet101 (finetuned)
+87.1
+SEMI-PointRend [26]
+99.4
+DQN (Ours)
+convnext_base (frozen)
+86.1
+To compare the proposed RL-based framework to stateof-the-art models, we train and evaluate our best model on
+the dataset from [6]. This dataset comes from the same
+distribution of images as the dataset described in Section
+III-A and contains defects of the same classes, except for LB
+which are not included. Table III shows the mAP results of
+the two models from [6] and our proposed framework using
+the ConvNext base feature extractor. Our framework achieves
+an mAP of 86.1, just under Mask R-CNN [25] that achieves
+an mAP of 87.1. However, the more advanced PointRendbased [26] model achieves the best mAP of 99.4. Note that the
+advantages of the Mask R-CNN and SEMI-PointRend models
+are that their backbones were finetuned during training while
+ours was not and they used data augmentation during training.
+An advantage of our model is that our evaluation was classagnostic.
+V. FUTURE WORK
+Future work should investigate different strategies for scaling pretraining data and model sizes for feature extractors. This
+may include self-supervised pretraining on unannotated semi-
+
+===== Page 5 =====
+
+conductor SEM images. Additionally, fine-tuning performance
+should be compared between feature extractors pretrained on
+ImageNet and (Image-)MicroNet.
+The results of the LB and LC defect types indicate that a
+better method for multiple-object prediction should be used.
+A straightforward solution might be replacing the black cross
+obfuscation artifact with a more distinct artifact. More generally applicable solutions will most likely have to modify the
+action space and/or action history knowledge of the RL agent.
+We believe the most appropriate scenario for using the proposed RL agent is large-field-of-view SEM image inspection.
+This is because the agent can efficiently decide which regions
+of large images should be inspected more closely. Future work
+should validate this with large field-of-view SEM images.
+VI. CONCLUSION
+In this study, we proposed a deep Reinforcement Learning
+(RL)-based approach for defect localization. Compared to related works, this RL-based framework intelligently searches an
+SEM image step-by-step for regions that contain defects. We
+compared the results of 18 agents trained with different feature
+extractors, a critical component of the proposed localization
+system. We show that agents trained using ConvNext feature
+extractors can most precisely find defects with the lowest
+number of inspection steps and are competitive with previously
+proposed defect localization methods. We believe future work
+can improve our results by using more advanced pretraining/finetuning strategies and using more advanced multipleobject localization methods.
+REFERENCES
+[1] E. Dehaerne, B. Dey, and S. Halder, “A comparative study of deeplearning object detectors for semiconductor defect detection,” in 2022
+29th IEEE International Conference on Electronics, Circuits and Systems (ICECS), pp. 1–2, 2022.
+[2] Z. Wang, L. Yu, and L. Pu, “Defect simulation in SEM images using
+generative adversarial networks,” in Metrology, Inspection, and Process
+Control for Semiconductor Manufacturing XXXV (O. Adan and J. C.
+Robinson, eds.), vol. 11611, p. 116110P, International Society for Optics
+and Photonics, SPIE, 2021.
+[3] B. Dey, E. Dehaerne, and S. Halder, “Towards improving challenging stochastic defect detection in SEM images based on improved
+YOLOv5,” in Photomask Technology 2022 (B. S. Kasprowicz, ed.),
+vol. 12293, p. 1229305, International Society for Optics and Photonics,
+SPIE, 2022.
+[4] H. Lee, S. Lee, H. Rah, I. Park, J. Lee, J. Sohn, Y. Kim, C. Ehrlich,
+P. Groeger, S. Boese, E. Bellmann, S. Buhl, S. Kim, and K. san Lee,
+“Quantifying CD-SEM contact hole roughness and shape combined with
+machine learning-based pattern fidelity scores for process optimization
+and monitoring,” in Metrology, Inspection, and Process Control XXXVII
+(J. C. Robinson and M. J. Sendelbach, eds.), vol. 12496, p. 124961P,
+International Society for Optics and Photonics, SPIE, 2023.
+[5] J. T. Neumann, A. Srikantha, P. Hüthwohl, K. Lee, J. W. B., T. Korb,
+E. Foca, T. Garbowski, D. Boecker, S. Das, and S. Halder, “Defect
+detection and classification on imec iN5 node BEoL test vehicle with
+MultiSEM,” in Metrology, Inspection, and Process Control XXXVI
+(J. C. Robinson and M. J. Sendelbach, eds.), vol. 12053, p. 120530I,
+International Society for Optics and Photonics, SPIE, 2022.
+[6] M. Hwang, B. Dey, E. Dehaerne, S. Halder, and Y. han Shin, “SEMIPointRend: improved semiconductor wafer defect classification and segmentation as rendering,” in Metrology, Inspection, and Process Control
+XXXVII (J. C. Robinson and M. J. Sendelbach, eds.), vol. 12496,
+p. 1249608, International Society for Optics and Photonics, SPIE, 2023.
+[7] E. Dehaerne, B. Dey, S. Halder, and S. D. Gendt, “Optimizing YOLOv7
+for semiconductor defect detection,” in Metrology, Inspection, and
+Process Control XXXVII (J. C. Robinson and M. J. Sendelbach, eds.),
+vol. 12496, p. 124962D, International Society for Optics and Photonics,
+SPIE, 2023.
+[8] N. Kondo, M. Harada, and Y. Takagi, “Efficient training for automatic
+defect classification by image augmentation,” in 2018 IEEE Winter
+Conference on Applications of Computer Vision (WACV), pp. 226–233,
+2018.
+[9] O. Anilturk, E. Lumanauw, J. Bird, J. Olloniego, D. Laird, J. C.
+Fernandez, and Q. Killough, “Automatic defect classification (ADC)
+solution using data-centric artificial intelligence (AI) for outgoing quality
+inspections in the semiconductor industry,” in Metrology, Inspection, and
+Process Control XXXVII (J. C. Robinson and M. J. Sendelbach, eds.),
+vol. 12496, p. 1249635, International Society for Optics and Photonics,
+SPIE, 2023.
+[10] J. C. Caicedo and S. Lazebnik, “Active object localization with deep
+reinforcement learning,” in 2015 IEEE International Conference on
+Computer Vision (ICCV), pp. 2488–2496, 2015.
+[11] M. Bellver, X. G. i Nieto, F. Marques, and J. Torres, “Hierarchical object
+detection with deep reinforcement learning,” 2016.
+[12] M. Zhou, R. Wang, C. Xie, L. Liu, R. Li, F. Wang, and D. Li,
+“Reinforcenet: A reinforcement learning embedded object detection
+framework with region selection network,” Neurocomputing, vol. 443,
+pp. 369–379, 2021.
+[13] V. Mnih, K. Kavukcuoglu, D. Silver, A. A. Rusu, J. Veness, M. G.
+Bellemare, A. Graves, M. Riedmiller, A. K. Fidjeland, G. Ostrovski,
+S. Petersen, C. Beattie, A. Sadik, I. Antonoglou, H. King, D. Kumaran,
+D. Wierstra, S. Legg, and D. Hassabis, “Human-level control through
+deep reinforcement learning,” Nature, vol. 518, pp. 529–533, Feb 2015.
+[14] S. Liu and W. Deng, “Very deep convolutional neural network based
+image classification using small training sample size,” in 2015 3rd IAPR
+Asian Conference on Pattern Recognition (ACPR), pp. 730–734, 2015.
+[15] M. Sandler, A. Howard, M. Zhu, A. Zhmoginov, and L.-C. Chen,
+“Mobilenetv2: Inverted residuals and linear bottlenecks,” in Proceedings
+of the IEEE Conference on Computer Vision and Pattern Recognition
+(CVPR), June 2018.
+[16] K. He, X. Zhang, S. Ren, and J. Sun, “Deep residual learning for image
+recognition,” in 2016 IEEE Conference on Computer Vision and Pattern
+Recognition (CVPR), pp. 770–778, 2016.
+[17] Z. Liu, H. Mao, C.-Y. Wu, C. Feichtenhofer, T. Darrell, and S. Xie, “A
+convnet for the 2020s,” in 2022 IEEE/CVF Conference on Computer
+Vision and Pattern Recognition (CVPR), pp. 11966–11976, 2022.
+[18] Z. Liu, H. Hu, Y. Lin, Z. Yao, Z. Xie, Y. Wei, J. Ning, Y. Cao,
+Z. Zhang, L. Dong, F. Wei, and B. Guo, “Swin transformer v2: Scaling
+up capacity and resolution,” in Proceedings of the IEEE/CVF Conference
+on Computer Vision and Pattern Recognition (CVPR), pp. 12009–12019,
+June 2022.
+[19] A. Dosovitskiy, L. Beyer, A. Kolesnikov, D. Weissenborn, X. Zhai,
+T. Unterthiner, M. Dehghani, M. Minderer, G. Heigold, S. Gelly,
+J. Uszkoreit, and N. Houlsby, “An image is worth 16x16 words:
+Transformers for image recognition at scale,” 2020.
+[20] T. maintainers and contributors, “Torchvision: Pytorch’s computer vision
+library.” https://github.com/pytorch/vision, 2016.
+[21] J. Stuckner, B. Harder, and T. M. Smith, “Microstructure segmentation
+with deep learning encoders pre-trained on a large microscopy dataset,”
+npj Computational Materials, vol. 8, p. 200, Sep 2022.
+[22] J. Deng, W. Dong, R. Socher, L.-J. Li, K. Li, and L. Fei-Fei, “Imagenet:
+A large-scale hierarchical image database,” in 2009 IEEE Conference on
+Computer Vision and Pattern Recognition, pp. 248–255, 2009.
+[23] E. Sanderson and B. J. Matuszewski, “Fcn-transformer feature fusion
+for polyp segmentation,” in Medical Image Understanding and Analysis
+(G. Yang, A. Aviles-Rivero, M. Roberts, and C.-B. Schönlieb, eds.),
+(Cham), pp. 892–907, Springer International Publishing, 2022.
+[24] Spearman Rank Correlation Coefficient, pp. 502–505. New York, NY:
+Springer New York, 2008.
+[25] K. He, G. Gkioxari, P. Dollár, and R. Girshick, “Mask r-cnn,” in 2017
+IEEE International Conference on Computer Vision (ICCV), pp. 2980–
+2988, 2017.
+[26] A. Kirillov, Y. Wu, K. He, and R. Girshick, “Pointrend: Image segmentation as rendering,” in 2020 IEEE/CVF Conference on Computer Vision
+and Pattern Recognition (CVPR), pp. 9796–9805, 2020.

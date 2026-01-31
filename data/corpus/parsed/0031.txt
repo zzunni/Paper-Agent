@@ -1,0 +1,967 @@
+
+
+===== Page 1 =====
+
+Combining unsupervised and supervised learning in microscopy
+enables defect analysis of a full 4H-SiC wafer
+Binh Duong Nguyen1*, Johannes Steiner2, Peter Wellmann2, Stefan Sandfeld1,3*
+1Institute for Advanced Simulations – Materials Data Science and Informatics (IAS-9),
+Forschungszentrum J¨ulich GmbH, J¨ulich, 52425, Germany.
+2Crystal Growth Lab, Materials Department 6, Friedrich-Alexander University
+Erlangen-Nuremberg, Erlangen, 91058, Germany.
+3Chair of Materials Data Science and Materials Informatics, Faculty 5 – Georesources and
+Materials Engineering, RWTH Aachen University, Aachen, 52056, Germany.
+*Corresponding author(s). E-mail(s): bi.nguyen@fz-juelich.de; s.sandfeld@fz-juelich.de;
+Abstract
+Detecting and analyzing various defect types in semiconductor materials is an important prerequisite for understanding the underlying mechanisms as well as tailoring the production processes. Analysis of microscopy images
+that reveal defects typically requires image analysis tasks such as segmentation and object detection. With
+the permanently increasing amount of data that is produced by experiments, handling these tasks manually
+becomes more and more impossible. In this work, we combine various image analysis and data mining techniques for creating a robust and accurate, automated image analysis pipeline. This allows for extracting the
+type and position of all defects in a microscopy image of a KOH-etched 4H-SiC wafer that was stitched together
+from approximately 40,000 individual images.
+Keywords: Deep Learning, Computer Vision, Dislocation, Semiconducting materials, Instance segmentation,
+Unsupervised learning, Clustering, Image analysis
+1 Introduction
+Microscopy and image analysis has been an important tool for investigating defects in materials and
+their microstructures. Manually detecting, e.g., cracks,
+grains or dislocations in photographs and digital images
+requires expertise, experience, and – depending on the
+size of the image or the number of features of interest
+– also a significant amount of time. Recently, highthroughput data analysis, which is concerned with
+handling huge numbers of specimens (e.g., even exceeding thousands of specimens) or with very large regions of
+interest (e.g., consisting of several thousands of images)
+is becoming more prominent in the era of data. Example of such approaches can be found in the work of
+Xiang et al. [1] or Ludwig [2] where combinatorical highthroughput methods were introduced to discover new
+materials. An other example is the work by Castelli
+et al. [3] who analyzed a large space of 5400 different
+materials to obtain 15 promising candidates for developing new photoelectrochemical cells with improved light
+absorption.
+In the area of wide-bandgap semiconductor material, silicon carbide (SiC) is the leading candidate with
+a high mechanical, chemical and thermal stability. It
+has been shown to be highly suitable for power device
+applications. Therefore, efforts to produce high-quality
+SiC by reducing defects (especially dislocations) during the physical vapor transport (PVT) crystal growth
+process are important and require further optimization.
+Visual inspection and analysing dislocation in semiconductors helps to understand the formation of defects
+during the PVT growth process and ultimately ensures
+the wafer’s quality during the production process. Such
+1
+arXiv:2402.13353v1  [cs.CV]  20 Feb 2024
+
+===== Page 2 =====
+
+analysis is based on images produced by optical and
+scanning electron microscopy of the wafer surface or
+transmission electron microscopy techniques and X-ray
+topography which allow to follow single dislocation lines
+within the wafer. Those tasks are commonly done manually or based on classical image analysis methods that
+perform pixel-based operations, such as thresholding,
+line thinning, watersheding, to name but a few. These
+methods typically work only for a particular image
+and require significant experimentation for determining
+suitable parameters.
+In recent years, machine learning approaches have
+become popular in many research areas, e.g., to automate and accelerate the process of material discovery
+and design [4–12], or to automate computer vision tasks
+such as object detection or segmentation [13–18]. However, obtaining large enough datasets for supervised
+training is still a challenge since it is time-consuming
+to annotate large datasets with potentially vast numbers of objects. Thus, “synthetically generated data”
+becomes helpful and enables the algorithm to train more
+effectively. E.g., Tremblay et al. [19] generated synthetic
+objects on top of a random image background and shows
+that training with synthetic data performs better than
+with real images. Trampert et al. [20] created artificial grain structures and used only a few hand-labelled
+real microscopy images to train a convolutional neural
+network (CNN). Similarly, Govind et al. [21] created
+artificial transmission electron microscopy images and
+used those to train a CNN for image segmentation
+tasks.
+In this paper, we propose a combination of different data analysis techniques and deep learning methods
+in the material science domain for solving two main
+tasks: The first task is to generalize and automatize
+the process of creating a dictionary pool of etch-pit
+images that can be used for creating artificial training data. The second task is to use a deep learning
+framework to segment and count the occurrence of
+three different dislocation types (basal plane dislocation
+(BPD), threading edge dislocation (TED) and threading screw dislocation (TSD)) that commonly appear as
+etch-pits in KOH etching microscopy images of a 4HSiC wafer. This allows to analyze a huge number of
+microscopy images with high fidelity to estimate dislocation distributions of different types and thereby helps
+to understand mechanisms that lead to defect formation
+and organisation.
+The paper is organised as follows: after the introduction section, in section 2, we describe all methods
+that were used in our work. In section 3, we present
+the results from the automated clustering process and
+the instance segmentation of various dislocation types.
+In section 4, results are discussed, followed by the
+conclusion in section 5.
+2 Materials and Methods
+The goal of this work is to analyze the dislocation
+content of a large SiC wafer of 10 cm in diameter.
+Subsequently, we start by describing the growth and
+preparation of the SiC crystal. This is then followed
+by introducing the imaging of the wafer as well as the
+automated machine learning pipeline for image analysis.
+2.1 Materials, specimen preparation and
+microscopy
+The SiC sample was cut from a crystal boule grown via
+the PVT method utilizing a RTD-6800 diamond wire
+saw. The crystal was sliced parallel to the seed direction,
+resulting in samples with a 4° off-axis angle with respect
+to the (0001)-plane, the same as the employed seed.
+As a next step, the wafer was polished to remove the
+deformation zone induced by the sawing process. KOH
+platelets are heated up to 520°C. The sample is preheated and subsequently lowered into the melt inside
+a nickel sample holder for 7 minutes. After the etching step is completed, the sample is taken out of the
+melt, cooled down and cleaned with HCl and de-ionized
+water to remove any KOH residue. The employed setup
+is an in-house development of the group of one of the
+co-authors. The process is automated, spanning the preheating phase to the cool-down phase. One of the two
+resulting pieces came into close contact with the sample
+holder, inducing the sample holder’s geometry as a pattern, as seen in the microscopic images. This pattern is,
+therefore, not indicative of the sample’s crystal lattice
+property but, instead, a result of the reduced exposure
+to the KOH melt.
+To reveal the location of dislocations the sample
+was etched with molten KOH. For this, the Si-face of
+a SiC wafer was cut parallel to the (0001)-plane and
+was etched selectively by KOH etching, revealing etch
+pits where dislocation lines pierce the surface. Both Siface and C-face are etched simultaneously, but only the
+Si-face will be considered due to its anisotropic etching nature of etch pits. BPDs are located in the basal
+plane, i.e., parallel to the (0001)-plane. Thus, they can
+be detected by KOH etching due to the present small
+off-axis angle which is 4° with respect to the basal plane.
+Microscopy images of the KOH-etched sample’s Sifaces were taken utilizing a Zeiss Axio Imager.M1m
+microscope. The magnification was set to 20 times,
+and the mapping and stitching were carried out by
+the accompanying Zeiss Zen microscopy software. The
+2
+
+===== Page 3 =====
+
+Fig. 1
+Micrograph of the investigated SiC waver. The magnified region shows dislocation lines piercing the surface, revealed by KOH
+etching. The whole wafer image consist of altogether 40, 000 images, one of them is shown in sub-figure c).
+whole wafer is shown in Fig. 1a) and is divided into 20
+sections for the scanning process. Each of them again
+consists of around 2000 images with 1292 × 968 pixels
+(see Fig. 1b) and c), resulting in a total of 40 000 images
+covering the whole wafer.
+2.2 Automated creation of an etch pit
+dictionary
+In the following we introduce a data analysis pipeline for
+obtaining image regions that contain a single etch pit for
+a BPD, a TSD, and a TED with various Burgers vectors. In this part, the objective is not to identify all etch
+pits in the wafer; the objective is to automatically find
+a number of good examples (i.e., image sections with
+a single, clearly visible etch pit) that are suitable for
+creating semi-synthetic training data by superimposing
+such etch pit examples in an artificial image.
+2.2.1 Identification of image regions that
+contain an etch pit
+Each gray scale microscopy image (Fig. 2b) consists
+of 1292 × 968 pixels. As a preprocessing step, distortions and inhomogeneous contrast were removed in
+each image through the rolling-ball [22] and CLAHE
+(Contrast limited adaptive histogram equalization technique) method [23] (see Appendix A for a brief explanation). A binarization threshold was then applied to the
+image to reveal the darker etch pits (note, that during
+these steps it is not important that no all etch pits are
+identified). Additional image processing techniques such
+as erosion, opening, and dilation using the OpenCV
+library were used for separating contiguous pixel groups
+(Fig. 2c). To estimate the shape, a possibly rotated
+ellipse is fitted to each of the obtained pixel groups
+(Fig. 2d). By characterizing the shape and size of the
+ellipse it is possible to exclude pixel groups that do not
+correspond to etch pits. As shown in [24] this requires
+the calculation of three parameters, the “lengthiness” of
+the ellipse, the “compactness” of the pixel cluster and
+the “circularity”. If these characteristic values exceed
+certain values (here: 3, 0.6, and 0.6, respectively), then
+the pixel groups have a too extreme shape to be etch pits
+(see [24] for further details). These pixel groups act as a
+mask through which individual regions of interest containing a single etch pit are obtained (the masks were
+additionally expanded by a boarder of 10 pixels). This
+process is done automatically for all 40 000 images covering the entire wafer and resulting in a total number of
+approximately 1.7 million etch pit images. However, not
+all of these etch pit images can be used for further analysis, because, e.g., two etch pits might overlap (class 0
+in Fig. 2f shows such examples), and therefore it would
+not be possible to uniquely determine the dislocation
+line character. To exclude these “bad examples” from
+the further analysis steps, a deep learning-based classification method is used, as introduced subsequently.
+2.2.2 Binary classification for selecting
+good candidates of etch pit images
+Generating synthetic training data by superimposing
+a number of each etch-pit images requires images of
+high-quality. Therefore, it is necessary to differentiate
+between a suitable and unsuitable candidate from the
+pool of extracted etch pits datasets obtained above.
+Suitable images contain only a single etch pit and no
+artifacts, see the examples shown in Fig. 2f. To decide
+which of the images is a suitable image for further analysis, a CNN is used as a classifier in a supervised learning
+setup.
+As network architecture a multiple-channel CNN
+with a ResNet34 as a backbone was used. The input
+channels used for this type of CNN consists of the original grey scale image, a magnitude spectrum of the
+3
+
+===== Page 4 =====
+
+           (a)                                     (b)                                                (c)                                      (d)
+       wafer                         single image                   extracted etch pit images    ... and geometries
+          (e) “enriched” input                                     (f) train a classifier  to distinguish 
+     for CNN: 3 channel images                   between “good” and “bad” images with artifacts
+original
+FFT
+wavelet
+ResNet34
+class 1:
+good 
+images
+class 0:
+with noise 
+or
+artifacts
+                                         (g)                                                                                (h)
+  feature extraction & dimensionality reduction                      automated clustering 
+VGG16
+UMAP
+HDBSCAN
+   (i)                                                (j)                                                          (k)                  
+   create synthetic  images              train DL model                predict type & position of all etch pits
+Analysis Part 1: Dictionary creation with etch pit images and corresponding line types
+Analysis Part 2: Creation of synthetic training data, training and prediction
+Mask R-CNN
+Fig. 2 Data analysis pipeline of the two main tasks: the automated creation of a etch-pit dictionary pool (top box) and predicting
+dislocations in the full wafer (bottom box). Further explanations are given in the text.
+4
+
+===== Page 5 =====
+
+Fast-Fourier transform of the image as well as of the
+wavelet transform (see Fig. 2e). These three channels
+together contain significantly more information than
+just the gray scale values used in regular CNNs and are
+very beneficial for the training and testing accuracy.
+As training dataset we select (by quick visual inspection which takes less than an hour) 1000 arbitrary etch
+pit images that are clearly good candidates and 1000
+that are clearly unsuitable. The size of each image is
+64 × 64 pixels. We also perform data augmentation
+such as rotating the image by various degrees as well
+as adding noise to the image to ensure that the model
+generalizes well. The resulting dataset is split into 5
+parts that are used for a k-fold cross-validation, where
+we ensured that there is no class imbalance. The test
+dataset is chosen as one of the five parts. The performance of the trained network is evaluated in terms of
+classification accuracy, defined as the ratio between the
+sum of the correctly predicted records and the total
+number of predicted records.
+In the data analysis pipeline, the input to the trained
+network is one of the image sections Fig. 2 c) and the
+output, i.e., the prediction of the network is the class
+label 0 or 1. There, 0 indicates that the image section
+contains multiple overlapping etch pits or even other
+(image or crystallographic) defects while 1 indicates an
+image section that contains exactly one etch pit and is
+suitable for further processing.
+2.2.3 Automated clustering of different
+dislocation types
+Subsequently, we continue with only those image section
+that were identified as good candidates for further analysis. The next goal is to identify the exact dislocation
+type (i.e., BPD, TED or TSD), which is so far not
+known. In principle this is again a classification task.
+However, labelling the training data (i.e., sorting all
+training images into several different dislocation categories) is very time consuming time consuming and
+additionally prone to errors.
+A different approach consists in unsupervised learning where the training is not based on pre-assigned class
+labels. To sort etch pits images into various categories,
+clustering methods can help by automatically grouping
+similar images. For determining what “similar” means,
+clustering methods often operate in a feature space
+which represents the images by a reduced set of essential
+features. Effectively, this implies an automated feature
+extraction followed by a dimensionality reduction, cf.
+Fig. 2g.
+For constructing this reduced feature space we
+firstly use VGG-16 neural network [25] to convert etch
+pit images into feature vectors. No training is done;
+instead, a pretrained network with weights taken from
+ImageNet-1k [26] has been use for this purpose. VGG-16
+is a simple convolutional neural network that consists of
+13 convolutional layers followed by three fully connected
+layers. The first fully connected layer is taken as the
+4096-dimensional feature vector and contains a multiscale lower-level representation of the image which is
+suitable for clustering. However, the number of dimensions is still high and can cause problems for clustering
+methods due to the sparsity of the feature space. Thus,
+a further dimensionality reduction of the feature space
+is performed.
+A sophisticated method for unsupervised dimensionality reduction is the so-called uniform manifold
+approximation and projection UMAP [27, 28]. It preserves the global data structure and is still computationally manageable. The mathematical background of
+this technique is related to Laplacian eigenmaps [29]
+which distribute data uniformly on (sub)manifolds of
+the data space. For more detail on the algorithm and
+description refer to [27]. As hyper-parameter of UMAP
+we used 10 neighbours, 32 random states, and a minimum distance of 0.3. The other parameters are taken
+as the default values of the library package [27]. The
+4096-dimensional dataset from the VGG-16 feature vectors are then reduced to only three components (two of
+which are shown in Fig. 2g).
+Finally, we use HDBSCAN (Hierarchical DensityBased Spatial Clustering of Applications with Noise)
+[30] to automatically cluster the data of the threedimensional feature space into three separate groups,
+which can then easily be identified as BPD, TED and
+TSD as discussed below.
+2.3 Predicting dislocations in all
+sections of the wafer
+At the end of the previous steps we have obtained a
+number of small images each of which contains a single
+etch pit. We additionally know to which kind of dislocation this etch pit corresponds. The images together with
+the types are contained in the “etch-pit dictionary”.
+This allows now to generate synthetic image data based
+on these small images.
+2.3.1 Synthetic image generation
+Artificial images with etch pits are created by (i) creating a background and (ii) randomly or systematically
+placing images from the dictionary on the background
+and simultaneously creating a mask for the semantic
+segmentation.
+5
+
+===== Page 6 =====
+
+Background images (1024 × 1024 pixels) are grown
+by a non-parametric sampling method for texture synthesis [31, 32]. From an initial seed (200 × 200 pixels),
+which is taken from a real microscopy image, the texture of the background image is grown one pixel at
+a time by a Markov random field model. Each newly
+synthesised pixel is generated from the centre of the
+chosen neighbourhood, which is similar to the pixel of
+the neighbourhood. These neighbourhoods are already
+found by the algorithm.
+As a parameter, the minimum and maximum number of BPDs, TEDs, and TSDs that can appear in
+each of the images is defined. The algorithm randomly
+chooses the number of each dislocation type within
+these ranges. Each image is randomly selected from
+the image pool and pasted on the randomly chosen
+background image. An additional method is to place
+dislocations along a straight line segment, mimicking
+low angle grain boundaries. Altogether, around 580 000
+etch pit images were used to create randomised training
+datasets. The resulting synthetic images are obtained
+together with the mask for semantic segmentation and
+with the position of each dislocation etch pit. We generate about 10 000 images for the training datasets and
+1000 images for validation. The size of each synthetic
+image is 512 × 512 pixels.
+2.3.2 Instance segmentation and
+classification of dislocation types
+The instance segmentation and classification of dislocation types are done by training a Mask R-CNN [33] deep
+learning model, which has been implemented in Detectron2 [34] (a Facebook AI Research’s next-generation
+library that provides detection and segmentation algorithms), which is built based on the Pytorch platform.
+Mask R-CNN [33] extends Faster R-CNN [35] by adding
+a branch for predicting segmentation masks on each
+Region of Interest (RoI) in parallel with the existing
+branch for classification and bounding box regression.
+The mask branch is a small fully connected network
+applied to each RoI, predicting a segmentation mask
+in a pixel-to-pixel manner. Mask R-CNN is simple
+to implement and to train given the Faster R-CNN
+framework, which facilitates a wide range of flexible
+architecture designs. Additionally, the mask branch
+only adds a small computational overhead, enabling a
+fast experimentation.
+In our implementation we train the model with
+a ResNet101 as backbone using pre-trained COCO
+weights. The dataset is converted into COCO format,
+in which the annotations contain a list of dictionaries
+with the required information, suitable for Detectron2.
+The performance of the segmentation is evaluated in
+terms of the root mean squared error (RMSE), which
+is defined as
+e =
+v
+u
+u
+t 1
+N
+N
+X
+i=1
+(yi −ˆyi)2 ,
+(1)
+where N is the number of values, yi is the i-th truth
+value and ˆyi is the i-th predicted value. For the evaluation of the performance, 5-fold cross-validation was
+conducted giving for each fold the accuracy of 0.89,
+0.92, 0.96, 0.94 and 0.92 respectively, which results in
+an average accuracy of ≈0.92.
+This was the last step in this lengthy data analysis
+pipeline. We are now able to detect the position and
+dislocation type in each of the images of the full wafer,
+as shown in Fig. 2k. The Burgers vector of the respective defect can be obtained in a conventional manner by
+computing the radius of the etch pit (compare [24]).
+3 Results and discussion
+In the following we start by investigating the physical soundness of the data analysis results. Afterwards,
+the dislocation predictions are discussed within the
+materials scientific context.
+3.1 Robustness of the clustering
+The first part of above introduced data analysis pipeline
+(etch pit dictionary creation) was designed to be as
+robust as possible. In particular, it was designed such
+that missing even a larger fraction of etch pits should
+not have any impact on the quality of the dictionary. As
+an important part we will now investigate the clustering
+results, Fig. 2h in more detail.
+There are three different dislocation types, which
+commonly appear in microscopy images of SiC after
+etching with molten KOH: BPDs have a sea-shell-like
+shape, while TED and TSD have a round or hexagonal shape with a core in the center region. Larger cross
+sections indicate larger Burgers vectors. In Fig. 2g and
+the magnification in Appendix B we observe that similar etch pits are located close to each other in the latent
+space generated by UMAP, which is beneficial for the
+clustering process. Fig. 2h shows three clusters which
+are obtained by applying the HDBSCAN clustering
+method to the three-dimensional UMAP latent space.
+For visualization purposes, they are further reduced to
+two dimensions, shown in grey, orange and blue colour
+respectively. Note, that (again for visualization purposes) in Fig. 2g we only show 1000 data points from
+6
+
+===== Page 7 =====
+
+Fig. 3 Left: Visualization of all three components after clustering. Right: Magnification of the data projected on the first two
+components (i.e., the middle plot in the leftmost column of the left figure) along with examples of the etch pit images. The value
+ranges of the three latent space components are the same, and therefore, no scales are given.
+part 9 of the wafer with embedded images of those etch
+pits.
+How accurate was the clustering? Do the different
+colors in fact correspond to the three types of dislocation (BPDs, TEDs and TSDs)? To answer this
+question, we take a look at the correlation between
+the three feature components shown in Fig. 3. First of
+all, we observe that three components are sufficient to
+distinctly separate the point clusters: E.g., in the plot
+of component 1 vs. 3 TSDs are even linearly separable from the other dislocation types. Similarly, plotting
+components 1 vs 2 and ignoring the TSDs makes BPDs
+and TEDs linearly separable as well.
+Exploring the structure of the latent space can also
+be done by taking a look at how the corresponding
+images change when moving from one cluster to the
+next. Fig. 3 (right) shows several example images in
+the latent space. Position A and G both indicate very
+extreme shapes: both are rather large and have a strong
+contrast. However, A belongs to the group of lengthy
+shapes (the basal plane dislocations) while G belongs
+to the threading screw dislocations and is rather round.
+In between is the group of threading edge dislocations.
+They are smaller than the BPDs but still roundish.
+The clustering method successfully separates even those
+images that are close to each other, e.g., E and F. Visual
+inspection shows that E and F are indeed different. The
+same holds for B and C which implies that the three
+groups of dislocations can be unambiguously separated,
+making the method very robust for this application.
+3.2 Reliability of predicting various
+dislocation types
+For the purpose of validating the trained segmentation
+model three different datasets were created that were
+not used in the training process:
+• The first dataset contains 1000 synthetic images with
+a low etch pit density where the number of etch pits
+were randomly varied within the ranges of 0..5 TSDs,
+0..10 TEDs, and 0..20 BPDs.
+• The second dataset again consists of 1000 synthetic
+images. However, each of them contain, on average, a
+larger number of etch pits. Here, we used the ranges
+of 0..20, 0..50 and 0..200 for the quantities of the three
+dislocation types.
+• The third dataset consists of 100 real microscopy
+images that were manually annotated by a domain
+expert.
+Fig. 4a and 4d show examples of synthetic microscopy
+images for the case of low dislocation density and high
+dislocation density, respectively. The images contain all
+three types of dislocations, for which a number of etchpit images are randomly chosen from the dictionary.
+The dislocation images of high density are unrealistic
+since such densities are typically not found in commercial SiC wafers. However, including this extreme case
+turned out to be beneficial for the training process of the
+instance segmentation since the difficult cases increase
+the variance of the dataset and thereby helps the model
+to generalize better.
+7
+
+===== Page 8 =====
+
+Fig. 4 Results comparison between ground truth and predicted segmentation. a and d: grayscale images of synthetic low and high
+dislocation density; g: real microscopy image; b and e: ground truth segmentation from the synthetic image; h: ground truth segmentation from hand labelling; c, f and i: predicted results from the deep learning.
+The ground truths and predictions are shown in the
+middle and right column of Fig. 4. To quantify the error
+the RMSE is calculated for all dislocation types resulting in eBPD = 13, eTED = 23, and eTSD = 3 for the
+case of high dislocation density. These values are much
+smaller for the case of lower dislocation density which
+are eBPD = 1, eTED = 4, and eTSD = 0.5, respectively.
+For the real images, the RMSE values are obtained as
+in eBPD = 3, eTED = 5, and eTSD = 2. Analyzing the
+prediction performance of the model for all images of
+the validation datasets results in the distributions of
+absolute classification errors as shown in Fig. 5. The
+dataset with the high dislocation results by design in
+the worst performance: the dataset was created to be
+the most challenging one. By contrast, the validation
+dataset with the lower density the model shows a very
+good prediction accuracy. The ultimate test, however,
+is the real dataset since it is a subset of the whole wafer.
+For this, the variance of the errors is larger than that for
+the low density synthetic dataset. However, on average,
+8
+
+===== Page 9 =====
+
+Fig. 5 Differences between ground truth and prediction on various test datasets: 1000 images of high dislocation density, 1000 images
+of low dislocation density and 100 images of real dislocation density.
+only 1.9 BPDs, 0.9 TEDs, and 1.3 TSDs were misclassified. In many cases, there even was no misclassification
+at all. Assuming that this dataset is statistically representative of the full waver it can be assumed that this
+high level of accuracy also will hold for the analysis of
+the full wafer.
+3.3 Analysis of the full wafer
+Analyzing the full waver is a formidable task since it
+consists of altogether about 40 000 individual images.
+The above introduced data analysis pipeline is suitable
+for such a task because even though training of the Mask
+R-CNN network is computationally expensive, making
+predictions about location and type of edge pits in new
+images is significantly faster.
+Altogether 1.7 millions etch pits were identified and
+located. Fig. B3 in the appendix summarizes the dislocation content for each of the 20 wafer subdivision, each
+of which again consists of a large number of individual
+images. BPDs are the predominant type of dislocation
+in most of the regions while on average TEDs occur
+50% less. The number of TSDs is the lowest in all wafer
+parts.
+To illustrate the result of this analysis the resulting
+dislocation density distribution of the three dislocation
+types obtained for the whole wafer is shown in Fig. 6.
+The density distribution of BPD is the highest with a
+maximum value of around 1.6·105 cm−2, while the maxima of TED and TSD are approximately 1.2·105 cm−2
+and 0.8 · 105 cm−2, respectively. We observe that TEDs
+and TSDs are mainly concentrated in the central region
+and on the boundary of the wafer. The center of the
+wafer is mainly BPDs-free and then takes a high value.
+Due to the overlapping of the image sections, artifacts
+from imperfect image registration in form of two vertical
+lines occur (cf. middle and right figure of Fig. 6). The
+slightly tilted vertical lines in the left plot are arrays
+of BPDs, forming several low angle grain boundaries
+that are distributed approximately in an equidistant
+manner. They occurred due to the high curvature of
+the growth interface and the shear stress acting on the
+grown crystal [36–38] and became visible only through
+this analysis. Furthermore, a varying TED density can
+be seen on the upper left side approximately every 300
+originating from the center of the wafer.
+3.4 Are there any dislocations missing?
+In our study, we assumed that most of the etch pits
+are either BPDs, TEDs or TSDs. However, in reality,
+there can also be dislocations of mixed line characters.
+This type of etch-pit occurs because of the switching
+direction of dislocations. E.g. a TED can be deflected
+into a BPD, or vice versa, due to macro-step formation [39]. Similarly, TSDs can bent into BPDs and vica
+versa (“macro step flow”) [40]. Furthermore, “shallow
+dislocations” were observed to form a round pit (with a
+curved bottom) without a core. Since dislocations cannot start or end inside the crystal, this structure can
+result from a dislocation half-loop [41]. For those pits,
+all dislocations are somewhat tilted [42].
+Clearly, all of these cases are not explicitly considered in our analysis and are rather assigned to one of the
+three classes. Here, the clustering results might help to
+identify particular etch pit shapes by, e.g., taking a look
+at the extreme ends of a cluster, similar to what was
+done in Fig. 3. An other option to extent this investigation is to further cluster the content of a single cluster
+of images and thereby to obtain further subdivisions of
+that cluster. This might be a good starting point to
+detect new sub-groups of etch pit images that are similar in some aspects, which could be, e.g., the case for a
+mixed dislocation.
+9
+
+===== Page 10 =====
+
+Fig. 6 Visualization of the three types of dislocation density in the whole wafer.
+4 Conclusion
+We have proposed a complex image analysis pipeline
+that consists of a number of classical image analysis
+techniques, supervised deep learning methods as well as
+unsupervised approaches. A particular emphasize was
+the robustness and accuracy of the framework. Generation of semi-synthetic training data was key for training
+an instance segmentation neural network without manually creating data annotation. This helped to rapidly
+analyze thousands of images and obtain accurate and
+spatially resolved information about the distribution of
+different dislocation types.
+Our method can be applied to quickly identify areas
+of defect density inhomogeneities, for example, areas of
+high BPD density due to localized stress during crystal growth. The increasing diameter standard of SiC
+wafers of up to 200 mm directly implies that KOH etching images have to be analyzed automatically since such
+a high amount of data can not be handled otherwise.
+Ultimately, high-throughput analysis methods as
+the one in this work will contribute to understanding
+of defects in SiC which is the basis for optimizing the
+process parameters during growth.
+Acknowledgments
+Financial support of the Deutsche Forschungsgemeinschaft (DFG) under the contract numbers DA357/7-1,
+WE2107/15 and SA2292-6 is greatly acknowledged.
+Conflict of interest
+On behalf of all authors, the corresponding author
+states that there is no conflict of interest.
+Data availability
+Postprocessed
+data
+is
+available
+at
+zenodo,
+raw
+microscopy data is available upon request.
+Code availability
+Code is available upon request.
+10
+
+===== Page 11 =====
+
+Appendix A
+Classical image analysis: Modifying the distortion and
+the unequal contrast
+In a first step we enhance the quality of the original images. By applying the rolling-ball [22] and CLAHE (Contrast
+limited adaptive histogram equalization technique) [23], the features (etch-pit) are becoming more clear and the
+distortion which causes an unbalance to the contrast of the image are removed. The results are shown in Fig. A1.
+We can see that the unbalance of the contrast in the original image (see Fig. A1a) causes a non-optimal result
+Fig. A1 Correction of unequal contrast of the microscopy image: a) the original image; b) threshold of original image; c) the modified
+image; d) threshold of modified image.
+when we take threshold this image. A large number of features of the etch pits in the lower right corner are lost
+(see Fig. A1b). On the other hand, when we perform the modification, the shading of the image looks more equal
+across the image (see Fig. A1c), with the result of detailed features of dislocation etch pits in the whole image
+when applying the threshold (see Fig. A1d).
+Appendix B
+Detailed images from the dimensional reduction and
+automated clustering
+Fig. B3 summarizes the dislocation content for each of the 20 wafer subdivision, each of which again consists of a
+large number of individual images. Obviously, BPD’s are the predominant type of dislocation in almost all regions
+(exception: part 8, 12 and 13, see Fig. 1 for the location of these parts).
+Appendix C
+Unsupervised clustering results from various
+combination of Deep Learning techniques and
+clustering approaches
+In the main text, we have demonstrated that the combination of VGG-16 and UMAP resulted in a direct neighborship of similar etch-pits which was important for obtaining overall very satisfactory results. To evaluate the
+performance of this combination, we have compared it with 13 other combinations of various neural networks with
+UMAP. The others neural network consists of ResNet [43] (with 18, 34, 50, 101 and 152 layers) and EfficientNet
+[44] from B0 to B7. The evaluation is done on 3000 etch-pits that are selected belonging to BPD, TED and TSD.
+From the scatter plots and the cluster map plots shown in Fig. C4 and Fig. C5 we can see that UMAP groups
+etch-pits from different dislocation types very effectively if the features vector is obtained from the VGG-16 or the
+ResNet50, whereas parts or the whole cluster overlap for other method combinations. The component values are
+scaled to the range 0..1 for comparison purpose.
+11
+
+===== Page 12 =====
+
+Fig. B2
+Visualization of the etch pit distribution after reducing the dimensionality to three latent variables (the top figure shows
+the first two variables) and after clustering (bottom). It can be seen that already the dimensionality reduction by UMAP significantly
+sorts the images, e.g., the most circular etch pits are located at the right. After automated clustering, the three different groups of
+images are clearly separated.
+12
+
+===== Page 13 =====
+
+Fig. B3 Counting etch-pits distribution on each wafer division.
+Additionally, a similar evaluation was also done using principal component analysis (PCA) (see Fig. C6 and
+Fig. C7) and T-distributed stochastic neighbour embedding (t-SNE) (see Fig. C8 and Fig. C9). In PCA, although
+most of the similar etch-pits stay close together, there is no clear separation between pits of different classes. t-SNE
+shows a clear separating boundary between clusters similar to UMAP in the some method combinations, such as
+with VGG-16 or ResNet. Therefore, UMAP or t-SNE are both suitable methods. However, with larger datasets,
+the analysis with UMAP is recommended because the clustering process requires significantly less computational
+time [27].
+Fig. C4 Comparison of the combination of various neural networks for features extraction with UMAP. The red asterisk represents
+the position of the same data point.
+13
+
+===== Page 14 =====
+
+Fig. C5 Visualization values of the component 1 and component 2 from the combination of various neural networks with UMAP.
+The values along the vertical direction indicate component value. These values are grouped into three dislocation types: BPD, TED
+and TSD with corresponding colors: blue, orange and green in the left most column.
+14
+
+===== Page 15 =====
+
+Fig. C6 Comparison of the combination of various neural network for features extraction with PCA. The red asterisk represents the
+position of the same data point.
+15
+
+===== Page 16 =====
+
+Fig. C7 Visualization values of the component 1 and component 2 from the combination of various neural networks with PCA. The
+values along the vertical direction indicate component value. These values are grouped into three dislocation types: BPD, TED and
+TSD with corresponding colors: blue, orange and green in the left most column.
+16
+
+===== Page 17 =====
+
+Fig. C8 Comparison of the combination of various neural network for features extraction with t-SNE. The red asterisk represents
+the position of the same data point.
+17
+
+===== Page 18 =====
+
+Fig. C9 Visualization values of the component 1 and component 2 from the combination of various neural networks with t-SNE.
+The values along the vertical direction indicate component value. These values are grouped into three dislocation types: BPD, TED
+and TSD with corresponding colors: blue, orange and green in the left most column.
+18
+
+===== Page 19 =====
+
+References
+[1] Xiang, X.-D., Sun, X., Briceno, G., Lou, Y., Wang,
+K.-A., Chang, H., Wallace-Freedman, W.G., Chen,
+S.-W., Schultz, P.G.: A combinatorial approach
+to materials discovery. Science 268(5218), 1738–
+1740 (1995) https://doi.org/10.1126/science.268.
+5218.1738
+[2] Ludwig, A.: Discovery of new materials using combinatorial synthesis and high-throughput characterization of thin-film materials libraries combined
+with computational methods. npj Computational
+Materials 5(1), 70 (2019) https://doi.org/10.1038/
+s41524-019-0205-0
+[3] Castelli, I.E., Olsen, T., Datta, S., Landis, D.D.,
+Dahl, S., Thygesen, K.S., Jacobsen, K.W.: Computational screening of perovskite metal oxides for
+optimal solar light capture. Energy & Environmental Science 5(2), 5814–5819 (2012) https://doi.org/
+10.1039/C1EE02717D
+[4] De Luna, P., Wei, J., Bengio, Y., Aspuru-Guzik, A.,
+Sargent, E.: Use machine learning to find energy
+materials. Nature Publishing Group (2017). https:
+//doi.org/10.1038/d41586-017-07820-6
+[5] Correa-Baena, J.-P., Hippalgaonkar, K., Duren, J.,
+Jaffer, S., Chandrasekhar, V.R., Stevanovic, V.,
+Wadia, C., Guha, S., Buonassisi, T.: Accelerating
+materials development via automation, machine
+learning, and high-performance computing. Joule
+2(8), 1410–1420 (2018) https://doi.org/10.1016/j.
+joule.2018.05.009
+[6] Ren, F., Ward, L., Williams, T., Laws, K.J.,
+Wolverton, C., Hattrick-Simpers, J., Mehta, A.:
+Accelerated discovery of metallic glasses through
+iteration of machine learning and high-throughput
+experiments. Science advances 4(4), 1566 (2018)
+https://doi.org/10.1126/sciadv.aaq1566
+[7] Li, J., Zhang, Y., Cao, X., Zeng, Q., Zhuang,
+Y., Qian, X., Chen, H.: Accelerated discovery of
+high-strength aluminum alloys by machine learning. Communications Materials 1(1), 1–10 (2020)
+https://doi.org/10.1038/s43246-020-00074-2
+[8] Pyzer-Knapp, E.O., Pitera, J.W., Staar, P.W.,
+Takeda, S., Laino, T., Sanders, D.P., Sexton, J.,
+Smith, J.R., Curioni, A.: Accelerating materials
+discovery using artificial intelligence, high performance computing and robotics. npj Computational Materials 8(1), 1–9 (2022) https://doi.org/
+10.1038/s41524-022-00765-z
+[9] Siriwardane, E.M.D., Zhao, Y., Perera, I., Hu, J.:
+Generative design of stable semiconductor materials using deep learning and density functional theory. npj Computational Materials 8(1), 1–12 (2022)
+https://doi.org/10.1038/s41524-022-00850-3
+[10] Lyngby, P., Thygesen, K.S.: Data-driven discovery of 2d materials by deep generative models. npj
+Computational Materials 8(1), 1–8 (2022) https:
+//doi.org/10.1038/s41524-022-00923-3
+[11] Srinivasan,
+S.,
+Batra,
+R.,
+Luo,
+D.,
+Loeffler,
+T.,
+Manna,
+S.,
+Chan,
+H.,
+Yang,
+L.,
+Yang,
+W.,
+Wen,
+J.,
+Darancet,
+P.,
+et
+al.:
+Machine
+learning
+the
+metastable
+phase
+diagram
+of
+covalently
+bonded
+carbon.
+Nature
+Communications
+13(1),
+1–12
+(2022)
+https://doi.org/10.1038/s41467-022-30820-8
+[12] Rao, Z., Tung, P.-Y., Xie, R., Wei, Y., Zhang, H.,
+Ferrari, A., Klaver, T.P.C., K¨ormann, F., Sukumar, P.T., Silva, A.K., Chen, Y., Li, Z., Ponge, D.,
+Neugebauer, J., Gutfleisch, O., Bauer, S., Raabe,
+D.:
+Machine
+learning&#x2013;enabled
+highentropy alloy discovery. Science 378(6615), 78–85
+(2022)
+https://doi.org/10.1126/science.abo4940
+https://www.science.org/doi/pdf/10.1126/science.abo4940
+[13] DeCost, B.L., Holm, E.A.: A computer vision
+approach for automated analysis and classification of microstructural image data. Computational
+materials science 110, 126–133 (2015) https://doi.
+org/10.1016/j.commatsci.2015.08.011
+[14] DeCost, B.L., Jain, H., Rollett, A.D., Holm,
+E.A.: Computer vision and machine learning for
+autonomous characterization of am powder feedstocks. Jom 69(3), 456–465 (2017) https://doi.org/
+10.1007/s11837-016-2226-1
+[15] Roberts, G., Haile, S.Y., Sainju, R., Edwards,
+D.J., Hutchinson, B., Zhu, Y.: Deep learning for
+semantic segmentation of defects in advanced stem
+images of steels. Scientific reports 9(1), 1–12 (2019)
+https://doi.org/10.1038/s41598-019-49105-0
+[16] Horwath, J.P., Zakharov, D.N., M´egret, R., Stach,
+E.A.: Understanding important features of deep
+learning models for segmentation of high-resolution
+transmission electron microscopy images. npj Computational Materials 6(1), 1–9 (2020) https://doi.
+org/10.1038/s41524-020-00363-x
+19
+
+===== Page 20 =====
+
+[17] Durmaz, A.R., M¨uller, M., Lei, B., Thomas, A.,
+Britz, D., Holm, E.A., Eberl, C., M¨ucklich, F.,
+Gumbsch, P.: A deep learning approach for complex microstructure inference. Nature communications 12(1), 1–15 (2021) https://doi.org/10.1038/
+s41467-021-26565-5
+[18] Lin, B., Emami, N., Santos, D.A., Luo, Y., Banerjee, S., Xu, B.-X.: A deep learned nanowire segmentation model using synthetic data augmentation.
+npj Computational Materials 8(1), 1–12 (2022)
+https://doi.org/10.1038/s41524-022-00767-x
+[19] Tremblay, J., Prakash, A., Acuna, D., Brophy,
+M., Jampani, V., Anil, C., To, T., Cameracci, E.,
+Boochoon, S., Birchfield, S.: Training deep networks with synthetic data: Bridging the reality gap
+by domain randomization. In: Proceedings of the
+IEEE Conference on Computer Vision and Pattern Recognition Workshops, pp. 969–977 (2018).
+https://doi.org/10.48550/arXiv.1804.06516
+[20] Trampert, P., Rubinstein, D., Boughorbel, F.,
+Schlinkmann, C., Luschkova, M., Slusallek, P.,
+Dahmen, T., Sandfeld, S.: Deep neural networks
+for analysis of microscopy images—synthetic data
+generation and adaptive sampling. Crystals 11(3),
+258 (2021) https://doi.org/10.3390/cryst11030258
+[21] Govind, K., Oliveros, D., Dlouhy, A., Legros, M.,
+Sandfeld, S.: Deep learning of crystalline defects
+from tem images: A solution for the problem of
+“never enough training data”. Machine Learning:
+Science and Technology (2024) https://doi.org/10.
+1088/2632-2153/ad1a4e
+[22] Sternberg,
+S.R.:
+Biomedical
+image
+processing.
+Computer 16(01), 22–34 (1983) https://doi.org/
+10.1109/MC.1983.1654163
+[23] Vidhya, G.R., Ramesh, H.: Effectiveness of contrast limited adaptive histogram equalization technique on multispectral satellite imagery. In: Proceedings of the International Conference on Video
+and Image Processing, pp. 234–239 (2017). https:
+//doi.org/10.1145/3177404.3177409
+[24] Nguyen, B.D., Roder, M., Danilewsky, A., Steiner,
+J., Wellmann, P., Sandfeld, S.: Automated analysis of x-ray topography of 4h-sic wafers: Image
+analysis, numerical computations, and artificial
+intelligence approaches for locating and characterizing screw dislocations. Journal of Materials
+Research, 1–12 (2023) https://doi.org/10.1557/
+s43578-022-00880-z
+[25] Simonyan, K., Zisserman, A.: Very deep convolutional networks for large-scale image recognition.
+arXiv preprint arXiv:1409.1556 (2014) https://doi.
+org/10.48550/arXiv.1409.1556
+[26] Russakovsky, O., Deng, J., Su, H., Krause, J.,
+Satheesh, S., Ma, S., Huang, Z., Karpathy, A.,
+Khosla, A., Bernstein, M., et al.: Imagenet large
+scale visual recognition challenge. International
+journal of computer vision 115, 211–252 (2015)
+[27] McInnes, L., Healy, J., Melville, J.: Umap: Uniform
+manifold approximation and projection for dimension reduction. arXiv preprint arXiv:1802.03426
+(2018)
+https://doi.org/10.48550/arXiv.1802.
+03426
+[28] Becht, E., McInnes, L., Healy, J., Dutertre, C.-A.,
+Kwok, I.W., Ng, L.G., Ginhoux, F., Newell, E.W.:
+Dimensionality reduction for visualizing single-cell
+data using umap. Nature biotechnology 37(1), 38–
+44 (2019) https://doi.org/10.1038/nbt.4314
+[29] Belkin, M., Niyogi, P.: Laplacian eigenmaps for
+dimensionality reduction and data representation. Neural computation 15(6), 1373–1396 (2003)
+https://doi.org/10.1162/089976603321780317
+[30] McInnes, L., Healy, J.: Accelerated hierarchical
+density based clustering. In: Data Mining Workshops (ICDMW), 2017 IEEE International Conference On, pp. 33–42 (2017). https://doi.org/https:
+//arxiv.org/pdf/1705.07321.pdf . IEEE
+[31] Efros, A.A., Leung, T.K.: Texture synthesis by
+non-parametric sampling. In: Proceedings of the
+Seventh IEEE International Conference on Computer Vision, vol. 2, pp. 1033–1038 (1999). https:
+//doi.org/10.1109/ICCV.1999.790383 . IEEE
+[32] Levina, E., Bickel, P.J.: Texture synthesis and
+nonparametric resampling of random fields. The
+Annals of Statistics 34(4), 1751–1773 (2006) https:
+//doi.org/10.1214/009053606000000588
+[33] He, K., Gkioxari, G., Doll´ar, P., Girshick, R.: Mask
+r-cnn. In: Proceedings of the IEEE International
+Conference on Computer Vision, pp. 2961–2969
+(2017). https://arxiv.org/pdf/1703.06870.pdf
+[34] Wu, Y., Kirillov, A., Massa, F., Lo, W.-Y.,
+Girshick,
+R.:
+Detectron2.
+https://github.com/
+facebookresearch/detectron2 (2019)
+[35] Ren, S., He, K., Girshick, R., Sun, J.: Faster r-cnn:
+20
+
+===== Page 21 =====
+
+Towards real-time object detection with region
+proposal networks. Advances in neural information processing systems 28 (2015) https://doi.org/
+https://proceedings.neurips.cc/paper/2015/file/
+14bfa6bb14875e45bba028a21ed38046-Paper.pdf
+[36] Wellmann, P.J., Steiner, J., Str¨uber, S., Arzig, M.,
+Salamon, M., Uhlmann, N., Nguyen, B.D., Sandfeld, S.: The processing chain of the wide bandgap
+semiconductor
+sic–how
+small
+steps
+enabled
+a
+mature technology. Diamond and Related Materials 136, 109895 (2023) https://doi.org/10.1016/j.
+diamond.2023.109895
+[37] Nakano, T., Shinagawa, N., Yabu, M., Ohtani, N.:
+Formation and multiplication of basal plane dislocations during physical vapor transport growth of
+4h-sic crystals. Journal of Crystal Growth 516, 51–
+56 (2019) https://doi.org/10.1016/j.jcrysgro.2019.
+03.027
+[38] Steiner, J., Nguyen, B.D., Sandfeld, S., Wellmann,
+P.J.: Prevention of bunched basal plane dislocation arrays in 4h-sic pvt-growth. Solid state phenomena 343, 9–14 (2023) https://doi.org/10.4028/
+p-eu98j0
+[39] Li, H., Peng, Y., Yang, X., Xie, X., Chen, X., Hu,
+X., Xu, X.: Investigation on dislocation and deflection morphology of pvt-grown on-axis 4h-sic crystals. Journal of Physics D: Applied Physics 55(45),
+454002 (2022) https://doi.org/10.1088/1361-6463/
+ac8f57
+[40] Mitani, T., Eto, K., Momose, K., Kato, T.: Massive reduction of threading screw dislocations in
+4h-sic crystals grown by a hybrid method combined
+with solution growth and physical vapor transport growth on higher off-angle substrates. Applied
+Physics Express 14(8), 085506 (2021) https://doi.
+org/10.35848/1882-0786/ac15c1
+[41] Ishikawa, Y., Yao, Y., Sato, K., Sugawara, Y.,
+Danno, K., Suzuki, H., Bessho, T., Kawai, Y.,
+Shibata, N.: Detection of shallow dislocations on
+4h-sic substrate by etching method. Acta Physica
+Polonica A 120(6A), 25 (2011) https://doi.org/10.
+12693/APhysPolA.120.A-25
+[42] Tsubouchi, N., Mokuno, Y., Shikata, S.: Characterizations of etch pits formed on single crystal
+diamond surface using oxygen/hydrogen plasma
+surface treatment. Diamond and Related Materials 63, 43–46 (2016) https://doi.org/10.1016/j.
+diamond.2015.08.012
+[43] He, K., Zhang, X., Ren, S., Sun, J.: Deep residual
+learning for image recognition. In: Proceedings of
+the IEEE Conference on Computer Vision and
+Pattern Recognition, pp. 770–778 (2016). http://
+openaccess.thecvf.com/content cvpr 2016/html/
+He Deep Residual Learning CVPR 2016 paper.
+html
+[44] Tan, M., Le, Q.: Efficientnet: Rethinking model
+scaling for convolutional neural networks. In: International Conference on Machine Learning, pp.
+6105–6114 (2019). PMLR. http://proceedings.mlr.
+press/v97/tan19a.html
+21

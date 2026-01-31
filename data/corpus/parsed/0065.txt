@@ -1,0 +1,1272 @@
+
+
+===== Page 1 =====
+
+IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. X, NO. X, MONTH 2020
+1
+From IC Layout to Die Photo: A CNN-Based
+Data-Driven Approach
+Hao-Chiang Shao, Member, IEEE, Chao-Yi Peng, Jun-Rei Wu, Chia-Wen Lin, Fellow, IEEE,
+Shao-Yun Fang, Member, IEEE, Pin-Yian Tsai, and Yan-Hsiu Liu
+Abstract—We propose a deep learning-based data-driven
+framework consisting of two convolutional neural networks: i)
+LithoNet that predicts the shape deformations on a circuit due to
+IC fabrication, and ii) OPCNet that suggests IC layout corrections
+to compensate for such shape deformations. By learning the shape
+correspondences between pairs of layout design patterns and
+their scanning electron microscope (SEM) images of the product
+wafer thereof, given an IC layout pattern, LithoNet can mimic
+the fabrication process to predict its fabricated circuit shape.
+Furthermore, LithoNet can take the wafer fabrication parameters
+as a latent vector to model the parametric product variations
+that can be inspected on SEM images. Besides, traditional optical
+proximity correction (OPC) methods used to suggest a correction
+on a lithographic photomask is computationally expensive. Our
+proposed OPCNet mimics the OPC procedure and efﬁciently
+generates a corrected photomask by collaborating with LithoNet
+to examine if the shape of a fabricated circuit optimally matches
+its original layout design. As a result, the proposed LithoNetOPCNet framework can not only predict the shape of a fabricated
+IC from its layout pattern, but also suggests a layout correction
+according to the consistency between the predicted shape and the
+given layout. Experimental results with several benchmark layout
+patterns demonstrate the effectiveness of the proposed method.
+Index Terms—Design for manufacturability, convolutional neural networks, virtual metrology, lithography simulation, optical
+proximity correction.
+I. INTRODUCTION
+A
+FTER IC circuit design and layout, it typically takes two
+to three months to fabricate a 12-inch IC wafer, involving a multi-step sequence of photolithographic and chemical
+processing steps. Among these steps, a lithography process
+is used to transfer an IC layout pattern from a photomask
+Manuscript received on February 11, 2020; revised May 25, 2020; accepted
+July 16, 2020. Date of publication Month Date, 2020; date of current version
+Month Date, 2020. This work was supported in part by the Ministry of
+Science and Technology, Taiwan, under Grants MOST 108-2634-F-007-009,
+and in part by United Microelectronics Corporation. The associate editor
+coordinating the review of this manuscript and approving it for publication
+was Dr. Laleh Behjat.
+Hao-Chiang
+Shao
+is
+with
+the
+Department
+of
+Statistics
+and
+Information
+Science,
+Fu
+Jen
+Catholic
+University,
+Taiwan.
+(email:shao.haochiang@gmail.com)
+Chao-Yi Peng and Jun-Rei Wu were with the Department of Electrical
+Engineering, National Tsing Hua University, Hsinchu, Taiwan.
+Chia-Wen Lin (corresponding author) is with the Department of Electrical
+Engineering and the Institute of Communications Engineering, National Tsing
+Hua University, Hsinchu, Taiwan. (e-mail: cwlin@ee.nthu.edu.tw)
+Shao-Yun Fang is with the Department of Electrical Engineering, National
+Taiwan University of Science and Technology, Taipei, Taiwan. (e-mail:
+syfang@mail.ntust.edu.tw)
+Pin-Yian Tsai and Yan-Hsiu Liu are with United Microelectronics Corporation, Hsinchu, Taiwan. (e-mail: {pin yian tsai; cecil liu}@umc.com)
+Color versions of one or more of the ﬁgures in this paper are available
+online at http://ieeexplore.ieee.org.
+to a photosensitive chemical photoresist on the substrate,
+followed by an etch process that chemically removes parts
+of a polysilicon or metal layer, uncovered by the etching
+mask, from the wafer surface. Because it is hard to control
+the exposure conditions and the chemical reactions involved
+in all fabrication steps, the two processes together lead to
+nonlinear shape distortion of a designed IC pattern, which is
+usually too complicated to model. This fact urges the need for
+mask optimization, a procedure that computes an optimized
+photomask to make the shape of the fabricated IC wafer
+optimally consistent with its source layout design.
+The inevitable shape deformations on a fabricated IC due
+to the imperfect lithography and etch processes often cause IC
+defects (e.g., thin wires or broken wires) if an IC circuit layout
+is not appropriately designed, especially on the ﬁrst few metal
+layers. Nevertheless, in most cases we still cannot identify such
+IC defects due to inappropriate IC circuit layout until capturing
+and analyzing the scanning electron microscope (SEM) images
+of metal layers after the wafer fabrication process, making
+the circuit veriﬁcation very costly and time-consuming. It is
+therefore desirable to develop pre-simulation tools, including
+i) a lithography simulation method for predicting the shapes
+of fabricated metal lines based on a given IC layout along
+with IC fabrication parameters, and ii) a mask optimization
+strategy for predicting the best mask to compensate for the
+shape distortions caused by the lithography and etch processes.
+As for lithography simulation, there are two categories
+of conventional approaches: physics-level rigorous simulation and compact model-based simulation [1], [2]. Rigorous
+simulation methods simulate physical effects of materials to
+accurately predict a fabricated circuit and thus are very timeconsuming [3], [4]. On the contrary, a compact model-based
+simulation method follows loosely physical phenomena to
+obtain a faster computational speed by exploiting complicated,
+parameter-dependent, non-linear functions. Different from traditional methods, we aim at developing a convolutional neural
+network (CNN) based approach, which learns the parametric
+model of physical and chemical phenomena of a fabrication
+process directly from a training dataset containing pairs of IC
+layouts and their corresponding SEM images. Based on the
+learned CNN model, we can predict a fabricated circuit shape
+more accurately and efﬁciently than traditional methods.
+Moreover, fab-engineers usually optimize a mask pattern by
+iteratively modifying a layout design based on its lithography
+simulations. However, rule-based lithography simulations resort to linear combinations of optical computations derived
+from several similar yet not identical historical fab-models.
+arXiv:2002.04967v2  [eess.IV]  6 Aug 2020
+
+===== Page 2 =====
+
+IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. X, NO. X, MONTH 2020
+2
+Fig. 1.
+Relationship among OPC simulation, circuit veriﬁcation on an SEM image, and our method. The OPC step, highlighted by the red dashed lines,
+suggests modiﬁcations of a layout mask so that the fabricated IC could have nearly the same shape as the original layout pattern. The proposed LithoNet and
+its applications are highlighted by purple contours.
+The simulation reliability largely relies on a rich amount of
+costly historical fabrication data because ground-truth fabmodels need to be gathered by fabricating a layout pattern
+with all process variations exhaustively. Nevertheless, fabplants do not typically build models with exhaustive data but,
+instead, select nominal plus some relatively small number of
+speciﬁc process-window conditions over a limited number of
+test structures and then build models based on that. This fact
+may make current standard unreliable for new layout design
+patterns.
+The relationship among the IC fabrication process, lithography simulator, and mask optimizer is depicted in Fig. 1, where
+the OPC (optical proximity correction) block is a standard
+approach to photomask correction for compensating for the
+shape distortions due to diffraction or process effects as well
+as guaranteeing the printability of a layout pattern, especially
+at the corners of the process window [5], [6]. As shown in
+the red dashed rectangles in Fig. 1, the mask used in the
+fabrication process is a modiﬁed version of a source layout
+design, aiming to compensate for possible “shrinkages” in
+line shapes due to the fabrication to mitigate the deviation
+of a fabricated IC circuitry from its layout design. However,
+traditional OPC methods have two primary drawbacks. First,
+they run simulations based on those rules and patterns already
+known; thus, an OPC correction may be unreliable if an unseen
+layout design is given. Second, not only is the OPC correction
+computationally expensive, but also the OPC contour simulation is a time-consuming trial-and-error routine that is iterated
+until no irregularity can be found in the OPC estimation
+result. Both the OPC correction and OPC contour simulation
+are computationally expensive. Take the ICWB software (IC
+WorkBench) developed by Synopsys [7] for example. ICWB
+takes, on average, about 34 seconds to run a contour simulation
+on a 4×1.7µm2 layout patch with an Intel Xeon E5-2670 CPU
+and 128GB RAM. It will cost around 4 days to run one OPC
+contour simulation on a 400 × 170µm2 layout design, and
+such computational cost makes a complete OPC contour simulation procedure impractical. It is therefore highly desirable
+to develop an efﬁcient photomask optimization scheme.
+Recent progress on image-to-image translation techniques
+makes them suitable to tackle the lithography simulation (i.e.,
+Layout-to-SEM) and photomask optimization (i.e., SEM-toLayout) problems mentioned above. However, these two issues
+are more complicated than general image-to-image translation
+problems. Take Layout-to-SEM prediction for example. First
+of all, the domain of IC layout images and that of SEM
+Fig. 2.
+Two scenarios utilizing the proposed LithoNet and OPCNet: (a) A
+stand-alone LithoNet, and (b) A cascaded LithoNet-OPCNet network.
+images are heterogeneous. An IC layout is a purely manmade blueprint with only lines and rectangles on it, and hence
+it is noise-free and artifact-free. On the contrary, an SEM
+image is formed from the intensity of detected signal from
+raster-scanning the IC surface with a focused electron beam.
+Besides the continuous shape distortions introduced by the
+lithography and etching processes, the SEM imaging process
+itself also suffers from several kinds of interference (e.g., scanline noise and shading). This fact leads SEM images to a
+signiﬁcantly different domain from the layout-image domain.
+Hence, this issue is essentially a cross-domain image matching
+and translation problem. Second, in order to predict the corresponding SEM image from an IC layout, our solution must
+be capable of ﬁnding the shape correspondence between these
+two domains of images. This fact raises an unsupervised crossdomain image matching issue, which usually has not been
+concerned in general image-to-image translation techniques.
+Thus it requires a more sophisticated solution, as the concerns
+stated in [8], [9]. Third, for the mask optimization problem, it
+is very costly to collect a comprehensive set of reference OPCcorrected photomasks, making the training of a photomask
+optimization network infeasible.
+To address the above problems, as shown in Fig. 2, we
+propose a fully data-driven framework involving two CNNs,
+LithoNet and OPCNet, functionally complementary to each
+other. In short, LithoNet is a cross-domain simulator of the
+lithography and etch processes in IC fabrication, and OPCNet
+is a self-supervised mask optimization CNN using the prediction results of LithoNet as supervision for the purpose of OPC.
+The proposed LithoNet-OPCNet network serves two purposes,
+each requiring a speciﬁc training dataset. First, when LithoNet
+
+===== Page 3 =====
+
+IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. X, NO. X, MONTH 2020
+3
+is used stand-alone as shown in Fig. 2(a), it aims at image-toimage contour prediction. Because we focus on the Layoutto-SEM (or Mask-to-SEM) contour prediction problem, we
+train LithoNet on (layout, SEM) data pairs. Then, during
+the inference stage, given a layout design, LithoNet predict
+i) a deformation map and ii) an SEM prediction. Both the
+deformation map and SEM prediction can be used for layout
+risk assessment. Note that LithoNet is an image-to-image
+contour predictor and thus can be trained on different kinds
+of paired images for different purposes. For example, if we
+need to build a model for mask-to-SEM prediction, we have
+to train LithoNet on (mask, SEM) data pairs.
+Second, as shown in Fig. 2(b), when OPCNet and LithoNet
+are cascaded, the LithoNet-OPCNet network forms a system
+for mask optimization aiming at minimizing the discrepancy
+between a source layout and its SEM contour predicted by
+LithoNet. The design concept is to construct a two-stage
+system, where the ﬁrst stage performs layout-to-X prediction
+by OPCNet, where X denotes the OPC-corrected mask, and
+the second stage performs X-to-SEM prediction by LithoNet.
+Then, by enforcing the SEM prediction to be shape-consistent
+with the target layout (i.e., the whole OPCNet-LithoNet network behaves as an identity transform), OPCNet and LithoNet
+act as if they were inverse functions of each other mathematically. As a result, the LithoNet-OPCNet network can be used
+to ﬁnd an OPC-optimized mask X.
+This paper has four primary contributions:
+• To the best of our knowledge, we are the ﬁrst to formulate
+the Layout-to-SEM deformation prediction problem as
+a cross-domain image correspondence problem, and we
+propose a two-step CNN-based framework to address it.
+• Our LithoNet-OPCNet system is computationally much
+more efﬁcient than the typical optical-based contour simulation schemes, while achieving comparable prediction
+accuracy. Therefore, since our method is fully datadriven, it could enable IC fabrication plants to run a full,
+large-scale screening on new IC layout designs. Note that
+an OPC model is typically built for a particular process
+condition and operates according to interpolation. Hence,
+if the process condition changes for a given process node,
+whether the input layout is completely new or not, the
+same OPC model may not provide a reliable prediction.
+• The proposed LithoNet is parameterized with fabrication
+settings. Hence, it can also predict results under different
+fabrication conditions so as to assist fabrication plants to
+ﬁnd the best suitable working intervals of parameters and
+thus be beneﬁcial for yield-rate improvement.
+• The proposed OPCNet overcomes the difﬁculty in lack
+of ground-truth mask patterns. With the aid of a novel
+training objective function called I/O-consistency loss, the
+proposed OPCNet can well simulate the mask optimization process in collaboration with LithoNet.
+The remainder of this paper is organized as follows. We
+review related literature in Section II. The proposed LithoNet
+and OPCNet are detailed in Sections III and IV, respectively.
+Section V demonstrates and discusses our experimental results.
+Finally, we draw our conclusion in Section VI.
+II. RELATED WORK
+A. Virtual Metrology
+In IC fabrication, virtual metrology (VM) refers to the
+methods for predicting wafer properties based on fabrication
+parameters and sensor data from equipment without performing physical measurements on the product wafer produced by
+a whole, costly fabrication process [10]. Since VM techniques
+can signiﬁcantly reduce the cost of IC fabrication, various
+kinds of VM methods have been proposed for fabrication
+quality assessment. For example, Susto et al. exploited the
+knowledge collected in the process steps to improve the accuracy of VM prediction via a multi-step strategy [11]. Besides,
+the demand of VM methods has also triggered the development
+of theoretical techniques. The method in [12], for instance,
+models OPC mask correction as an inverse problem of optical
+microlithography. Optical lithography is a process used for
+transferring binary circuit patterns onto silicon wafers, and
+related discussions about lithography techniques can be found
+in [13]. Recently, people have been attempting to integrate
+machine learning methods with IC implementation and VM
+[1], [2], [14], [15], [16]. Speciﬁcally, Yang et al. proposed
+in [15] a generative adversarial network (GAN) [17] based
+inverse method to estimate the optimal mask used in the
+fabrication process from an OPC simulation result. However,
+the design in [15] aims only at the OPC-to-Layout problem,
+which operates in an opposite direction of our Layout-toSEM prediction. Therefore, to the best of our knowledge,
+there is no existing technique focusing simultaneously on both
+Layout-to-SEM (lithography simulation) and SEM-to-Layout
+(mask optimization) image translation problems. We deem
+that a hybrid method of image-to-image translation or feature
+mapping techniques could compose a straightforward solution
+to these two prediction problems.
+B. Lithography Simulation
+Recently, there have been a few machine learning-based
+lithography simulation methods. For instance, Watanabe et
+al. proposed a fast and accurate lithography simulation by
+determining an appropriate model function via CNN [1], and
+Ye et al. developed a GAN-based end-to-end lithography
+modeling framework, named LithoGAN, to map directly the
+input mask pattern to the output resist pattern [2]. Speciﬁcally,
+LithoGAN models the shape of the resist pattern based on
+a conditional GAN (cGAN) model and predicts the center
+location of the resist pattern via a CNN model. LithoGAN
+has a dual learning framework, and similarly our LithoNet
+also adopts a dual learning framework.
+As will be detailed in Section III, we formulate the Layoutto-SEM prediction as a cross-domain image-to-image translation problem in the LithoNet design. Recent image-to-image
+translation methods can be divided into two groups. One
+requires training image pairs, e.g., [18], [19], and the other
+supports training on unpaired data, e.g., [20]. The method in
+[20], based on GANs [17] and VAEs [21], was designed for
+unsupervised image-to-image translation tasks, which could be
+considered as a conditional image generation model. Besides,
+Pix2pix [18] consists of a Unet-like generator and a PatchGAN
+
+===== Page 4 =====
+
+IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. X, NO. X, MONTH 2020
+4
+Fig. 3. Block diagram of the proposed two-step framework for cross-domain image-to-image translation. The upper step adopts CycleGAN to transfer the
+training SEM images to obtain ground-truth labels. LithoNet then estimates the deformation maps between input layout patterns and their corresponding labels.
+discriminator. Pix2pix uses the PatchGAN discriminator to
+model high-frequencies by classifying if each patch in an
+image is real or fake. Therefore, it can be adopted in various
+applications, such as translating a cartoon map to a satellite image and translating a sketch to a natural image, and has become
+a benchmark in this ﬁeld. Pix2pix was further enhanced in [19]
+by taking advantage of a course-to-ﬁne generator, a multi-scale
+discriminator, and an adversarial learning objective function so
+as to generate high-resolution photo-realistic images.
+However, none of the above methods addresses the shape
+correspondence and the deformation ﬁeld between two different domains of images, and neither do other representative
+image-to-image translation methods, such as CycleGAN [22],
+DualGAN [23], and [20], [24], [25]. Because characterizing
+the deviations of metal lines on a product IC based on the
+source layout is a critical point in the IC industry, traditional
+image-to-image translation methods, which lack a mechanism
+for precisely estimating a deformation ﬁeld or the shape
+correspondence between the layout and SEM images, are not
+applicable to Layout-to-SEM image translation. To serve the
+above purpose, the proposed LithoNet model performs crossdomain image-to-image translation via learning the shape
+correspondence between paired training images so as to output
+a predicted deformation map for further VM applications.
+C. Mask Optimization
+There also exist machine learning-based mask optimization approaches. Notably, GAN-OPC proposed in [15] takes
+source layout patterns and their reference OPC photomasks
+as training inputs and accordingly, for an input layout design,
+predicts a corrected photomask that minimizes the deviation
+on the (simulated) fabricated circuit shape from its original
+design. In order to facilitate the training process and guarantee
+convergence, GAN-OPC involves a pre-train procedure that
+trains jointly the neural network and the inverse lithography
+technique (ILT) [26]. After GAN-OPC converges, the obtained
+quasi-optimal photomask is further used as a reasonable initial
+estimate for further ILT operation. In contrast, Yu et al. [16]
+proposed a DNN framework to simultaneously perform subresolution assist feature (SRAF) [27] and edge-based OPC.
+However, the two methods require a collection of photomask
+images, such as those suggested by OPC or historical data
+gathered during the actual fabrication process, as the groundtruth dataset for training. Because it is expensive and timeconsuming to collect qualiﬁed mask images, the cardinality
+of the training dataset forms a performance bottleneck of
+these methods. To eliminate such a bottleneck, we propose the
+OPCNet model for mask optimization, powered by LithoNet.
+Because OPCNet and LithoNet are the inverse function to
+each other, OPCNet can be trained directly on the SEMstyled images predicted by LithoNet without the need for using
+expensive photomask images, as will be elaborated later.
+III. LITHONET: A CNN-BASED LITHOGRAPHY
+SIMULATOR
+As shown in Fig. 3, LithoNet consists of a CycleGAN-based
+[22] domain transfer network and a deformation prediction
+network. LithoNet is designed to learn how an IC fabrication
+process deforms the shape contours of a layout pattern. It can
+simulate the fabrication process to predict the shape deformation for further virtual metrology applications based on i) a
+given layout and ii) a set of fabrication parameters. One major
+difﬁculty in learning the shape deformation model between a
+layout pattern and its corresponding SEM image of fabricated
+circuitry lies in the fact that they are from heterogeneous
+domains. Speciﬁcally, an SEM image is a high-resolution,
+gray-scaled image with deep DOF (depth of ﬁeld), whereas
+a layout is no more than a man-made binary pattern with
+only rectangular regional objects on it. As a result, the goal
+of LithoNet is to predict the contour shapes by learning the
+pixel-wise shape correspondence between every paired layout
+and SEM images. Nevertheless, due to the poor contrast and
+scanning pattern noise in SEM images, it is usually difﬁcult to
+capture edge contours correctly from SEM images, on which a
+1-pixel-drift corresponds to a nanometer-scale displacement on
+real IC products. Therefore, transferring the domain of SEM
+
+===== Page 5 =====
+
+IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. X, NO. X, MONTH 2020
+5
+images to another intermediate domain without the abovementioned contrast and noise problems would be beneﬁcial.
+To this end, we propose a two-step framework. In the ﬁrst
+step, we use CycleGAN [22] to transfer a gray-scale SEM
+image to an intermediate domain, where images have SEMstyled shape contours and layout-styled clear background.
+Then, in the second step, given a source layout along with fabrication parameters, LithoNet predicts the shape deformation
+introduced by the fabrication process. In sum, Step-I learns to
+bridge the gap between the SEM image and its binary layout
+so that Step-II can learn the shape correspondence between
+the SEM image and its original layout. In the following
+subsections, we will introduce our design in detail.
+A. Step I: Image domain transfer
+Because the SEM and layout images are of heterogeneous
+domains, we adopt an image domain transfer technique to
+align their domains. By removing the interference introduced
+by the SEM imaging process, e.g., bias in brightness/contrast
+and scan-line noise, via CycleGAN [22], the processed SEM
+image is translated to the domain of the layout. That is, the
+processed SEM image retains its curvilinear shape boundaries
+yet is binarized as if it were a layout.
+To this end, we train CycleGAN using i) a set of productICs’ SEM images and ii) their associated segmentation masks.
+The second set of images can be derived by applying either
+manual labelling, advanced thresholding techniques [28], [29],
+interactive segmentation [30], [31], or pseudo-background
+subtraction [32] on the source SEM images. Note that in order
+to guarantee the performance of domain transfer, segmentation
+masks with incorrect segmentation results are discarded under
+user-supervision. Finally, we utilize the well-trained CycleGAN to transfer source SEM images into the layout style,
+and these processed SEM images are further taken as reference
+ground-truths to train LithoNet in Step-II.
+Employing CycleGAN for domain transfer has two advantages. First, CycleGAN is an unpaired image-to-image translation method, and hence it can learn the majority decision of
+multiple image segmentation algorithms, including the analysis software provided by the SEM vendor, for SEM images
+based on a collection of segmentation results of different
+methods. Second, utilizing a ”U-net Generator” to translate
+images, CycleGAN is essentially a U-net-based segmentation
+method [33] supervised by its built-in ”Discriminator” through
+an adversarial loss, thereby suggesting a more reliable segmentation result than U-net, a state-of-the-art segmentation
+benchmark. Additionally, we can simply discard some rare
+incorrect CycleGAN segmentation results by quick humaninspection to prevent LithoNet from learning incorrect shape
+correspondences.
+B. Step II: Shape Deformation Prediction
+To learn the shape correspondence and the deformation
+ﬁeld between SEM and layout images, LithoNet is trained
+on a collection of image pairs, each containing a layout and a
+ground-truth segmentation mask, i.e., a processed SEM image,
+generated by Step-I described in Section III-A.
+As shown in Fig. 3, LithoNet consists of a generator and a
+warping module. The generator is a U-net [33] like network
+that outputs a 2D dense correspondence map depicting the
+deformation ﬁeld between the training image pairs. Then,
+using the sampling strategy used in the spatial transformer
+network (STN) [34], the warping module synthesizes a warped
+version of the given input layout to simulate wafer-fabricated
+circuitry based on the deformation map. STN is a differentiable
+module designed for enabling neural networks to actively
+spatially transform feature maps so that neural network models
+can learn invariance to translation, scale, rotation, and warping.
+Consequently, we adopt the sampling strategy of STN to
+beneﬁt our LithoNet.
+Moreover, the deformation map M : R2 →R2 describes
+the pixel-to-pixel displacement from a source layout image S
+to an SEM-styled image J . Therefore, after LithoNet learns
+to predict the pixel-to-pixel correspondence, we apply the
+deformation map M on the layout S to derive the deformed
+shape contour. The warping process that relates S, J , and
+M can be expressed as J (m, n) = S
+ M−1(m, n)
+
+, where
+(m, n) denotes the pixel coordinate.
+In contrast to common image generation networks like [18],
+[35], the advantages of LithoNet are twofold. First, LithoNet
+can generate and visualize a predicted deformation ﬁeld, and
+therefore what has been learned by the network, i.e., the shape
+correspondences between input training image pairs, can be
+veriﬁed straightforwardly. Second, based on the visualized deformation ﬁeld, it would be easier to identify possible impacts
+(e.g., defects), whether global or local, caused by the layout
+and the conﬁguration parameters during fabrication process,
+on the physical appearance of an IC’s metal layer. Concisely,
+the deformation ﬁeld generated by our LithoNet is beneﬁcial
+for clarifying both global and local shape correspondences
+between a layout and the SEM image of its product IC.
+C. Training Loss Functions
+The training loss function Ltotal of LithoNet is primarily
+deﬁned in the following form
+Ltotal = Lrec + Lvar + Lsmooth + Lreg + Lpar.
+(1)
+where, Lrec denotes the reconstruction loss that measures
+the dissimilarity between the training ground-truth I and the
+synthetic SEM-styled image J . Meanwhile, Lvar measures
+the variability difference between a paired training image pair,
+and Lsmooth guarantees the smoothness of the deformation
+map. Finally, Lreg is used to penalize large displacements
+on the deformation map, and Lpar is the regression loss of
+fabrication parameters.
+A) Reconstruction Loss:
+The reconstruction loss term Lrec(I, J ) is deﬁned as the
+L1 loss between the training ground-truth I and the synthetic
+SEM-styled image J as follows:
+Lrec(I, J ) = 1
+n ∥I −J ∥1 ,
+(2)
+where n denotes the number of pixels. We derive Lrec by
+the following steps: i) densely sampling pixel positions on
+the to-be-generated J ; ii) locating the correspondences of
+
+===== Page 6 =====
+
+IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. X, NO. X, MONTH 2020
+6
+them on the input layout according to the deformation map
+M that records the mapping relationship between pixels on I
+onto their counterparts on J ; iii) using backward interpolation
+to estimate the sampled pixel values on J , i.e., ˆ
+J (x, y) =
+I(ˆx, ˆy) with non-integer positions (ˆx, ˆy) = M−1(x, y); and
+ﬁnally, iv) generating an estimated ˆ
+J via bilinear interpolation1 to calculate Lrec.
+B) Total Variation Loss:
+The total variation loss Lvar(I, J ) is deﬁned as the total
+variation [36] of the signed difference between I and J , that is
+Lvar(I, J ) =
+X
+|∇(I −J )|.
+(3)
+This term is designed to align the shape contours of J
+with those of I. Without this term, the loss function might
+be dominated by the reconstruction loss described in (2), and
+consequently LithoNet would generate a bizarre synthetic image J , which can produce a high overlap ratio compared with
+ground-truth image I but has unnaturally jiggling contours. In
+other words, Lvar aims to retain the shape similarity.
+C) Smoothness Loss
+The smoothness loss is a penalty term deﬁned as the L1norm of the weighted gradient of the deformation map:
+Lsmooth =∥(∇M) ◦W ∥1 ,
+(4)
+where ◦denotes the Hadamard product, and W is an edgeaware weighting matrix deﬁned as
+W(x, y) = e−(|∇S(x,y)|+|∇I(x,y)|).
+(5)
+Note that contour edges on the input layout S and the
+ground-truth layout-styled SEM image I result in discontinuities in the deformation map M. Because such discontinuities
+contribute to an unnecessary smoothness penalty, Lsmooth
+should be suppressed appropriately according to the gradient
+information of both layout and SEM images.
+D) Regularization Loss
+The regularization loss is deﬁned as the L1 norm of deformation map M:
+Lreg =∥M ∥1 .
+(6)
+This term reﬂects the fact that the deformation caused by
+wafer fabrication tends to be small, as will be discussed in
+Section V-D2.
+E) Regression Loss for Fabrication Parameters
+Because the conﬁguration parameters of a fabrication process are continuous variables that inﬂuence the physical appearance of the wafer layer, we formulate the relationship
+between the fabrication parameters and the appearance of
+wafer layer as a regression problem. The regression loss Lpar
+is deﬁned as
+Lpar = ∥Dy(G(S|y)) −y ∥2
+|
+{z
+}
+Generator loss
++ ∥Dy(Iy) −y ∥2
+|
+{z
+}
+Discriminator loss
+.
+(7)
+1 ˆ
+J (x, y) = I(ˆx, ˆy)
+≈
+
+⌈ˆx⌉−ˆx
+ˆx −⌊ˆx⌋
+t 
+I(⌊ˆx⌋, ⌊ˆy⌋)
+I(⌊ˆx⌋, ⌈ˆy⌉)
+I(⌈ˆx⌉, ⌊ˆy⌋)
+I(⌈ˆx⌉, ⌈ˆy⌉)
+ 
+⌈ˆy⌉−ˆy
+ˆy −⌊ˆy⌋
+
+, where
+⌈·⌉and ⌊·⌋denote ceiling and ﬂoor functions, respectively.
+where I is the ground-truth shape segmented from the SEM
+image used for training; y is the fabrication parameter vector
+corresponding to Iy; S denotes the input layout; and, G(S|y)
+is the predicted deformed shape. Therefore, this loss term aims
+to train i) a generator able to predict a synthesized SEM-styled
+image based on the given S and y, and ii) a discriminator able
+to discriminate whether each entry of the extracted parameter
+vector Dy(Iy) is identical to the corresponding entry within
+the groundtruth fabrication parameter vector y.
+IV. OPCNET: A CNN-BASED PHOTOMASK CORRECTOR
+As described in Section II-C, the major challenge in developing a learning-based mask optimizer is to collect a
+comprehensive amount of ground-truth mask data, e.g. well
+OPC-corrected photomasks of various layout patterns, leading
+to desired shapes of fabricated circuitry. This is, however,
+very costly and time-consuming. To overcome this difﬁculty,
+as shown in Fig. 2(b), we utilize a pre-trained LithoNet as
+an auxiliary module to train our photomask optimizer, i.e.,
+OPCNet. Given an IC layout pattern, OPCNet aims to predict
+an OPC-corrected mask pattern so that, after being deformed
+by the lithography and etching processes that are simulated
+by LithoNet, the predicted deformed shape will be as close as
+possible the original layout pattern. By regarding the LithoNetOPCNet network as a composite function f = h ◦g with h
+and g denoting respectively LithoNet and OPCNet, this design
+can be expressed as min ∥S −f(S)∥, where S and f(S) are
+respectively the input layout and the ﬁnal prediction produced
+by the LithoNet-OPCNet network. Therefore, because such
+minimization optimizes to f = 1, which implies h ◦g = 1,
+OPCNet and LithoNet should be inverse functions of each
+other. As a result, for a desired layout pattern, we can use
+the predicted output of OPCNet as the input of LithoNet,
+and the desired layout itself as the corresponding input of
+OPCNet. Consequently, we can train OPCNet without the need
+for collecting the “ground-truth” OPC-corrected photomasks.
+Speciﬁcally, given a layout design pattern S, OPCNet aims
+to generate a photomask K, whose lithography and etching
+simulation result J predicted by LithoNet best matches S.
+This design makes our OPCNet “groundtruth-free” during the
+training stage, assuming LithoNet is already well-trained. In
+addition, with the design of the input-output consistency loss
+used to measure the dissimilarity between a layout design
+pattern S and its lithography simulation result J , OPCNet becomes a self-supervised learning method. The whole
+pipeline of our mask optimization method is illustrated in
+Fig. 2(b). Note that i) the pretrained LithoNet is ﬁxed while
+training OPCNet, and ii) OPCNet is intrinsically a generator
+for translating a layout pattern S into its optimal photomask
+K based on the wafer fabrication model learned by LithoNet.
+A. Application Scenarios
+The LithoNet-OPCNet network can serve two purposes.
+First, when LithoNet is well pre-trained on a comprehensive
+set of (layout, SEM) pairs if during IC fabrication no OPC
+is performed, or on a set of (mask, SEM) pairs if OPC is
+
+===== Page 7 =====
+
+IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. X, NO. X, MONTH 2020
+7
+performed, LithoNet can accurately predict the shape deformations due to the lithography and etch processes. Since
+OPCNet is the inverse function of LithoNet, it can be used
+to predict the OPC-optimized mask for a target layout pattern
+that would minimize the discrepancy between the fabricated
+IC shape and the target layout pattern without the need for
+collecting ”ground-truth” OPC-optimized masks. In this way,
+the LithoNet-OPCNet network potentially can replace the
+function of current OPC prediction models.
+Second, if the training samples are not comprehensive
+enough to train a fully reliable LithoNet model, the LithoNetOPCNet may not be able to completely replace current OPC
+prediction models. However, if LithoNet can achieve a reasonable accuracy, the LithoNet-OPCNet network can still be used
+to verify if there is any inconsistency between the optimized
+mask prediction and the conventional OPC mask—an obvious
+inconsistency implies the fab-plant need to update the OPC
+model by collecting speciﬁc process-window conditions over
+the input layout structure.
+B. Training Loss Functions for OPCNet
+The overall training loss LK of OPCNet is deﬁned as
+LK = LIO + LKvar + LKsmooth,
+(8)
+where LIO denotes the input-output consistency loss measuring the dissimilarity between input layout S and LithoNet’s
+output J , LKvar represents the total variation loss on the
+difference between S and J , and LKsmooth denotes the mask
+smoothness loss for ensuring the smoothness of the obtained
+photomask patterns K.
+A) Input-Output Consistency Loss:
+The input-output consistency loss LIO(S, J ) aims to guide
+the learning of OPCNet so that the shape predicted by
+LithoNet J best matches the desired input layout S, provided
+that the source layout is OPC-corrected by the learned OPCNet. The loss term is deﬁned as follows:
+LIO(S, J ) = 1
+n∥S −J ∥1,
+(9)
+where n denotes the number of pixels.
+B) Total Variation Loss:
+Similar to (3), the total variation loss LKvar(S, J ) is
+deﬁned as the total variation of signed difference between the
+input layout S and the prediction of LithoNet J :
+LKvar(S, J ) =
+X
+|∇(S −J )|,
+(10)
+which is again an empirical term used to avoid unnatural
+patterns on the predicted shapes. LKvar prevents LK from
+being dominated by the I/O-consistency loss LIO. Without
+this term, the OPCNet may produce a unnatural correction.
+C) Mask Smoothness Loss:
+The mask smoothness loss is deﬁned to be the L1-norm of
+the gradient of the mask prediction, that is,
+LKsmooth = ∥∇K∥1.
+(11)
+This term penalizes the discontinuity on the corrected
+photomask K to guarantee the smoothness of shape contours
+Fig. 4. Network Architecture of LithoNet. Its generator consists of an encoder
+and a decoder. OPCNet is architecturally identical to LithoNet’s generator.
+of K. Note that LKsmooth does not incorporate with an edgeaware weighting matrix, since there are no ground-truth masks
+that deﬁne true contour edges in the training dataset.
+In practice, there are some restrictions on what kind mask
+shapes can be made by a mask shop. We can integrate such
+mask manufacturing rules checking (MRC) with OPCNet in
+two ways: (1) formulating the MRC as training loss functions
+of OPCNet, or (2) using a post-processing step based on
+the MRC rules to modify the OPC-corrected layout patterns
+generated by OPCNet. The second method is commonly used
+in practice, but OPCNet has the capability to adopt the ﬁrst
+method or a combination of the two methods.
+V. EXPERIMENTAL RESULTS
+A. Dataset and Settings
+Images demonstrated in this work are selected from two
+datasets provided by United Microelectronics Corporation
+(UMC). Both these two UMC datasets consist of pairs of
+images, each containing one layout image patch and its wafer’s
+SEM image patch. UMC dataset #1 contains SEM images
+taken from wafers fabricated with the same fabrication parameters, and UMC dataset #2 contains SEM images taken from
+wafers fabricated with seven various normalized parameter
+settings ranging from −0.9 to +0.9. In total, UMC dataset
+#1 contains (i) a 928-pair training subset and (ii) a 114pair blind testing subset, whereas UMC dataset #2 contains
+(i) a subset comprising 1057 × 7 pairs2 for training and (ii)
+another subset comprising 12 × 7 pairs for blind testing. All
+2there are 1,057 layouts and 7 different settings per layout, so 7,399 pairs
+of images in total.
+
+===== Page 8 =====
+
+IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. X, NO. X, MONTH 2020
+8
+Fig. 5.
+Illustration of contour-to-contour distance (C2Cdist). (a) Groundtruth (GT); (b) the contour of GT; (c) the distance map [37] of GT’s contour
+obtained by MATLAB function bwdist; (d) the input; (e) the contour of the
+input; (f) the overlay of (e) on GT’s distance map. Then, C2Cdist can be
+derived by averaging distance values collected along the input’s contour.
+images in the blind testing set are collected from historical
+fabrication data. Compared with those in the training sets, the
+blind test images are of much larger sizes and contain unseen
+design patterns. We trained CycleGAN for style-transfer in
+Step-I on UMC dataset #1, and LithoNet on UMC datasets #1
+and #2. As for OPCNet, it was trained on paired data, each
+of which contains (i) a layout image S in the ﬁrst dataset
+and (ii) its fabricated IC shape J predicted by feeding S
+into a pre-trained LithoNet. In our experiments, all image
+patches are downscaled from 512 × 512 to 256 × 256 to
+reduce the computational complexity. Each 512 × 512 source
+image corresponds to a 2 × 2µm2 region, so aliasing will
+not occur in this case. The ﬁve loss terms described in
+(1) are weighted empirically by (100, 0.001, 150, 0.002, 10).
+Meanwhile, the weighting coefﬁcients for OPCNet described
+in (8) are (50, 0.001, 50). These weighting coefﬁcients are
+determined according to the following two steps. First, because
+the reconstruction loss and the smoothness loss in (1) and
+(8) are more considerable than the others, we assign them
+with larger weighting coefﬁcients and adjust the weighting
+coefﬁcients until reaching reasonable results. In this step, the
+coefﬁcients of other loss terms are temporarily set to be zero.
+Second, we assign the other loss terms with much smaller
+coefﬁcients initially and then adjust them to make the training
+process easily converge.
+B. Architecture and Run-time Information
+Fig. 4 shows the architectures of subnetworks constituting
+LithoNet, including i) the encoder of the generator, ii) the
+decoder of the generator, and iii) the discriminator. OPCNet
+shares the same architecture as LithoNet’s generator. On average, LithoNet and OPCNet take 0.0156 and 0.0150 seconds
+to run a simulation on a 256 × 256 image on an NVIDIA
+2080Ti GPU, respectively. The whole training process takes
+about 1.5 days on a server equipped with one NVIDIA P100
+GPU. Note that on the server, it takes about 34 seconds to run
+OPC contour simulation for a 4 × 1.7µm2 layout patch.
+Fig. 6. Comparison between the segmentation masks obtained by CycleGAN
+[22] trained on UMC dataset #1 and traditional Otsu thresholding.
+C. Performance Metrics
+The performance of our model is evaluated objectively
+in terms of some widely-used similarity metrics, including
+Intersection Over Union (IOU), SSIM [38], and per pixel error
+rate. These three metrics are deﬁned below.
+IOU(x, y)
+=
+∩(x, y)
+∪(x, y),
+(12)
+ErrorRate
+=
+FP + FN
+TP + TN + FP + FN , and
+(13)
+SSIM(x, y)
+=
+(2µxµy + C1)(2σxy + C2)
+(µ2x + µ2y + C1)(σ2x + σ2y + C2),(14)
+where ∩and ∪denote respectively set intersection and set
+union; and, TP, TN, FP, and FN stand for true positive, true
+negative, false positive, and false negative, respectively. The
+SSIM index measures the structural similarity between two
+images. In the equation above, µx and σx denote the average
+and the variance of image x, σxy denotes the covariance, and
+C1 and C2 are variables stabilizing the division.
+Finally, we also utilize the contour-to-contour distance,
+hereafter abbreviated as C2Cdist, to approximate the Edge
+placement Error (EPE) and the Edge Displacement Error
+used in [2]. This metric, methodologically similar to EPE,
+measures the mean contour-to-contour distance between a
+lithography prediction and its SEM contour ground-truth.
+We utilize this strategy because an SEM prediction usually
+contains multiple irregular regions whose bounding boxes may
+be overlapped, and thus bounding boxes cannot suggest a fair
+distance measure for the whole SEM prediction. The C2Cdist
+metric, measured in pixels, is illustrated in Fig. 5 and available
+for download at [39]. We will demonstrate in detail that our
+model outperforms other image-to-image translation methods
+and the standard OPC approach.
+D. LithoNet
+1) Image domain transfer: In Fig. 6, we compare our image
+domain transfer results with images derived by the traditional
+
+===== Page 9 =====
+
+IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. X, NO. X, MONTH 2020
+9
+Fig. 7. Comparison of the input layout patterns, the predicted deformation maps, the predictions of fabricated IC shapes based on the deformation maps, and the
+ground-truths of fabricated IC shapes extracted from their associated SEM images. The second row illustrates every deformation map M(m, n) = xmˆi+ynˆj
+as its per-pixel magnitude
+p
+x2m + y2n pointing to the deformation direction ˆv = (xmˆi + ynˆj)/
+p
+x2m + y2n.
+Otsu thresholding method [29]. Obviously, the source SEM
+images contain typical complications from the SEM imaging
+process, such as bias in brightness/contrast probably due to
+gain-shift and scanning-pattern noise. It is thus difﬁcult for
+common methods to threshold an SEM image appropriately.
+By exploiting a well-trained translator, e.g., CycleGAN [22],
+an SEM image can be transferred into a layout-styled format
+with its contour shapes unchanged.
+2) Prediction Results: Fig. 7 illustrates the deformation
+map predicted from the input layout, the predictions of fabricated IC shapes based on the deformation map, and the
+corresponding ground-truths of fabricated IC shapes extracted
+from their associated SEM images. The deformation maps
+show that LithoNet successfully learns to widen lines within
+open areas and to condense lines otherwise. Because such
+information is the key to the metrology applications, such
+as layout scoring and OPC simulation described in Fig. 1,
+this experiment also demonstrates that LithoNet can be used
+to bridge computer vision techniques with both ﬁelds of
+semiconductor manufacturing and computer-aided-design.
+3) Ablation Study of Loss Terms: Here we examine and
+discuss the effectiveness of individual loss terms in (1). First
+of all, we made numerical comparisons among different loss
+settings in Table I and Table II, each of which corresponds
+to a different dateset. The values in parentheses are ﬁnal loss
+values on training set during training. The results shown in
+Table I were derived by LithoNet trained on UMC dataset #1,
+whereas Table II shows the performance of LithoNet trained
+on a small subset of UMC dataset #1 containing 480 training
+patches (obtained from 16 image samples by using only
+overlapped-cropping to obtain 30 patches for each sample for
+data augmentation). From Tables I and II, we can observe that
+the total-variation loss, Lvar, contributes signiﬁcantly to the
+performance improvement. Moreover, Lsmooth is beneﬁcial to
+improve the objective performance when only a very limited
+TABLE I
+ABLATION STUDY OF DIFFERENT LOSS SETTINGS ON UMC
+DATASET #1 (DATA IN PARENTHESES ARE FROM TRAINING SET.)
+amount of training samples is provided, as shown in Table II.
+On the contrary, as listed in Table I, Lsmooth contributes less
+effectively to the objective performance when a comprehensive
+enough training dataset is given. We demonstrate the SEMstyled images predicted according to small training dataset
+without using the smoothness loss Lsmooth in Fig. 8, where
+unexpected artifacts are highlighted in red rectangles. This
+experiment set shows the necessity of Lsmooth, especially in
+cases of a small training set.
+The visual effect brought by the total-variation loss Lvar is
+demonstrated in Fig. 9, where the “Baseline” column demonstrates images derived using Ltotal −Lvar, whereas the “Full”
+column shows predictions synthesized using Ltotal. This experiment set shows how Lvar improves the visual quality of
+synthetic SEM-styled images. Take regions highlighted by red
+rectangles in Fig. 9 for example. Without Lvar, LithoNet tends
+to produce straight-line edges and sharp corners, although
+there are no such patterns on the training images produced by
+a real IC fabrication process, as shown in “Ground truth” column. By adding Lvar to the total loss function, such artifacts
+
+===== Page 10 =====
+
+IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. X, NO. X, MONTH 2020
+10
+TABLE II
+ABLATION STUDY OF DIFFERENT LOSS SETTINGS ON A SMALL
+SUBSET OF UMC DATASET #1
+Fig. 8.
+Prediction results by LithoNet trained on UMC dataset #1 without
+the smoothness loss term Lsmooth.
+can be largely mitigated, thereby more faithfully predicting
+the shapes of SEM images. Finally, note that LithoNet’s Lvar
+and Lreg can be regarded as regularization terms to prevent
+overﬁtting. As listed in the Tables I and II, when LithoNet
+was trained on Ltotal, its testing performance is close to that
+of training data; and, such situation may not hold for other
+settings, including Pix2pix.
+4) Comparison with Pix2pix:
+As LithoNet is a kind
+of image-to-image translation scheme, we compare it with
+Pix2Pix [18], a representative GAN-based image-to-image
+translation method. This experiment set was designed for two
+purposes. One is to verify if LithoNet is able to learn special
+shape correspondences between layout and SEM images, and
+the other is to check if LithoNet is more advantageous than
+Pix2Pix in this regard.
+As shown in Table I, Pix2pix achieves slightly higher
+objective metric values than LithoNet. This situation, however, arises from the fact that these objective metrics mainly
+reﬂect the effect of the reconstruction loss term. Nevertheless,
+compared to Pix2pix, our total loss function described in (1)
+contains several additional loss terms, including Lreg, Lpar,
+and Lsmooth, which do actually lead to better visual quality
+as will be explained later.
+As illustrated in Fig. 10, Pix2pix produces artifacts like
+blurred and jiggled contour edges, whereas LithoNet is able
+to generate clear and smooth ones. Since both Pix2pix and
+LithoNet utilize L1-norm to guarantee a global shape similarFig. 9.
+Subject visual quality comparison of LithoNet with and without
+the total-variation loss Lvar, where the “Baseline” column demonstrates
+images derived using Ltotal−Lvar and the “Full” column shows predictions
+synthesized using Ltotal.
+Fig. 10. Subjective visual quality comparison between Pix2pix and LithoNet,
+both trained on UMC dataset #1.
+Fig. 11. Subjective visual quality comparison between Pix2pix and LithoNet,
+both trained on UMC dataset #1, for some unseen layout patterns of a different
+observation scale.
+ity, this phenomenon would probably be due to the different
+control strategies over local shapes. Speciﬁcally, LithoNet
+
+===== Page 11 =====
+
+IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. X, NO. X, MONTH 2020
+11
+Fig. 12.
+Predictions by LithoNet trained on UMC dataset #2 driven by different conﬁguration parameter values for wafer fabrication. We focus on one
+conﬁguration parameter which is inversely proportional to the degree of etching: the larger the parameter value, the lower the degree of etching, and the wider
+the metal lines. Those parameters values used in the training dataset are colored black, whereas those values not used in training are colored red.
+TABLE III
+COMPARISON BETWEEN LITHONET AND PIX2PIX, BOTH TRAINED
+ON UMC DATASET #1, FOR UNSEEN LAYOUT PATTERNS OF A
+DIFFERENT SCALE
+Method
+avg
+avg
+avg
+C2Cdist
+IOU
+SSIM
+Error
+(¯µ ± ¯σ)
+Pix2pix
+0.6587
+0.6396
+0.1358
+0.8179±0.7093
+LithoNet
+0.7107
+0.6906
+0.1170
+0.8010±0.7080
+makes use of the total-variation loss, smoothness loss, and
+regularization loss to control the local deformations, whereas
+Pix2pix relies on its discriminator architecture, the so-called
+PatchGAN design that penalizes a structure at the scale of
+patches, to handle local deformations. Consequently, because
+PatchGAN does not put any penalty on blurred and jiggled
+edges and learns only to classify if each generated patch looks
+realistic, such artifacts are reasonable trade-offs of Pix2pix’s
+PatchGAN design.
+Fig. 11 compares the prediction results of feeding LithoNet
+and Pix2pix with test images containing signiﬁcantly distinct
+layout patterns from those in the training image set. Moreover,
+the source dimension of these testing images is much larger
+than the training data. Therefore, through this experiment we
+can appraise the reliability and robustness of LithoNet and
+Pix2pix in mimicking an IC fabrication process when the input
+layout is a brand new, unseen pattern of a different scale. We
+can observe from Fig. 11 that, for unseen layout patterns of a
+different scale, LithoNet signiﬁcantly outperforms Pix2pix in
+terms of the clarity and integrity of shape boundaries, although
+the predictions of LithoNet still cannot perfectly match the
+ground-truth for lack of suitable training samples. Finally,
+Table III lists the numerical comparisons between LithoNet
+and Pix2pix for this case.
+Note that there is still no widely-accepted objective metric to
+assess the quality of a predicted SEM-styled contour for an IC
+layout patch with respect to its SEM ground-truth. Some conventional metrics, e.g., IOU and SSIM, measure the similarity
+globally but ignore local shape discrepancies which may lead
+to signiﬁcant impact on IC manufacturability, whereas others,
+e.g., EPE and EDE [2], though designed for shape comparison,
+still cannot capture local shape discrepancies well. We here
+leave the problem of developing metrics capable of characterizing both local and global discrepancies and measuring the
+manufacturablity of a layout pattern simultaneously and as an
+open problem for future research.
+5) Fabrication parameters: Fig. 12 compares the predictions by LithoNet trained on UMC dataset #2 driven by
+different conﬁguration parameter values for wafer fabrication.
+In this experiment set, we ﬁx the focus and adjust the energy
+strength of the scanner in the lithography process to obtain the
+training samples, and then train LithoNet on them. We focus
+on one conﬁguration parameter, i.e., energy, normalized to the
+range of [−0.9, 0.9]. This parameter is inversely proportional
+to the degree of etching: the larger the parameter value, the
+lower the degree of etching. This experiment set shows that
+LithoNet is capable of predicting the width of metal wires by
+using regression and the discriminator.
+Those parameter values used in the training dataset are
+colored black, and those values not used in training are colored
+red. This experiment shows that the proposed LithoNet, thank
+to the regression loss term Lpar described in (7), does learn
+the relationship between the line width and the fabrication parameter used to control the degree of etching in the fabrication
+process. Concisely speaking, the larger the parameter is, the
+wider the metal line should be. Hence, our LithoNet model is
+able to mimic the fabrication process and generate parameterdependent prediction results. This is an important aspect of
+LithoNet design, and such design makes LithoNet suitable for
+semiconductor manufacturing simulations.
+
+===== Page 12 =====
+
+IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. X, NO. X, MONTH 2020
+12
+Fig. 13. Illustrations of interrelationship between the shapes of metal lines
+and their local neighborhood.
+Fig. 14. Prediction results of LithoNet: (a) Comparison between a layout and
+the prediction based on the layout, and (b) conceptual illustration of Necking
+and Rounding where the necking effects are highlighted by red boxes and
+arrows and the rounding effects are indicated by blue arrows.
+Fig. 15.
+Illustrations of masks predicted by the mask generator and their
+lithography simulation outputs. The mean C2Cdist values between layout and
+lithography simulation of these three cases (from top to bottom) are 10.71,
+5.50, and 0.34; and, the standard deviations are 22.73, 16.99, and 0.58.
+6) Model generality: Here we examine LithoNet’s range
+of applicability. The image pair in the top row of Fig. 13
+shows that, in an open area, the general fabrication process
+typically produces a metal line wider than its layout design,
+as highlighted by the red rectangle. The predicted image shown
+in the bottom row of Fig. 13 demonstrates that LithoNet learns
+the shape correspondence between paired training images, so
+it predicts a wider line in an open area and a narrower one
+in between two neighboring lines. Consequently, LithoNet can
+be expected to forecast fabrication results as long as a large
+enough amount of training data is given.
+We also design another experiment to show that LithoNet
+can learn the “necking” and “rounding” effects that usually
+occur in IC fabrication, as highlighted by red rectangles in
+Fig. 14(a) and indicated by the red and blue arrows in Fig.
+14(b). Necking is a high-risk pattern caused by either a tipto-line or a line-end too close to another line on the layout
+design. As illustrated in Fig. 14(b), such situations may result
+in a line narrower than designed after fabrication. Hence,
+this experiment set provides further evidence that a welltrained LithoNet is capable of mimicking the semiconductor
+lithography and etch processes.
+E. OPCNet
+1) Impacts of Loss Functions: As described in Section IV,
+given a layout design pattern S, OPCNet aims to generate a
+mask K whose lithography simulation result J predicted by
+LithoNet is most similar to S. OPCNet is controlled jointly by
+the IO-consistency loss LIO, the total-variation loss LKvar,
+and the mask smoothness loss LKsmooth. The former two loss
+terms measure the dissimilarity between S and J , and the
+third focuses on the smoothness of K. Here we examine how
+LKvar and LKsmooth contribute to the mask prediction task.
+Shown in Fig. 15 are three columns of images, each of
+which corresponds to one loss setting. Comparing the mask
+predicted by using LIO with that by LIO + LKvar, we can
+ﬁnd that LKvar guarantees the quality of shape contour in the
+lithography simulation. No matter the Lvar of LithoNet or the
+LKvar of OPCNet, such total variation loss accounts for the
+difference between predicted contours and their ground-truth
+and focuses on k pixels around the contour pixels. This term
+helps LIO guarantee the similarity between the input layout
+and the lithography simulation and also avoid unexpected
+artifacts at contours. Finally, comparing the mask predicted
+by LIO + LKvar with that by LIO + LKvar + LKsmooth, we
+ﬁnd that LKsmooth can globally suppress unexpected artifacts
+on the predicted mask image. The mask prediction derived by
+Lmask described in (8) can thus be artifact-free and smooth.
+2) Mask Prediction Results: Finally, demonstrated in Fig.
+16 are the masks predicted by OPCNet. Given a well-trained
+and accurate lithography simulator LithoNet, Fig. 16 provides
+evidence that OPCNet successfully performs the mask optimization task in a self-supervised learning manner without the
+need of collecting ground-truth OPC-corrected masks. With
+OPCNet, a layout pattern can be adequately corrected so that
+the resulting circuit shape best matches the source layout
+pattern, after an IC-fabrication process.
+VI. CONCLUSIONS
+In this paper we proposed a data-driven framework involving two convolutional neural networks: LithoNet and OPCNet.
+First, by learning the shape correspondence between paired
+training images, i.e., IC layout designs and their fabricated
+
+===== Page 13 =====
+
+IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. X, NO. X, MONTH 2020
+13
+Fig. 16. Input layout S, predicted mask K, lithography simulation J , and the C2Cdist(S, J ) value.
+IC SEM images, LithoNet can predict the shape deformation
+ﬁeld of the layout and then generate a lithography simulation result. Second, with pre-trained LithoNet, OPCNet can
+learn a mask optimization model without ground-truth OPCcorrected masks based on the proposed input-output consistency loss. Experimental results evidently demonstrate that,
+in the lithography simulation issue, our method outperforms
+existing image-to-image translation schemes and the standard
+compact model-based simulations. In the mask optimization
+problem, OPCNet can correctly predict the mask whose lithography simulation image matches the expected layout. One ongoing extension of this work is to establish a scoring system,
+based on the deformation map or SEM-styled image derived
+by our method, so that a virtual metrology system for IC circuit
+layout quality assessment can be developed.
+REFERENCES
+[1] Y. Watanabe, T. Kimura, T. Matsunawa, and S. Nojima, “Accurate
+lithography simulation model based on convolutional neural networks,”
+in Optical Microlithography XXX, vol. 10147, 2017.
+[2] W. Ye, M. B. Alawieh, Y. Lin, and D. Z. Pan, “LithoGAN: Endto-end lithography modeling with generative adversarial networks,” in
+ACM/IEEE Design Autom. Conf., 2019, pp. 107:1–107:6.
+[3] A. Taﬂove and S. C. Hagness, Computational electrodynamics: the ﬁnitedifference time-domain method.
+Artech house, 2005.
+[4] K. D. Lucas, H. Tanabe, and A. J. Strojwas, “Efﬁcient and rigorous
+three-dimensional model for optical lithography simulation,” J. Optical
+Society America: A, vol. 13, no. 11, pp. 2187–2199, 1996.
+[5] O. Otto, J. Garofalo, K. K. Low, C.-M. Yuan, R. Henderson, C. Pierrat,
+R. Kostelak, S. Vaidya, and P. K. Vasudev, “Automated optical proximity
+correction: a rules-based approach,” in Optical/Laser Microlithography
+VII, vol. 2197, 1994, pp. 278–294.
+[6] T.-J. Hsu, “Optical proximity correction (OPC) method for improving
+lithography process window,” Feb. 27 2001, uS Patent 6,194,104.
+[7] “Synopsys, Inc.” https://www.synopsys.com/.
+[8] K. Aberman, J. Liao, M. Shi, D. Lischinski, B. Chen, and D. CohenOr, “Neural best-buddies: sparse cross-domain correspondence,” ACM
+Trans. Graphics, vol. 37, no. 4, p. 69, 2018.
+[9] T. Zhou, P. Krahenbuhl, M. Aubry, Q. Huang, and A. A. Efros, “Learning
+dense correspondence via 3d-guided cycle consistency,” in Proc. IEEE
+Conf. Comput. Vis. Pattern Recognit., 2016, pp. 117–126.
+[10] M.-H. Hung, T.-H. Lin, F.-T. Cheng, and R.-C. Lin, “A novel virtual
+metrology scheme for predicting CVD thickness in semiconductor
+manufacturing,” IEEE/ASME Trans. Mechatronics, vol. 12, no. 3, pp.
+308–316, 2007.
+[11] G. A. Susto, S. Pampuri, A. Schirru, A. Beghi, and G. De Nicolao, “Multi-step virtual metrology for semiconductor manufacturing: A
+multilevel and regularization methods-based approach,” Computers &
+Operations Research, vol. 53, pp. 328–337, 2015.
+[12] A. Poonawala and P. Milanfar, “Mask design for optical microlithographyan inverse imaging problem,” IEEE Trans. Image Process., vol. 16,
+no. 3, pp. 774–788, 2007.
+[13] D. Z. Pan, B. Yu, and J.-R. Gao, “Design for manufacturing with
+emerging nanolithography,” IEEE Trans. Comput.-Aided Design Integr.
+Circuits Syst., vol. 32, no. 10, pp. 1453–1472, 2013.
+[14] A. B. Kahng, “Reducing time and effort in IC implementation: a
+roadmap of challenges and solutions,” in Proc. ACM/ESDA/IEEE Design
+Autom. Conf., 2018, pp. 1–6.
+[15] H. Yang, S. Li, Y. Ma, B. Yu, and E. F. Young, “GAN-OPC: Mask
+optimization with lithography-guided generative adversarial nets,” in
+Proc. ACM/ESDA/IEEE Design Autom. Conf., 2018, pp. 1–6.
+[16] B.-Y. Yu, Y. Zhong, S.-Y. Fang, and H.-F. Kuo, “Deep learning-based
+framework for comprehensive mask optimization,” in Proc. Asia and
+South Paciﬁc Design Autom. Conf., 2019, pp. 311–316.
+[17] I. Goodfellow, J. Pouget-Abadie, M. Mirza, B. Xu, D. Warde-Farley,
+S. Ozair, A. Courville, and Y. Bengio, “Generative adversarial nets,” in
+Proc. Adv. Neural Inf. Process. Syst., 2014, pp. 2672–2680.
+[18] P. Isola, J.-Y. Zhu, T. Zhou, and A. A. Efros, “Image-to-image translation
+with conditional adversarial networks,” in Proc. IEEE Conf. Comput. Vis.
+Pattern Recognit., 2017, pp. 1125–1134.
+[19] T.-C. Wang, M.-Y. Liu, J.-Y. Zhu, A. Tao, J. Kautz, and B. Catanzaro,
+“High-resolution image synthesis and semantic manipulation with conditional gans,” in Proc. IEEE Conf. Comput. Vis. Pattern Recognit., 2018,
+pp. 8798–8807.
+[20] M.-Y. Liu, T. Breuel, and J. Kautz, “Unsupervised image-to-image
+translation networks,” in Proc. Adv. Neural Inf. Process. Syst., 2017,
+pp. 700–708.
+[21] D. P. Kingma and M. Welling, “Auto-encoding variational bayes,” arXiv
+preprint arXiv:1312.6114, 2013.
+[22] J.-Y. Zhu, T. Park, P. Isola, and A. A. Efros, “Unpaired image-to-image
+translation using cycle-consistent adversarial networks,” in Proc. IEEE
+Int. Conf. Comput. Vis., 2017, pp. 2223–2232.
+[23] Z. Yi, H. Zhang, P. Tan, and M. Gong, “DualGAN: Unsupervised
+dual learning for image-to-image translation,” in Proc. IEEE Int. Conf.
+Comput. Vis., 2017, pp. 2849–2857.
+[24] K. Bousmalis, N. Silberman, D. Dohan, D. Erhan, and D. Krishnan,
+“Unsupervised pixel-level domain adaptation with generative adversarial
+networks,” in Proc. IEEE Conf. Comput. Vis. Pattern Recognit., 2017,
+pp. 3722–3731.
+
+===== Page 14 =====
+
+IEEE TRANSACTIONS ON COMPUTER-AIDED DESIGN OF INTEGRATED CIRCUITS AND SYSTEMS, VOL. X, NO. X, MONTH 2020
+14
+[25] X. Huang, M.-Y. Liu, S. Belongie, and J. Kautz, “Multimodal unsupervised image-to-image translation,” in Proc. European Conf. Comput.
+Vis., 2018, pp. 172–189.
+[26] J.-R. Gao, X. Xu, B. Yu, and D. Pan, “MOSAIC: Mask optimizing solution with process window aware inverse correction,” in Proc.
+ACM/EDAC/IEEE Design Autom. Conf., 2014, pp. 52:1–52:6.
+[27] A. H. Gabor, J. A. Bruce, W. Chu, R. A. Ferguson, C. A. Fonseca,
+R. L. Gordon, K. R. Jantzen, M. Khare, M. A. Lavin, W.-H. Lee et al.,
+“Subresolution assist feature implementation for high-performance logic
+gate-level lithography,” in Optical Microlithography XV, vol. 4691, 2002,
+pp. 418–426.
+[28] P. K. Saha and J. K. Udupa, “Optimum image thresholding via class
+uncertainty and region homogeneity,” IEEE Trans. Pattern Anal. Mach.
+Intell., vol. 23, no. 7, pp. 689–706, 2001.
+[29] N. Otsu, “A threshold selection method from gray-level histograms,”
+IEEE Trans. Syst., Man, Cybern., vol. 9, no. 1, pp. 62–66, 1979.
+[30] K.-K. Maninis, S. Caelles, J. Pont-Tuset, and L. Van Gool, “Deep
+extreme cut: From extreme points to object segmentation,” in Proc. IEEE
+Conf. Comput. Vis. Pattern Recognit., 2018.
+[31] G. Wang, M. A. Zuluaga, W. Li, R. Pratt, P. A. Patel, M. Aertsen,
+T. Doel, A. L. David, J. Deprest, S. Ourselin et al., “DeepIGeoS: a
+deep interactive geodesic framework for medical image segmentation,”
+IEEE Trans. Pattern Anal. Mach. Intell., vol. 41, no. 7, pp. 1559–1572,
+2018.
+[32] O. Barnich and M. Van Droogenbroeck, “ViBe: A universal background
+subtraction algorithm for video sequences,” IEEE Trans. Image Proc.,
+vol. 20, no. 6, pp. 1709–1724, 2010.
+[33] O. Ronneberger, P. Fischer, and T. Brox, “U-Net: Convolutional networks for biomedical image segmentation,” in Proc. Medical Image
+Computing Computer-Assisted Intervention (MICCAI), 2015, pp. 234–
+241.
+[34] M. Jaderberg, K. Simonyan, A. Zisserman et al., “Spatial transformer
+networks,” in Proc. Adv. Neural Inf. Process. Syst., 2015, pp. 2017–2025.
+[35] C. Wang, H. Zheng, Z. Yu, Z. Zheng, Z. Gu, and B. Zheng, “Discriminative region proposal adversarial networks for high-quality image-toimage translation,” in Proc. European Conf. Comput. Vis., 2018, pp.
+770–785.
+[36] L. Rudin, S. Osher, and E. Fatemi, “Nonlinear total variation based
+noise removal algorithms,” Physica D: Nonlinear Phenomena, vol. 60,
+no. 1-4, pp. 259–268, 1992.
+[37] C. Maurer, R. Qi, and V. Raghavan, “A linear time algorithm for
+computing exact euclidean distance transforms of binary images in
+arbitrary dimensions,” IEEE Trans. Pattern Anal. Mach. Intell., vol. 25,
+no. 2, pp. 265–270, 2003.
+[38] Z. Wang, A. C. Bovik, H. R. Sheikh, E. P. Simoncelli et al., “Image
+quality assessment: from error visibility to structural similarity,” IEEE
+Trans. Image Process., vol. 13, no. 4, pp. 600–612, 2004.
+[39] H.-C. Shao, “Contour-to-contour distance,” https://www.mathworks.
+com/matlabcentral/ﬁleexchange/75551-contour-to-contour-distance.
+Hao-Chiang Shao (Member, IEEE) received his
+Ph.D. degree in electrical engineering from National
+Tsing Hua University, Taiwan, in 2012. He has been
+an Assistant Professor with the Dept. Statistics and
+Information Science, Fu Jen Catholic University,
+Taiwan, since 2018. During 2012 to 2017, he was a
+postdoctoral researcher with the Institute of Information Science, Academia Sinica, involved in a series
+of Drosophila brain research projects; in 2017–2018,
+he was an R&D engineer with the Computational Intelligence Technology Center, Industrial Technology
+Research Institute, Taiwan, taking charges of DNN-based automated optical
+inspection (AOI) projects. His research interests include 2D+Z image atlasing,
+3D mesh processing, big industrial image data analysis, and machine learning.
+Chao-Yi Peng received his B.S. and M.S. degrees
+from National Chung Cheng University and National
+Tsing Hua University, both in Electrical Engineering, in 2017 and 2019, respectively. He has been
+working for Altek company as a software engineer
+since 2019. His research interests lie in computer
+vision, machine learning, and visual analytics for IC
+design for manufacturability.
+Jun-Rei Wu received his B.S. in Engineering Science and Ocean Engineering from National Taiwan
+University in 2015 and M.S. degrees in Electrical
+engineering from National Tsing Hua University
+in 2019. He is currently working for HTC VIVE
+as a software engineer. His research interests lie
+in computer vision, machine learning, and visual
+analytics for IC design for manufacturability.
+Chia-Wen
+Lin
+(Fellow,
+IEEE)
+received
+his
+Ph.D. degree from National Tsing Hua University
+(NTHU), Taiwan, in 2000. Dr. Lin is currently Professor with the Department of Electrical Engineering
+and the Institute of Communications Engineering,
+NTHU. His research interests include image/video
+processing, computer vision, and machine learning.
+He served as Distinguished Lecturer of IEEE Circuits and Systems Society (2018–2019). He is Chair
+of IEEE ICME Steering Committee. He served as
+TPC Co-Chair of IEEE ICIP 2019 and IEEE ICME
+2010, and General Co-Chair of IEEE VCIP 2018. He was a recipient of
+Outstanding Electrical Engineer Professor Award presented by the Chinese
+Institute of Electrical Engineering, Taiwan. He received two best paper awards
+from VCIP 2010 and 2015. He has served as an Associate Editor of IEEE
+TRANSACTIONS ON IMAGE PROCESSING, IEEE TRANSACTIONS ON CIRCUITS AND SYSTEMS FOR VIDEO TECHNOLOGY, IEEE TRANSACTIONS ON
+MULTIMEDIA, and IEEE MULTIMEDIA. He served as a Steering Committee
+member of IEEE TRANSACTIONS ON MULTIMEDIA from 2013 to 2015.
+Shao-Yun Fang (Member, IEEE) received the B.S.
+degree in electrical engineering from National Taiwan University (NTU), Taipei, Taiwan, in 2008 and
+the Ph.D. degree from the Graduate Institute of Electronics Engineering, NTU in 2013. She is currently
+an Associate Professor of the Department of Electrical Engineering, National Taiwan University of
+Science and Technology (NTUST), Taipei, Taiwan.
+Her current research interests focus on physical design and design for manufacturability for integrated
+circuits. Dr. Fang was the recipient of two Best Paper
+Awards from the 2016 International Conference on Computer Design and the
+2016 International Symposium on VLSI Design, Automation, and Test, and
+two Best Paper Nominations from the 2012 and 2013 International Symposium
+on Physical Design.
+Pin-Yian Tsai received his M.S. degree in Physics
+from National Tsing Hua University (NTHU), Taiwan, in 2008. He is currently a technical manager
+of the Product Engineering Department in United
+Microelectronics Corporation (UMC). He led the
+launch of UMCs ﬁrst 14nm product tape out (2017)
+and is currently working and researching on the
+ﬁeld of Design for Manufacturing (DFM). He is
+now focusing on developing methods for predicting
+weak patterns in layout manufacturing and automatic
+optical proximity correction (OPC) to improve the
+manufacturing yield.
+Yan-Hsiu Liu received his M.S. degree in Chemistry from National Tsing Hua University (NTHU),
+Taiwan, in 2002. In 2004, he joined United Microelectronics Corporation (UMC) as a process integration engineer in Hsinchu, Taiwan. He is currently
+working as a deputy department manager on the
+development of smart manufacturing and responsible
+for industry-academia cooperation/collaboration. His
+research interests include the areas of intelligent
+manufacturing systems, adaptive parameter estimation, and neural networks.

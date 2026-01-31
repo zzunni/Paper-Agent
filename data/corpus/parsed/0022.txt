@@ -1,0 +1,794 @@
+
+
+===== Page 1 =====
+
+Addressing Class Imbalance and Data Limitations
+in Advanced Node Semiconductor Defect
+Inspection: A Generative Approach for SEM Images
+Bappaditya Dey1*, Vic De Ridder1,2*, Victor Blanco1, Sandip Halder1 & Bartel Van Waeyenberge2
+1 Interuniversity Microelectronics Centre (imec), 3001 Leuven, Belgium
+2 Ghent University,9000 Ghent, Belgium
+*Vic De Ridder and Bappaditya Dey contributed equally to the work.
+Bappaditya.Dey@imec.be
+Abstract—As semiconductor technology advances in accordance with Moore’s Law, the continuous reduction in feature
+sizes presents an escalating challenge in defect detection. The
+limitations imposed by optical and e-beam technologies further
+contribute to the complexity of identifying defects at these
+shrinking scales, owing to increasing noise and decreasing image
+contrast levels. Precision in identifying nanometer-scale devicekiller defects is crucial in both semiconductor research and
+development as well as in production processes. The effectiveness
+of existing machine learning-based approaches in this context
+is largely limited by the scarcity of data, as the production
+of real semiconductor wafer data for training these models
+involves high financial and time costs. Moreover, the existing
+simulation methods fall short of replicating images with identical
+noise characteristics, surface roughness and stochastic variations
+at advanced semiconductor nodes. In this paper, we propose
+a method for generating synthetic semiconductor SEM images
+using a diffusion model within a limited data regime. In contrast
+to images generated through conventional software simulation
+methods, SEM images generated through our proposed deep
+learning method closely resemble real SEM images, replicating
+their noise characteristics and surface roughness adaptively.
+Our main contributions, which are validated on three different
+real semiconductor datasets, are: i) proposing a patch-based
+generative framework utilizing DDPM to create SEM images with
+intended defect classes, addressing challenges related to classimbalance and data insufficiency, ii) demonstrating generated
+synthetic images closely resemble real SEM images acquired
+from the tool, preserving all imaging conditions and metrology
+characteristics without any metadata supervision, iii) demonstrating a defect detector trained on generated defect dataset,
+either independently or combined with a limited real dataset,
+can achieve similar or improved performance on real wafer
+SEM images during validation/testing compared to exclusive
+training on a real defect dataset, iv) demonstrating the ability
+of the proposed approach to transfer defect types, critical
+dimensions, and imaging conditions from one specified CD/Pitch
+and metrology specifications to another, thereby highlighting its
+versatility.
+Index Terms—semiconductor manufacturing, defect inspection, defect classification, defect detection, scanning-electronmicroscope, deep learning, generative AI, diffusion model, DDPM
+I. INTRODUCTION
+As Moore’s Law drives the semiconductor industry towards
+achieving ever-smaller feature sizes (≤10nm) and increased
+transistor density, the traditional methods of patterning face
+challenges. New approaches, including emerging lithography
+technologies like Extreme-Ultra-Violet-Lithography (EUVL)
+(≤7nm), high-NA EUVL (≤2nm), and other alternatives,
+are (being) developed to keep pace with Moore’s Law and
+maintain the relentless pursuit of smaller feature sizes. The
+escalating complexity of semiconductor devices necessitates
+a corresponding elevation in process control. This entails the
+integration of precise metrology, sophisticated data analysis,
+and cutting-edge defect inspection methodologies. The prevailing state-of-the-art (SOTA) defect detection tools, whether
+optical or e-beam based, exhibit specific limitations. These
+tools rely on rule-based techniques for defect classification and
+detection, which introduces constraints in their adaptability
+and effectiveness. The use of rule-based approaches implies
+that these tools are programmed with predefined criteria to
+identify and classify defects. While this methodology is effective for well-understood and predictable defect patterns, it
+becomes increasingly challenging when dealing with complex,
+evolving, or stochastic defects [1], specifically in the presence
+of reduced signal-to-noise ratio (SNR) and image contrast.
+Due to the inadequacy of rule-based methods at advanced
+nodes [2], DL-based object detectors have emerged as the
+state-of-the-art for stochastic defect inspection [3]. However,
+the acquisition of a relevant stochastic defect dataset for
+training ML models faces considerable challenges within the
+semiconductor manufacturing domain. Not only is such a
+dataset rare and inherently noisy, but its acquisition is also
+a costly endeavor. The rarity of stochastic defect instances
+makes it challenging to compile a comprehensive dataset that
+accurately represents the diverse range of stochastic defects
+encountered in real-world semiconductor manufacturing processes. Additionally, two significant bottlenecks further complicate the use of stochastic defect datasets in semiconductor
+manufacturing defect detection: (a) class imbalance, which
+arises when certain defect types are underrepresented or occur
+infrequently in the dataset, leading to a skewed distribution.
+This imbalance can compromise the model’s ability to generalize and accurately detect defects across all classes. (b)
+insufficient dataset size, as a limited amount of data may not
+© 2024 IEEE. Personal use of this material is permitted. Permission from IEEE must be obtained for all other uses, in any current or future
+media, including reprinting/republishing this material for advertising or promotional purposes, creating new collective works, for resale or
+redistribution to servers or lists, or reuse of any copyrighted component of this work in other works.
+arXiv:2407.10348v1  [cs.CV]  14 Jul 2024
+
+===== Page 2 =====
+
+(a) LS-ADI
+(b) HEXCH-DSA
+(c) LS-AEI
+Figure 1. Representative sample SEM images illustrating example defect types in the datasets used in this study
+adequately capture the variability and complexity of stochastic
+defects. The inherent diversity of semiconductor manufacturing processes demands large and representative datasets
+to ensure the robust training of machine learning models.
+Addressing these challenges requires innovative approaches
+to dataset acquisition, including strategic data augmentation
+techniques to enhance dataset diversity. Collaboration within
+the industry and the development of shared datasets could
+also contribute to mitigating the issues associated with rare,
+noisy, and expensive stochastic defect datasets. Overcoming
+these challenges is pivotal for advancing the capabilities of
+machine learning models in semiconductor manufacturing
+defect detection.
+In this research work, we use Denoising Diffusion Probabilistic Models (DDPM) to generate realistic semiconductor
+wafer SEM images, thereby increasing defect inspection training data and improving defect inspection performance. Our
+main contributions are:
+i) we propose a patch-based generative framework utilizing DDPM to generate SEM images that include intended
+defect classes with randomly variable instances, aiming to
+address class-imbalance and data insufficiency bottlenecks.
+This approach leads to an enhancement in defect detection
+performance, particularly in terms of precision and recall.
+ii) our proposed approach generates synthetic images that
+closely resemble real ones, preserving actual characteristics
+without the need for prior knowledge of imaging settings
+(Best-Known-Methods).
+iii) we demonstrated that a defect detector trained on a generated defect dataset, either independently or in combination
+with a limited real dataset, can achieve a similar or improved
+mAP on real wafer SEM images during validation/testing
+compared to when trained exclusively on a real defect dataset.
+This trend was consistent across three different SEM datasets,
+validating the capability of DDPM to generate images with
+characteristics identical to real SEM images.
+Finally, iv) our proposed approach demonstrates the capability to transfer defect types, critical dimensions, and imaging
+conditions from one specified CD/Pitch and metrology specifications to another CD/Pitch and metrology specifications.
+II. RELATED WORKS: SEMICONDUCTOR DEFECT
+INSPECTION
+In earlier years, main semiconductor defect scenarios were
+due to particle contamination, or impurities. These defect patterns differed significantly from regular patterns, making rulebased defect inspection techniques effective for detecting such
+large deviations. Additionally, at those order of magnitudes,
+precise alignment between SEM images and non-defective
+reference image could be achieved, leading to reference image
+based defect inspection techniques achieving sufficient performance. The integration of Extreme Ultraviolet Lithography
+(EUVL) into the semiconductor manufacturing process leads
+to smaller pattern dimensions (≤7nm). However, the most
+significant challenge associated with it is controlling stochastic
+defects in this nano-scale range, as most defect inspection tools
+lack sensitivity at this level [4]. These defects are caused by
+unavoidable physical phenomena, such as photon shot noise,
+which becomes more relevant as the pattern shrinks. Thus, an
+extensive investigation into the relationship between process
+parameters and stochastic defectivity is required for every IC
+node during its development. This investigation is, in part, enabled by accurate defect detection and classification. However,
+due to i) decreased pixel-sized defect patterns, ii) increased
+SEM imaging noise, and iii) increased difficulty in reference
+image alignment, the stochastic defects at these advanced
+nodes cannot be detected by the previously mentioned rulebased methods [2]. In contrast, ML-based techniques have
+achieved adequate detection rates for inspecting semiconductor
+wafer SEM images, even at advanced EUVL nodes [5].
+Cheon et al. [6] first demonstrated superiority of Convolutional Neural Networks (CNN) approach on SEM-based semiconductor defect inspection compared to rule-based or other
+ML-based approaches. While this work investigated detection
+of particle contamination defects (surface level), performance
+of CNN-based approaches has also been demonstrated for
+nano-scale, stochastic defect inspection at the EUVL node by
+Dey et al. [5]. Moreover, ML approaches are also to improve
+wafer processing times, as Lorusso et al. [3] demonstrated
+ML-based super resolution supports significant SEM scanning
+time reductions in defect inspection SEM, since it allows lower
+resolution SEM settings.
+
+===== Page 3 =====
+
+Figure 2. High level overview of the proposed approach towards synthetic SEM image dataset generation containing multi defect types.
+Ahn et al. [7] confirmed that training on both simulated
+and real SEM images, with augmentation strategies, results in
+the best defect inspection performance. This demonstrates that
+models benefit from a higher number of training images compared to the available real SEM images. They also note that
+current simulation methods do not accurately model the lineedge roughness and noise parameters of more advanced nodes.
+As IC pattern dimensions shrink further, several challenges
+such as edge [8], or surface [9] effects persist in accurate
+SEM wafer imaging models. Additionally, the introduction of
+GPU-based computational resources has allowed significant
+improvements in simulation times [10]. However, all SEM
+simulation approaches still assume each electron follows an
+independent trajectory. Introducing multi-body modeling for
+these electrons necessarily results in exponential increases in
+required computation time, even in the case of GPU-based
+computation. Due to these challenges, accurate SEM modeling
+is yet to be achieved, as discussed in Arat et al. [11].
+Additionally, some defect types appear less frequently in
+training data, leading to class imbalance problems. While De
+Ridder et al. [12] proposed a weighted sampling strategy with
+data augmentation to reduce the impact of class imbalance,
+the strategy was unsuccessful. Thus, data augmentation alone
+seems insufficient for solving the data availability problem
+in semiconductor defect inspection, illustrating the need for
+a method to generate novel training data without requiring
+additional SEM wafer scans.
+To address this issue, Wang et al. [13] employed a style
+transfer Generative Adversarial Network (GAN) to transform
+defect-free wafer images into defective ones. While their
+approach notably enhanced defect classification performance,
+it was unable to generate defect-less patterns. Consequently, it
+could not produce large images suitable for training defect
+detection, as their method focused solely on classification
+improvement. López de la Rosa et al. [14] proposed finetuning ResNet50 using a grid search algorithm for hyperparameter optimization, and also applied data augmentation
+techniques to the originally imbalanced semiconductor SEM
+dataset. With these training methods, a 3.74% improvement
+in F1 score was achieved on the classification task, compared
+to ResNet 50 trained without hyperparameter tuning and data
+augmentations.
+In recent years, significant progress has been made on MLbased image generation [15–18]. Furthermore, these developments have successfully addressed low data availability issues
+in the medical domain [19]. Specifically, Denoising Diffusion
+Probabilistic Models (DDPMs) [16] have caused significant
+improvement in image generation-related tasks [20]. During
+training, DDPMs learn to reverse a diffusion process that
+incrementally adds Gaussian noise to sample images. As the
+final result of this diffusion process is pure noise, a trained
+DDPM can transform pure Gaussian noise into images similar
+to the data on which it was trained.
+Hence, in this research work, we formulate a DDPMbased framework to generate full-scale SEM wafer images at
+advanced IC pattern dimensions. Our proposed approach generates synthetic SEM images with intended stochastic defect
+classes, including multiple instances of these defect classes,
+closely resembling real resist-wafer SEM images collected
+from SEM imaging tools. This is achieved while preserving
+the characteristics such as Line Edge Roughness (LER) and
+Line Width Roughness (LWR) of real images, with the goal
+of enhancing defect detection performance.
+III. METHODOLOGY
+A. Proposed Diffusion-based Approach
+Due to their success in numerous other applications, and
+flexible usage, we investigate the potential of DDPM as a
+generative tool to solve the problem of low data availability
+in semiconductor defect inspection application. Our proposed
+approach does not train the diffusion model on the real
+SEM wafer images directly. Instead, various small patches
+are extracted from the original image. Each patch has a class
+label as either the defect type present inside the patch, or
+background (defect-free). The DDPM model is then trained
+in a class conditional manner on these patches. Fig.2 depicts
+our proposed framework towards generating synthetic realistic
+SEM image dataset containing multiple defect types.
+After training, synthetic images are generated using an
+inpainting procedure. First, the method displayed in Fig.3
+is used to generate full-size, defect-free, synthetic images.
+Afterwards, crops of these full-size images are inpainted to
+simulate intended defect types, resulting in the final synthetic
+images containing defects.
+This patch-based approach offers three advantages over
+training directly on full-size SEM images: i) significantly
+reduced training time. ii) control over the number of defects
+in the generated images, enabling the generation of full-scale
+
+===== Page 4 =====
+
+Figure 3. Proposed approach to generate full-size, defect-free SEM image
+(archetype) using patch based method
+images with defect numbers not present in the real SEM
+dataset. iii) Training on patches results in larger datasets,
+thereby enhancing the learning process.
+B. Datasets
+In this research work, we validate our proposed approach on
+three semiconductor SEM datasets: Hexagonal Contact-Hole
+arrays (HEXCH-DSA), Line-Space After Develop Inspection
+(LS-ADI), and Line-Space After Etch Inspection (LS-AEI).
+Each of these contains only real SEM wafer images, and
+no defects are synthetic or intentionally placed. The different
+defect types are demonstrated in Fig.1 for each dataset as:
+i) partially closed hole, missing hole, and closed patch for
+HEXCH-DSA, ii) gap, probable gap, bridge, microbridge,
+linecollapse for LS-ADI, and finally iii) thin bridge, single
+bridge, line collapse, multi brige horizontal, and multi bridge
+non-horizontal for LS-AEI.
+C. Diffusion Model: Implementation and Training
+The diffusion model used in this research work is as
+implemented by Nichol et al. [21], with cosine noise schedule
+and 1000 sample steps. On each real SEM dataset, the model
+is trained using a learning rate of 0.0001 until convergence.
+Code and model have been used from [21]. We have added
+the inpainting functionality to the existing code, with implementation inspired by [22], although without their suggested
+resampling steps. We have trained the models on a default
+image size of 128 pixels. However, some defect types such
+as linecollapse or closed patch exceed this limit. Thus, we
+have separately trained a model instance on larger image sizes
+to generate these defect types. The hyperparameters of the
+models used can be found in Table I.
+TABLE I. Diffusion Model Hyperparameters
+Image Size
+Number of Channels
+Residual Blocks
+Channel Multiplier
+128
+64
+3
+(1,1,2,2,4 )
+256
+64
+3
+(1,1,2,2,4,4)
+512
+128
+2
+(1,1,2,2,4,4)
+D. Training: Object Detection
+In section IV-B, defect detector is trained on three datasets
+(LS-ADI, HEXCH-DSA, LS-AEI) under different configurations (real, synthetic, combined). Due to its fast training
+time, YOLOv5n has been selected as defect detector [23]
+to validate the use of generated synthetic images in training
+object detectors. Each model is initialised from COCO pretrained weights, trained for 200 epochs with batch size of 32,
+and with early stopping criteria enabled. The weights with
+best performance on validation dataset are selected for use
+in hereafter mentioned experimentations. Code and all other
+hyperparameters of YOLOv5n are used as implemented by
+Ultralytics [24].
+E. Labeling of Synthetic Images
+To utilize synthetic images in training supervised defect
+detectors, such as YOLO, they must first be annotated/labelled.
+We propose labeling synthetic images by applying a defect
+detector already trained on real data. However, training defect
+detectors on synthetic data poses an additional challenge, as
+it may yield worse predictions compared to human annotation. This challenge arises due to two reasons: i) Synthetic
+images lack sufficient resemblance to the original data, and ii)
+Labeling errors in synthetic training data result in suboptimal
+learning signals, affecting performance on real test data. Not
+only have we tackled above mentioned challenges with our
+proposed approach, but we have also demonstrated in the
+next section how generated synthetic images and associated
+labeling quality improved or performed as per on defect
+detection task.
+IV. RESULTS
+A. Qualitative Evaluation of Synthetic Images
+Synthetic images generated by the proposed DDPM-based
+approach are evaluated qualitatively. First, visual comparison
+does not yield any differentiating characteristics between synthetic defects (Fig.6) and those obtained from SEM tools (validated with several anonymous SEM image experts). Beyond
+visual comparison, line-edge-roughness and critical dimension
+(CD) are crucial metrology parameters in semiconductor patterning, towards validating device electrical characteristics and
+performance. To generate synthetic or artificial SEM images,
+with or without defects, using conventional software such as
+ARTIMAGEN [25], [26], it is essential to be aware of industry
+Best-Known-Methods (BKM) settings to comply with tool
+imaging conditions. Without appropriate values for parameters
+like pixel size, number of frames in acquisition, accelerating
+
+===== Page 5 =====
+
+(a) Real
+(b) Simulation
+(c) Proposed
+Figure 4. Comparison between (a) real SEM image, (b) image generated with software simulation, and (c) image generated with our
+proposed method.
+Figure 5. Linescan plot for generated (using our proposed approach) and real
+SEM image
+voltage, probe current, etc., it becomes quite challenging to
+generate synthetic images that closely resemble real images.
+Additionally, using incorrect parameter values can introduce
+digital artifacts into the synthetic images, rendering them
+unsuitable for ML model training and, consequently, compromising the preservation of original device characteristics.
+Contrary to this, our proposed approach generates synthetic
+images that closely resemble real images and preserve actual
+characteristics without requiring prior knowledge of BKM
+settings, as shown in Fig.4. Fig.5 shows the line-scan plots
+of generated (by our proposed approach) and real SEM image
+(for Line-Space feature), which can be used to compare CD
+and roughness parameters between these two. Lastly, Fig.7
+presents inference results on generated synthetic and real
+images (test set) from a defect detector trained solely on real
+data. Both the inference confidence and classification accuracy
+on semantic contexts (such as probable gap and gap), as well
+as the line-scan plots of original and synthetic data (for linespace feature), appear nearly identical. This strongly indicates
+that generated synthetic images are sufficiently similar to the
+original data, supporting their use in expanding the size of the
+semiconductor defect inspection dataset.
+B. Training Defect Detectors with Synthetic Images
+Second, we demonstrate that synthetic images generated
+with the proposed approach can be succesfully used in training defect detectors. We have trained defect detectors with
+generated synthetic counterparts of each investigated dataset
+in two configurations as: (1) with synthetic dataset only and,
+(2) combined with real dataset. Statistics of real and synthetic
+datasets are shown in table II.
+Figure 6. Examples of generated defect instances against real SEM image of
+same defect type
+(a) Closed Patch
+(b) Linecollapse
+(c) (p)gap
+Figure 7. Inference results for real (top), and synthetic (down) images
+Fig.8 shows the AP and AR scores per defect class on LSADI real test dataset, achieved by YOLOv5n model trained
+on either real, synthetic, or combined datasets. While some
+deviations and deficits are present, no major performance
+drops are observed when training on synthetic data. Thus, the
+proposed DDPM approach generates images based on the LSADI dataset, which can be properly utilized for training defect
+detectors, as no major performance deficits are encountered
+when switching from training on real data, to training only on
+synthetic data. Training only on the combination of the real
+TABLE II. Statistics of real and synthetic training datasets
+Real
+Synthetic
+Real+ Synthetic
+LS-ADI
+Instances
+pgap
+315
+1375
+1690
+microbridge
+380
+1477
+1857
+linecollapse
+550
+501
+1051
+bridge
+238
+406
+644
+gap
+1046
+2155
+3201
+Total Images
+1053
+1199
+2252
+HEXCH
+Instances
+cp
+74
+210
+284
+pch
+94
+434
+528
+mh
+30
+591
+621
+Total Images
+174
+420
+594
+LS-AEI
+Instances
+multi bridge nh
+160
+120
+280
+multi bridge h
+80
+143
+223
+linecollapse
+202
+248
+450
+single bridge
+240
+245
+485
+thin bridge
+241
+354
+595
+Total Images
+920
+932
+1864
+
+===== Page 6 =====
+
+Figure 8. AP and AR scores achieved on real ADI test dataset
+Figure 9. AP and AR scores achieved on real AEI test dataset
+and synthetic dataset does not yield any performance gains,
+despite the larger size of the combined dataset.
+Fig.9 shows the AP and AR scores per defect class on
+LS-AEI real test dataset by model trained on real, synthetic
+or combined datasets. A scenario similar to the LS-ADI is
+observed, where training on the synthetic dataset does not lead
+to major performance deficits.
+Finally, Fig.10 shows the AP and AR scores on HEXCHDSA real test dataset by model trained on the different dataset
+configurations. On HEXCH test data, a definite performance
+improvement has been observed when model is trained on
+the combined synthetic+real dataset. HEXCH dataset is significantly smaller in size compared to the other two datasets
+(table.II). This may explain that, while model did not benefit
+from training on synthetic+real data for LS datasets, the model
+significantly benefited for HEXCH-DSA dataset, as combining
+both synthetic and real data increased the dataset size (without
+altering real characteristics of the image/defect features) to
+properly learn the required defect features.
+Table III shows the mAP and mAR scores achieved on the
+different real SEM test datasets, for different training dataset
+configurations. This table summarises that, while training
+only on synthetic data does not provide clear benefits in
+all scenarios, it never causes significant performance drops,
+against training only on real dataset. This validates that the
+synthetic images generated by proposed method can have valid
+usage in training defect detection models, by replacing or
+combining with real SEM images datasets for different process
+steps.
+Figure 10. AP and AR scores achieved on real HEXCH-DSA test dataset
+TABLE III. mAP and mAR scores achieved on real test data
+Dataset (test split)
+Metric
+YOLOv5n with Training Data
+Real
+Synthetic
+Real+Synthetic
+Real ADI-LS
+mAP
+0.878
+0.845
+0.839
+mAR
+0.864
+0.819
+0.839
+Real HEXCH-DSA
+mAP
+0.853
+0.873
+0.933
+mAR
+0.78
+0.85
+0.874
+Real AEI-LS
+mAP
+0.973
+0.943
+0.951
+mAR
+0.943
+0.911
+0.946
+C. Comparison to previous related work
+In this section, we illustrate how the proposed generative
+framework (along with the generated synthetic images) can
+be considered as a potential alternative data augmentation
+strategy to alleviate the challenges of data insufficiency and
+class imbalance in the semiconductor domain. Additionally, it
+may prove advantageous in addressing the issue of overfitting,
+thereby enhancing defect detection performance.
+Two semiconductor defect inspection frameworks have been
+implemented based on previous works [5], [27]. They are
+utilized to compare: (a) conventional training using only
+real SEM images with the application of the default data
+augmentation strategy[5][27], (b) training using only real
+SEM images without applying the default data augmentation
+strategy, and (c) training using a mixed dataset comprising
+both real and synthetic/generated SEM images generated by
+our proposed approach, again without applying the default data
+augmentation strategy. Each experiment is conducted across
+various architecture variants to enhance the robustness of the
+reported results. The best validation dataset mAP is reported
+for each variant and training method. We have exclusively
+utilized real SEM images for validation purposes.
+On the LS-ADI dataset, Retinanet [28] is trained with
+all parameters as per Dey et al. [5], except an increase in
+batch size from 2 to 16 to decrease required training time.
+The dataset distribution for real images (only) and (real +
+synthetic) images are the same as in Table II, Sect.IV-B. Table
+IV presents the results achieved for three distinct backbones:
+ResNet 50, 101, and 152, respectively.
+When comparing (b) training using only real SEM images without applying the default data augmentation strategy
+against (a) conventional training using only real SEM images
+with the application of the default data augmentation strategy
+from previous work [5], we observe a significant reduction in
+
+===== Page 7 =====
+
+TABLE IV. Comparitive analysis of mAP on real LS-ADI validation dataset
+with RetinaNet model [5].
+Backbone
+mAP achieved with training dataset
+Real
+Real+Synthetic
+Default
+No augmentation
+No augmentation
+augmentation
+Resnet 50
+0.739
+0.816
+0.883
+Resnet 101
+0.711
+0.680
+0.837
+Resnet 152
+0.743
+0.590
+0.852
+TABLE V. Comparitive analysis of mAP on real HEXCH-DSA validation
+dataset with YOLOv8 model [27].
+YOLOv8 Variant
+mAP achieved with training dataset
+Real
+Real+Synthetic
+Default augmentation
+No augmentation
+n
+0.930
+0.924
+s
+0.916
+0.929
+m
+0.910
+0.931
+l
+0.888
+0.953
+x
+0.917
+0.910
+Average
+0.91
+0.93
+mAP as the model size increases. This validation indicates that
+larger architecture variants are more susceptible to overfitting,
+emphasizing the importance of a data augmentation strategy to
+diversify the dataset encountered during training and address
+issues related to data insufficiency and class imbalance.
+Finally, we observe that RetinaNet model trained using (c)
+the mixed dataset comprising both real and synthetic/generated
+SEM images generated by our proposed approach, without
+applying the conventional data augmentation strategy, achieved
+highest mAPs compared to previous two approaches (a) and
+(b), for all architecture variants (ResNet 50, 101 and 152).
+For the HEXCH-DSA dataset, YOLOv8 variants are implemented with parameters according to Dehaerne et al. [27].
+The mixed dataset, containing both real and synthetic images,
+comprises 5425 images. The dataset consisting solely of real
+images remains consistent with Table II, Sec. IV-B. Table V
+presents the mAP values achieved for (c) training using the
+mixed dataset comprising both real and synthetic/generated
+SEM images generated by our proposed approach, without
+applying the default data augmentation strategy compared to
+(a) conventional training using only real SEM images with
+the application of the default data augmentation strategy. We
+observe that our proposed generative approach-based data
+augmentation strategy, utilizing generated synthetic images,
+outperforms both the conventional data augmentation strategy
+and previous research work [27] for most architecture variants,
+or performs as per (YOLOv8n and YOLOv8x).
+D. Defect Transfer
+SEM wafer images can vary significantly depending on factors such as dose/focus used, design geometrical patterns, critical dimension, resist profiles, or underlayers. Consequently,
+significant numbers of SEM images have to be acquired and
+labeled for each set/combination of process parameters to
+train a defect detection model. Furthermore, as defect types
+are stochastic in nature, two challenging scenarios may occur
+quite frequently, as (i) a given defect type/class has a very
+Figure 11. Proposed framework can generate defect types outside its typical
+process parameters, to prepare defect detectors for unexpected scenarios.
+small probability to occur in that process while training defect
+detection models (class imbalance), or (ii) relevant defect SEM
+images dataset to train a model is not just rare and noisy, but
+also very expensive to get (limited training dataset size).
+In these cases, without sufficient images of certain defect
+types available at a certain process step, deploying an industrycompliant ML-based defect detection framework may be problematic, as overall model convergence can not be guaranteed
+towards generalizability and robustness due to model’s underfitting for those defect type’s features.
+To mitigate this, we have examined whether the proposed
+approach can generate instances outside of the extent of
+corresponding defect type’s typical process context. In this
+way, the proposed generative model can be trained on different
+processes and their associated defect types concurrently. Afterwards, defect instances can be generated for a process where
+the given type has not been encountered yet (or encountered
+in limited numbers). This generated dataset can then be used
+to train ML-based defect detectors towards detecting the given
+defect types in the new environment. Our proposed approach
+is demonstrated in Fig.11
+The proposed approach manages to successfully generate
+defect instances outside of the process parameters they were
+encountered in during training. However, as of now, no dataset
+which allows extensive investigation of this proposed "defect
+transfer" approach, is available to the authors. Therefore,
+quantitative experimentation and validation with this approach
+is left for future research directions.
+V. CONCLUSION
+In this research work, the application of DDPM has
+been investigated for semiconductor defect detection. First,
+a patch-based approach was formulated to generate full-size
+SEM wafer images. Afterwards, the quality of the generated
+synthetic SEM images is examined in comparison to the
+metrology specifications of real images. Line-scan plots of
+real and synthetic images were compared and showed no
+significant differences in relevant parameters. Subsequently,
+the defect detector model was trained on these generated
+synthetic images under different conditions to further validate
+the applicability of synthetic images within a robust defect
+
+===== Page 8 =====
+
+inspection framework. This addresses industrial challenges,
+such as class imbalance and data insufficiency, especially for
+the stochastic defect dataset in real resist wafer images. This
+dataset is not only rare and noisy but also very expensive
+to collect, making synthetic data valuable in facilitating the
+training of machine learning models. We have demonstrated
+significant performance improvement for both the HEXCHDSA dataset and the LS dataset in both process steps, namely
+ADI and AEI, while using synthetically generated images
+during training. Notably, training on combined real and synthetic data improved mAP by 6.9% on HEXCH-DSA and
+improved AP on missing hole defect class by 19%. Finally, it
+is demonstrated that the proposed approach can generate defect
+types outside their typical environment, and a framework for
+’pattern transfer’ is proposed.
+REFERENCES
+[1] P. De Bisschop, “Stochastic effects in euv lithography: random, local
+cd variability, and printing failures,” Journal of Micro/Nanolithography,
+MEMS, and MOEMS, vol. 16, no. 4, pp. 041013–041013, 2017.
+[2] G. F. Lorusso, C. Beral, J. Bogdanowicz, D. D. Simone, M. Hasan,
+C. Jehoul, A. Moussa, M. Saib, M. Zidan, J. Severi, V. Truffert, D. V.
+den Heuvel, A. Goldenshtein, K. Houchens, G. Santoro, D. Fischer,
+A. Muellender, J. Hung, R. Koret, I. Turovets, K. Ausschnitt, C. Mack,
+T. Kondo, T. Shohjoh, M. Ikota, A.-L. Charley, and P. Leray, “Metrology
+of thin resist for high na euvl,” in Metrology, Inspection, and Process
+Control XXXVI, vol. 12053, (San Jose, California, United States),
+p. 120530O, SPIE Advanced Lithography + Patterning, 2022.
+[3] T. Kondo, N. Ban, Y. Ebizuka, Y. Toyoda, Y. Yamada, T. Kashiwa,
+H. Koike, H. Shindo, A.-L. Charley, M. Saib, et al., “Massive metrology
+and inspection solution for euv by area inspection sem with machine
+learning technology,” in Metrology, Inspection, and Process Control for
+Semiconductor Manufacturing XXXV, vol. 11611, pp. 210–219, SPIE,
+2021.
+[4] P. De Bisschop, J. Van de Kerkhove, J. Mailfert, A. V. Pret, and
+J. Biafore, “Impact of stochastic effects on euv printability limits,” in
+Extreme Ultraviolet (EUV) Lithography V, vol. 9048, pp. 45–59, SPIE,
+2014.
+[5] B. Dey, D. Goswami, S. Halder, K. Khalil, P. Leray, and M. A. Bayoumi,
+“Deep learning-based defect classification and detection in sem images,”
+in Metrology, Inspection, and Process Control XXXVI, p. PC120530Y,
+SPIE, 2022.
+[6] S. Cheon, H. Lee, C. O. Kim, and S. H. Lee, “Convolutional neural
+network for wafer surface defect classification and the detection of
+unknown defect class,” IEEE Transactions on Semiconductor Manufacturing, vol. 32, no. 2, pp. 163–170, 2019.
+[7] J. Ahn, Y. C. Kim, S. Y. Kim, S.-M. Hur, and V. Thapar, “Defect
+recognition in line-space patterns aided by deep learning with data augmentation,” Journal of Micro/Nanopatterning, Materials, and Metrology,
+vol. 20, no. 4, pp. 041203–041203, 2021.
+[8] Y. Li, P. Zhang, and Z. Ding, “Monte carlo simulation of cd-sem images
+for linewidth and critical dimension metrology,” Scanning, vol. 35, no. 2,
+pp. 127–139, 2013.
+[9] L. Van Kessel, C. W. Hagen, and P. Kruit, “Surface effects in simulations of scanning electron microscopy images,” Journal of Micro/Nanolithography, MEMS, and MOEMS, vol. 18, no. 4, pp. 044002–
+044002, 2019.
+[10] L. van Kessel and C. Hagen, “Nebula: Monte carlo simulator of electron–
+matter interaction,” SoftwareX, vol. 12, p. 100605, 2020.
+[11] K. T. Arat and C. W. Hagen, “Model sensitivity analysis of monte-carlo
+based sem simulations,” Results in Physics, vol. 19, p. 103545, 2020.
+[12] V. De Ridder, B. Dey, S. Halder, and B. Van Waeyenberge, “Semidiffusioninst: A diffusion model based approach for semiconductor defect classification and segmentation,” in 2023 International Symposium
+ELMAR, pp. 61–66, IEEE, 2023.
+[13] Z. Wang, L. Yu, and L. Pu, “Defect simulation in sem images using
+generative adversarial networks,” in Metrology, Inspection, and Process
+Control for Semiconductor Manufacturing XXXV, vol. 11611, pp. 113–
+119, SPIE, 2021.
+[14] F. López de la Rosa, J. L. Gómez-Sirvent, R. Morales, R. SánchezReolid, and A. Fernández-Caballero, “A deep residual neural network
+for semiconductor defect classification in imbalanced scanning electron
+microscope datasets,” Applied Soft Computing, vol. 131, p. 109743,
+2022.
+[15] J. Gui, Z. Sun, Y. Wen, D. Tao, and J. Ye, “A review on generative
+adversarial networks: Algorithms, theory, and applications,” IEEE transactions on knowledge and data engineering, vol. 35, no. 4, pp. 3313–
+3332, 2021.
+[16] J. Ho, A. Jain, and P. Abbeel, “Denoising diffusion probabilistic models,”
+Advances in neural information processing systems, vol. 33, pp. 6840–
+6851, 2020.
+[17] J. Song, C. Meng, and S. Ermon, “Denoising diffusion implicit models,”
+arXiv preprint arXiv:2010.02502, 2020.
+[18] Y. Fan, O. Watkins, Y. Du, H. Liu, M. Ryu, C. Boutilier, P. Abbeel,
+M. Ghavamzadeh, K. Lee, and K. Lee, “Reinforcement learning for finetuning text-to-image diffusion models,” in Thirty-seventh Conference on
+Neural Information Processing Systems, 2023.
+[19] F. Khader, G. Müller-Franzes, S. Tayebi Arasteh, T. Han, C. Haarburger,
+M. Schulze-Hagen, P. Schad, S. Engelhardt, B. Baeßler, S. Foersch,
+et al., “Denoising diffusion probabilistic models for 3d medical image
+generation,” Scientific Reports, vol. 13, no. 1, p. 7303, 2023.
+[20] F.-A. Croitoru, V. Hondru, R. T. Ionescu, and M. Shah, “Diffusion
+models in vision: A survey,” IEEE Transactions on Pattern Analysis
+and Machine Intelligence, 2023.
+[21] A. Q. Nichol and P. Dhariwal, “Improved denoising diffusion probabilistic models,” in International Conference on Machine Learning,
+pp. 8162–8171, PMLR, 2021.
+[22] A. Lugmayr, M. Danelljan, A. Romero, F. Yu, R. Timofte, and
+L. Van Gool, “Repaint: Inpainting using denoising diffusion probabilistic
+models,” in Proceedings of the IEEE/CVF Conference on Computer
+Vision and Pattern Recognition, pp. 11461–11471, 2022.
+[23] B. Dey, E. Dehaerne, and S. Halder, “Towards improving challenging
+stochastic defect detection in sem images based on improved yolov5,”
+in Photomask Technology 2022, vol. 12293, pp. 28–37, SPIE, 2022.
+[24] G. Jocher, A. Chaurasia, and J. Qiu, “Yolo by ultralytics. 2023,” URL:
+https://github. com/ultralytics/ultralytics, 2023.
+[25] P. Cizmar, A. E. Vladár, B. Ming, M. T. Postek, N. I. of Standards,
+and Technology, “Simulated sem images for resolution measurement,”
+Scanning, vol. 30, no. 5, pp. 381–391, 2008.
+[26] P. Cizmar, A. E. Vladár, and M. T. Postek, “Optimization of accurate
+sem imaging by use of artificial images,” in Scanning Microscopy 2009,
+vol. 7378, pp. 208–213, SPIE, 2009.
+[27] E. Dehaerne, B. Dey, H. Esfandiar, L. Verstraete, H. S. Suh, S. Halder,
+and S. De Gendt, “Yolov8 for defect inspection of hexagonal directed
+self-assembly patterns: a data-centric approach,” in 38th European Mask
+and Lithography Conference (EMLC 2023), vol. 12802, pp. 286–299,
+SPIE, 2023.
+[28] T.-Y. Lin, P. Goyal, R. Girshick, K. He, and P. Dollár, “Focal loss
+for dense object detection,” in Proceedings of the IEEE international
+conference on computer vision, pp. 2980–2988, 2017.

@@ -1,0 +1,967 @@
+
+
+===== Page 1 =====
+
+Soft-Sensing ConFormer: A Curriculum
+Learning-based Convolutional Transformer
+Jaswanth Yella†
+Seagate Technology, MN, USA
+Email: jaswanth.k.yella@seagate.com
+Yu Huang¶
+Seagate Technology, MN, USA
+Email:yu.1.huang@seagate.com
+Chao Zhang§
+Seagate Technology, MN, USA
+Email: chao.1.zhang@seagate.com
+Xiaoye Qian$
+Seagate Technology, MN, US
+xiaoye.qian@seagate.com
+Sthitie Bom
+Seagate Technology, MN, USA
+Email: sthitie.e.bom@seagate.com
+Sergei Petrov∗
+Seagate Technology, MN, USA
+Email:sergei.petrov@seagate.com
+Ali A. Minai
+University of Cincinnati, OH, USA
+Email: ali.minai@uc.edu
+Abstract—Over the last few decades, modern industrial processes have investigated several cost-effective methodologies to
+improve the productivity and yield of semiconductor manufacturing. While playing an essential role in facilitating real-time
+monitoring and control, the data-driven soft-sensors in industries
+have provided a competitive edge when augmented with deep
+learning approaches for wafer fault-diagnostics. Despite the
+success of deep learning methods across various domains, they
+tend to suffer from bad performance on multi-variate softsensing data domains. To mitigate this, we propose a softsensing ConFormer (CONvolutional transFORMER) for wafer
+fault-diagnostic classiﬁcation task which primarily consists of
+multi-head convolution modules that reap the beneﬁts of fast
+and light-weight operations of convolutions, and also the ability
+to learn the robust representations through multi-head design
+alike transformers. Another key issue is that traditional learning
+paradigms tend to suffer from low performance on noisy and
+highly-imbalanced soft-sensing data. To address this, we augment
+our soft-sensing ConFormer model with a curriculum learningbased loss function, which effectively learns easy samples in the
+early phase of training and difﬁcult ones later. To further demonstrate the utility of our proposed architecture, we performed
+extensive experiments on various toolsets of Seagate Technology’s
+wafer manufacturing process which are shared openly along with
+this work. To the best of our knowledge, this is the ﬁrst time that
+curriculum learning-based soft-sensing ConFormer architecture
+has been proposed for soft-sensing data and our results show
+strong promise for future use in soft-sensing research domain.
+Index Terms—Soft-sensing, Wafer Manufacturing, Curriculum
+Learning, Deep Learning
+I. INTRODUCTION
+Context and motivation. With the increase in demand
+and competition in global manufacturing industries, a growing
+† University of Cincinnati, OH, USA
+¶ Florida Atlantic University, FL, USA
+§ University of Chicago, IL, USA
+$ Case Western Reserve University, OH, US
+∗Stanford University, CA, USA
+Fig. 1: An overview illustration of soft-sensing data processes
+and deep learning utility in fault-diagnosis at Seagate.
+concern on production factors such as quality, safety, sustainability, and productivity have become prevalent over the
+last decade. This demands the modern industrial processes to
+turn towards crucial instruments for monitoring and control
+of process variables to react and act accordingly in realtime. However, such key process variables have high complex structure between them and measuring them online has
+economical and technical limitations. In recent years, softsensing technology has become an invaluable tool for online
+analysis and estimation of quality variables, including - but
+not limited to many industries such as chemical plants, nuclear
+power plants, pollution monitoring, and semi-conductor manufacturing industries [1]. These soft-sensors are deﬁned as the
+combination of hardware and software models, where hardto-measure variables are estimated based on other available
+process variables and parameters. The large inﬂux of sensor
+data from each sensor enables engineers further to analyze
+and identify variations in the wafer processing. However,
+the data acquired from soft-sensors are high-dimensional,
+temporal, redundant, imbalanced, and prone to outliers. A
+vast number of such issues could be attributed to transient
+This paper has been accepted by 2021 IEEE International Conference on Big Data
+arXiv:2111.06981v1  [cs.LG]  12 Nov 2021
+
+===== Page 2 =====
+
+and intermittent failures. Hence, at times distributional shifts
+are observed between training and test data splits resulting
+in drastic differences in model performance. Therefore, the
+study of multi- variate time series wafer fault detection in
+soft-sensing technology is of great signiﬁcance.
+In the past, several machine learning based feature extraction methods have been proposed. Speciﬁcally, linear feature
+extractors such as Principal Component Analysis (PCA) [2],
+[3], Canonical Correlation Analysis (CCA) [4], and Partial
+Least Squares (PLS) [5] have been utilized for fault-diagnosis
+problems. However, due to the inherently complex nature of
+soft-sensing data, these linear methods often fail to extract
+relevant features for classiﬁcation or regression tasks in faultdiagnosis. To address this issue, deep learning methods have
+been adopted to extract and analyse unusual phenomena in
+the data. Recently, autoencoder variants such as the gatedstacked autoencoder [6] and quality stacked autoencoder [7]
+were proposed to overcome the weaknesses of shallow learning approaches. Recurrent neural network variants have had
+success in text and time-series domains, speciﬁcally, Long
+Short Term Memory (LSTM) networks have been utilized for
+modeling high-dimensional multivariate data [8], [9]. However, these models fail to scale on soft-sensing data where
+temporal data shifts and frequent outliers are observed [10].
+While transformers employs multi-head self attention blocks
+to alleviate the long-term dependency issues by learning global
+positional information [11], they still require large amount
+of data and suffer from quadratic complexity. Convolutional
+neural networks, on the other hand, are fast, light-weight,
+and are adept at exploiting local information, but they still
+struggle to learn global context information efﬁciently [12]–
+[14], which is essential for data with intrinsic data shifts.
+Apart from these nuances, the traditional learning paradigm
+of the deep learning models hinder the performance of the
+soft-sensing fault detection task due to the inherent noise and
+high-imbalance issues associated in the toolsets. To address
+the complexities of the soft-sensing toolset, there is a need for
+an efﬁcient model along with sophisticated learning strategy
+which sorts the training examples by difﬁculty and trains
+accordingly.
+Our Contribution. To address the aforementioned problems, we propose a curriculum learning-based soft-sensing
+convolutional transformer (ConFormer) which addresses three
+important issues. First, to efﬁciently exploit locality and lowlevel information in the multi-variate data, we utilize the simple, fast and light-weight 1-D convolution based modules in
+our architecture. Second, inspired by the multi-head attention
+design in the transformer, we deﬁne multi-head convolutional
+modules for learning global contextual information and pass
+these representations to a global average pooling layer which is
+processed further by a fully-connected layer for fault-diagnosis
+classiﬁcation. And third, to deal with complex yet noisy
+soft-sensing data, we utilize a curriculum-learning based loss
+function i.e., SuperLoss [15], which assigns high conﬁdence
+to less complex/easier samples and low conﬁdence to difﬁcult
+samples. To demonstrate the effectiveness of our proposed
+model, we apply it to multiple toolsets of Seagate Technology’s real-time soft-sensing based wafer manufacturing
+toolsets and compare it with existing baselines. Our results
+show that the curriculum learning-based soft-sensing ConFormer outperforms existing baselines, demonstrating its utility. To further encourage novel solutions for the soft-sensing
+research domain, we open-source the toolset for public use. We
+provide a brief overview of Seagate’s process management and
+machine learning utility for fault-diagnosis in ﬁgure 1. With
+these aspects in mind, the novel contributions of the work are
+as follows:
+1) We propose ConFormer, which replaces attention in the
+transformer architecture with multi-head 1-D convolutions to better capture representations in highly imbalanced historical soft-sensing data. We further augment
+the training procedure with SuperLoss, a curriculum
+learning-based loss function to train efﬁciently easier
+samples ﬁrst and difﬁcult samples later. To the best
+of our knowledge, this is the ﬁrst time a curriculum
+learning-based soft-sensing ConFormer architecture has
+been proposed for soft-sensing multi-task classiﬁcation.
+2) Experimental results compared with state-of-the-art
+models indicate that our proposed architecture demonstrates superior performance and utility for future use
+cases in soft-sensing domain.
+3) Our ablation studies suggest that curriculum learning
+using SuperLoss is helpful in improving performance for
+data that is heavily imbalanced and has many outliers.
+4) To further encourage novel solutions in the future, we
+open-source Seagate Technology’s wafer manufacturing tool-sets containing multi-variate time-series softsensing data speciﬁcally for fault diagnostics multi-task
+classiﬁcation.
+II. CURRICULUM LEARNING-BASED SOFT-SENSING
+CONFORMER
+In this section, we present the curriculum learning-based
+soft-sensing ConFormer. We introduce the soft-sensing conformer idea in section II-A. In section II-B, we brieﬂy describe
+the curriculum learning paradigm and introduce the super-loss
+function utilized for this work.
+A. ConFormer: Convolutional Transformer
+In multi-variate time-series data, a convolution is performed
+by applying a ﬁlter and sliding it over the series. In many
+recently proposed architectures, such convolution blocks are
+deﬁned, applied and coupled with activation functions to
+achieve classiﬁcation or regression. Recently, transformer designs have inspired many models where attention is replaced
+or coupled with convolutions. In this work, we achieve softsensing data classiﬁcation through similar design and deﬁne
+the Convolutional TransFormer (ConFormer) architecture below.
+Input Embedding: The initial input is provided to a dense
+layer initially which is deﬁned as follows
+X = σ(FFN(input))
+
+===== Page 3 =====
+
+Fig. 2: An overview of ConFormer Architecture. In the upper part of the ﬁgure, we show the conformer block which can
+be deﬁned with multiple custom convolutional modules as shown in below ﬁgure. The convolutional block is a sandwich
+style declaration between two dense layers and a dilated convolution in the middle while regularizing the layers with batch
+normalization, dropout and swish activation functions.
+where FFN(.) is a dense layer and σ is sigmoid activation
+function. This way the input representation is reduced to a
+lower dimension space where X ∈RD and D is the dimension
+size less than soft-sensing input dimension. This embedded
+representation is passed to multiple ConFormer blocks. We
+deﬁne the components of a ConFormer block below.
+ConFormer Block: The convolution module of the architecture essentially consists of a gated linear unit, a convolution
+layer and a residual skip connection layer. First, the input X
+is passed through a gated linear unit which is deﬁned as
+X1 = W AX ⊙sigmoid
+ W BX
+
+(1)
+where W A and W B are trainable parameters associated with
+the gated linear unit layer. To further extract the abstract
+features from X1, a 1-D dilated convolution [16] is applied
+to create feature maps with ﬁlters of kernel size K. In our
+experiments, we used various kernel size for each convolution
+module. We utilize dilation due its effectiveness in skipping
+d values of the input while improving the receptive ﬁeld of
+input without additional pooling and with no loss of resolution.
+As a side-effect, this also allows the model to learn relations
+between data points that are far apart. The dilated convolution
+(Conv(.)) operation can be formulated as:
+X2 = Conv(X1)
+Then the convolved output is effectively regularized by
+applying batch normalization. We further utilize a self-gating
+activation function known as swish activation function [17]
+which is given as f(x) = x.σ(x).
+Further, a feed forward network is applied along with
+dropout resulting in an output denoted as X2′. The output
+of the network X2′ is summed with the original input X,
+thereby creating a skip connection in the module which helps
+in faster convergence and avoids overﬁtting. The output for
+X3 is given as follows:
+X3 = FFN(X2′) + X
+(2)
+This sandwich style design of convolutional module is inspired
+by models proposed previously for natural language processing
+and speech recognition [13], [18].
+Global Average Pooling: Upon receiving the outputs from
+multiple ConFormer blocks, we concatenate them and perform
+global averaging pool (GAP) operation as follows.
+Z = GAP(Concat([X3
+1, X3
+2, X3
+3]))
+where GAP(.) is the global averaging pool function and
+Concat(.) operation concatenates the output received from
+the 3 conformer blocks declared in the study. The global
+average pooling operation enables the model to learn global
+contextual information alike in Transformers [11]. Inspired by
+the CNNs global contextual learning capacity shown in [19],
+we utilized squeeze-and-excitation inside the conformer block
+for learning global contextual information. However we found
+the simple GAP operation over multiple ConFormer blocks to
+be much effective than utilizing squeeze-and-excitation within
+each ConFormer block.
+Classiﬁcation: After performing GAP on the concatenated
+outputs of ConFormer blocks, we regularize the output Z
+using dropout and apply another FFN(.) along with sigmoid
+activation function for classifying the tasks. We denote them
+as follows:
+Y = σ(FFN(Dropout(Z)))
+where Dropout(.) function is applied to Z, then FFN(.)
+is applied to convert the Z into output dimension space, and
+then sigmoid activation function (σ) is applied to convert the
+non-linear values of the layer to probability outputs. In our
+results, we show the effectiveness of the model on various
+toolsets of Seagate’s wafer manufacturing plants.
+B. Super Loss: A Curriculum Learning-Based Loss Function
+While convolutional neural nets have evolved over the last
+few years to accommodate more layers, to reduce the size
+of the ﬁlters, and even to eliminate the fully-connected layers,
+relatively less attention has been paid to improving the training
+process. As a result, the traditional training procedure hinders
+the performance of the model due to the various types of noise
+(i.e., label noise and feature noise) present in the data [20].
+Soft-sensing data invariably suffers from such noise due to
+corrupted/damaged sensors, intermittent/transient failures, or,
+
+===== Page 4 =====
+
+label assignment consensus issues across different engineering
+teams. Moreover, heavy class/task imbalance in the softsensing data makes the performance of the model much worse.
+In this section, we address the soft-sensing data imbalance
+and noise issue by incorporating a robust loss function based
+on curriculum learning which organizes the samples based on
+their complexity and further exploits clean data efﬁciently.
+We ﬁrst deﬁne the weighted binary cross-entropy loss for
+multi-task classiﬁcation as:
+ℓi(yi, ˆyi) = −(βyi log(ˆyi) + (1 −yi) log(1 −ˆyi))
+(3)
+where β is the support to deal with class/task imbalance, and
+yi and ˆyi are the ground truth and predictions of the sample,
+respectively. The support β is given as β =
+N
+2m∗nt
+j where N
+is the total number of samples in the toolset, m is the total
+number of tasks, and nt
+j is the number of samples in the task.
+In an ideal scenario, where the data is balanced and free
+from noise, the gradient updates for the clean labels are
+consistent during training, enabling the model to achieve
+stability and faster convergence. However, this is rare in softsensing data, hence the aforementioned weighted-binary cross
+entropy utilized heavily for class/task imbalance problems is
+not practical to learn robust representations and achieve ideal
+performance. To address this, we incorporate SuperLoss [15]
+to dynamically formulate curriculum learning as:
+Lλ (ℓi, σi) = (ℓi −τ) σi + λ (log σi)2
+(4)
+where τ is a threshold to separate easy samples and hard
+samples based on an empirical value. In our experiments, we
+use log(C), where C is the number of classes/tasks involved
+in the tooslet. Here λ is a regularizing parameter for the loss
+function which is set to 0.25 in our experiments, and σi is
+the conﬁdence associated with the loss which ampliﬁes the
+contribution of easy samples and no improvement for hard
+samples. It can be solved in closed-form using an inverse
+function as:
+σ∗
+λ (ℓi) = e
+−W
+
+1
+2 max
+
+−2
+e , ℓi−τ
+λ
+
+(5)
+Here W stands for Lambert W function, which is an inverse
+function taking the the li and τ as parameters to solve for the
+conﬁdence value. The parameters σ∗and τ are scalar units
+computed through back-propagation.
+III. EXPERIMENTAL SETUP
+In this section, we provide details on the experiments conducted and compared with the baseline models to demonstrate
+the performance and efﬁciency of our curriculum learning
+based ConFormer. To perform these experiments, we use Seagate Technology’s soft-sensing data and evaluate on various
+toolsets that are openly available for comparison studies. The
+wafer manufacturing process is outlined in Fig. 1 and 3 which
+are referred from https://github.com/Seagate/softsensing data.
+Fig. 3: An overview of wafer manufacturing process stages
+where the ﬁnal measurement result determines the quality of
+the wafer.
+A. Seagate Wafer Soft-sensing Tooslet
+In a real-time industrial setting, the function mapping softsensor measurements inputs to an output measurement denoting the faults in the wafer as part of a binary classiﬁcation
+task is extremely non-linear. This is due to the fact that
+measurements from various soft-sensors carry different information about characteristics and dynamics. Another factor is
+transient and intermittent faults that occur sporadically during
+the processes [21], [22]. These faults are arbitrary and it is
+difﬁcult to pinpoint their causes due to their complex nature.
+Such faults do not occur often, and when they do, they tend to
+disappear mysteriously. Complex toolsets with such faults are
+rare and extremely valuable – especially in the soft-sensing
+domain – to study the limitations and foster novel solutions.
+Seagate attempts to provide large scale soft-sensing toolsets
+that are queried and processed from Seagate wafer manufacturing factories. These real-time multi-variate time-series toolsets
+are retrieved from manufacturing machines that are high-
+
+===== Page 5 =====
+
+Fig. 4: Overview of the main categories of processes on the
+left and the corresponding critical measurement variables per
+each category on the right
+dimensional and extremely imbalanced. Each wafer used for
+Seagate hard drives undergoes several processing stages such
+as metal deposition, dielectric deposition, etching, electroplating, planarization and lithography [23]. At every processing
+stage, hundreds of soft-sensors are deployed in the processing
+machines to monitor the health of the wafer. For every few
+seconds, these sensors collect measurements of the wafer
+which are stored in Seagate’s big data servers for downstream
+control and monitoring tasks.
+Each wafer in process goes through several processing
+stages and is represented as a single time-series data point.
+At each processing stage, multiple critical measurements are
+estimated for each category as shown in Fig.4. These estimates
+of each category are continuous values calculated through
+non-linear methods. The engineers at Seagate inspect these
+measurements and attest to the quality of wafer based on
+some internal heuristic threshold values for each category.
+For the sake of simplicity, we retrieved the discrete information of wafer diagnosis i.e., pass or fail, as suggested by
+the Seagate’s wafer manufacturing team. This simpliﬁes the
+classiﬁcation task by mapping the time-series measurements
+from each processing stage of the wafer into a multi-task
+binary classiﬁcation problem.
+B. Pre-processing
+In total, we provide 3 toolsets of soft-sensing data where
+each toolset covers 92 weeks of data. The data is split as
+follows: ﬁrst 70 weeks as the training set, the following 14
+weeks as the validation set, and the remaining 8 weeks as
+the test set. The raw data of each tooslet is further preprocessed for use with machine learning models. This includes
+TABLE I: Summary for the data sets
+P1
+P3
+P2
+Task
+pos
+neg
+pos
+neg
+pos
+neg
+1
+295
+8328
+256
+6433
+109
+2496
+2
+40
+12747
+773
+26811
+335
+12857
+3
+291
+56198
+2069
+78844
+46
+1026
+4
+188
+14697
+582
+27809
+15
+4180
+5
+568
+40644
+247
+9652
+300
+22254
+6
+863
+84963
+884
+27337
+166
+40811
+7
+2501
+153970
+2108
+53921
+875
+75706
+8
+490
+2919
+2016
+77473
+1097
+18890
+9
+104
+29551
+644
+23305
+537
+4247
+10
+57
+10813
+270
+25651
+1547
+129914
+11
+306
+47219
+3792
+354328
+removing redundant sequences, imputing missing values, and
+scaling the features using a min-max scaler. We further include
+necessary auxillary information by concatenating processrelevant categorical variables to the time-series data. However,
+to preserve conﬁdentiality, we de-identify the toolsets, which
+includes anonymizing the data headers. In the following subsections, we provide more details on each toolset.
+The toolsets are as follows:
+P1: In the P1 toolset, there are 90 sensors capturing information related to deposition and etching steps. The data
+is captured from these sensors for every second and is preprocessed as mentioned earlier. The post-processed data is split
+into training, validation, and test sets. There are 194k samples
+in the training set, 34k samples in the validation set, and 27k in
+the test set. Each toolset has a maximum of 2 timesteps and we
+pad the instances that are less than the maximum length. We
+further concatenate the one-hot encoded categorical variables
+with the sensor data, thus yielding a total of 817 features
+which includes the 90 sensors data values as features. There
+are 11 measurement tasks represented as binary classes/tasks
+with about 1.2% of them as positive samples.
+P2: The pre-processing for the P2 toolset is carried out
+similar to P1. The maximum timseries length is 2. Here
+2 indicates, 2 different measurements of the same wafer
+at different time points. The data consists of 498 features
+where 43 of them are sensor measurements and the rest are
+categorical variables associated with P2 toolset. In total, the
+data contains 205k training, 35k validation, and 20k testing
+samples. There are 10 measurement tasks identiﬁed as binary
+classes/tasks with 1.6% of them are positive samples.
+P3: The P3 tooslet is just as heavily imbalanced as P1
+and P2. There are 57 sensors and in total there are 1484
+features with categorical variables. In this toolset, there are
+457k samples for training, 80k for validation, and 66k are
+test. There are 11 measurements to be classiﬁed similar to the
+other toolsets and 1.9% of the samples are positive.
+The number of positives and negatives of each task
+for all the toolsets are shown in table I. All the data
+for the aforementioned toolsets is available publicly at
+https://github.com/Seagate/softsensing data.
+
+===== Page 6 =====
+
+C. Baseline Methods
+To demonstrate the superiority of our model, we compare it
+with two baseline models. To ensure fairness, during our evaluation we used the same toolset splits i.e., training, validation,
+and test sets across all the methods.
+The following baseline methods are used:
+LSTM: Long Short Term Memory (LSTM) is a special
+variant of Recurrent Neural Networks (RNN) introduced by
+Hochreiter and Schmidhuber [24]. A standard RNN suffers
+from the vanishing gradient issue. In order to tackle that issue,
+LSTMs incorporate gating functions into their state dynamics.
+In the past, Ke et al. [8] have applied LSTMs on soft-sensing
+data for regression tasks. In this work, we use them as baseline
+for multi-task classiﬁcation and use the weighted binary crossentropy loss to handle the imbalance issue.
+MLSTM-FCN: In this work, Karim et al. propose an
+architecture that combines LSTM and CNN models for
+multi-variate time-series classiﬁcation tasks [25]. They utilize
+squeeze and excite blocks [19] for 1-D convolutions that
+adaptively recalibrate the input feature maps by exploiting the
+contextual information outside the local receptive ﬁeld.
+D. Training and Hyper-parameter Setting
+We implemented our model in Keras 2.3. We tested our
+model on multiple hyper-parameters and chose the best performing values. For embedding size, we chose 64 after outperforming from the pool of size parameters [32,64,128,256].
+Similarly, we tried different dropout values from the set
+ranging from no dropout to 0.8 dropout and chose 0.5. We
+further regularized the model by trying different values in the
+set [1e-3,1e-4,1e-5,1e-6] and chose 1e-4 as our regularizing
+value. For optimization, we used adam [26] with the scheduled
+learning rate (lr) set as follows:
+lr = 0.1 ∗d−0.5 ∗min
+ step −0.5, step ∗warmup−1.5
+(6)
+Here step refers to the epoch step, d is dimension of the
+embedding vector, and warmup is set to 4000. We trained
+our model for 500 epochs along with early-stopping based on
+loss with patience set to 100 epochs. The experiments for this
+work were trained on an AWS p3.2xlarge instance with 16 GB
+NVIDIA Tesla V100 GPU.
+IV. RESULTS
+In this section, we compare our proposed curriculum
+learning-based ConFormer with the existing state-of-the-art
+models proposed for multivariate time-series classiﬁcation
+tasks. To evaluate and compare the performance of the models,
+we report Area Under Receiver Operating Curve (AUROC)
+scores for each toolset used in the experiments. During our
+experiments, instead of individually tuning models for each
+toolset, we aimed to design a single generalizable model for
+all the toolsets. This is a critical aspect of this work, as one of
+the primary challenges is to ﬁnd optimal hyper-parameters for
+each model, which is not practical for a data with temporal
+data shifts and noise.
+TABLE II: An overall AUROC performance comparision of
+methods on P1 toolset
+Task
+ConFormer
+MLSTM-FCN
+LSTM
+Task-1
+0.716±0.077
+0.68±0.115
+0.681±0.08
+Task-2
+0.716±0.075
+0.609±0.07
+0.74±0.086
+Task-3
+0.806±0.004
+0.82±0.041
+0.823±0.007
+Task-4
+0.884±0.017
+0.874±0.014
+0.871±0.009
+Task-5
+0.665±0.028
+0.547±0.01
+0.521±0.037
+Task-6
+0.637±0.041
+0.667±0.033
+0.484±0.027
+Task-7
+0.653±0.011
+0.652±0.027
+0.667±0.006
+Task-8
+0.584±0.005
+0.8±0.033
+0.676±0.106
+Task-9
+0.754±0.061
+0.799±0.046
+0.683±0.092
+Task-10
+0.944±0.004
+0.868±0.052
+0.841±0.09
+Task-11
+0.878±0.021
+0.748±0.084
+0.799±0.012
+The curriculum learning-based soft sensing ConFormer
+shows promising results without the need for excessive parameter tuning. In previous work, Gulati et al [13] demonstrated
+the utility of swish activation function and suggested its beneﬁt
+in convergence of deep learning models. We attest to this
+ﬁnding and further suggest that the swish activation also
+eliminates the need for identifying the regularizing parameters
+for the kernel weights of convolutional and dense network
+modules, while providing optimal performance. Indeed, the
+swish activation function also enabled the model to use a
+dropout of only 0.15 which suggests that ConFormer architecture is effectively regularizing the layers without the need
+for providing external regularization of the weights, whereas in
+the case of other architectures i.e., MLSTM-FCN and LSTM
+models, a signiﬁcant amount of time has to be spent on
+ﬁnding the best possible parameters for the kernel regularizer
+weights and dropout to handle the imbalance issue. TO further
+demonstrate the quality and performance of the model, in the
+following sections we will review the results obtained on the
+tool sets of Seagate.
+Results on P1: In table II, we provide the comparison
+results for the P1 toolset. Here we observe that ConFormer
+model outperforms the baseline models in most of the tasks
+highlighted in the table. Although, the imbalance ratio of the
+P1 toolset is 1.2%, our proposed model is unaffected by the
+ratio, whereas in other models which performed ¡0.8 AUROC
+score certainly seem to be affected by the unavailability of
+positives. Some of the lower task performance of the baselines
+is also due to the hidden outliers in the toolset. Our model
+achieves at least a 20 percent improvement on 11 soft-sensing
+measurements task classiﬁcation for P1 with 650k trainable
+parameters. The improvement is much greater on some tasks.
+Results on P2: Similar to the P1 experiment, we test the
+models on the P2 toolset. Unlike P1, this toolset has only
+10 measurements for classiﬁcation. However, the imbalance
+ratio is still similar to the other toolsets. However, since we’re
+splitting our toolsets based on time, some of the tasks have
+do not have any positives or negatives available for that timeframe. Hence, one may observe no scores to be reported for
+
+===== Page 7 =====
+
+TABLE III: An overall AUROC performance comparision of
+methods on P2 toolset
+Task
+ConFormer
+MLSTM-FCN
+LSTM
+Task-1
+0.28±0.049
+0.29±0.077
+0.35±0.094
+Task-2
+0.936±0.012
+0.923±0.008
+0.91±0.014
+Task-3
+0.495±0.063
+0.665±0.084
+0.56±0.137
+Task-4
+–±–
+–±–
+–±–
+Task-5
+0.542±0.055
+0.54±0.1
+0.512±0.012
+Task-6
+–±–
+–±–
+–±–
+Task-7
+0.50±0.033
+0.596±0.018
+0.591±0.032
+Task-8
+0.5±0.029
+0.702±0.038
+0.51±0.047
+Task-9
+–±–
+–±–
+–±–
+Task-10
+0.806±0.026
+0.831±0.003
+0.82±0.007
+TABLE IV: An overall AUROC performance comparision of
+methods on P3 toolset
+Task
+ConFormer
+MLSTM-FCN
+LSTM
+Task-1
+0.874±0.008
+0.87±0.007
+0.868±0.003
+Task-2
+0.702±0.006
+0.642±0.011
+0.702±0.003
+Task-3
+0.685±0.024
+0.602±0.02
+0.619±0.024
+Task-4
+0.855±0.014
+0.754±0.009
+0.825±0.011
+Task-5
+0.446±0.037
+0.461±0.021
+0.535±0.046
+Task-6
+0.712±0.035
+0.694±0.032
+0.725±0.009
+Task-7
+0.796±0.019
+0.808±0.007
+0.813±0.001
+Task-8
+0.759±0.008
+0.688±0.003
+0.772±0.005
+Task-9
+0.604±0.088
+0.418±0.133
+0.773±0.051
+Task-10
+0.762±0.021
+0.719±0.016
+0.78±0.016
+Task-11
+0.837±0.005
+0.836±0.005
+0.80±0.004
+those tasks. Our results in table III suggest that all the models
+equally suffer from sparsity of the data. Although ConFormer
+performance superior in Task-2 and Task-5, the MLSTM-FCN
+model performance is better than ConFormer in Task-3, Task7, Task-8 and Task-9. However, with our constraint of an auroc
+score over 0.8 for consideration of deployment, the superiority
+of the MLSTM-FCN performance is still not considered to be
+deployable due to it’s sub-par efﬁciency.
+Results on P3: The P3 toolset is comparatively larger than
+the other toolsets in terms of the number of features and
+training points involved. More details of the toolset are given
+in the previous section. Due to its high dimensionality, when
+compared to P1 and P2, this toolset takes at least 50 seconds
+per epoch, whereas P1 and P2 average around 35 seconds per
+epoch. The model for P3 takes at least 45 mins to 1 hour to
+converge to a solution on the system used. When compared to
+the baseline models, the ConFormer model achieve atleast 10%
+improvement in classifying the soft-sensing measurements,
+and much more in some cases. Also, note that LSTM has
+performed equally better in certain tasks especially Task-7
+which is greater than 0.8 auroc score. This suggests that LSTM
+model may act as complimentary for task-speciﬁc deployment.
+Overall, the studies on multiple toolsets suggest that our
+curriculum learning-based ConFormer model is effective in
+Fig. 5: An AUROC plot with ConFormer and its baseline
+models using P1 toolset on Task-4
+Fig. 6: An AUROC plot with ConFormer and its baseline
+models using P2 toolset on Task-2
+learning robust and helpful representations of soft-sensing
+data. In our experiments, we emphasized on generalized models and we didnot perform intensive hyper-parameter tuning
+for each speciﬁc toolsets due to the explosive number of
+parameters to be considered for each toolset. Although in
+certain tasks of toolsets (P1,P2 and P3), the ConFormers
+homogeneity couldn’t be effeciently leveraged. One may take
+beneﬁt from toolset based hyper-parameter tuning. An another
+direction could be an ensemble approach since one can observe
+the task performance of each model is complimentary While
+transformers have shown to be effective in the NLP domain,
+
+===== Page 8 =====
+
+Fig. 7: An AUROC plot with ConFormer and its baseline
+models using P3 toolset on Task-1
+our initial concern pertained to the hyper-parameter search
+and most importantly the quadratic time complexity of the
+model (O(L.N 2) where L is number of heads). The existing
+work on Convolutional Transformers [13], [14], show that
+transformers and ConFormers achieve similar performance
+but the ConFormer can perform with lower time complexity
+(O(L.N)). However, at the time of writing this paper, few
+alternate research investigations have been conducted utilizing
+transformers, graph neural networks, and other deep learning
+paradigms for soft-sensing data and we suggest readers to
+check these works [27]–[30].
+The results, when compared with baseline models, suggest
+that ConFormer model is able to leverage multiple contexts in
+learning representation i.e., local exploitation of convolutions
+and global information extraction through multi-head convolution global average pooling. At the same time, the curriculum
+learning-based SuperLoss function further augments the model
+performance via an easy-to-difﬁcult learning paradigm.
+A. Ablation Studies and Robustness Testing
+In order to test the effectiveness of our proposed architecture, in this section we show some further tests that we
+applied to the curriculum learning-based ConFormer for softsensing data. To simplify our experiments, we narrowed down
+our studies to Task-4 in P1 tool-set. However, we observed
+similar performance on other tasks and tool-sets.
+Beneﬁt of Using Curriculum Learning: To test the effectiveness of curriculum learning loss function i.e., SuperLoss,
+we performed a study where we used the weighted binary
+cross-entropy loss instead. In the ﬁrst two rows of Table V,
+we show that curriculum learning based SuperLoss helps in
+consistently achieving better performance. The 0% column
+indicate there is no corruption of the labels involved.
+TABLE V: Robustness test performance of Task-4 with recall
+as assessment metric. Percentage in the header indicate the
+percentage of positive and negative labels corrupted in training
+set.
+Model
+0%
+20%
+40%
+60%
+ConFormer-SuperLoss
+0.812
+0.604
+0.771
+0.667
+ConFormer-BCE
+0.799
+0.146
+0.083
+0.375
+MLSTM-FCN
+0.791
+0.000
+0.000
+0.000
+LSTM
+0.812
+0.000
+0.000
+0.000
+Robustness Testing: In this experiment, we corrupt the
+labels by arbitrarily ﬂipping a percentage set of label class/task
+in the training data and study the robustness of our proposed
+model on the test set. The motivation behind this study is that
+soft-sensing labels tend to be classiﬁed as false positives or
+false negatives for a couple of reasons. First, although multiple
+teams in Seagate strictly scrutinize the quality of the wafer, due
+to consensus conﬂict which may arise across global engineering teams, a wafer could be mis-classiﬁed. Second, since we
+simplify the problem by converting the continuous value to a
+binary value based on an internal heuristic threshold value,
+there exist the possibility of inherent corruption associated
+with reliance on the threshold of the continuous value output
+received to distinguish the wafer as a pass or fail. We compare
+our model with existing models and show their performance in
+table V for Task-4 of P1 toolset. We chose Task-4 of P1 toolset
+to report the recall scores as it has one of the best performance
+among other tasks across all models despite the task sample
+imbalance for binary classiﬁcation. Our recall scores for this
+test indicate strongly that the ConFormer model is robust to
+the noise when compared with other baseline models even
+without SuperLoss. Whereas other baseline models suffered
+with performance especially with corruption involved. This
+is predominantly due to the noise and imbalance associated
+in the toolset. A subtle change in the toolset is completely
+affecting the baseline models performance. However, utilizing
+a curriculum learning-based loss function in our framework
+improves robustness further. This suggests that our proposed
+architecture is able to learn helpful representations despite the
+strong imbalance in the tooslet.
+V. CONCLUSION
+In this work, we propose a curriculum learning-based ConFormer (CONvolutional transFORMER) for soft-sensing data
+classiﬁcation. The soft-sensing data is extremely complex, imbalanced, and noisy. Due to these factors, traditional learning
+mechanisms and existing models fail to achieve satisfactory
+performance. We utilize a convolution-based architecture in
+a multi-head transformer design to improve on the limitations of existing convolutional models and augment it with
+a curriculum learning-based loss function. Our systematic
+experiments on various soft-sensing toolsets from Seagate
+manufacturing processes suggest promising utility for our
+
+===== Page 9 =====
+
+proposed framework for use and future extensibility in the
+soft-sensing research domain.
+ACKNOWLEDGMENT
+We sincerely thank Seagate Technology for the support on
+this study, the Seagate Lyve Cloud team for providing the data
+infrastructure, and the Seagate Open Source Program Ofﬁce
+for open sourcing the data sets and the code. Special thanks to
+the Seagate Data Analytics and Reporting Systems team for
+inspiring the discussions.
+REFERENCES
+[1] O. Savytskyi, M. Tymoshenko, O. Hramm, and S. Romanov, “Application of soft sensors in the automated process control of different
+industries,” E3S Web of Conferences, vol. 166, p. 05003, 01 2020.
+[2] Q. Jiang, X. Yan, and B. Huang, “Performance-driven distributed
+pca process monitoring based on fault-relevant variable selection
+and bayesian inference,” IEEE Transactions on Industrial Electronics,
+vol. 63, no. 1, pp. 377–386, 2015.
+[3] X. Yuan, Z. Ge, B. Huang, Z. Song, and Y. Wang, “Semisupervised jitl
+framework for nonlinear industrial soft sensing based on locally semisupervised weighted pcr,” IEEE Transactions on Industrial Informatics,
+vol. 13, no. 2, pp. 532–541, 2016.
+[4] Z. Chen, S. X. Ding, K. Zhang, Z. Li, and Z. Hu, “Canonical correlation
+analysis-based fault detection methods with application to alumina
+evaporation process,” Control Engineering Practice, vol. 46, pp. 51–58,
+2016.
+[5] X. Yuan, J. Zhou, Y. Wang, and C. Yang, “Multi-similarity measurement
+driven ensemble just-in-time learning for soft sensing of industrial
+processes,” Journal of Chemometrics, vol. 32, no. 9, p. e3040, 2018.
+[6] Q. Sun and Z. Ge, “Deep learning for industrial kpi prediction: When
+ensemble learning meets semi-supervised data,” IEEE Transactions on
+Industrial Informatics, vol. 17, no. 1, pp. 260–269, 2020.
+[7] X. Yuan, J. Zhou, B. Huang, Y. Wang, C. Yang, and W. Gui, “Hierarchical quality-relevant feature representation for soft sensor modeling:
+a novel deep learning strategy,” IEEE transactions on industrial informatics, vol. 16, no. 6, pp. 3721–3730, 2019.
+[8] W. Ke, D. Huang, F. Yang, and Y. Jiang, “Soft sensor development
+and applications based on lstm in deep neural networks,” in 2017 IEEE
+Symposium Series on Computational Intelligence (SSCI).
+IEEE, 2017,
+pp. 1–6.
+[9] F. Karim, S. Majumdar, H. Darabi, and S. Chen, “Lstm fully convolutional networks for time series classiﬁcation,” IEEE access, vol. 6, pp.
+1662–1669, 2017.
+[10] Q. Sun and Z. Ge, “A survey on deep learning for data-driven soft
+sensors,” IEEE Transactions on Industrial Informatics, 2021.
+[11] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez,
+Ł. Kaiser, and I. Polosukhin, “Attention is all you need,” in Advances
+in neural information processing systems, 2017, pp. 5998–6008.
+[12] W. Han, Z. Zhang, Y. Zhang, J. Yu, C.-C. Chiu, J. Qin, A. Gulati,
+R. Pang, and Y. Wu, “Contextnet: Improving convolutional neural
+networks for automatic speech recognition with global context,” arXiv
+preprint arXiv:2005.03191, 2020.
+[13] A. Gulati, J. Qin, C.-C. Chiu, N. Parmar, Y. Zhang, J. Yu, W. Han,
+S. Wang, Z. Zhang, Y. Wu, and R. Pang, “Conformer: Convolutionaugmented transformer for speech recognition,” 2020.
+[14] Z. Liu, S. Luo, W. Li, J. Lu, Y. Wu, S. Sun, C. Li, and L. Yang,
+“Convtransformer: A convolutional transformer network for video frame
+synthesis,” 2021.
+[15] T. Castells, P. Weinzaepfel, and J. Revaud, “Superloss: A generic loss for
+robust curriculum learning,” Advances in Neural Information Processing
+Systems, vol. 33, 2020.
+[16] F. Yu and V. Koltun, “Multi-scale context aggregation by dilated
+convolutions,” 2016.
+[17] P. Ramachandran, B. Zoph, and Q. V. Le, “Searching for activation
+functions,” 2017.
+[18] Z. Wu, Z. Liu, J. Lin, Y. Lin, and S. Han, “Lite transformer with longshort range attention,” 2020.
+[19] J. Hu, L. Shen, and G. Sun, “Squeeze-and-excitation networks,” in
+Proceedings of the IEEE conference on computer vision and pattern
+recognition, 2018, pp. 7132–7141.
+[20] X. Zhu and X. Wu, “Class noise vs. attribute noise: A quantitative study,”
+Artiﬁcial intelligence review, vol. 22, no. 3, pp. 177–210, 2004.
+[21] R. Bakhshi, S. Kunche, and M. Pecht, “Intermittent failures in hardware
+and software,” Journal of Electronic Packaging, vol. 136, p. 011014, 03
+2014.
+[22] S. Singh, “Decision forest for root cause analysis of intermittent faults,”
+IEEE TRANSACTIONS ON HUMAN-MACHINE SYSTEMS, vol. 42, p.
+1818, 11 2012.
+[23] Wikipedia, “Semiconductor device fabrication — Wikipedia, the free encyclopedia,” http://en.wikipedia.org/w/index.php?title=Semiconductor%
+20device%20fabrication&oldid=1037063416, 2021, [Online; accessed
+05-August-2021].
+[24] S. Hochreiter and J. Schmidhuber, “Long short-term memory,” Neural
+computation, vol. 9, no. 8, pp. 1735–1780, 1997.
+[25] F. Karim, S. Majumdar, H. Darabi, and S. Harford, “Multivariate lstmfcns for time series classiﬁcation,” Neural Networks, vol. 116, pp. 237–
+245, 2019.
+[26] D. P. Kingma and J. Ba, “Adam: A method for stochastic optimization,”
+2017.
+[27] C. Zhang and S. Bom, “Auto-encoder based model for high-dimensional
+imbalanced industrial data,” 2021.
+[28] C. Zhang, J. Yella, Y. Huang, X. Qian, S. Petrov, A. Rzhetsky, and
+S. Bom, “Soft sensing transformer:hundreds of sensors are worth a single
+word,” in 2021 IEEE International Conference on Big Data (Big Data).
+IEEE, 2021.
+[29] X. Qian, C. Zhang, J. Yella, Y. Huang, S. Petrov, M.-C. Huang, and
+S. Bom, “Soft sensing model visualization: Fine-tuning neural network
+from what model learned,” in 2021 IEEE International Conference on
+Big Data (Big Data).
+IEEE, 2021.
+[30] Y. Huang, C. Zhang, J. Yella, X. Qian, S. Petrov, Y. Tang, X. Zhu, and
+S. Bom, “Grassnet: Graph soft sensing neural networks,” in 2021 IEEE
+International Conference on Big Data (Big Data).
+IEEE, 2021.

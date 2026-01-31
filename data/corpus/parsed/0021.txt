@@ -1,0 +1,679 @@
+
+
+===== Page 1 =====
+
+Development of transmon qubits solely
+from optical lithography on 300mm wafers
+N. Foroozani,1, 2 C. Hobbs,3 C. C. Hung,1, 2 S. Olson,3 D. Ashworth,3 E. Holland,3 M. Malloy,3 P. Kearney,3 B.
+O’Brien,3 B. Bunday,3 D. DiPaola,3 W. Advocate,3 T. Murray,3 P. Hansen,3 S. Novak,3 S. Bennett,3 M. Rodgers,3
+B. Baker-O’Neal,3 B. Sapp,3 E. Barth,4 J. Hedrick,3 R. Goldblatt,3 S. S. Papa Rao,3 and K. D. Osborn1, 5
+1Laboratory for Physical Sciences, University of Maryland, College Park, MD 20740, USA
+2Department of Physics, University of Maryland, College Park, MD 20742, USA
+3SUNY Polytechnic Institute, Albany, NY 12203, USA
+4SEMATECH, Albany, NY 12203, USA
+5Joint Quantum Institute, University of Maryland, College Park, MD 20742, USA
+(Dated: February 25, 2019)
+Qubit information processors are increasing in footprint but currently rely on e-beam lithography
+for patterning the required Josephson junctions (JJs). Advanced optical lithography is an alternative
+patterning method, and we report on the development of transmon qubits patterned solely with
+optical lithography. The lithography uses 193 nm wavelength exposure and 300-mm large silicon
+wafers. Qubits and arrays of evaluation JJs were patterned with process control which resulted in
+narrow feature distributions: a standard deviation of 0.78% for a 220 nm linewidth pattern realized
+across over half the width of the wafers. Room temperature evaluation found a 2.8 −3.6% standard
+deviation in JJ resistance in completed chips. The qubits used aluminum and titanium nitride ﬁlms
+on silicon substrates without substantial silicon etching. T1 times of the qubits were extracted at 26
+µs – 27 µs, indicating a low level of material-based qubit defects. This study shows that large wafer
+optical lithography on silicon is adequate for high-quality transmon qubits, and shows a promising
+path for improving many-qubit processors.
+I. INTRODUCTION
+Currently, quantum processors allow demonstrations
+of quantum error correction [1–4], chemical simulations
+[5, 6], and factoring [7]. These prototype processors contain at least four transmon qubits [8, 9] as high coherence
+elements on small (e.g., 5 mm) chips [3, 7]. There have
+been reports of these superconducting qubits, fabricated
+on sapphire substrates and measured in 3D cavities, with
+relaxation (T1) and coherence times of 100 µs [8, 10].
+On silicon substrates, the standard for CMOS fabrication, the same transmon qubits generally have shorter T1
+times, with an optimized design showing approximately
+30 (50) µs with (without) a silicon substrate etch to remove material-based loss [11]. In an attempt to increase
+the size of quantum processors, larger (e.g., 10 mm) chips
+are being optimized to reduce the aﬀects from parasitic
+microwave modes in the sample box and wiring crosstalk
+[12–14].
+While coherent qubits and bus resonators have a large
+footprint, the former require a small Josephson junction
+with a tunneling barrier area of ≤0.04 µm2 and a lateral
+JJ dimension of ≤200 nm [8, 15–18]. While all JJs are
+believed to have two-level defects in the tunneling barrier
+that resonantly coupled to the qubit, small junctions may
+result in enhanced coherence because the contained defect density per unit frequency should be smaller than in
+large JJs [19, 20]. Statistics of these small JJs have been
+collected using ≥100 JJs on small chip areas [15, 21]. In
+the ﬁrst study [21] the write ﬁeld is only apparently 2 mm
+in its largest dimension and intentionally set to be small
+for uniformity. There it was found that the normal-state
+resistance of these JJs has a standard deviation of 3.5%
+for all JJs in one fabrication run, a statistic which is key
+since it is inversely proportional to the Josephson critical
+current. In the second study [15] many dc-SQUIDs were
+evaluated on few-mm chips. They were found to have
+a lower standard deviation (for pairs of JJs within) in
+this small ﬁeld area. The required tolerance for JJ critical current and related qubit frequency depends on the
+quantum computing gate architecture.
+In a successful
+non-tunable architecture, cross-resonant gates are used
+on the qubits [22–24]. In this technique the qubits must
+have a frequency interval close to the qubit anharmonicity, which is only 3-5% of the qubit frequency, and places
+challenging constraints on the lithography. While e-beam
+lithography works well for previous circuits, it also appears that this method is unproven for large exposure
+ﬁelds (e.g., 10 mm quantum processors).
+Optical lithography, developed in the CMOS industry, is well known to produce nearly identical features
+over large areas [25].
+The narrowest resolvable lithographic line is given by k1λ/NA, indicating the important variables of lithographic wavelength λ and numerical
+aperture NA. A numerical factor close to unity, k1, accounts for process-related parameters such as resolutionenhancement techniques, coherence of the light source,
+etc [26]. Following the introduction of 365 nm wavelength
+lithography (known as i-line), came 248 nm wavelength
+(known as Deep UV) started producing CMOS processors in 1999 [25, 27]. While we are not aware of published
+reports of transmons fabricated solely from optical lithogarXiv:1902.08501v1  [physics.app-ph]  22 Feb 2019
+
+===== Page 2 =====
+
+2
+raphy, there is a recent set of studies on 248 nm optical
+lithography for JJ digital logic circuits [28–30]. The ﬁrst
+study found a standard deviation of 8% for the resistance
+of 300 nm diameter Nb/AlOx JJs on chips from 248 nm
+lithography on 200 mm wafers [29]. Furthermore, a need
+for 248 nm and 193 nm lithography was identiﬁed for JJ
+circuits [29].
+Here we present the ﬁrst report of transmon qubits patterned solely with optical lithography on 300 mm wafers
+at the facility at SUNY Polytechnic. This facility is already used for integrated photonics and neuromorphic
+computing research [31–35]. These qubits depend on 220
+nm linewidth features for JJs fabricated using 193 nm
+photo lithography on 300 mm silicon wafers. The resist
+patterning was characterized over a ∼170 mm region of
+the wafer. JJs, fabricated in test arrays and qubits, were
+completed on coupons (chips) with a 33 mm × 25 mm
+area, with a small standard deviation in resistance. Two
+nominally-identical qubits separated by 12.5 mm were
+characterized in their relaxation, and coherence times.
+The study reveals the realization of high-performance
+qubits fabricated using advanced tools developed for the
+CMOS-industry, i.e., large-ﬁeld optical lithography on
+silicon substrates.
+Optical lithography, using a reticle
+patterned as shown in Figure 1, permits Josephson structures to be ‘written’ into the photoresist in parallel on
+many large chips. In contrast, e-beam lithography actually writes the pattern serially with a beam, and thus is
+relatively slow for large patterns. Furthermore it must
+use stitching of many write ﬁelds to realize 10 mm chip.
+II. FABRICATION
+While a wide range of resistivity, up to 20 kΩ-cm, is
+available on smaller Si wafers, it is more limited for 300
+mm Si wafers leading to the question of whether high performance qubits can be realized on the latter wafers. This
+study utilizes two batches with resistivity speciﬁed in the
+range of 2-13 kΩ-cm. We use the batch with larger resistivity of 10 kΩ-cm for millikelvin measurements of qubits.
+Measurements using a KLA-Tencor SP3 detect only 10
+and 17 particulate defects >90 nm from two randomly selected wafers, as evidence of starting surface cleanliness
+of the wafer. 40nm of TiN is grown using physical vapor
+deposition after a dilute HF-last surface clean of the Si
+wafer, and found to have a (200) texture by XRD analysis. The TiN ﬁlm is then patterned to form the probe
+pads in the Josephson junction arrays and the paddles
+in the qubits (see Fig. 2(a)). It should be noted that
+the silicon surface outside the TiN pattern will be once
+again covered with its native oxide. A wafer is then spincoated with 530 nm of polydimethylglutarimide-based resist (PMGI SF6 series, from MicroChem) in a stand-alone
+track, and baked. This is followed by spin-coating (and
+baking) a 208 nm-thick layer of a commercial 193 nm pos80 
+90 
+100 
+120 
+140 
+180 
+220 
+260 
+300 
+400 
+500 
+(a)
+(b)
+(c)
+33 mm
+12.5 mm
+FIG. 1. (a) The mask pattern used for 193 nm-resist lithography across 300 mm wafers. In this work resistance is generally
+probed on a coupon (chip) contains 2 copies of the mask pattern for a JJ sampling area of approximately 25 mm × 16 mm,
+and 48 JJs for each ﬁnger width and bridge width. The upper
+right of (a) contains 3D transmons which are eventually diced
+into 5 mm chips (square shown), where one 3D transmon pattern shown in (b). The left part of the pattern (a) contains JJ
+arrays for room temperature probing. For example, (c) shows
+pattern for one Dolan-bridge width and diﬀerent (dimension
+in nm) JJ ﬁnger widths. The lower right patterns were not
+measured for this work.
+itive photoresist. The pattern for the junctions is transferred into this resist layer using an ASML TWINSCAN
+AT:1200B system.
+The pattern is 33 mm × 12.5 mm, which is repeated
+across the wafer and containing two sections: arrays of
+individual JJs and qubits (see Fig. 1). After exposure
+the wafer is immediately baked and developed using a
+0.26N TMAH-based solution. Through optimization of
+development time, resist is not only selectively removed
+to form the Dolan bridge, but the amount of underlying
+lift-oﬀresist is also removed from beneath the bridge (see
+Fig. (2b)). The latter is conﬁrmed using tilt-view SEM
+observations of several samples. Josephson junction arrays with varying junction dimensions are formed with
+top electrode ‘ﬁnger’ widths ranging from 80 nm to 500
+nm (see Fig. 1(c) and Fig. 2(a) (iv)), and Dolan bridge
+widths ranging from 380 nm to 500 nm. The 220 nm
+ﬁnger feature in the array is targeted for lithographic exposure optimization since the qubits in this study used
+220 nm wide ﬁnger feature for JJ formation (and incidentally use a Dolan bridge width of 440 nm). Figure 2(f)
+shows the measured ﬁnger feature widths across a central
+176 mm × 130 mm region of the wafer, associated with a
+standard deviation of 1.7 nm, i.e., 0.78% of the median.
+Measurements of our 440 nm wide bridges in the array
+are conﬁrmed to have similarly low standard deviation,
+0.67% of the median.
+The wafer is then cleaved into coupons (chips) of approximately 45 mm × 35 mm area containing at least 2
+repeated patterns (see Fig. (1)). The coupons are loaded
+
+===== Page 3 =====
+
+3
+into an e-beam evaporation system that is ‘pre-seasoned’
+by two evaporations of aluminum. Lack of metal contamination from prior users of the evaporation tool is veriﬁed
+through secondary-ion mass spectroscopy (SIMS) analysis of the deposited aluminum ﬁlms. Starting from a pressure below 5×10−7 Torr, the wafer is then sputtered with
+Ar for 4 minutes to clean organic contaminants. Separate
+tests determine that the sputtering decreases photoresist
+ﬁlm thickness but not SiO2 ﬁlm thickness. After sputtercleaning for ≈60 s in base pressure, the bottom electrode
+of the JJ is formed by normal (0◦sample tilt) evaporation
+of 30 nm of aluminum, at a deposition rate of 0.1 nm/s.
+The aluminum is subjected to in-situ oxidation with a
+20% O2 in Ar mixture ﬂowing at a controlled rate of 800
+sccm, with the turbomolecular pump closed oﬀand the
+chamber connected to the roughing pump. The system
+pressure under these ﬂow conditions is ≈0.23 Torr based
+on measurements during several nominally identical runs
+and oxidation times fall in the range 30–120 minutes (to
+tune the junction resistance). After completing oxidation, we pump the chamber down and deposit 60 nm of
+Al using 55◦evaporation at the previous deposition rate
+(see Fig. 2(c)). The Al deposition made contact to the
+underlying TiN paddles. The coupons are subjected to
+lift-oﬀwith NMP with gentle mechanical agitation, followed by an IPA rinse and N2 blow-dry (see Fig. 2(d)).
+Figure 2(d) and Ref. [36] indicate that the JJ area had
+variability beyond the tightly controlled linewidth in the
+resist pattern caused by rough evaporated-line features,
+and we view this as an important contributor to the variability of the realized JJ area. Transmission electron microscopy of cross-sections of the JJ conﬁrms good step
+coverage and continuity of the top Al layer over the bottom Al layer as well as the presence of a thin layer of native oxide of Si under the Al as expected (see Fig. 2(e)).
+This oxide could limit the relaxation time of qubits due
+to dielectric loss [8, 37, 38] (but can be addressed in the
+future).
+III. MEASUREMENT
+A. Room-Temperature Characterization
+We characterize JJ arrays using a voltage sweep from
+-0.2V to 0.2V. We extract JJ resistance using a linear
+ﬁt to I-V curves. Data revealing open, shorted, or nonlinear I-V curves (with a coeﬃcient of determination R2
+< 0.999), are deﬁned as ‘bad’ and excluded from further
+analysis. The yield of ‘good’ junctions in the arrays is
+well over 90% for ﬁnger widths of 140 nm and greater.
+The JJ resistance variation from the mean for 3 fabrication runs in shown in Fig. 3(a) for the oxidation process
+that yields ≈5 kΩin target JJs: those of 220 nm ﬁnger width and 440 nm bridge width. Each variation data
+point (for a given ﬁnger width) used a set of 48 sam-
+)
+(d)
+(b)
+(c)
+(i)
+(iii)
+(iv)
+(ii)
+(i)
+(a)
+µm
+1
+µm
+3
+500 nm
+(b)
+100 nm
+Finger Width (nm)
+X - Position Within Wafer (mm)
+215
+220
+225
+-50
+-100
+ 50
+100
+0
+(f)
+(e)
+FIG. 2. (a) Patterns formed at various stages of the process
+ﬂow: (i) TiN paddles, (ii & iii) leads and (iv) (in dashed circle) connected Josephson junction which is formed by two
+angled evaporations and oxidation near the Dolan bridge.
+Top Al evaporation ﬁnger overlaps an oxidized Al base layer.
+(b-d) SEM micrographs at consecutive stages (b) Patterned
+Dolan bridge before evaporations (c) bridge with JJ (d) JJ after liftoﬀ(bridge removed).(e) cross-sectional TEM image of
+angle-evaporated JJ. (f) Inline SEM measurements of ﬁnger
+width in resist, with ﬁt to mean (solid line) and ± standard
+deviations σ (dashed line). Finger widths of top Josephson
+electrode with standard deviation of 0.78%. The Dolan bridge
+width has a similar standard deviation to mean ratio (see
+text).
+pled JJs spread over the area of ≈25 mm×16 mm on
+the chip.
+For the targeted ﬁnger width, which is 220
+nm, we found that the resistances had standard deviations of 2.8% −3.6%. Our variability compares well to
+optimized e-beam lithography which was sampled over a
+much smaller area [21]. On each chip with the same JJ
+arrays as above, there are two qubits with the target JJ
+type, spaced by 12.5 mm from one another (recall the half
+chip pattern in Fig. 1(a)). These qubits were probed on
+four chips with generally diﬀerent oxidation conditions.
+From these data, the hand-probed qubit JJ resistance
+was found to be within the 95% conﬁdence bounds of the
+
+===== Page 4 =====
+
+4
+corresponding JJs in the arrays, as expected (see Fig.
+3(b)). Chip 1 and 2 were nominally oxidized the same
+way, and the 8.5% diﬀerence between these runs is very
+close to the run-to-run diﬀerence seen previously for similarly small JJs [15]. Chips 3 and 4 were intentionally
+fabricated with a larger oxidation time.
+Now we compare our standard deviation of 2.8%−3.6%
+for an area of ≈25 mm×16 mm with other fabrication
+techniques. E-beam lithography is known to allow uniform JJs with a standard deviation of 3.5% over an approximate 2 mm distance.
+This is a similar variation
+but the JJs are located in an order-of-magnitude smaller
+lateral distance than this study. The previous deep submicron optical JJ fabrication for digital circuits [29] used
+λ = 248 nm wavelength on 200 mm wafers, and contrasts
+our λ=193 nm process on 300 mm wafers in a number of
+ways. Their fabrication exposed a circular area for the
+JJ, whereas ours exposed a line ending in a gap for the
+Dolan bridge. In their 800 nm diameter JJs the standard deviation is 3% in resistance, and for the 300 nm
+diameter JJs the standard deviation is 8%. Our standard deviation for the 220 nm line JJ is 2.8% −3.6%.
+Although our 220 nm feature JJs show lower variability
+compared to their 300 nm diameter JJs, the fabrication
+techniques are also diﬀerent. 200 nm lines have recently
+been fabricated for superconducting circuit elements using 248 nm lithography [30]. Some of the excess JJ resistance standard deviation of ∼3% over the photolithograph linewidth deviation 0.78%, is due to uniformity
+limited by the Dolan-bridge fabrication; other techniques
+are known which deﬁne the JJ only with straight edges
+and hence might improve upon this [39].
+B. Millikelvin Characterization
+Two transmon qubits from 12.6 mm separation on the
+wafer are measured.
+Each transmon is nominally the
+same, with a paddle spacing of 40 µm, paddle width of
+250 µm, paddle length of 500 µm, for a total transmon
+length of 1.040 mm (see Fig. 1(b)). Each qubit, on a
+5 mm square chip, is mounted in its own 3D aluminum
+cavity with two measurement ports, creating qubit-cavity
+samples 1 and 2 (see Fig.
+4 (a)).
+The samples are
+both cooled to 10 mK in a cryogen-free dilution refrigerator.
+The output signal from the cavity, passing
+through a 12 GHz low pass ﬁlter and three microwave
+isolators, is ampliﬁed at 3K using a low-noise HEMT
+ampliﬁer. After further ampliﬁcation at room temperature, two quadrature signals of the resonator are acquired through homodyne detection and then digitized
+after low-pass ﬁltering. For samples 1 (shown in Fig 4
+(b)) and 2, the large-drive-power or bare resonance frequency occurs at ωc/2π = 7.8291 GHz and 7.7517 GHz,
+respectively.
+Using the qubit induced dispersive shift
+of the cavity at low power, we extracted the dispersive
+Sample ID
+Ω
+Resistance (k   )
+/mean of JJ 
+resistance (%)
+Finger Width (nm)
+5
+0
+ 
+Wafer A
+Wafer B
+Wafer C
+(a)
+10
+120
+220
+320
+420
+520
+ 
+ 
+Qubit 1
+Qubit 2
+(b)
+10
+8
+6
+9
+7
+5
+Chip 1
+Chip 2
+Chip 3
+Chip 4
+Array JJs 
+σ
+FIG. 3. (a) Standard deviation of Josephson junction resistance divided by median value, as a function of ﬁnger width
+for 3 wafers. (b) Mean resistance (black circle) with 95% conﬁdence interval (black bars) of 220 nm-nominal ﬁnger width
+JJs (48), along with corresponding qubits on a 33 mm × 25
+mm area of a chip (see Fig. 1). Diﬀerent chips were generally
+oxidized with intentionally diﬀerent conditions (see text).The
+qubit resistance values are within the measured ranges of the
+corresponding JJ arrays, indicating uniform results across the
+chip.
+shift of χ/2π = −0.86 MHz and –0.97 MHz, respectively
+[40]. The cavity linewidths revealed cavity decay rates of
+κ/2π = 340 kHz and 370 kHz (for sample 1 and 2).
+We perform qubit spectroscopy and more precise measurements using Ramsey fringes to ﬁnd the qubit frequencies. The results show the 1.33% diﬀerence in qubit
+transition frequencies.
+Additionally, using excitations
+to the second excited state we obtain charging energies
+EC/h of approximately 290 and 280 MHz for samples 1
+and 2, respectively. From measurements of χ = g2/∆
+and qubit-cavity detuning ∆, we extract couplings of
+approximately g/2π = 54 MHz for both qubits.
+The
+transition frequency of the transmon can be expressed as
+ωq =
+p
+π∆/(¯hRNC), where RN is the junction resistance
+and C is the total capacitance. Since over > 90% of C is
+attributed to ﬁelds external to the Josephson junction trilayer, i.e., the paddles, shunt capacitance, C is relatively
+constant. This explains why the EC is the same between
+qubits within the precision of our measurements. Using
+this square root scaling of the qubit frequency and the
+above standard deviation for the room-temperature resistance (2.8−3.6%), we ﬁnd that this corresponds to an
+expected standard deviation of ≤1.8% in qubit frequencies. As expected the 1.33% diﬀerence observed in qubit
+
+===== Page 5 =====
+
+5
+60
+µs
+τ
+1
+(a)
+Cavity drive power (dBm)
+Cavity drive frequency (GHz)
+(b)
+-120
+-110
+-100
+-90
+7.826
+7.830
+7.834
+Output
+ωq
+ωc
+g01
+2
+Δ
+0.8
+0.6
+0.4
+measured data
+fit of data
+20
+40
+0
+(c)
+Readout
+π
+τ
+ωq
+ωc
+T  Duration,   (   )
+µs
+τ
+Population, P
+1
+0.8
+0.4
+0.6
+20
+40
+60
+0
+T  Duration,   (   )
+(d)
+τ(µs)
+0.2
+0.6
+1
+3
+5
+1
+P1
+FIG. 4.
+(a) Qubit and cavity diagram showing microwave
+measurement ports and frequencies ωq and ωc.
+(b) Cavity
+transmission as a function of drive frequency and drive power.
+The response above -98 dBm is due to the bare cavity. For
+low drive strength, the cavity is shifted by χ01 = g2
+01/∆. For
+readout we use a high power technique to quickly project
+the qubit and cavity into a classically distinguishable system
+using power at fbare. The optimal power is found when the
+maximum diﬀerence in transmission is found for the qubit
+initially in the ground and excited states [41]. (c) and (d)
+Relaxation data on qubit 1 and 2, respectively.
+(d inset)
+Ramsey data on qubit 2.
+frequencies is consistent with the room temperature JJ
+characterization.
+In time domain measurements, Rabi oscillations of the
+qubit are obtained to calibrate the pulse amplitude with
+a π-pulse duration of approximately 60 ns.
+We characterize the qubit’s energy relaxation by performing a
+T1 measurement, which is often a limiting factor in coherence time. First we apply a π pulse precisely at the
+qubit transition frequency, and then wait for a variable
+amount of time, τ, to apply the readout pulse [41]. The
+decay of population in the excited state, P1 is shown in
+Fig. 4 (c) and (d). Each data point represents the average measured voltage of 104 identical experiments for
+a given value of τ. The data is ﬁtted by a single exponential for an extracted T1 of 26.1 and 26.7 µs in qubits
+1 and 2, respectively. These times were measured over
+multiple days and deemed to be limited by loss since
+the Purcell decay is negligible. The T1 value is comparable with state-of-the-art transmon design on Si which
+has a relaxation time of approximately 30 µs [11] prior
+to silicon etching (and JJ suspension) which reduces the
+presence of materials. We note that other work uses deep
+etching with nitride superconductors for high coherence
+[42], while our etching is only on the nanometer scale.
+Our work thus ﬁnds a low level of loss from carefully prepared materials: the large-Si substrate, the PVD TiN,
+evaporated Al, and material interfaces with some native
+oxides.
+We also performed a Ramsey measurement to determine qubit frequency precisely and dephasing time T ∗
+2
+(see inset of Fig. 4(d)). For this, the measurement sequence consisted of two π/2 pulses to the qubit at a frequency 1-2 MHz detuned from the expected qubit frequency with a varying time delay τ between the pulses,
+followed by a readout pulse. The Ramsey measurement
+gives fringes of the excited state population oscillating
+in time. The oscillation frequency is precisely the difference between the qubit frequency and the drive frequency, which we use to obtain the qubit transition frequencies 4.7661 GHz and 4.7027 GHz, respectively for
+sample 1 and 2. Decreasing contrast in the fringes corresponds to the loss of phase coherence with time. The ﬁt
+to an exponential sinusoidal decay of the fringes revealed
+the T ∗
+2 of 4.4 and 4.9 µs for qubit 1 and 2, respectively
+and we show the latter in the inset to Fig. 4(d). It is
+expected that this low value of T ∗
+2 is limited by thermal
+noise injected into our measurement setup [43].
+VI. CONCLUSION AND OUTLOOK
+In conclusion, in this study we ﬁnd a method to fabricate high quality transmons using advanced optical
+lithography. Our JJs are formed over a ﬁeld which is approximately an order of magnitude larger than JJs made
+with the previous method of fabrication, which is e-beam
+lithography, but they have similar variability. Additionally, our technique uses 193 nm lithography from 300 mm
+wafers, and should ultimately provide beneﬁts over 248
+nm lithography on 200 mm wafers, although the JJs fabricated with the latter are fabricated diﬀerently. A standard deviation of only 0.78% from 220 nm width line is
+found across the central 176 mm × 130 mm on 300 mm
+wafers. JJ statistical tests where performed on 25 mm ×
+16 mm ﬁelds. For the JJ array portion of these chips the
+standard deviation in resistance is 2.8−3.6%. Two qubits
+were studied in the time domain. They had a diﬀerence
+in 0-1 transition frequency of 1.33%, a value consistent
+with the JJ statistics on resistance. Furthermore, they
+exhibit relaxation times of T1= 26–27 µs. We conclude
+that the defects in the bulk Si and fabricated ﬁlms are
+comparable to state-of-the-art transmons on silicon. In
+the future we plan to extend the coherence time to over
+100 µs while demonstrating further uniformity improvements in JJs for qubits.
+ACKNOWLEDGMENTS
+The authors at SUNY Polytechnic are grateful to Jon
+Mcmahon, David Eason and members of his team at the
+Univ. at Buﬀalo, NY for use of the Shared Instrument
+Lab. The SUNY Poly team is particularly indebted to
+
+===== Page 6 =====
+
+6
+Britton Plourde (Syracuse University) and to David Pappas (NIST Boulder) for guidance on qubit design and
+testing, as well as for screening measurements of qubits
+at their respective facilities.
+[1] W. Pfaﬀ, C. J. Axline, L. D. Burkhart, U. Vool, P. Reinhold, L. Frunzio, L. Jiang, M. H. Devoret and R. J.
+Schoelkopf, Nature Physics 13, 882 (2017).
+[2] M. Takita, A. D. C´orcoles, E. Magesan, B. Abdo, M.
+Brink, A. Cross, J. M. Chow, and J. M. Gambetta, Phys.
+Rev. Lett. 117, 210505 (2016).
+[3] J. M. Chow, S. J. Srinivasan, E. Magesan, A. D. C´orcoles,
+D. W. Abraham, J. M. Gambetta, M. Steﬀen, Proc.
+SPIE 9500, Quantum Information and Computation
+XIII, 95001G (2015).
+[4] R. Barends, J. Kelly, A. Megrant, A. Veitia, D. Sank, E.
+Jeﬀrey, T. C. White, J. Mutus, A. G. Fowler, B. Campbell, Y. Chen, Z. Chen, B. Chiaro, A. Dunsworth, C.
+Neill, P. O’Malley, P. Roushan, A. Vainsencher, J. Wenner, A. N. Korotkov, A. N. Cleland and J. M. Martinis,
+Nature, 508, 500 (2014).
+[5] A. Kandala, A. Mezzacapo, K. Temme, M. Takita, M.
+Brink, J. M. Chow and J. M. Gambetta, Nature 549,
+242 (2017).
+[6] P. J. J. O’Malley, R. Babbush, I. D. Kivlichan, J.
+Romero,
+J. R. McClean,
+R. Barends,
+J. Kelly,
+P.
+Roushan, A. Tranter, N. Ding, B. Campbell, Y. Chen,
+Z. Chen, B. Chiaro, A. Dunsworth, A. G. Fowler, E. Jeffrey, E. Lucero, A. Megrant, J. Y. Mutus, M. Neeley, C.
+Neill, C. Quintana, D. Sank, A. Vainsencher, J. Wenner, T. C. White, P. V. Coveney, P. J. Love, H. Neven,
+A. Aspuru-Guzik, and J. M. Martinis, Phys. Rev. X 6,
+031007 (2016).
+[7] E. Lucero, R. Barends, Y. Chen, J. Kelly, M. Mariantoni,
+A. Megrant, P. O’Malley, D. Sank, A. Vainsencher, J.
+Wenner, T. White, Y. Yin, A. N. Cleland and J. M. Martinis, Nature 2012, 719 (2012).
+[8] C. Wang, C. Axline, Y. Y. Gao, T. Brecht, Y. Chu,
+L. Frunzio, M. H. Devoret, and R. J. Schoelkopf, Appl.
+Phys. Lett. 107, 162601 (2015).
+[9] A. D. C´orcoles, E. Magesan, S. J. Srinivasan, A. W.
+Cross, M. Steﬀen, J. M. Gambetta and J. M. Chow, Nature Comm. volume 6, 6979 (2015)
+[10] C. Rigetti, J. M. Gambetta, S. Poletto, B. L. T. Plourde,
+J. M. Chow, A. D. C´orcoles, J. A. Smolin, S. T. Merkel,
+J. R. Rozen, G. A. Keefe, M. B. Rothwell, M. B. Ketchen,
+and M. Steﬀen, Phys. Rev. B 86, 100506 (2012).
+[11] Y. Chua, C. Axline, C. Wang, T. Brecht, Y. Y. Gao, L.
+Frunzio, and R. J. Schoelkopf, Appl. Phys. Lett. 109,
+112601 (2016).
+[12] J. Wenner, M. Neeley, Radoslaw. C .Bialczak, M Lenander, Erik Lucero, A D O’Connell, D Sank, H Wang, M
+Weides, A N Cleland and John M Martinis, Supercond.
+Sci. Technol. 24 065001 (2011).
+[13] Sarah Sheldon, Martin Sandberg, Hanhee Paik, Baleegh
+Abdo, Jerry M. Chow, Matthias Steﬀen, and Jay M.
+Gambetta, Appl. Phys. Lett. 111, 222601 (2017).
+[14] Nicholas T Bronn et. al., Quantum Sci. Technol. 3 024007
+(2018).
+[15] Philip Krantz, Investigation of Transmon Qubit Designs,
+Masters Thesis, Chalmers University (2010).
+Note that Figure 5.5a shows that resistance is approximately proportional to the square root of the pressure, in
+agreement with a common empirical law, but there are
+also common deviations by 8% in resistance.
+[16] L. Frunzio, A. Wallraﬀ, D. Schuster, J. Majer, R.
+Schoelkopf, IEEE Trans. Appl. Supercond., 15, 860
+(2005).
+[17] H. Paik, D. I. Schuster, L. S. Bishop, G. Kirchmair, G.
+Catelani, A. P. Sears, B. R. Johnson, M. J. Reagor, L.
+Frunzio, L. I. Glazman, S. M. Girvin, M. H. Devoret, and
+R. J. Schoelkopf, Phys. Rev. Lett. 107, 240501 (2011).
+[18] Jay M. Gambetta, Jerry M. Chow and Matthias Steﬀen,
+npj Quantum Information volume 3, Article number: 2
+(2017).
+[19] John M. Martinis, et. al., Phys. Rev. Lett. 95, 210503
+(2005).
+[20] M.J.A. Stoutimore, M.S. Khalil, C.J. Lobb, K.D. Osborn,
+Appl. Phys. Lett., 101, 062602 (2012).
+[21] I. M. Pop, T. Fournier, T. Crozes, F. Lecocq, I. Matei,
+B. Pannetier, O. Buisson, and W. Guichard, J. Vac. Sci.
+Technol. B 30(1), 010607 (2012).
+[22] J. M. Chow, A. D. C´orcoles, J. M. Gambetta, C. Rigetti,
+B. R. Johnson, J. A. Smolin, J. R. Rozen, G. A. Keefe,
+M. B. Rothwell, M. B. Ketchen, and M. Steﬀen, Phys.
+Rev. Lett. 107, 080502 (2011).
+[23] D. C. McKay, S. Filipp, A. Mezzacapo, E. Magesan, J. M.
+Chow, and J. M. Gambetta, Phys. Rev. Appl. 6, 064007
+(2016).
+[24] R. Versluis, S. Poletto, N. Khammassi, B. Tarasinski, N.
+Haider, D. J. Michalak, A. Bruno, K. Bertels, and L.
+DiCarlo, Phys. Rev. Appl. 8, 034021 (2017).
+[25] L. R. Harriott, Materials Today, 2, 9, (1999).
+[26] G. S. Chua, C. J. Tay, and C. Quan, J. Vac. Sci. Technol.
+B, Vol. 22, No. 2, (2004).
+[27] T. Ito and S. Okazaki, Nature 406, 1027, (2000).
+[28] S. K. Tolpygo, V. Bolkhovsky, T. J. Weir, L. M. Johnson,
+M. A. Gouker, and W. D. Oliver, IEEE Trans. Appl.
+Supercond., Vol. 25, No. 3, 1101312 (2015).
+[29] S. K. Tolpygo, V. Bolkhovsky, T. J. Weir, C.J. Galbraith,
+L. M. Johnson, M. A. Gouker, and V. K. Semenov, IEEE
+Trans. Appl. Supercond., Vol. 25, No. 3, (2015).
+[30] Sergey K. Tolpygo, Vladimir Bolkhovsky, Ravi Rastogi, Scott Zarr, Alexandra L. Day, Terence J. Weir,
+Alex Wynn, and Leonard M. Johnson, arXiv1704.07683
+(2017).
+[31] Amir H. Atabaki, Sajjad Moazeni, Fabio Pavanello, Hayk
+Gevorgyan, Jelena Notaros, Luca Alloatti, Mark T.
+Wade, Chen Sun, Seth A. Kruger, Huaiyu Meng, Kenaish
+Al Qubaisi, Imbert Wang, Bohan Zhang, Anatol Khilo,
+Christopher V. Baiocco, Milos A. Popovic, Vladimir M.
+Stojanovic and Rajeev J. Ram, Nature volume 556, pages
+349-354 (2018).
+[32] Neetesh Singh, Ming Xin, Diedrik Vermeulen, Katia
+Shtyrkova, Nanxi Li, Patrick T Callahan, Emir Salih
+Magden, Alfonso Ruocco, Nicholas Fahrenkopf, Christopher Baiocco, Bill P-P Kuo, Stojan Radic, Erich Ippen,
+Franz X Kartner and Michael R Watts, Light Sci Appl.,
+7, 17131 (2018).
+[33] Nanxi Li, Diedrik Vermeulen, Zhan Su, Emir Salih Magden, Ming Xin, Neetesh Singh, Alfonso Ruocco, Jelena
+Notaros, Christopher V. Poulton, Erman Timurdogan,
+Christopher Baiocco, and Michael R. Watts, Optics Ex-
+
+===== Page 7 =====
+
+7
+press Vol. 26, Issue 13, pp. 16200-16211 (2018).
+[34] Mesbah Uddin, Md. Badruddoja Majumder, Garrett
+S. Rose, Karsten Beckman, Harika Manem, Zahiruddin Alamgir, and Nathaniel C. Cady, ACM Journal for
+Emerging Technologies in Computing System (JETC),
+September (2017).
+[35] N.
+Cady,
+K.
+Beckmann,
+W.
+Olin-Ammentorp,
+G.
+Chakma, S. Amer, R. Weiss, S. Sayyaparaju, M. Adnan,
+J. Murray, M. Dean, J. Plank, G.S. Rose, and J. Van Nostrand, Government Microcircuit Applications and Critical Technology Conference (GOMACTech), Miami, FL,
+March (2018).
+[36] S.S. Papa Rao, et. al., ECS Transactions, 85 (6) 151-161
+(2018).
+[37] B. Sarabi, A. N. Ramanayaka, A. L. Burin, F.C. Wellstood, and K. D. Osborn, Phys. Rev. Lett. 116, 167002
+(2016).
+[38] J. Lisenfeld, G. J. Grabovskij, C. Muller, J. H. Cole, G.
+Weiss, A. V. Ustinov, Nature Comm. 6, 6182 (2015).
+[39] X. Wu, J. L. Long, H. S. Ku, R. E. Lake, M.Bal, and D.
+P. Pappas, Appl. Phys. Lett. 111, 032602 (2017).
+[40] A. Blais, R-S Huang, A. Wallraﬀ, S. M. Girvin, and R.
+J. Schoelkopf, Phys. Rev. A 69, 062320 (2004).
+[41] M. D. Reed, L. DiCarlo, B. R. Johnson, L. Sun, D. I.
+Schuster, L. Frunzio, and R. J. Schoelkopf, Phys.Rev.
+Lett. 105, 173601 (2010).
+[42] A. Bruno, G. de Lange, S. Asaad, K. L. van der Enden,
+N. K. Langford, and L. DiCarlo, Appl. Phys. Lett. 106,
+182601 (2015).
+[43] J-H Yeh, J. LeFebvre, S. Premaratne, F. C. Wellstood,
+and B. S. Palmer, J of Appl. Phys. 121, 224501 (2017).

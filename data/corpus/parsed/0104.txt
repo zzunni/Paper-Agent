@@ -1,0 +1,1609 @@
+
+
+===== Page 1 =====
+
+TOPICAL REVIEW
+Deterministically fabricated solid-state
+quantum-light sources
+Sven Rodt, Stephan Reitzenstein, and Tobias Heindel
+Institute of Solid-State Physics, Technische Universit¨at Berlin, Hardenbergstraße 36,
+10623 Berlin, Germany
+E-mail: tobias.heindel@tu-berlin.de
+September 2018
+Abstract.
+The controlled generation of non-classical states of light is a challenging
+task at the heart of quantum optics. Aside from the mere spirit of science, the related
+research is strongly driven by applications in photonic quantum technologies, including
+the ﬁelds of quantum communication, quantum computation, and quantum metrology.
+In this context, the realization of integrated solid-state-based quantum-light sources is
+of particular interest, due to the prospects for scalability and device integration.
+This topical review focuses on solid-state quantum-light sources which are
+fabricated in a deterministic fashion. In this framework we cover quantum emitters
+represented by semiconductor quantum dots, colour centres in diamond, and defect-
+/strain-centres in two-dimensional materials. First, we introduce the topic of quantumlight sources and non-classical light generation for applications in photonic quantum
+technologies, motivating the need for the development of scalable device technologies
+to push the ﬁeld to real-world applications.
+In the second part, we summarize
+material systems hosting quantum emitters in the solid-state. The third part reviews
+deterministic fabrication techniques and comparatively discusses their advantages and
+disadvantages.
+The techniques are classiﬁed in bottom-up approaches, exploiting
+the site-controlled positioning of the quantum emitters themselves, and top-down
+approaches, allowing for the precise alignment of photonic microstructures to preselected quantum emitters.
+Special emphasis is put on the progress achieved in
+the development of in-situ techniques, which signiﬁcantly pushed the performance
+of quantum-light sources towards applications.
+Additionally we discuss hybrid
+approaches, exploiting pick-and-place techniques or wafer-bonding. The fourth part
+presents state-of-the-art quantum-dot quantum-light sources based on the fabrication
+techniques presented in the previous sections, which feature engineered functionality
+and enhanced photon collection eﬃciency. The article closes by highlighting recent
+applications of deterministic solid-state-based quantum-light sources in the ﬁelds
+of quantum communication, quantum computing, and quantum metrology, and
+discussing future perspectives in the ﬁeld of solid-state quantum-light sources.
+arXiv:1912.03136v1  [physics.app-ph]  6 Dec 2019
+
+===== Page 2 =====
+
+CONTENTS
+2
+Contents
+1
+Introduction
+3
+2
+Quantum emitter and host materials
+3
+2.1
+Epitaxial semiconductor quantum dots . . . . . . . . . . . . . . . . . . .
+4
+2.2
+Colour centres in crystals . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+2.3
+Two-dimensional materials . . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+3
+Deterministic fabrication techniques
+8
+3.1
+Site-controlled quantum emitters (bottom-up) . . . . . . . . . . . . . . .
+8
+3.2
+Marker-based approaches (top-down) . . . . . . . . . . . . . . . . . . . .
+10
+3.3
+In-situ techniques . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+3.4
+Hybrid approaches
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+4
+Deterministic solid-state quantum-light sources
+15
+4.1
+Single-photon sources . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+4.2
+Multi-photon sources . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+4.3
+Electrically-driven quantum-light sources . . . . . . . . . . . . . . . . . .
+25
+4.4
+Plug-and-play quantum-light sources
+. . . . . . . . . . . . . . . . . . . .
+27
+5
+Applications and future perspectives
+28
+6
+Acknowledgments
+29
+
+===== Page 3 =====
+
+CONTENTS
+3
+1. Introduction
+Light sources capable for the generation of non-classical states of light are at the heart
+of many applications in photonic quantum technologies [1]. Many schemes of quantum
+communication and cryptography [2, 3, 4, 5], for instance, rely on the availability of
+streams of single photons or entangled photon pairs on demand. The desired quantum
+light states are thereby often required to meet speciﬁc properties regarding the photons’
+wavelength, coherence time, indistinguishability, or polarization.
+Examples include
+quantum key distribution [6] as well as quantum repeaters protocols [7, 8]. Due to the
+prospects for device integration and scalability, engineered solid-state-based quantumlight sources are of particular interest.
+The respective quantum emitters, however,
+diﬀer in their optoelectronic properties within and across given ensembles, due to
+statistical variations in size, geometry, and material composition or simply the solid-state
+hostmaterial itself. To engineer quantum devices with the required optical properties,
+deterministic fabrication techniques are in great demand, enabling a higher degree of
+control for the parameters relevant for their targeted applications.
+This topical review focuses on solid-state quantum-light sources which are
+fabricated in a deterministic fashion using advanced nanotechnology platforms.
+In
+section 2 we ﬁrst introduce diﬀerent types of material systems hosting quantum emitters
+in the solid-state.
+Section 3 reviews the techniques used for deterministic device
+fabrication.
+The respective approaches are grouped in four categories: (1) Bottomup techniques for the site-controlled growth or deﬁnition of quantum emitters (cf.
+section 3.1). (2) Top-down marker-based techniques for the device fabrication around
+pre-selected, self-organized and stochastically-grown quantum emitters (cf. section 3.2).
+(3) In-situ techniques, where the emitter selection or deﬁnition and the lithography of
+a device is achieved in the same machine at low temperatures (cf. section 3.3). (4)
+Hybrid approaches, combining diﬀerent techniques from (1) to (3) (cf. section 3.4).
+In section 4 state-of-the-art solid-state quantum-light sources based on the fabrication
+techniques presented in the previous sections are presented with a focus on quantum
+dot devices. Here, emphasis is put on an engineered functionality, enhanced photon
+collection eﬃciency, and recent developments such as the modularization in plug-andplay devices. The article closes with section 5 by highlighting recent applications of
+deterministic solid-state-based quantum-light sources in photonic quantum technologies
+and discussing future perspectives in this context.
+2. Quantum emitter and host materials
+Various types of material systems can be used for the deterministic fabrication of
+quantum-light sources.
+In this sections we introduce the most prominent types of
+quantum emitters and host materials for non-classical light generation in the solid-state.
+
+===== Page 4 =====
+
+CONTENTS
+4
+Figure 1.
+Material systems used for the generation of non-classical light in
+the solid-state:
+(a) Self-organized InGaAs/GaAs QDs (adapted from [9], with
+permission of AIP Publishing), (b) nitrogen-vacancies (NV) in diamond crystals ([10],
+reprinted with permission,
+c⃝2006 WILEY-VCH), (c) Solitary dopants of carbon
+nanotubes ([11], adapted by permission from Springer Nature,
+c⃝2015 Macmillan
+Publishers Limited), and (d) defect centres in monolayers of MoS2 ([12],reprinted by
+permission from Springer Nature, c⃝2011 Macmillan Publishers Limited) observed in
+a photolumincescence intensity map in (e) (reprinted with permission from [13], c⃝The
+Optical Society.
+2.1. Epitaxial semiconductor quantum dots
+Since their discovery in the early 1990s [14, 15] epitaxial semiconductor quantum dots
+(QDs) have had an impressive career and rouse prospects for novel applications in various
+ﬁelds of research reaching from semiconductor laser physics [16] to quantum information
+processing [17, 18].
+QDs are crystalline clusters of a few hundreds to thousands of atoms embedded
+in a semiconductor matrix (see ﬁgure 1(a)).
+The QD islands can form in a selforganized fashion during the epitaxy of single monolayers of two materials with diﬀerent
+lattice constants.
+Diﬀerent types of growth regimes are distinguished depending on
+the materials and the growth conditions (temperature, pressure, amount of material,
+growth interruption, etc.) [19]. Typically, the energy band gap of the QD material is
+chosen to be smaller as compared to the surrounding matrix material, which leads to a
+three-dimensional conﬁnement potential for electrons and holes in the conduction band
+and valence band, respectively [20]. The growth of QDs can be conducted either via
+molecular beam epitaxy (MBE) or metal-organic chemical vapor deposition (MOCVD).
+Both methods enable monolayer deposition with high precision. In MOCVD reactant
+gases are fed into the reactor at a typical pressure of 15 to 750 Torr, whereas MBE
+
+===== Page 5 =====
+
+CONTENTS
+5
+requires ultra-high vacuum conditions (pressures < 10−8 Torr) during the epitaxy of
+the semiconductor material obtained from heated eﬀusion cells [21].
+While MBE is
+mostly used in research laboratories and enables lowest impurity levels, MOCVD is
+also employed for large scale production due to its lower costs. The internal atomic
+structure of a QD embedded in bulk material is resolved by cross-sectional scanning
+tunneling microscopy (XSTM) in Figure 1 (a) [9].
+The conﬁnement potential of QDs with lateral dimensions on the order of the
+de Broglie wavelength of electrons and holes leads to quantized energy levels of the
+conﬁned charge carriers and, hence, to a discrete emission spectrum in photo- or
+electroluminescence experiments. Especially at low temperatures, phonon-coupling is
+almost negligible [22, 23, 24], which leads to predominant emission into the zero-phonon
+line (ZPL), in contrast to colour centres (cf. 2.2). Besides the fundamental excitonic
+state X, constituted of a single electron and a single hole, various multiparticle states can
+form inside a single QD, typically leading to a variety of emission lines. Two electronhole pairs captured inside a QD, for instance, form a biexciton (XX) state, while uneven
+numbers of charge-carriers for electrons and holes result in positively or negatively
+charged multi-particle states [25, 26, 27, 28, 29]. Spectrally selecting the emission of
+one speciﬁc state results in the distillation of single photons leaving the QD one by
+one. This leads to the famous antibunching eﬀect in photon statistics measurements
+via a Hanbury Brown and Twiss (HBT) setup [30]. Recently, a record-low antibunching
+value of g(2)(0) = (7.5 ± 1.6) × 10−5 has been reported using QD single-photon sources
+[31]. Beyond the possibility of generating single-photon states, QDs also allow for the
+generation of temporally-correlated photon pairs [32, 33, 34] via the biexciton-exciton
+(XX-X) radiative cascade [35]. As mentioned above, the XX state of a QD is constituted
+of two bound electron-hole pairs. Owing to quantum mechanical Coulomb interactions
+of the involved charge carriers [36], this state typically shows a ﬁnite binding energy
+EXX
+bin with respect to the case of two unbound excitons, which is on the order of 1 meV
+in case of the InGaAs/GaAs material system [27].
+The exciton state, on the other
+hand, consists of a single electron-hole pair and usually reveals a ﬁne-structure splitting
+∆EFSS on the order of 10 µeV [25], which arises from anisotropic electron-hole exchange
+interaction.
+The resulting radiative cascade emits pairs of photons in two possible
+decay channels, one being linear-horizontally (H) and the other one linear-vertically (V)
+polarized. Exploiting speciﬁc symmetry properties of QDs, this XX-X radiative cascade
+can produce polarization-entangled photon pairs [37, 38] or so-called twin-photon states
+[39, 40] (see section 4.2). For applications in photonic quantum technologies QDs are
+particular interesting, as they can be embedded straightforwardly in diode structures
+enabling electrical operation of the emitters [41, 42]. Moreover, the radiative lifetime of
+QDs is relatively short (≈1 ns, Ref. [43] and references therein), enabling high photon
+generation rates.
+The stochastic nature of the self-organized growth of QDs, however, leads to
+an inhomogeneous broadening of the emission properties of ensembles of emitters.
+Therefore, various measures have been developed to inﬂuence the QD emission
+
+===== Page 6 =====
+
+CONTENTS
+6
+wavelength. Using partial capping and annealing during the QD growth [44, 45, 46]
+or post-growth rapid thermal annealing [47, 29, 48, 49] the emission wavelength and
+other properties, such as the ﬁne-structure splitting, of QDs can be adjusted to a certain
+extent at the ensemble level. Still these techniques are only workarounds towards fully
+deterministic and scalable technology platforms, which will be the central subject of
+this review article.
+2.2. Colour centres in crystals
+Another promising type of quantum emitters are colour or defect centres in bulk or
+nano crystals. colour centres are crystallographic point defects, where a single native
+atom of the lattice is substituted by an impurity (see ﬁgure 1(b)). This conﬁguration
+leads to discrete electronic states deep inside the energy bandgap of the host crystal,
+often resulting in a high temperature stability up to room temperature [50]. Prominent
+examples are nitrogen-vacancies (NV) or silicon-vacancies (SiV) in diamond crystals,
+which are to date among the most thoroughly studied colour centres (see Refs. [10, 51]
+for a review).
+NV and SiV centres naturally occur in diamond, but can also be
+produced deterministically, which will be discussed in section 3.3. Compared to QDs,
+the coupling to phonons is relatively strong.
+The SiV centre in diamond, however,
+also provides strong emission into the zero phonon line (ZPL) of about 70% at room
+temperature and additionally enables the fabrication of emitter ensembles with ultrasmall inhomogeneous broadening [52]. More recently also germanium-vacancy (GeV)
+or tin-vacancy (SnV) color centres in diamond are considered to enable single-photon
+sources with improved quantum eﬃciencies [53].
+Compared to QDs, the radiative
+lifetimes of defect centres in diamond are long-lived (≈10 ns, Ref. [43] and references
+therein), leading to reduced photon generation rates.
+Beyond the diamond material platform,
+large progress has been achieved
+with colour centres in compound semiconductors.
+Silicon carbide (SiC) with
+embedded positively charged carbon antisite-vacancies (CVCSi) can be used to develop
+room-temperature single-photon sources [54].
+Another wide-bandgap compound
+semiconductor with potential for the engineering of quantum light emitting devices
+is ZnO. With respect to the hosted colour centres, however, this material system is
+far less understood and the quantum emitters suﬀer from reduced optical quality as
+compared to the material systems discussed above [55]. Additionally, the fabrication of
+high-quality diode structures has not been successful to date, hindering the realization of
+electrically controlled devices so far [43]. Other candidates for single-photon generation
+in the solid-state are rare-earth-ion impurities in crystals such as yttrium aluminum
+garnet (YAG) and yttrium orthosilicate (YOS) [56, 57]. Radiative lifetimes of colour
+centres in compound semiconductors (SiC, ZnO, etc.) and rare-earth impurities in YAG
+crystals are in between those of QDs and colour centres in diamond (≈1−4 ns, Ref. [43]
+and references therein).
+More generally, the realization of integrated devices based on colour centres is
+
+===== Page 7 =====
+
+CONTENTS
+7
+very demanding, and electrical pumping of the quantum emitters has been impossible
+for a long time. For the diamond and SiC material system, this challenge has been
+mastered meanwhile, and single-photon emitting diodes operating at room-temperature
+were demonstrated [58, 59].
+2.3. Two-dimensional materials
+There exists a plethora of quasi two-dimensional (2D) materials, which can be obtained
+by exfoliation from bulk materials that are composed of stacks of weakly interacting
+atomically thin layers. The most prominent example for such a van-der-Waals material
+comprises a sheet of carbon atoms aligned in a hexagonal lattice - also known as
+graphene. ’Rolled up’ forming a carbon nanotube (see ﬁgure 1(c)), graphene has been
+used to demonstrate antibunching in photoluminescence experiments [60]. Very recently,
+carefully synthesized triangular ﬂakes of graphene, referred to as graphene QDs, have
+been used for single-photon generation at room temperature [61].
+With respect to quantum light generation, recently also another type of 2D material
+system attracted great interest: Transition metal dichalcogenides (TMDCs) [62, 63].
+TMDCs are a class of materials with the formula MX2, where M is a transition
+metal element (group IV, V or VI), and X is a chalcogen (see ﬁgure 1(d)).
+One
+of the intriguing properties of TMDCs are their layer-dependent optical properties.
+Several TMDC semiconductors, for instance molybdenum disulﬁde (MoS2) and tungsten
+diselenide (WSe2), show a transition from an indirect bandgap in bulk to a direct
+bandgap in the monolayer conﬁguration [64, 65]. In 2015 ﬁve groups independently
+reported the observation of single-photon emission by localized luminescence centres in
+WSe2 [66, 67, 68, 69, 13]. Moreover, signatures of the XX-X radiative cascade were
+observed [70, 71], rising prospects for the generation of entangled photon pairs in 2D
+material systems. The origin of these emitters is attributed to excitons bound by shallow
+conﬁnement potentials generated by local strain ﬂuctuations. For this reason, TMDCbased quantum emitters to date operate only at cryogenic temperatures and are highly
+susceptible to spectral diﬀusion [13].
+In contrast, quantum emitters in hexagonal boron nitride (hBN) oﬀer superior
+temperature stability, as the associated defect states are located deep inside the energy
+bandgap, similarly to colour centres in diamond. Therefore, single-photon emission is
+stable up to room temperature [72, 73] and even far beyond [74].
+Radiative lifetimes of quantum emitters in 2D materials are similar to those of
+QDs (cf. Ref. [43] and references therein). The emission, however, often suﬀers from
+pronounced spectral diﬀusion, which complicates quantum optics experiments. To date,
+for example, there is only a single report on resonant laser excitation spectroscopy of
+quantum emitters in non-deterministically fabricated 2D materials [75]. The diﬃculty
+of resonantly exciting quantum emitters in 2D materials in turn might be one reason
+why the generation of indistinguishable photons has not been demonstrated for this
+material system yet.
+
+===== Page 8 =====
+
+CONTENTS
+8
+3. Deterministic fabrication techniques
+For the scalable fabrication of quantum devices with high yield and optimal performance,
+deterministic fabrication techniques are required. The development and the ongoing
+improvement of such techniques is therefore one major driving force in the ﬁeld of
+photonic quantum technologies. In this section, we introduce prominent approaches
+for embedding single quantum emitters in photonic devices using bottom-up or topdown techniques, where emphasize is put on recent technological developments.
+In
+section 3.1 the site-controlled growth or deﬁnition of quantum emitters will be reviewed.
+Marker-based approaches for deterministic device fabrication are discussed in section
+3.2). Section 3.3 focuses on in-situ techniques - approaches which are particularly in
+vogue today. Last but not least, section 3.4 presents hybrid deterministic approaches
+based on multiple material systems.
+3.1. Site-controlled quantum emitters (bottom-up)
+To achieve the highest degree of scalability in quantum device fabrication, ideally the
+quantum emitter itself needs to be positioned precisely at a pre-deﬁned location. In this
+section we will summarize such bottom-up approaches for QDs as well as for emerging
+2D materials (see ﬁgure 2). One method for achieving position-control for single QDs
+is the deposition of QD material on a pre-patterned substrate with or without an
+additional buﬀer layer [82].
+Using electron-beam lithography (EBL) in combination
+with dry etching, pits or nano-holes can be deﬁned in the substrate. Overgrowth of
+this patterned substrate with QD material leads to a site-selective growth of QDs. As
+an prominent example for this approach Hartmann et al. demonstrated the growth of
+GaAs/AlGaAs heterostructures in inverted tetrahedral pyramids [83, 77]. In this case,
+hexagonal arrays of pits are etched into undoped (111)-B oriented GaAs substrate. In a
+next step Al0.45Ga0.55As/GaAs/Al0.45Ga0.55As single quantum well layer sequences are
+deposited via MOCVD. This growth conﬁguration leads to the formation of inverted
+pyramids, where quantum wires and quantum wells develop at the pyramid corners and
+facets, while a single GaAs QD is formed at the sharp pyramid tip. The resulting QDs
+feature a precise position control (< 10 nm), small inhomogeneous broadening of the
+ensemble emission (< 10 meV) as compared to standard self-organized QDs (typically
+30-60 meV [14, 15]), and can be adjusted in their emission wavelength [77]. Due to the
+high degree of symmetry present in this approach, site-controlled pyramidal QDs show
+small ﬁne-structure splittings < 20 µeV [84], which has been exploited for the generation
+of polarization-entangled photon pairs (cf. 4.3 and 4.2). Another example to achieve
+site-controlled growth of QDs by using pre-patterened substrates was demonstrated by
+Schneider et al. [76]. Here, circular nano-holes with a diameter of 30 nm are deﬁned on
+(100) oriented GaAs substrate using electron-cyclotron-resonance reactive-ion or wetchemical etching. In a next step, the nanohole surface is smoothed by a 12 nm thick
+GaAs layer before the growth of InAs QDs and a 50 nm thick capping layer is performed
+using MBE. Using this process, a standard deviation of the QD position of 50 nm relative
+
+===== Page 9 =====
+
+CONTENTS
+9
+Figure 2. Bottom-up techniques employed for the spatially deterministic positioning
+of single quantum emitters: (a) Site-controlled growth of InGaAs/GaAs QDs on etched
+nanoholes (reprinted from [76], with permission of AIP Publishing), (b) pyramidal QDs
+based on the overgrowth of tetrahedral pits ([77], reprinted with permission, c⃝2009
+Wiley-VCH), (c) QD positioning via strain induced by a buried oxide aperture (adapted
+from [78], with permission of AIP Publishing), (d) positioned nanowires with integrated
+QDs (adapted from [79], with permission of AIP Publishing), and strain-induced defect
+centres in 2D materials on (e) gold nanorods ([80], reprinted with permission, c⃝2016
+Wiley-VCH) and (f) dielectric nanopillars ([81], CC BY 4.0).
+to the target location has been reported. This approach can be used to produce ordered
+arrays of single QDs with pitches between 200 nm and 10 µm [85, 86], being beneﬁcial
+for device integration. Introducing one or multiple separation layers between the nanoholes and the QD layer, the optical quality of this type of site-controlled QDs can
+be improved [87], which otherwise suﬀer from large spectral linewidth due to spectral
+diﬀusion caused by the nearby etched surfaces [88]. Employing such reﬁned approaches,
+J¨ons et al. demonstrated the triggered generation of indistinguishable photons emitted
+by site-controlled QDs [89].
+Pre-patterned substrates can also be used to achieve site-controlled growth of
+photonic nanowires with integrated single quantum emitters. In their work, Heinrich et
+al. demonstrated the positioned growth of AlGaAs nanowires containing an axial GaAs
+QD using solid-source MBE in the vapor liquid solid mode [79]. This approach resulted
+in tapered nanowires with an average diameter of 167 nm and 304 nm at the top and
+the bottom of the nanowire, respectively, and an average nanowire length of 2.6 µm.
+A spectral linewidth of 95 µeV and photon antibunching were observed with moderate
+single-photon purity (g(2)(0) = 0.46) due to uncorrelated background emission from the
+doped GaAs substrate.
+Another method for achieving high degrees of position control is based on a buried
+stressor consisting of an oxide aperture. Strittmatter et al. demonstrated, that buried
+
+===== Page 10 =====
+
+CONTENTS
+10
+oxide apertures generate a strain ﬁeld at the surface of a GaAs buﬀer layer, which leads
+to the nucleation of QDs above the edges of the aperture. Reducing the aperture size, the
+strain-ﬁeld can be ideally focused down to a small region, leading to the strain induced
+nucleation of a single site-controlled QD [78, 90]. A particular appealing feature of this
+approach is, that the position control of a quantum emitter can be combined with an
+optical as well as an electrical conﬁnement generated via the oxide aperture [91], which
+is beneﬁcial for the development of eﬃcient deterministically-fabricated and electricallydriven devices (see section 4.3).
+A completely diﬀerent approach is used for achieving site-control of quantum
+emitters in 2D materials. In two-dimensional sheets of material exfoliated on planar
+surfaces, spatially localized quantum emitters with photon antibunching have been
+observed (cf.
+section 2.3).
+The origin of the underlying emission process was still
+under debate, but the associated localized luminescence occurred mostly at the edges
+of ﬂakes and could also be induced by scratching the material [13]. In 2015 Kumar
+et al.
+showed, that localization of quantum emitters can be generated by straining
+mono- and bilayer WSe2 by patterned substrates [92]. In another approach Kern et al.
+demonstrated the nanoscale positioning of quantum emitters in a WSe2 ﬂake, covering
+a nanoscale gap between two gold nanorods thus resulting in a strain ﬁeld [80]. Shortly
+after, the realization of ordered arrays of quantum emitters was reported using WSe2
+ﬂakes covering a substrate with nanopillars [81, 93]. Additionally, also nanobubbles
+have been used to induce quantum emitters in WSe2 and BN/WSe2 heterostructures
+[94].
+The bottom up approaches presented in this section proved their potential for the
+scalable fabrication of quantum-light sources. The quantum optical properties of the
+respective QDs, however, often do not reach the excellent level of stochastically-grown
+self-organized QDs.
+One possible reason for the reduced optical quality is that the
+subjacent patterned substrate used to achieve site-control introduces defects close to
+the QDs.
+Additionally, the degree of control achievable for the emitter properties
+(e.g.
+emission wavelength, inhomogeneous broadening, etc.)
+to date is still not
+suﬃcient for many applications in quantum information technologies. These drawbacks
+are circumvented by top-down approaches presented in the following section. These
+drawbacks are circumvented by top-down approaches presented in the following section.
+3.2. Marker-based approaches (top-down)
+In top-down marker-based approaches, speciﬁc quantum emitters are pre-selected on
+the basis of their key emission properties and subsequently integrated into a photonic
+device. During a ﬁrst step, suitable quantum emitters are located precisely relative to the
+markers deﬁned onto the surface of the target sample. In the second step, the photonic
+structure is deﬁned lithographically directly at the position of the quantum emitter.
+Seminal experiments using marker-based deterministic technologies are summarized
+in Figure 3.
+In 2005 Badolato et al.
+demonstrated the deterministic coupling of a
+
+===== Page 11 =====
+
+CONTENTS
+11
+Figure 3. Top-down marker-based approaches used for the deterministic fabrication
+of photonic microstructures with a single quantum emitter: (a) (from [95], reprinted
+with permission from AAAS) and (b) ([96], reprinted by permission from Springer
+Nature, c⃝2007 Nature Publishing Group) InAs/GaAs QDs inside a photonic crystal
+cavity (PhC), and (c) QDs integrated in circular Bragg gratings using nanoscale optical
+positioning ([97], CC BY 4.0).
+stochastically grown InAs/GaAs QD to the cavity mode of a photonic crystal cavity
+(PhC) with a Q-factor of about 3000 [95]. To be able to spatially detect the target QD
+buried in the unprocessed sample, six vertically strain-correlated QD layers were grown
+above the spectrally blue-detuned target quantum emitter. The uppermost QD could
+be resolved in SEM images relative to gold markers, which was then used to deﬁne the
+spatially aligned PhC via EBL. This deterministic device enabled the observation of
+the Purcell eﬀect [98, 99] in the weak coupling regime. A reﬁned method of the same
+group enabled two years later the observation of a deterministically-fabricated stronglycoupled QD-cavity system [96]. This was achieved by fabricating a high-Q (13,300) PhC
+around a single QD using marker structures yielding a spatial accuracy of 30 nm.
+In the work discussed above,
+the localization of QDs was performed via
+SEM or AFM, respectively, while the optical properties had to be checked in
+another characterization step via micro-photoluminescence (µPL) spectroscopy before
+fabricating the ﬁnal device. The prospects and limitations of such combined methods
+were studied in detail in Ref. [100]. In contrast, the reports presented in the following
+enable one to localize and spectrally analyze the target QDs in a single imaging step,
+while device fabrication was still performed by marker-based EBL. In Ref. [101] CL
+
+===== Page 12 =====
+
+CONTENTS
+12
+spectroscopy was used to locate single QDs with respect to markers and plasmonic
+nano-antennas were fabricated by EBL with an alignment accuracy better than 50 nm.
+A similar lateral accuracy was reached in Ref. [102] by combining µPL and EBL with the
+aid of markers to integrate single QDs into photonic crystals. Also, marker-based µPL
+together with EBL was used in Ref. [97] to realize circular Bragg gratings around single
+QDs with an accuracy of better than 30 nm. More recently, the same group reported a
+further improved positioning uncertainty of 4.5 nm using a technically reﬁned method
+[103].
+A potential drawback of the marker-based deterministic approaches presented above
+is the two-step process. While the optical pre-selection is performed for instance in
+a µPL-setup, the sample processing is conducted via photolithography or EBL in a
+dedicated lithography machine.
+The spatial correspondence between the two setups
+needs to be assured using marker structures on the sample surface that were fabricated
+beforehand. These two steps make the fabrication more complex and therefore more
+susceptible with respect to misalignments. The approaches presented in the following
+perform both steps in a single machine, and therefore potentially oﬀer increased
+alignment accuracy while reducing the process complexity.
+3.3. In-situ techniques
+A particular powerful class of approaches used for deterministic device fabrication
+comprises in-situ techniques. Here, the pre-selection or creation of quantum emitters
+and, if applicable, also the lithographic deﬁnition of a surrounding device are performed
+in one and the same apparatus without transferring the sample or heating it up (if
+the pre-selection was performed at cryogenic temperatures) [104].
+This has several
+appealing prospects: Firstly, the alignment accuracy is improved, as the coordinate
+system is identical for both steps. Secondly it speeds up the fabrication, as no marker
+or coordinate-system matching is required for each write ﬁeld. Not least, the setup
+complexity is strongly reduced, as only a single machine is necessary.
+A prominent example based on in-situ optical lithography is the work by Dousse
+et. al [105] (see ﬁgure 4 (a)). This technique is based on a µPL setup using two diﬀerent
+lasers with emission wavelengths of 750 nm and 532 nm, respectively. The sample is
+coated with a photo-sensitive resist before it is mounted inside a cryostat for the cooldown to low temperatures (10 K). Using the 750 nm laser, the resist is not exposed
+and a suitable target QD can be located using µPL-spectroscopy. After QD selection,
+the green laser is used to expose the resist right above the quantum emitter. In the
+next steps, the resist is developed at room temperature and a lift-oﬀprocess together
+with chloride reactive ion etching is applied to deﬁne a micropillar cavity containing
+the pre-selected target QD. This approach enables a spatial accuracy for the positioning
+of micropillars of 50 nm. The fabrication of bright quantum-light sources using in-situ
+optical lithography will be discussed in section 4.1 and 4.2.
+Inspired by the work presented above, a deterministic device fabrication technique
+
+===== Page 13 =====
+
+CONTENTS
+13
+Figure
+4.
+Top-down in-situ lithography techniques for deterministic device
+fabrication: (a) In-situ optical lithography of QD-micropillar cavities ([105], reprinted
+ﬁgure with permission, c⃝2008 by the American Physical Society), (b) in-situ EBL
+of QD-mesas (reprinted from [106], with permission of AIP Publishing), and ionimplantation of arrays of (c) NV centres ([107], reprinted with permission, c⃝2013
+Wiley-VCH) and (d) SiV centres ([108], CC BY 4.0) in diamond.
+based on in-situ EBL has been developed.
+In their work, Gschrey et al.
+combined
+EBL with cathodoluminescence spectroscopy [106].
+For this purpose, a scanning-
+
+===== Page 14 =====
+
+CONTENTS
+14
+electron microscope (SEM) was equipped with an extension for cathodoluminescence
+lithography [109]. Here, the sample is ﬁrst spin-coated with an electron-beam resist at
+room-temperature. After cooling down the sample to cryogenic temperatures of about
+10 K, pre-selection of target QDs based on their brightness and emission wavelength is
+performed by scanning the quantum emitters with the electron beam and mapping the
+luminescence using a spectrometer attached to the SEM. In the next step, the electron
+beam is used to deﬁne a photonic structure in the resist.
+As the resist is already
+exposed during the pre-selection process, the writing of the ﬁnal structure is performed
+by inverting the resist, which directly acts as etch mask for the ﬁnal etch step after resist
+development at room-temperature. Advantages of in-situ EBL, compared to the optical
+counterpart, include (at least in principle) improved accuracy as well as high resolution,
+and, in case of more complex structures such as waveguide circuits, also higher speed.
+The overall lateral accuracy has been reported to be 34 nm [110], mainly limited by
+temperature-induced mechanical drifts of the sample holder inside the SEM. A spatial
+resolution below 10 nm should be within reach based on state-of-the-art EBL systems.
+The speed for writing extended device patterns in the resist is faster compared to optical
+in-situ lithography, as the electron-beam can be scanned quickly across the sample. In
+Ref. [106], this approach has been used to fabricate deterministic QD mesa structures
+with high device yield and high quantum optical properties. In section 4.1 and 4.2 the
+fabrication of deterministically fabricated QD quantum-light sources will be presented,
+which are based on a reﬁned in-situ EBL technique.
+The in-situ lithography approaches presented above have so far been employed
+mostly for QD systems. For colour centres, ion-implantation has been proven to be a
+powerfull technique for the deterministic emitter positioning, which can be combined
+with in-situ processing of photonic devices. In Ref. [111] Meijer et al. demonstrated
+the generation of arrays of NV centres in a diamond crystal by implanting nitrogen
+atoms and annealing the sample. For this purpose a beam of N+ ions produced by a
+dynamitron tandem accelerator with an energy of 2 MeV and a diameter of 0.3 µm was
+scanned stepwise across the sample. Later on, the implantation of ions for the generation
+of NV centres has been implemented using focused ion beam (FIB) technology in
+combination with a SEM in a dual-beam conﬁguration [107] (see ﬁgure 4 (c)), which
+is much more practical then using a tandem accelerator. This technique has then also
+been adapted for the generation of SiV centres in diamond [112, 108] (see ﬁgure 4 (d)) as
+well as silicon carbide [113] crystals, and more recently also germanium-vacancies (GeV)
+in diamond [114].
+By combining ion-implantation with plasma etching techniques,
+photonic microstructures such as nanopillars [113] or photonic-crystal cavities and
+waveguides [115] can be realized in-situ.
+These approaches, however, doo not allow
+for the controlled implantation of a single ion with 100% yield, leading to a Poissonian
+distribution of the numbers of NV centres per site.
+
+===== Page 15 =====
+
+CONTENTS
+15
+3.4. Hybrid approaches
+In some cases, it is beneﬁcial to combine diﬀerent material systems for the quantum
+emitter on one hand and the photon collection or guiding on the other hand, to gain synergies of both worlds. Such device approaches in many cases need to make use of transfer
+techniques to integrate the active nanophotonic part (including the quantum emitter)
+with the passive part for enhanced photon collection and guiding (waveguides, cavities
+or solid immersion lenses). Examples for transfer techniques include nano-manipulation
+using the tip of an atomic force microscope (AFM) [116, 117] or a scanning electron microscope (SEM) [118, 119] or wafer-bonding [120], or so-called transfer printing, where
+the emitter is embedded in a thin ﬁlm of rubber [121] or polymer [122]. Hybrid devices
+fabricated in a deterministic fashion are summarized in Figure 5. In Ref.[123], the tip
+of an AFM has been used for picking, transferring and placing single nanodiamonds
+containing NV centres. Applying forces of 1 µN was suﬃcient to attach the nanodiamond to the tip via surface adhesion. To monitor the success of the pick-up procedure,
+the ﬂuorescence of the nanodiamond was observed during tip movement. In that way,
+nanodiamonds can be placed at the center of a gallium phosphide photonic crystal membrane cavity (see ﬁgure 5 (a)). The yield for this procedure was reported to be about one
+third. Embedding the quantum emitter in a photonic device, can improve the photon
+collection eﬃciency. Placing a nanodiamond for instance inside a PhC membrane cavity,
+Wolters et al. demonstrated the Purcell enhancement of the ZPL emission of a single
+NV center [124]. For the development of practical devices, also the coupling to optical
+ﬁbers is highly desirable. This has been demonstrated for NV centres in nanodiamonds
+positioned at the facet of a photonic crystal ﬁber [125] (see ﬁgure 5 (b)) or the waist
+of a tapered optical ﬁber [126] using the pick-and-place technique discussed above. A
+ﬁber-coupled single-photon emitting device based on a similiar approach adapted for
+nanowires will be discussed in section 4.4. Furthermore, nanowires with integrated single QDs have also been deterministically integrated in silicon-based photonic waveguides
+combining pick-and-place and waveguide processing [127] (see ﬁgure 5 (c)). Moreover,
+the deterministic fabrication of hybrid GaAs/Si3N4 waveguide devices with integrated
+pre-selected QDs (see ﬁgure 5 (d)) was recently demonstrated by Schnauber et al. in
+an all-lithography-based approach [128], i.e. without requiring pick-and-place. For this
+purpose the authors combined in-situ EBL on GaAs-based QD devices [106] with waferbonding to silicon-based waveguides [120]. Finally, Sartison et al. combined in-situ
+photolithography with 3D laser writing to ﬁrst preselect a single QD, deﬁne markers,
+and then fabricate a solid immersion lens on top of it [129] (see ﬁgure 5 (e)).
+4. Deterministic solid-state quantum-light sources
+Enormous eﬀorts are being made for the development of eﬃcient devices for quantum
+light generation, being one of the most demanding building blocks for applications in
+
+===== Page 16 =====
+
+CONTENTS
+16
+Figure 5. Hybrid approaches for the deterministic positioning of quantum emitters
+in photonic devices:
+Nano-diamonds (a) inside a PhC (adapted from [123] with
+permission, c⃝2011 American Institute of Physics) and (b) at the facet of a photonic
+crytstal ﬁber ([125], reprinted with permission, c⃝2011 American Chemical Society).
+(c) Nanowire-QD integrated into a SiN waveguide ([127], adapted with permission,
+c⃝2016 American Chemical Society). (d) Pre-selected QD integrated into a tapered
+GaAs waveguide coupled to a SiN waveguide ([128], adapted with permission, c⃝2019
+American Chemical Society.). (e) Solid immersion lens (SIL) fabricated by laser writing
+above a pre-selected QD ([129], CC BY 4.0).
+photonic quantum technologies. In this section we review solid-state-based quantumlight sources which are fabricated deterministically by using the approaches presented
+in the previous section.
+The performance of the discussed quantum-light sources will be compared using
+the following quantities:
+The quality factor, the photon extraction eﬃciency, the
+antibunching value, the photon indistinguishability, and the entanglement ﬁdelity. In
+the following we brieﬂy introduce each quantity.
+The quality (Q) factor of an optical cavity is a measure for the storage time
+of photons inside the resonator.
+Experimentally, the Q-factor is extracted from
+spectoscopic measurements and is given by the resonator’s frequency-to-bandwidth ratio
+Q = ω/δω.
+The photon extraction eﬃciency refers to the fraction of the total photon ﬂux
+emitted by an emitter which is collected by a certain numerical aperture (NA) deﬁned
+by the experimental apparatus. Depending on the far-ﬁeld characteristics of a photonic
+device, smaller or larger NAs are suﬃcient to achieve high photon extraction eﬃciencies
+into the ’ﬁrst lens’. The photon extraction eﬃciency can be determined by a careful
+calibration of the experimental setup [130, 131].
+The antibunching value g(2)(0) is a measure for the probability that a light
+sources emits two photons at the same time and refers to the case of τ = t2 −t1 = 0
+(zero temporal delay) for the photon autocorrelation g(2)(τ) of a given quantized light
+ﬁeld [132]. An ideal single-photon source emits exactly one photon at a time leading
+
+===== Page 17 =====
+
+CONTENTS
+17
+to g(2)(0) = 0, while g(2)(τ) = 1 for other delay times (sub-Poissonian statistics). A
+perfectly coherent classical light source, e.g. a laser, is characterized by g(2)(0) = 1
+(Poissonian statistics), while classical thermal light ﬁelds, emitted e.g. by light bulbs or
+ﬂuorescent lamps, show 1 < g(2)(0) < 2 (super-Poissonian statistics). Experimentally,
+g(2)(0) is determined via photon autocorrelation measurements in a Hanbury-Brown and
+Twiss type setup [30]. In experiments under pulsed excitation, g(2)(0) is evaluated as
+the integrated area of the τ = 0 coincidence peak divided by the average area of the
+coincidence peaks at ﬁnite τ. Note, that g(2)(0) does neither depend on the vacuum
+contributions present in the light ﬁeld, i.e. the eﬃciency of the light source, nor on the
+decoherence.
+The photon indistinguishability corresponds to the mean wavefunction overlap
+of two photons from a statistical ensemble. Photons are called fully indistinguishable,
+if they can be described by the same set of identical quantum numbers. The photon
+indistinguishability can be determined via two-photon interference experiments in a
+Hong-Ou-Mandel (HOM) type setup [133, 134].
+Here, two photons enter a 50:50
+beamsplitter from diﬀerent ports and interfere with each other.
+In case of perfect
+indistinguishabillity, both photons always leave the beamsplitter in the same but
+stochastically random exit port, as the probability amplitudes destructively interfere
+for the cases where both photons are transmitted or reﬂected.
+This HOM eﬀect
+can be observed as antibunching in coincidence measurements at both exit ports.
+In contrast to the antibunching in photon autocorrelation measurements, the photon
+indistinguishability is crucially aﬀected by decoherence. Typically two measurements are
+performed to experimentally determine the photon indistinguishability, one where the
+input photons have parallel polarization orientation and the other one with orthogonal
+polarization conﬁguration. The contrast or visibility between both measurements reveals
+the photon indistinguishability. While most experiments use binary click detectors for
+HOM experiments, photon-number resolving detectors are an interesting alternative
+[135, 136].
+The entanglement ﬁdelity F +, as referred to in this review article, is deﬁned
+as the overlap of an experimentally generated two-photon wavefunction |Φ⟩with the
+maximally entangled Bell state |Ψ+⟩= 1/
+√
+2(|HXXHX + VXXVX⟩). Note, that this Bell
+state is entangled in the polarizations degree of freedom, while entanglement can also
+be realized in diﬀerent degrees of freedom, also simultaneously [137]. Experimentally,
+the entanglement ﬁdelity is determined using quantum tomography [138, 37], where
+F + = 0.5 corresponds to a perfectly polarization-correlated but classical state and
+F + = 1 to a maximally entangled state. Note, that also other criteria can be used to
+quantify entanglement [38].
+4.1. Single-photon sources
+A prominent strategy to increase the photon extraction eﬃciency from quantum emitters
+is their integration into microresonators [139]. Cylindrical Fabry-P´erot microcavitites,
+
+===== Page 18 =====
+
+CONTENTS
+18
+Figure
+6.
+Deterministically fabricated single-photon sources based on QDmicropillars using (a) site-controlled QD growth with a spatially aligned device
+(adapted from [144], with the permission of AIP Publishing) and (b) in-situ
+photolithography ([145],
+adapted by permission from Springer Nature,
+c⃝2016
+Macmillan Publishers Limited).
+also known as micropillar cavities, with embedded stochastically grown QDs have
+already been exploited in a variety of experiments [140] including strong light-matter
+coupling [141], quantum key distribution [142], and boson sampling [143]. In all these
+experiments, typically many devices needed to be scanned to ﬁnd QD-micropillars with
+suﬃcient emitter-mode coupling due to the spatially and spectrally random distribution
+of the emitters inside the cavity.
+Today, deterministic fabrication techniques allow for precisely aligning quantum
+emitters to micropillar structures, or vice versa, resulting in device yields close to
+unity with optimized performance.
+In 2009 Schneider et al.
+demonstrated the ﬁrst
+deterministically fabricated QD-micropillar device using site-controlled QD growth in
+a bottom-up fashion [144] (cf.
+section 3.1).
+To achieve high optical quality of the
+site-controlled QDs, two layered arrays of InAs QDs were grown on top of a nanohole
+seeding-layer each separated by a GaAs buﬀer layer. Photoluminescence of the seedinglayer as well as of the ﬁrst QD layer was spectrally blue-shifted by about 30 nm relative
+to the third QD layer using partial capping and annealing. The ordered arrays of sitecontrolled QDs were embedded in a λ-thick GaAs cavity sandwiched between a lower
+and an upper distributed Bragg reﬂector containing 25 and 12 mirror pairs, respectively.
+Next, micropillars have been fabricated spatially aligned with single positioned QDs
+using alignment markers. This approach resulted in deterministically fabricated QDmicropillar cavities each containing a single quantum emitter with high yield (≈90%).
+The tested device with a pillar diameter of 1 µm featured a Q-factor of 1700, which
+
+===== Page 19 =====
+
+CONTENTS
+19
+Figure 7. Deterministically fabricated nanowire-QD single-photon sources operable
+up to room-temperature ([150], adapted with permission, c⃝2014 American Chemical
+Society).
+enabled the observation of Purcell-enhanced triggered single-photon emission.
+The
+implementation of a top-down approach for the deterministic fabrication of single-photon
+sources was reported in 2013 by Gazzano et al. [146]. Using the in-situ photolithography
+developed in Ref.
+[105] (cf.
+ﬁgure 4(a)), the authors deterministically fabricated a
+micropillar cavity containing a single pre-selected QD. This resulted in the observation of
+large photon extraction eﬃciencies and high degrees of photon indistinguishability. This
+technology has been further improved by integrating gates in p-i-n doped micropillars,
+enabling a spectral tuning of the emission of integrated single quantum emitter relative
+to the cavity mode [147]. These improvements ﬁnally culminated in the report on a
+near-optimal single-photon source by Somaschi et al.
+[145] and similar results from
+another group [148]. In the ﬁrst report, single-photon indistinguishabilities of up to
+(99.56 ± 0.45)% were observed, while the second work achieved extraction eﬃciencies of
+up to (74±4)%. Besides the deterministic device technology itself, an important key for
+achieving large indistinguishabilities and photon extraction eﬃciencies was the resonant
+excitation scheme [149] used in both reports. This enables the on-demand generation
+of single-photon states with near-unity generation probability while keeping dephasing
+at a minimum.
+A drawback of the micropillar strategy discussed above is their narrow bandwidth
+character. As a consequence the precise spectral matching between cavity mode and
+quantum emitter often requires an additional tuning-knob, such as temperature, strain
+or electric ﬁeld. In order to support high photon extraction eﬃciencies in a wider spectral
+window, nanowires [131], lens structures [151, 152] and circular Bragg gratings [153] can
+been exploited.
+In 2012 Reimer et al.
+demonstrated a bright single-photon source
+based on bottom-up grown tapered InP nanowires with integrated positioned InAsP
+QDs. Although the spatial distribution of the nanowires was statistically random in
+this work, each nanowire contained a single precisely aligned QD. After the growth,
+
+===== Page 20 =====
+
+CONTENTS
+20
+Figure 8. Deterministically fabricated single-photon sources based on QD-microlenses
+using 3D in-situ EBL on pre-selected self-organized grown QDs [156].
+the QD-nanowires were embedded in a transparent polymer and removed from the InP
+substrate to facilitate the evaporation of a backside gold layer acting as mirror. This
+approach enabled a photon extraction eﬃciency of 42% and a measured antibunching
+value of g(2)(0) < 0.5 under continuous wave excitation. A spatially fully deterministic
+nanowire approach was demonstrated by Holmes et al. using site-controlled growth of
+GaN/AlGaN nanowires on a pre-patterned sapphire substrate [150]. In this approach,
+the nanowires were arranged in ordered arrays and the tip of the nanowire contained
+a single GaN QD. Due to the strong quantum-conﬁnement possible in this material
+system, the approach enabled the observation of single-photon emission in the UV-B
+spectral window up to room-temperature (300 K) with a measured g(2)(0)-value of 0.33.
+Other recent work on broadband deterministically fabricated QD-based quantum-light
+sources use hybrid SIL-based devices [129] (cf.
+section 3.4) or the lensing eﬀect of
+metallic nanorings for eﬃcient photon extraction [154], also in combination with solid
+immersion lenses [155].
+An particular useful approach was developed in our group by extending the insitu EBL approach described in section 3.3 to three-dimensional structures. Instead of
+using a ﬁxed electron dose, resulting in mesa structures as illustrated in ﬁgure 4 (b),
+we found that a variable dose in the negative-tone regime of the resist (grey-scale
+lithography) can be used to realize curved surfaces of the photonic structure hosting
+the single quantum emitter. This has been used by Gschrey et al. to deterministically
+fabricate a photonic microlens with a single embedded QD acting as bright single photon
+source [156, 157] (see ﬁgure 8). In combination with a back-side DBR the device showed
+broadband photon extraction eﬃciencies of (23 ± 3)% into an NA of 0.4, low multiphoton emission probabilities g(2)(0) < 0.01, and high photon indistinguishabilities,
+even well beyond saturation of the quantum emitter. In subsequent investigations, we
+used these QD-microlenses to explore diﬀerent meachnisms of dephasing limiting the
+indistinguishability of photons emitted by the quantum emitter [158]. In particular we
+
+===== Page 21 =====
+
+CONTENTS
+21
+Figure 9. Two-photon interference visibilities of consecutively emitted single photons
+versus the time δt elapsed between triggered emission processes. Experimental data for
+the X0 state (left) and the X+ state (right) are quantitatively described by a theoretical
+model assuming a non-Markovian noise correlation resulting from spectral diﬀusion on
+a nanosecond time scale. A characteristic temperature-dependent correlation time τC
+is observed. ([158], reprinted ﬁgure with permission, c⃝2016 by the American Physical
+Society)
+found, that the two-photon interference visibility decreases with increasing temporal
+separation between consecutively emitted photons (see ﬁgure 9), which is theoretically
+described by a non-Markovian noise process. At short temporal separations (2 ns) and
+low temperatures (10 K) we observed photon indistinguishabilities of up to (96 ± 4)%
+under quasi-resonant excitation of the quantum emitter. Furthermore we showed, that
+the performance of QD-microlens-based SPSs can be further improved in terms of the
+photon extraction eﬃcieny by employing anti-reﬂection coatings [159]. Additionally, the
+achievable single-photon ﬂux has been dramatically increased, by pushing the excitation
+rate to the limits of the quantum emitters using a mode-locked vertical-external-cavity
+surface-emitting laser at 500 MHz repetition rate [160]. Beyond the work reported at
+emission wavelengths of about 900 nm, also triggered single-photon emission in the
+telecom O-band has been demonstrated with QD-microlenses [161].
+Meanwhile, the
+microlens approach has been also adapted by other groups using in-situ photolithography
+in combination with wet-chemical etching [162].
+4.2. Multi-photon sources
+Beyond single-photon generation, the creation of more complex multi-photon states is
+an extremely exciting and challenging task at the heart of quantum optics. Applications
+range from quantum repeaters based on sources of entangled photon pairs, quantumenhanced sensing using N00N-states [163] to photonic quantum computing with
+entangled photonic cluster states [164]. The increased complexity of the task of distilling
+a speciﬁc multi-photon state, however, typically translates into more demanding
+boundary conditions for the quantum emitter and its surrounding device. In case of
+QDs, the XX-X radiative cascade intrinsically oﬀers the possibility to produce highly
+correlated pairs of photons (cf. section 2.1). Due to the typical energy scales for the
+
+===== Page 22 =====
+
+CONTENTS
+22
+XX binding energy (EXX
+bin ≈1 meV) and the ﬁne-structure splitting of the exciton state
+(∆EFSS ≈10 µeV), emission of the cascade leads usually to two doublets of orthogonally
+linearly polarized emission lines visible in the emission spectra, exhibiting spectrally
+distinguishable photons.
+But there exist three particular interesting speciﬁc constellations for XX binding
+energies and ﬁne-structure splittings, respectively. The possibly best known and most
+studied case corresponds to a QD with a zero ﬁne-structure splitting but a ﬁnite XX
+binding energy. This case results in the emission of polarization-entangled photon pairs
+[35, 37, 165], as discussed in the context of deterministic device fabrication in more
+detail below. Another type of entanglement which can be produced with the XX-X
+cascade has been proposed as entanglement via time-reodering, which requires a ﬁnite
+ﬁne-structure splitting but zero XX binding energy [166]. To the best of our knowledge,
+this case has not been used for entanglement generation yet. The last case refers to
+a XX-X cascade, where the ﬁne-structure splitting exactly matches the XX binding
+energy. While no entanglement is involved here, this speciﬁc energy level conﬁguration
+enables the generation of photon twins - a non-classical light state constituted of two
+temporally correlated photons with identical emission energy and polarization. In the
+following we will ﬁrst discuss experiments based on polarization entanglement using
+QDs with low ﬁne-structure splittings and then present work on twin-photon emitters.
+The ﬁrst deterministically fabricated device capable of emitting polarizationentangled photon pairs has been demonstrated by Dousse et al.
+in 2010 in a topdown approach [49].
+Using in-situ photolithography, a so-called ’photonic molecule’
+comprising two partially merged micropillars has been processed deterministically
+around a pre-selected QD (see ﬁgure 10(a)). The engineered hybridization of the optical
+modes of this photonic molecule [169] enabled the authors to simultaneously achieve high
+photon extraction eﬃciency for exciton and biexciton emission of the integrated QD.
+This sophisticated approach enabled an entangled photon pair rate of 0.12 per excitation
+pulse and an entanglement ﬁdelity F + to the state |Ψ+⟩of 0.59.
+In a bottom-up
+approach, Braun et al. observed correlated photon pairs of the XX-X cascade of sitecontrolled InP/GaInP QDs [170]. The ﬁne-structure splitting of the fabricated QDs,
+however, was 300 µeV on average, which was too large for entanglement experiments. A
+successful entanglement experiment based on site-controlled QDs was ﬁrst reported by
+Juska et al. by employing pyramidal In0.25Ga0.75As1−δNδ QDs grown on (111)-oriented
+substrate [167].
+Due to the high symmetry of the realized QDs (see ﬁgure 10(b)),
+ﬁne-structure splittings below 4 µeV have been observed for ordered arrays of quantum
+emitters, as reported also earlier by another group [171, 172]. Entanglement ﬁdelities
+of up to 0.721 ± 0.043 were observed, while the overall yield of positioned QDs showing
+F + > 0.5 reached 15%.
+Many of the reports discussed above achieved high entanglement ﬁdelities, but did
+not satisfy other requirements relevant for entanglement-based quantum information
+processing. In fact, it is extremely challenging to simultaneously achieve high photon
+extraction eﬃciency, high photon indistinguishability and hight entanglement ﬁdelity
+
+===== Page 23 =====
+
+CONTENTS
+23
+Figure 10. Deterministically fabricated QD-based light sources for the generation
+of polarization-entangled photon pairs: (a) A photonic molecule fabricated around a
+preselected QD via in-situ photolithography enables eﬃcient photon-pair extraction
+([49], reprinted by permission from Springer Nature, c⃝2010 Macmillan Publishers
+Limited). (b) Ordered arrays of pyramidal QDs grown on (111)-oriented substrate show
+average entanglement ﬁdelities signiﬁcantly above the classical limit ([167], reprinted
+by permission from Springer Nature,
+c⃝2013 Macmillan Publishers Limited).
+(c)
+A circular Bragg resonator with embedded pre-selected QD in combination with a
+braodband reﬂector ([168], reprinted by permission from Springer Nature, c⃝2019 The
+Authors, under exclusive licence to Springer Nature Limited).
+in a single device.
+Recently this task has been mastered by Liu et al.
+using a
+deterministically fabricated solid-state-based entangled photon pair source comprising
+a single QD embedded in a circular Bragg resonator integrated on a broadband reﬂector
+[168].
+The device (see ﬁgure 10(c)), exploiting a broadband Purcell eﬀect, enabled
+the generation of entangled photon pairs with a collection eﬃciency of 0.65(4), an
+entanglement ﬁdelity of 0.88(2), and an indistinguishability of 0.901(3) and 0.903(3)
+for X and XX respectively. Here, the authors used two-photon resonant excitation [173]
+to achieve the on-demand generation of XX-X photon pairs. Similar results were also
+reported for a non-deterministically fabricated device by Wang et al. [174]. Further
+
+===== Page 24 =====
+
+CONTENTS
+24
+improvements in the device performance may be possible by using polarization-selective
+Purcell microcavities [175].
+In cases where the ﬁne-structure splitting is large compared to the homogenous
+linewidth, the polarization entanglement between XX-X photon pairs will be washed out
+in time-integrated experiments [176]. Still the entanglement can be restored by temporal
+postselection, if the temporal resolution of the setup is suﬃcient. Based on this idea,
+Huber et al. observed polarization-entangled photon pairs with a ﬁdelity of 0.76 emitted
+by the XX-X cascade of a single QD despite a ﬁne-structure splitting of 18 µeV [177]. The
+single InAsP QDs were embedded in ordered arrays of tapered InP nanowires. To resolve
+the temporal evolution of the entangled two-photon state, avalanche photo diodes with a
+temporal resolution of 35 ps were employed. While this work was conducted under nonresonant excitation into the conduction band of InP, resonant excitation schemes provide
+the clear beneﬁt of reduced decoherence. Employing resonant two-photon excitation
+of the XX-X cascade of a QD embedded in a deterministically fabricated microlens,
+Bounouar et al. reported the generation of a maximally entangled state [178]. Here,
+the oscillating temporal evolution of the polarization-entangled photon pair state was
+observed for two diﬀerent quantum emitters with a ﬁne-structure splitting of 16 µeV
+and 30 µeV, respectively. Similiar results have been obtained also for non-deterministic
+device approaches [179].
+In the experiments discussed above, the biexciton binding energy was large
+compared to the ﬁne-structure splitting. This energy level alignment present in most
+QDs leads to spectrally separated emission lines from the XX- and X-state, respectively.
+Recently we demonstrated for the ﬁrst time, that also the special case of an energetically
+degenerate XX-X cascade can be realized with QDs [39].
+For this purpose, we
+selected deterministically fabricated QD microlenses with a XX-X cascade satisfying
+the condition ∆EFSS=|EXX
+bin|. For this speciﬁc case, the X- and the XX-photon have
+the same emission energy for either H or V polarization, while they are spectrally
+separated by twice the ﬁne-structure splitting for the respective orthogonal polarization
+(see ﬁgure 11 (a)).
+Polarization ﬁltering of the energetically degenerate decay path
+thus enables the distillation of photon twins - a non-classical light state constituted
+of two temporally correlated photons with identical emission energy and polarization.
+Figure 11 (b) presents polarization dependent µPL spectra of a QD, showing such a
+behavior. The high degree of temporal correlations present in the emitted twin-photon
+state leads to a huge bunching eﬀect in photon auto-correlation measurements using
+a HBT setup (see ﬁgure 11 (c)). A more direct observation of the photon twins was
+possible in this work, by employing a photon-number-resolving detection system based
+on superconducting transition edge sensors. As displayed in Figure 11 (d), we were able
+to clearly identify the events originating from the emission of photon twins and, further
+more, directly compare the photon number distribution to a QD-based single-photon
+source serving as reference. In a very recent study, Moroni et al. picked up this idea
+and studied similiar cases in site-controlled pyramidal QDs [40].
+Going one step further to generate correlated three-photon states, Khoshnegar et
+
+===== Page 25 =====
+
+CONTENTS
+25
+Figure
+11.
+Twin-photon
+generation
+using
+deterministically
+fabricated
+QD
+microlenses: (a) Energy level alignment of a quantum dot exhibiting a XX-X radiative
+cascade with EFSS =
+EXX
+bin
+. The photon pairs emitted in the H-polarized decay path
+have identical energy and polarization.
+(b) Polarization-resolved µPL spectra of a
+twin-photon cascade as sketched in (a). (c) Photon-autocorrelation measurement on
+the H-polarized decay channel. (d) Photon number distribution of the twin-photon
+source (TPS) and a single-photon source (SPS), serving as reference, deduced from
+measurements using photon-number-resolving detectors. (adapted from [39], CC BY
+4.0)
+al. used vertically-stacked coupled QDs integrated in site-controlled nanowires [180].
+In this approach, the hybridized excitonic states of the two QDs form a triexcitonbiexciton-exciton cascade, consecutively emitting three photons with diﬀerent energies.
+Noteworthy, the generation of three-photon states can also be achieved in a single QD
+using its triexciton-biexciton-exciton radiative cascade, as demonstrated by Schmidgall
+et al. in a non-deterministic device approach [181]. And even four-photon states can be
+generated using a single QD emitter in this fashion [182].
+4.3. Electrically-driven quantum-light sources
+Early work on deterministically-fabricated electrically-driven single-QD light emitting
+diodes conﬁrmed the prospects for device integration [183, 184, 86], a proof that the
+electrically-pumped QD emission was antibunched, however, was still missing. The ﬁrst
+electrically-driven quantum-light source based on a deterministic fabrication technology
+was reportet in 2012 by Schneider et al.
+[185].
+In this work, single site-controlled
+InAs QDs have been integrated in micropillar cavities incorporating a p-i-n doped
+diode structure (see Figure 12 (a)).
+The chosen sample layout comprising 25 and
+
+===== Page 26 =====
+
+CONTENTS
+26
+Figure 12. Electrically-driven deterministically-fabricated QD-based quantum-light
+sources:
+(a) Micropillar cavity with an integrated site-controlled QD (adapted
+from [185], with the permission of AIP Publishing), (b) QD light emitting diode
+with a positioned QD based on a buried oxide aperture (adapted from [186], with
+the permission of AIP Publishing), (c) QD light emitting diode based on in-situ
+photolithography of pre-selected stochastically grown QDs (adapted from [187], with
+the permission of AIP Publishing)), and (d) Entangled-photon light emitting diode
+based on ordered arrays of pyramidal QDs ([188], adapted by permission from Springer
+Nature, c⃝2016 Macmillan Publishers Limited).
+5 AlAs/GaAs mirror pairs in the lower and upper DBR, respectively, enabled a Qfactor of 230. This enabled the authors to demonstrate single-photon emission with
+g(2)(0) = 0.42 (considering the temporal resolution of the experimental setup) of the
+Purcell-enhanced emission of a deterministically integrated QD under direct current
+injection. Due to the nanohole seeding layer in close vicinity to the site-controlled QDs,
+the observed linewidth of the QD emission was about one order of magnitude larger as
+compared to high-quality stochastically grown QDs in this material system. Unrau et
+al. demonstrated in Ref. [186] a QD single-photon emitting diode with signiﬁcantly
+improved optical properties based on site-controlled QDs positioned via a buried oxide
+aperture (cf. ﬁgure 2 (c) in section 3.1). The device illustrated in ﬁgure 12 (b) showed
+resolution limited linewidths of 25 µeV and pronounced antibunching of g(2)(0) = 0.05.
+More recently, a deterministically fabricated single-photon light emitting diode has also
+been realized based on the pre-selection of self-organized QDs and subsequent device
+fabrication using in-situ photolithography [187] (see ﬁgure 12 (c)). The authors achieved
+a measured antibunching of g(2)(0) = 0.42±0.02 under pulsed electrical current injection
+at 200 MHz. The ﬁrst deterministically-fabricated entangled-light-emitting diode was
+reported by Chung et al. based on arrays of pyramidal QDs grown on (111)B oriented
+GaAs substrate [188] (see ﬁgure 12 (d)). As discussed already in section 3.1, this type of
+quantum emitter intrinsically shows small ﬁne-structure splitting for the bright exciton
+state and is thus well suited for the generation of polarization-entangled photo pairs.
+The device showed entanglement ﬁdelities of the emitted two-photon state of 0.73±0.06
+
+===== Page 27 =====
+
+CONTENTS
+27
+Figure 13.
+Development of plug-and-play single-photon sources with direct ﬁber
+coupling based on (a) a nanowire QD attached to the ﬁber core via a pick-and-place
+technique (adapted from [191], with the permission of AIP Publishing) and (b) a ﬁbercoupled deterministically fabricated QD microlens integrated in a compact Stirling
+cryocooler ([192], CC BY 4.0).
+under direct current injection and 0.678 ± 0.023 for pulsed current injection at 63 MHz.
+4.4. Plug-and-play quantum-light sources
+In view of the huge progress achieved in the fabrication of deterministic devices at
+the chip level (see previous sections), recent eﬀorts aim also at the development of
+more practical plug-and-play devices. To achieve this goal, a direct ﬁber coupling of
+the respective quantum devices is beneﬁcial.
+Pioneering work in this direction has
+been performed by Xu et al. in Ref. [189] and Haupt et al. in Ref. [190] using nondeterministic device approaches. More recently, Caddedu et al. reported in Ref. [191] a
+ﬁber-coupled QD on a photonic tip (see ﬁgure 13 (a)) using deterministic technologies.
+For this purpose, a so-called photonic trumpet [193] with an embedded InAs QD
+was precisely attached to the core of a single mode optical ﬁber using a pick-andplace method with custom-made micro-manipulators inside a SEM. For testing singlephoton emission, the ﬁber-coupled quantum emitter was plunged into liquid helium
+and connected to a ﬁber-based PL setup. Under continuous wave (CW) wetting-layer
+excitation, a clear antibunching g(2)(0) < 0.5 was observed in a HBT experiment,
+which was only limited by the setup’s temporal resolution. To develop quantum-light
+sources which are even more practical, one has either to get rid of the necessity for
+cooling, by working on the material’s side, or one applies more practical techniques
+
+===== Page 28 =====
+
+CONTENTS
+28
+for cooling the quantum emitter. Although room-temperature operation of QD singlephoton sources has been demonstrated (see section 4.1 and Ref. [150]), the quantumoptical properties of the generated photons and the achieved brightness is so far
+insuﬃcient for most applications in photonic quantum technologies. Stirling cryocoolers
+[194] have been evaluated as compact, cost-eﬀective, and user-friendly alternative to
+liquid-helium bath or ﬂow cryostats and closed-cycle refrigerators. The applicability of
+Stirling cryocoolers for the operation of quantum emitters has ﬁrst been demonstrated
+in 2015 by Schlehahn et al., using a deterministically fabricated QD mesa cooled to
+a base-temperature of about 29 K [195].
+Based on this idea, we recently presented
+a stand-alone ﬁber-coupled single-photon source [192], comprising a deterministicallyfabricated ﬁber-coupled QD single-photon source inside a compact Stirling cryocooler
+ﬁtting into a 19-inch rack box (see ﬁgure 13 (b)). The ﬁber-coupled QD emission provides
+the user with a photonﬂux stable on a time-scale of several days and antibunching
+values as small as g(2)(0) = 0.07 ± 0.05 under CW optical excitation (using external
+spectral ﬁltering). Additionally the high durability of the direct ﬁber-connection was
+demonstrated in endurance tests, revealing stable collection of the QD emission within
+4% over several cool-down/warm-up cycles. Our device thus demonstrated for the ﬁrst
+time, that practical high-performance plug-and-play quantum-light sources suitable for
+applications outside shielded lab environments are within reach. The eﬃciency of this
+ﬁrst demonstrator in terms of the photon extraction probability per pulse, however, was
+below 1%, limited by the ﬁber-coupling eﬃciency and the photon extraction eﬃciency
+of the used microlens device. A crucial next step in this direction will therefore be
+to improve the coupling eﬃciency to single-mode optical ﬁbers in such modular and
+robust approaches, e.g.
+by deterministically integrating micropillar cavities [196] or
+numerically optimized circular Bragg gratings for operation at telecom wavelengths
+[197]. Another important step will be the implementation of coherent excitation schemes
+for portable quantum-light sources.
+Many reports on state-of-the-art quantum-light
+sources use strict-resonant [145, 148, 175], two-photon resonant [178, 168, 174], or, more
+recently, dichromatic coherent excitation [198] for the on-demand generation of quantum
+light states (cf.
+section 4).
+The implementation of such schemes in compact and
+integrated approaches, however remains challenging, as the required laser systems and
+pulse-shapers are rather bulky. In this regard the development of compact and tunable
+picosecond pulsed laser systems would be an important technological achievement,
+further boosting the realization of practical quantum-light sources.
+5. Applications and future perspectives
+The progress achieved in the development of deterministic fabrication techniques has
+signiﬁcantly improved the device yield and the performance of quantum-light sources.
+During the next decade, this development will push applications of photonic quantum
+technologies far beyond its current status. To date, most proof-of-concept experiments
+in the ﬁeld of quantum communication and quantum computing have been demonstrated
+
+===== Page 29 =====
+
+CONTENTS
+29
+based on non-deterministic device approaches.
+In case of QDs, examples include
+quantum key distribution (QKD) via the BB84 protocol [199, 200, 201, 202, 142], spinphoton[203, 204], spin-spin [205] and photon-photon [164] entanglement as well as boson
+sampling [143]. Also NV and SiV colour centres in diamond crystals have been used for
+QKD proof-of-principles [206, 207, 208] and tests of Bell inequality [209].
+To surpass the proof-of-principle stage and to realize systems with increased
+complexity, however, scalable device technologies are crucial.
+Building multi-node
+quantum communication networks or photonic quantum computers, for instance, many
+indistinguishable quantum-light sources are required.
+Therefore, these applications
+might well be the ﬁrst, where deterministically fabricated single-photon and entangled
+photon-pair sources make the diﬀerence.
+First experiments in photonic quantum
+technologies exploiting deterministic devices include a boson sampling machine using
+micropillar single-photon sources [210]. Moreover, two-photon interference experiments
+on remote deterministically fabricated micropillar single-photon sources [211] as
+well as QD microlenses [158] were demonstrated, which rise prospects for scalable
+implementations of device-independent schemes of QKD [212, 4] and quantum repeater
+networks. Furthermore, also the development of devices integrated on-chip will strongly
+beneﬁt from deterministic device technologies. Building on earlier non-deterministic
+device approaches [213, 214], we recently demonstrated an on-chip HBT experiment
+using a single pre-selected QD deterministically integrated into a monolithic waveguide
+circuit comprising a multi-mode interference beamsplitter [215].
+The substantially
+improved device yield of such deterministic approaches raises prospects for the
+fabrication of complex photonic circuits on-chip. Not least, also the ﬁeld of quantum
+metrology can be boosted by deterministic devices. Here, the development of absolute
+single-photon sources and the deﬁnition of the SI unit Candela will be particularly
+beneﬁtting by the high degree of scalability of quantum-light sources.
+6. Acknowledgments
+We gratefully acknowledge ﬁnancial support from the German Federal Ministry of
+Education and Research (BMBF) via the project QuSecure (Grant No.
+13N14876)
+within the funding program Photonic Research Germany and the German Research
+Foundation (DFG) via the SFB 787 project Semiconductor Nanophotonics: Materials,
+Models, Devices.
+
+===== Page 30 =====
+
+CONTENTS
+30
+[1] O’Brien J L, Furusawa A and Vuckovic J 2009 Nat. Photon. 3(12)
+[2] Gisin N, Ribordy G, Tittel W and Zbinden H 2002 Rev. Mod. Phys. 74 145–195
+[3] Gisin N and Thew R 2007 Nat. Photon. 1 165–171
+[4] Lo H K, Curty M and Tamaki K 2014 Nat. Photon. 8 595–604
+[5] Flamini F, Spagnolo N and Sciarrino F 2018 Reports on Progress in Physics 82 016001
+[6] Bennett C H and Brassard G 1984 Proceedings of IEEE International Conference on Computers,
+Systems and Signal Processing, Bangalore, India 175–179
+[7] Briegel H J, D¨ur W, Cirac J I and Zoller P 1998 Phys. Rev. Lett. 81(26) 5932–5935
+[8] Sangouard N, Simon C, Min´aˇr J, Zbinden H, de Riedmatten H and Gisin N 2007 Phys. Rev. A
+76(5) 050301
+[9] Keizer J G, Henriques A B, Maia A D B, Quivy A A and Koenraad P M 2012 Appl. Phys. Lett.
+101 243113
+[10] Jelezko F and Wrachtrup J 2006 Phys. Status Solidi A 203 3207–3225
+[11] Ma X, Hartmann N F, Baldwin J K S, Doorn S K and Htoon H 2015 Nat. Nanotechnol. 10
+671–675
+[12] Radisavljevic B, Radenovic A, Brivio J, Giacometti V and Kis A 2011 Nat. Nanotechnol. 6
+147–150
+[13] Tonndorf P, Schmidt R, Schneider R, Kern J, Buscema M, Steele G A, Castellanos-Gomez A,
+van der Zant H S J, Michaelis de Vasconcellos S and Bratschitsch R 2015 Optica 2 347
+[14] Leonard D, Krishnamurthy M, Reaves C M, Denbaars S P and PetroﬀP M 1993 Appl. Phys.
+Lett. 63 3203–3205
+[15] Grundmann M, Christen J, Ledentsov N N, B¨ohrer J, Bimberg D, S R S, Werner P, Richter U,
+G¨osele U, Heydenreich J, Ustinov V M, Egorov A Y, Zhukov A E, Kop´ev P S and Alferov Z I
+1995 Phys. Rev. Lett. 74 4043–4046
+[16] Arakawa Y and Sakaki H 1982 Appl. Phys. Lett. 40 939–941
+[17] Imamoglu A, Awschalom D D, Burkard G, DiVincenzo D P, Loss D, Sherwin M and Small A
+1999 Phys. Rev. Lett. 83 4204–4207
+[18] Michler P 2009 Single Semiconductor Quantum Dots (Springer)
+[19] Lay G L and Kern R 1978 J. Cryst. Growth. 44 197–222
+[20] PetroﬀP M, Lorke A and Imamoglu A 2001 Physics Today 54 46–52
+[21] Pohl U 2009 Epitaxy of Semiconductors (Springer-Verlag Berlin Heidelberg)
+[22] Borri P, Langbein W, Schneider S, Woggon U, Sellin R L, Ouyang D and Bimberg D 2001 Phys.
+Rev. Lett. 87(15) 157401
+[23] Besombes L, Kheng K, Marsal L and Mariette H 2001 Phys. Rev. B 63
+[24] Bayer M and Forchel A 2002 Phys. Rev. B 65(4) 041308
+[25] Gammon D, Snow E S, Shanabrook B V, Katzer D S and Park D 1996 Phys. Rev. Lett. 76(16)
+3005–3008
+[26] Kulakovskii V D, Bacher G, Weigand R, K¨ummell T, Forchel A, Borovitskaya E, Leonardi K and
+Hommel D 1999 Phys. Rev. Letters 82 1780–1783
+[27] Rodt S, Heitz R, Schliwa A, Sellin R L, Guﬀarth F and Bimberg D 2003 Phys. Rev. B 68(3)
+035331
+[28] Sarkar D, van der Meulen H P, Calleja J M, Becker J M, Haug R J and Pierz K 2006 J. Appl.
+Phys. 100 023109
+[29] Seguin R, Schliwa A, Germann T D, Rodt S, Ptschke K, Strittmatter A, Pohl U W, Bimberg D,
+Winkelnkemper M, Hammerschmidt T and Kratzer P 2006 Appl. Phys. Lett. 89 263109
+[30] Hanbury-Brown R and Twiss R Q 1956 Nature 177 27 – 29
+[31] Schweickert L, J¨ons K D, Zeuner K D, Covre da Silva S F, Huang H, Lettner T, Reindl M, Zichi
+J, Trotta R, Rastelli A and Zwiller V 2018 Appl. Phys. Lett. 112 093106
+[32] Regelman D V, Mizrahi U, Gershoni D, Ehrenfreund E, Schoenfeld W V and PetroﬀP M 2001
+Phys. Rev. Lett. 87(25) 257401
+[33] Kiraz A, F¨alth S, Becher C, Gayral B, Schoenfeld W V, PetroﬀP M, Zhang L, Hu E and Imamo˘glu
+
+===== Page 31 =====
+
+CONTENTS
+31
+A 2002 Phys. Rev. B 65 161303
+[34] Santori C, Fattal D, Pelton M, Solomon G S and Yamamoto Y 2002 Phys. Rev. B 66(4) 045308
+[35] Benson O, Santori C, Pelton M and Yamamoto Y 2000 Phys. Rev. Lett. 84 2513–2516
+[36] Schliwa A, Winkelnkemper M and Bimberg D 2009 Phys. Rev. B 79 075443
+[37] Akopian N, Lindner N H, Poem E, Berlatzky Y, Avron J, Gershoni D, Gerardot B D and Petroﬀ
+P M 2006 Phys. Rev. Letters 96 130501
+[38] Young R J, Stevenson R M, Atkinson P, Cooper K, Ritchie D A and Shields A J 2006 New J.
+Phys. 8 29
+[39] Heindel T, Thoma A, von Helversen M, Schmidt M, Schlehahn A, Gschrey M, Schnauber P,
+Schulze J H, Strittmatter A, Beyer J, Rodt S, Carmele A, Knorr A and Reitzenstein S 2017
+Nat. Commun. 8 14870
+[40] Moroni S, Varo S, Juska G, Chung T, Gocalinska A and Pelucchi E 2019 J. Cryst. Growth. 506
+36–39
+[41] Yuan Z, Kardynal B E, Stevenson R M, Shields A J, Lobo C J, Cooper K, Beattie N S, Ritchie
+D A and Pepper M 2002 Science 295 102–105
+[42] Salter C L, Stevenson R M, Farrer I, Nicoll C A, Ritchie D A and Shields A J 2010 Nature 465
+594–597
+[43] Aharonovich I, Englund D and Toth M 2016 Nat. Photon. 10 631–641
+[44] Fafard S, Wasilewski Z R, Allen C N, Picard D, Spanner M, McCaﬀrey J P and Piva P G 1999
+Phys. Rev. B 59 15368–15373
+[45] Wang L, Rastelli A and Schmidt O G 2006 J. Appl. Phys. 100 064313
+[46] Schneider C 2011 Konzepte zur skalierbaren Realisierung von eﬃzienten, halbleiterbasierten
+Einzelphotonenquellen Ph.D. thesis Julius-Maximilians-Universit¨at W¨urzburg
+[47] Young R J, Stevenson R M, Shields A J, Atkinson P, Cooper K, Ritchie D A, Groom K M,
+Tartakovskii A I and Skolnick M S 2005 Phys. Rev. B 72 113305
+[48] Ellis D J P, Stevenson R M, Young R J, Shields A J, Atkinson P and Ritchie D A 2007 Appl.
+Phys. Lett. 90 011907
+[49] Dousse A, Suﬀczynski J, Beveratos A, Krebs O, Lemaitre A, Sagnes I, Bloch J, Voisin P and
+Senellart P 2010 Nature 466 217–220
+[50] Kurtsiefer C, Mayer S, Zarda P and Weinfurter H 2000 Phys. Rev. Lett. 85(2) 290–293
+[51] Aharonovich I and Neu E 2014 Advanced Optical Materials 2 911–928
+[52] Rogers L, Jahnke K, Teraji T, Marseglia L, M¨uller C, Naydenov B, Schauﬀert H, Kranz C, Isoya
+J, McGuinness L and Jelezko F 2014 Nat. Commun. 5 4739
+[53] Iwasaki T, Ishibashi F, Miyamoto Y, Doi Y, Kobayashi S, Miyazaki T, Tahara K, Jahnke K D,
+Rogers L J, Naydenov B, Jelezko F, Yamasaki S, Nagamachi S, Inubushi T, Mizuochi N and
+Hatano M 2015 Sci. Rep. 5 12882
+[54] Castelletto S, Johnson B C, Iv´ady V, Stavrias N, Umeda T, Gali A and Ohshima T 2013 Nature
+Materials 13 151–156
+[55] Choi S, Johnson B C, Castelletto S, Ton-That C, Phillips M R and Aharonovich I 2014 Appl.
+Phys. Lett. 104 261101
+[56] Kolesov R, Xia K, Reuter R, Sthr R, Zappe A, Meijer J, Hemmer P and Wrachtrup J 2012 Nat.
+Commun. 3 1029
+[57] Eichhammer E, Utikal T, Gtzinger S and Sandoghdar V 2015 New J. Phys. 17 083018
+[58] Mizuochi N, Makino T, Kato H, Takeuchi D, Ogura M, Okushi H, Nothaft M, Neumann P, Gali
+A, Jelezko F, Wrachtrup J and Yamasaki S 2012 Nat Photon 6 299–303
+[59] Lohrmann A, Iwamoto N, Bodrog Z, Castelletto S, Ohshima T, Karle T, Gali A, Prawer S,
+McCallum J and Johnson B 2015 Nat. Commun. 6 7783
+[60] H¨ogele A, Galland C, Winger M and Imamo˘glu A 2008 Phys. Rev. Letters 100 217401
+[61] Zhao S, Lavie J, Rondin L, Orcin-Chaix L, Diederichs C, Roussignol P, Chassagneux Y, Voisin
+C, Mllen K, Narita A, Campidelli S and Lauret J S 2018 Nat. Commun. 9 3470
+[62] Wang Q H, Kalantar-Zadeh K, Kis A, Coleman J N and Strano M S 2012 Nat. Nanotechnol. 7
+
+===== Page 32 =====
+
+CONTENTS
+32
+699–712
+[63] Mak K F and Shan J 2016 Nat. Photon. 10 216–226
+[64] Mak K F, Lee C, Hone J, Shan J and Heinz T F 2010 Phys. Rev. Letters 105
+[65] Splendiani A, Sun L, Zhang Y, Li T, Kim J, Chim C Y, Galli G and Wang F 2010 Nano Lett.
+10 1271–1275
+[66] He Y M, Clark G, Schaibley J R, He Y, Chen M C, Wei Y J, Ding X, Zhang Q, Yao W, Xu X,
+Lu C Y and Pan J W 2015 Nat. Nanotechnol. 10 497–502
+[67] Srivastava A, Sidler M, Allain A V, Lembke D S, Kis A and Imamo˘glu A 2015 Nat. Nanotechnol.
+[68] Chakraborty C, Kinnischtzke L, Goodfellow K M, Beams R and Vamivakas A N 2015 Nat.
+Nanotechnol. 10 507–511
+[69] Koperski M, Nogajewski K, Arora A, Cherkez V, Mallet P, Veuillen J Y, Marcus J, Kossacki P
+and Potemski M 2015 Nat. Nanotechnol. 10 503–506
+[70] You Y, Zhang X X, Berkelbach T C, Hybertsen M S, Reichman D R and Heinz T F 2015 Nat
+Phys 11 477–481
+[71] He Y M, IﬀO, Lundt N, Baumann V, Davanco M, Srinivasan K, H¨oﬂing S and Schneider C 2016
+Nat. Commun. 7 13409
+[72] Tran T T, Bray K, Ford M J, Toth M and Aharonovich I 2015 Nat. Nanotechnol. 11 37–41
+[73] Tran T T, Zachreson C, Berhane A M, Bray K, Sandstrom R G, Li L H, Taniguchi T, Watanabe
+K, Aharonovich I and Toth M 2016 Phys. Rev. Applied 5
+[74] Kianinia M, Regan B, Tawﬁk S A, Tran T T, Ford M J, Aharonovich I and Toth M 2017 ACS
+Photonics 4 768–773
+[75] Kumar S, Brot´ons-Gisbert M, Al-Khuzheyri R, Branny A, Ballesteros-Garcia G, S´anchez-Royo
+J F and Gerardot B D 2016 Optica 3 882
+[76] Schneider C, StraußM, S¨unner T, Huggenberger A, Wiener D, Reitzenstein S, Kamp M, H¨oﬂing
+S and Forchel A 2008 Appl. Phys. Lett. 92 183101
+[77] Felici M, Gallo P, Mohan A, Dwir B, Rudra A and Kapon E 2009 Small 5 938–943
+[78] Strittmatter A, Schliwa A, Schulze J H, Germann T D, Dreismann A, Hitzemann O, Stock E,
+Ostapenko I A, Rodt S, Unrau W, Pohl U W, Hoﬀmann A, Bimberg D and Haisler V 2012
+Appl. Phys. Lett. 100 093111
+[79] Heinrich J, Huggenberger A, Heindel T, Reitzenstein S, H¨oﬂing S, Worschech L and Forchel A
+2010 Appl. Phys. Lett. 96 211117
+[80] Kern J, Niehues I, Tonndorf P, Schmidt R, Wigger D, Schneider R, Stiehm T, de Vasconcellos
+S M, Reiter D E, Kuhn T and Bratschitsch R 2016 Advanced Materials 28 7101–7105
+[81] Branny A, Kumar S, Proux R and Gerardot B D 2017 Nat. Commun. 8 15053
+[82] Schmidt O G 2007 Lateral Alignment of Epitaxial Quantum Dots (Springer)
+[83] Hartmann A, Ducommun Y, Loubies L, Leifer K and Kapon E 1998 Appl. Phys. Lett. 73 2322–
+2324
+[84] Mereni L O, Marquardt O, Juska G, Dimastrodonato V, O’Reilly E P and Pelucchi E 2012 Phys.
+Rev. B 85(15) 155453
+[85] Verma V B, Stevens M J, Silverman K L, Dias N L, Garg A, Coleman J J and Mirin R P 2011
+Opt. Express 19 4182–4187
+[86] Huggenberger A, Schneider C, Drescher C, Heckelmann S, Heindel T, Reitzenstein S, Kamp M,
+H¨oﬂing S, Worschech L and Forchel A 2011 J. Cryst. Growth. 323 194–197
+[87] Schneider C, Huggenberger A, Gschrey M, Gold P, Rodt S, Forchel A, Reitzenstein S, H¨oﬂing S
+and Kamp M 2012 Phys. Status Solidi A 209 2379–2386
+[88] Albert F, Stobbe S, Schneider C, Heindel T, Reitzenstein S, H¨oﬂing S, Lodahl P, Worschech L
+and Forchel A 2010 Appl. Phys. Lett. 96 151102 (pages 3)
+[89] J¨ons K D K D, Atkinson P, M¨uller M, Heldmaier M, Ulrich S M, Schmidt O G and Michler P
+2013 Nano Lett. 13 126–130
+[90] Strittmatter A, Holzbecher A, Schliwa A, Schulze J H, Quandt D, Germann T D, Dreismann A,
+Hitzemann O, Stock E, Ostapenko I A, Rodt S, Unrau W, Pohl U W, Hoﬀmann A, Bimberg
+
+===== Page 33 =====
+
+CONTENTS
+33
+D and Haisler V 2012 Phys. Status Solidi A 209 2411–2420
+[91] Ellis D J P, Bennett A J, Shields A J, Atkinson P and Ritchie D A 2007 Appl. Phys. Lett. 90
+233514
+[92] Kumar S, Kaczmarczyk A and Gerardot B D 2015 Nano Lett. 15 7567–7573
+[93] Palacios-Berraquero C, Kara D M, Montblanch A R P, Barbone M, Latawiec P, Yoon D, Ott
+A K, Loncar M, Ferrari A C and Atat¨ure M 2017 Nat. Commun. 8 15093
+[94] Shepard G D, Ajayi O A, Li X, Zhu X Y, Hone J and Strauf S 2017 2D Materials 4 021019
+[95] Badolato A, Hennessy K, Atat¨ure M, Dreiser J, Hu E, PetroﬀP M and Imamo˘glu A 2005 Science
+308 1158–1161
+[96] Hennessy K, Badolato A, Winger M, Gerace D, Atat¨ure M, Gulde S, F¨alt S, Hu E L and Imamo˘glu
+A 2007 Nature 445 896–899
+[97] Sapienza L, Davan¸co M, Badolato A and Srinivasan K 2015 Nat. Commun. 6 7833
+[98] Purcell E M 1946 Proceedings of the American Physical Society 69 681
+[99] Grard J M, Sermage B, Gayral B, Legrand B, Costard E and Thierry-Mieg V 1998 Phys. Rev.
+Letters 81 1110 – 1113
+[100] Sapienza L, Liu J, Song J D, Flt S, Wegscheider W, Badolato A and Srinivasan K 2017 Scientiﬁc
+Reports 7 6205
+[101] Nogues G, Merotto Q, Bachelier G, Lee E H and Song J D 2013 Appl. Phys. Lett. 102 231112
+[102] Kojima T, Kojima K, Asano T and Noda S 2013 Appl. Phys. Lett. 102 011110
+[103] Liu J, Davano M I, Sapienza L, Konthasinghe K, Cardoso J V D M, Song J D, Badolato A and
+Srinivasan K 2017 Rev. Sci. Instrum. 88 023116
+[104] Donatini F and Dang L S 2010 Nanotechnology 21 375303
+[105] Dousse A, Lanco L, Suﬀczy´nski J, Semenova E, Miard A, Lemaˆıtre A, Sagnes I, Roblin C, Bloch
+J and Senellart P 2008 Phys. Rev. Lett. 101(26) 267404
+[106] Gschrey M, Gericke F, Sch¨uler A, Schmidt R, Schulze J H, Heindel T, Rodt S, Strittmatter A
+and Reitzenstein S 2013 Appl. Phys. Lett. 102 251113
+[107] Lesik M, Spinicelli P, Pezzagna S, Happel P, Jacques V, Salord O, Rasser B, Delobbe A, Sudraud
+P, Tallaire A, Meijer J and Roch J 2013 Phys. Status Solidi A 210 2055–2059
+[108] Schr¨oder T, Trusheim M E, Walsh M, Li L, Zheng J, Schukraft M, Sipahigil A, Evans R E,
+Sukachev D D, Nguyen C T, Pacheco J L, Camacho R M, Bielejec E S, Lukin M D and
+Englund D 2017 Nat. Commun. 8 15376
+[109] Yacobi B G and Holt D B 1986 J. Appl. Phys. 59 R1–R24
+[110] Gschrey M, Schmidt R, Schulze J H, Strittmatter A, Rodt S and Reitzenstein S 2015 J. Vac. Sci.
+Technol. B 33 021603
+[111] Meijer J, Burchard B, Domhan M, Wittmann C, Gaebel T, Popa I, Jelezko F and Wrachtrup J
+2005 Appl. Phys. Lett. 87 261909
+[112] Tamura S, Koike G, Komatsubara A, Teraji T, Onoda S, McGuinness L P, Rogers L, Naydenov
+B, Wu E, Yan L, Jelezko F, Ohshima T, Isoya J, Shinada T and Tanii T 2014 Applied Physics
+Express 7 115201
+[113] Radulaski M, Widmann M, Niethammer M, Zhang J L, Lee S Y, Rendler T, Lagoudakis K G,
+Son N T, Janz´en E, Ohshima T, Wrachtrup J and Vuˇckovi´c J 2017 Nano Lett. 17 1782–1786
+[114] Zhou Y, Mu Z, Adamo G, Bauerdick S, Rudzinski A, Aharonovich I and bo Gao W 2018 New J.
+Phys. 20 125004
+[115] Schukraft M, Zheng J, Schrder T, Mouradian S L, Walsh M, Trusheim M E, Bakhru H and
+Englund D R 2016 APL Photonics 1 020801
+[116] Junno T, Deppert K, Montelius L and Samuelson L 1995 Appl. Phys. Lett. 66 3627–3629
+[117] Toset J, Casuso I, Samitier J and Gomila G 2006 Nanotechnology 18 015503
+[118] van der Sar T, Heeres E C, Dmochowski G M, de Lange G, Robledo L, Oosterkamp T H and
+Hanson R 2009 Appl. Phys. Lett. 94 173104
+[119] Ampem-Lassen E, Simpson D A, Gibson B C, Trpkovski S, Hossain F M, Huntington S T,
+Ganesan K, Hollenberg L C L and Prawer S 2009 Opt. Express 17 11287
+
+===== Page 34 =====
+
+CONTENTS
+34
+[120] Davanco M, Liu J, Sapienza L, Zhang C Z, De Miranda Cardoso J V, Verma V, Mirin R, Nam
+S W, Liu L and Srinivasan K 2017 Nat. Commun. 8 889
+[121] Katsumi R, Ota Y, Kakuda M, Iwamoto S and Arakawa Y 2018 Optica 5 691
+[122] Reimer M E, Bulgarini G, Akopian N, Hocevar M, Bavinck M B, Verheijen M A, Bakkers E P,
+Kouwenhoven L P and Zwiller V 2012 Nat Commun 3 737
+[123] Schell A W, Kewes G, Schr¨oder T, Wolters J, Aichele T and Benson O 2011 Rev. Sci. Instrum.
+82 073709
+[124] Wolters J, Schell A W, Kewes G, N¨usse N, Schoengen M, D¨oscher H, Hannappel T, L¨ochel B,
+Barth M and Benson O 2010 Appl. Phys. Lett. 97 141108
+[125] Schr¨oder T, Schell A W, Kewes G, Aichele T and Benson O 2011 Nano Lett. 11 198–202
+[126] Liebermeister L, Petersen F, v Mnchow A, Burchardt D, Hermelbracht J, Tashima T, Schell A W,
+Benson O, Meinhardt T, Krueger A, Stiebeiner A, Rauschenbeutel A, Weinfurter H and Weber
+M 2014 Appl. Phys. Lett. 104 031101
+[127] Zadeh I E, Elshaari A W, J¨ons K D, Fognini A, Dalacu D, Poole P J, Reimer M E and Zwiller
+V 2016 Nano Lett. 16 2289–2294
+[128] Schnauber P, Singh A, Schall J, Park S I, Song J D, Rodt S, Srinivasan K, Reitzenstein S and
+Davanco M 2019 Nano Lett.
+[129] Sartison M, Portalupi S L, Gissibl T, Jetter M, Giessen H and Michler P 2017 Sci. Rep. 7 39916
+[130] Strauf S, Hennessy K, Rakher M, Choi Y S, Badolato A, Andreani L, Hu E, PetroﬀP and
+Bouwmeester D 2006 Phys. Rev. Letters 96 127404
+[131] Claudon J, Bleuse J, Malik N S, Bazin M, Jaﬀrennou P, Gregersen N, Sauvan C, Lalanne P and
+Grard J M 2010 Nat. Photon. 4 174–177
+[132] Glauber R J 1963 Phys. Rev. 130(6) 2529–2539
+[133] Hong C K, Ou Z Y and Mandel L 1987 Phys. Rev. Lett. 59(18) 2044–2046
+[134] Santori C, Fattal D, Vuˇckovi´c J, Solomon G S and Yamamoto Y 2002 Nature 419 594–597
+[135] Di Giuseppe G, Atat¨ure M, Shaw M D, Sergienko A V, Saleh B E A, Teich M C, Miller A J,
+Nam S W and Martinis J 2003 Phys. Rev. A 68 063817
+[136] von Helversen M, B¨ohm J, Schmidt M, Gschrey M, Schulze J H, Strittmatter A, Rodt S, Beyer
+J, Heindel T and Reitzenstein S 2019 New J. Phys. 21 035007
+[137] Prilm¨uller M, Huber T, M¨uller M, Michler P, Weihs G and Predojevi´c A 2018 Physical Review
+Letters 121
+[138] James D F V, Kwiat P G, Munro W J and White A G 2001 Phys. Rev. A 64 052312
+[139] Barnes W, Bj¨ork G, G´erard J, Jonsson P, Wasey J, Worthing P and Zwiller V 2002 Eur. Phys.
+J. D 18 197–210
+[140] Reitzenstein S and Forchel A 2010 J. Phys. D 43 033001
+[141] Reithmaier J P, S¸ek G, L¨oﬄer A, Hofmann C, Kuhn S, Reitzenstein S, Keldysh L V, Kulakovskii
+V D, Reinecke T L and Forchel A 2004 Nature 432 197–200
+[142] Heindel T, Kessler C A, Rau M, Schneider C, F¨urst M, Hargart F, Schulz W M, Eichfelder M,
+Robach R, Nauerth S, Lermer M, Weier H, Jetter M, Kamp M, Reitzenstein S, H¨oﬂing S,
+Michler P, Weinfurter H and Forchel A 2012 New J. Phys. 14 083001
+[143] Wang H, He Y, Li Y H, Su Z E, Li B, Huang H L, Ding X, Chen M C, Liu C, Qin J and et al
+2017 Nat. Photon. 1749–4893
+[144] Schneider C, Heindel T, Huggenberger A, Weinmann P, Kistner C, Kamp M, Reitzenstein S,
+H¨oﬂing S and Forchel A 2009 Appl. Phys. Lett. 94 111111
+[145] Somaschi N, Giesz V, De Santis L, Loredo J C, Almeida M P, Hornecker G, Portalupi S L, Grange
+T, Ant´on C, Demory J, G´omez C, Sagnes I, Lanzillotti-Kimura N D, Lema´ıtre A, Auﬀeves A,
+White A G, Lanco L and Senellart P 2016 Nat. Photon. 10 340–345
+[146] Gazzano O, Michaelis de Vasconcellos S, Arnold C, Nowak A, Galopin E, Sagnes I, Lanco L,
+Lemaˆıtre A and Senellart P 2013 Nat. Commun. 4 1425
+[147] Nowak A K, Portalupi S L, Giesz V, Gazzano O, Dal Savio C, Braun P F, Karrai K, Arnold C,
+Lanco L, Sagnes I, Lemaˆıtre Atre A and Senellart P 2014 Nat. Commun. 5 3240
+
+===== Page 35 =====
+
+CONTENTS
+35
+[148] Unsleber S, He Y M, Gerhardt S, Maier S, Lu C Y, Pan J W, Gregersen N, Kamp M, Schneider
+C and H¨oﬂing S 2016 Opt. Express 24 8539
+[149] Muller A, Flagg E B, Bianucci P, Wang X Y, Deppe D G, Ma W, Zhang J, Salamo G J, Xiao M
+and Shih C K 2007 Phys. Rev. Lett. 99(18) 187402
+[150] Holmes M J, Choi K, Kako S, Arita M and Arakawa Y 2014 Nano Lett. 14 982–986
+[151] Hadden J P, Harrison J P, Stanley-Clarke A C, Marseglia L, Ho Y L D, Patton B R, OBrien J L
+and Rarity J G 2010 Appl. Phys. Lett. 97 241901
+[152] Siyushev P, Kaiser F, Jacques V, Gerhardt I, Bischof S, Fedder H, Dodson J, Markham M,
+Twitchen D, Jelezko F and Wrachtrup J 2010 Appl. Phys. Lett. 97 241902
+[153] Ates S, Sapienza L, Davanco M, Badolato A and Srinivasan K 2012 Selected Topics in Quantum
+Electronics, IEEE Journal of 18 1711 –1721
+[154] Trojak O J, Park S I, Song J D and Sapienza L 2017 Appl. Phys. Lett. 111 021109
+[155] Trojak O J, Woodhead C, Park S I, Song J D, Young R J and Sapienza L 2018 Appl. Phys. Lett.
+112 221102
+[156] Gschrey M, Thoma A, Schnauber P, Seifried M, Schmidt R, Wohlfeil B, Kr¨uger L, Schulze J H,
+Heindel T, Burger S, Schmidt F, Strittmatter A, Rodt S and Reitzenstein S 2015 Nat. Commun.
+6 7662
+[157] Heindel T, Rodt S and Reitzenstein S 2017 (Cham: Springer International Publishing) chap
+Single-Photon Sources Based on Deterministic Quantum-Dot Microlenses, pp 199–232
+[158] Thoma A, Schnauber P, Gschrey M, Seifried M, Wolters J, Schulze J H, Strittmatter A, Rodt S,
+Carmele A, Knorr A, Heindel T and Reitzenstein S 2016 Phys. Rev. Letters 116 033601
+[159] Schnauber P, Thoma A, Heine C V, Schlehahn A, Gantz L, Gschrey M, Schmidt R, Hopfmann
+C, Wohlfeil B, Schulze J H, Strittmatter A, Heindel T, Rodt S, Woggon U, Gershoni D and
+Reitzenstein S 2016 Technologies 4 1
+[160] Schlehahn A, Gaafar M, Vaupel M, Gschrey M, Schnauber P, Schulze J H, Rodt S, Strittmatter
+A, Stolz W, Rahimi-Iman A, Heindel T, Koch M and Reitzenstein S 2015 Appl. Phys. Lett.
+107 041105
+[161] Dusanowski  L, Holewa P, Mary´nski A, Musia l A, Heuser T, Srocka N, Quandt D, Strittmatter
+A, Rodt S, Misiewicz J, Reitzenstein S and S¸ek G 2017 Opt. Express 25 31122
+[162] Sartison M, Engel L, Kolatschek S, Olbrich F, Nawrath C, Hepp S, Jetter M, Michler P and
+Portalupi S L 2018 Appl. Phys. Lett. 113 032103
+[163] M¨uller M, Vural H, Schneider C, Rastelli A, Schmidt O G, H¨oﬂing S and Michler P 2017 Phys.
+Rev. Letters 118
+[164] Schwartz I, Cogan D, Schmidgall E R, Don Y, Gantz L, Kenneth O, Lindner N H and Gershoni
+D 2016 Science 354 434–437
+[165] Stevenson R M, Young R J, See P, Gevaux D G, Cooper K, Atkinson P, Farrer I, Ritchie D A
+and Shields A J 2006 Phys. Rev. B 73 033306
+[166] Avron J E, Bisker G, Gershoni D, Lindner N H, Meirom E A and Warburton R J 2008 Phys.
+Rev. Letters 100
+[167] Juska G, Dimastrodonato V, Mereni L O, Gocalinska A and Pelucchi E 2013 Nat Photon 7
+527–531
+[168] Liu J, Su R, Wei Y, Yao B, da Silva S F C, Yu Y, Iles-Smith J, Srinivasan K, Rastelli A, Li J
+and Wang X 2019 Nature Nanotechnology 14 586–593
+[169] Bayer M, Gutbrod T, Reithmaier J P, Forchel A, Reinecke T L, Knipp P A, Dremin A A and
+Kulakovskii V D 1998 Phys. Rev. Lett. 81 2582–2585
+[170] Braun T, Unsleber S, Baumann V, Gschrey M, Rodt S, Reitzenstein S, Schneider C, H¨oﬂing S
+and Kamp M 2013 Appl. Phys. Lett. 103 191113
+[171] Mohan A, Felici M, Gallo P, Dwir B, Rudra A, Faist J and Kapon E 2010 Nat. Photon. 4 302–306
+[172] Mohan A, Felici M, Gallo P, Dwir B, Rudra A, Faist J and Kapon E 2012 Nat. Photon. 6 793–793
+[173] M¨uller M, Bounouar S, J¨ons K D, Gl¨aß l M and Michler P 2014 Nat. Photon. 8 224–228
+[174] Wang H, Hu H, Chung T H, Qin J, Yang X, Li J P, Liu R Z, Zhong H S, He Y M, Ding X, Deng
+
+===== Page 36 =====
+
+CONTENTS
+36
+Y H, Dai Q, Huo Y H, H¨oﬂing S, Lu C Y and Pan J W 2019 Phys. Rev. Lett. 122 113602
+[175] Wang H, He Y M, Chung T H, Hu H, Yu Y, Chen S, Ding X, Chen M C, Qin J, Yang X, Liu
+R Z, Duan Z C, Li J P, Gerhardt S, Winkler K, Jurkat J, Wang L J, Gregersen N, Huo Y H,
+Dai Q, Yu S, H¨oﬂing S, Lu C Y and Pan J W 2019 Nature Photonics 13 770–775
+[176] Stevenson R M, Hudson A J, Bennett A J, Young R J, Nicoll C A, Ritchie D A and Shields A J
+2008 Phys. Rev. Lett. 101(17) 170501
+[177] Huber T, Predojevi´c A, Khoshnegar M, Dalacu D, Poole P J, Majedi H and Weihs G 2014 Nano
+Lett. 14 7107–7114
+[178] Bounouar S, de la Haye C, StraußM, Schnauber P, Thoma A, Gschrey M, Schulze J H, Strittmatter
+A, Rodt S and Reitzenstein S 2018 Appl. Phys. Lett. 112 153107
+[179] Winik R, Cogan D, Don Y, Schwartz I, Gantz L, Schmidgall E R, Livneh N, Rapaport R, Buks
+E and Gershoni D 2017 Phys. Rev. B 95 235435
+[180] Khoshnegar M, Huber T, Predojevi´c A, Dalacu D, Prilm¨uller M, Lapointe J, Wu X, Tamarat P,
+Lounis B, Poole P, Weihs G and Majedi H 2017 Nat. Commun. 8 15716
+[181] Schmidgall E R, Schwartz I, Gantz L, Cogan D, Raindel S and Gershoni D 2014 Phys. Rev. B
+90 241411(R)
+[182] Arashida Y, Ogawa Y and Minami F 2011 Phys. Rev. B 84(12) 125309
+[183] Baier M H, Constantin C, Pelucchi E and Kapon E 2004 Appl. Phys. Lett. 84 1967–1969
+[184] Mehta M, Reuter D, Wieck A D, de Vasconcellos S M, Zrenner A and Meier C 2010 Appl. Phys.
+Lett. 97 143101
+[185] Schneider C, Heindel T, Huggenberger A, Niederstrasser T A, Reitzenstein S, Forchel A, H¨oﬂing
+S and Kamp M 2012 Appl. Phys. Lett. 100 091108
+[186] Unrau W, Quandt D, Schulze J H, Heindel T, Germann T D, Hitzemann O, Strittmatter A,
+Reitzenstein S, Pohl U W and Bimberg D 2012 Appl. Phys. Lett. 101 211119
+[187] Sartison M, Seyﬀerle S, Kolatschek S, Hepp S, Jetter M, Michler P and Portalupi S L 2019 Appl.
+Phys. Lett. 114 222101
+[188] Chung T H, Juska G, Moroni S T, Pescaglini A, Gocalinska A and Pelucchi E 2016 Nat. Photon.
+10 782–787
+[189] Xu X, Brossard F, Hammura K, Williams D A, Alloing B, Li L H and Fiore A 2008 Appl. Phys.
+Lett. 93 021124
+[190] Haupt F, Oemrawsingh S S R, Thon S M, Kim H, Kleckner D, Ding D, Suntrup D J, PetroﬀP M
+and Bouwmeester D 2010 Appl. Phys. Lett. 97 131113
+[191] Cadeddu D, Teissier J, Braakman F R, Gregersen N, Stepanov P, G´erard J M, Claudon J,
+Warburton R J, Poggio M and Munsch M 2016 Appl. Phys. Lett. 108 011112
+[192] Schlehahn A, Fischbach S, Schmidt R, Kaganskiy A, Strittmatter A, Rodt S, Heindel T and
+Reitzenstein S 2018 Sci. Rep. 8 1340
+[193] Munsch M, Malik N S, Dupuy E, Delga A, Bleuse J, G´erard J M, Claudon J, Gregersen N and
+Mørk J 2013 Phys. Rev. Lett. 110(17) 177402
+[194] Veprik A, Riabzev S, Vilenchik G and Pundak N 2005 Cryogenics 45 117 – 122
+[195] Schlehahn A, Kr¨uger L, Gschrey M, Schulze J H, Rodt S, Strittmatter A, Heindel T and
+Reitzenstein S 2015 Rev. Sci. Instrum. 86 013113
+[196] Snijders H, Frey J A, Norman J, Post V P, Gossard A C, Bowers J E, van Exter M P, L¨oﬄer W
+and Bouwmeester D 2018 Phys. Rev. Applied 9(3) 031002
+[197] Rickert L, Kupko T, Rodt S, Reitzenstein S and Heindel T 2019 arXiv 1908.08408
+[198] He Y M, Wang H, Wang C, Chen M C, Ding X, Qin J, Duan Z C, Chen S, Li J P, Liu R Z,
+Schneider C, Atat¨ure M, H¨oﬂing S, Lu C Y and Pan J W 2019 Nature Physics 15 941–946
+[199] Waks E, Inoue K, Santori C, Fattal D, Vuckovic J, Solomon G S and Yamamoto Y 2002 Nature
+420 762–762
+[200] Intallura P M, Ward M B, Karimov O Z, Yuan Z L, See P, Shields A J, Atkinson P and Ritchie
+D A 2007 Appl. Phys. Lett. 91 161103
+[201] Takemoto K, Nambu Y, Miyazawa T, Wakui K, Hirose S, Usuki T, Takatsu M, Yokoyama N,
+
+===== Page 37 =====
+
+CONTENTS
+37
+Yoshino K, Tomita A, Yorozu S, Sakuma Y and Arakawa Y 2010 Appl. Phys. Express 3 092802
+[202] Collins R J, Clarke P J, Fern´andez V, Gordon K J, Makhonin M N, Timpson J A, Tahraoui A,
+Hopkinson M, Fox A M, Skolnick M S and Buller G S 2010 J. Appl. Phys. 107 073102
+[203] Gao W B, Fallahi P, Togan E, Miguel-Sanchez J and Imamoglu A 2012 Nature 491 426–430
+[204] De Greve K, Yu L, McMahon P L, Pelc J S, Natarajan C M, Kim N Y, Abe E, Maier S, Schneider
+C, Kamp M, Hoﬂing S, Hadﬁeld R H, Forchel A, Fejer M M and Yamamoto Y 2012 Nature
+491 421–425
+[205] Delteil A, Sun Z, Gao W b, Togan E, Faelt S and Imamoglu A 2015 Nature Physics 12 218–223
+[206] Beveratos A, Brouri R, Gacoin T, Villing A, Poizat J P and Grangier P 2002 Phys. Rev. Lett.
+89 187901
+[207] All´eaume R, Treussart F, Messin G, Dumeige Y, Roch J F, Beveratos A, Brouri-Tualle R, Poizat
+J P and Grangier P 2004 New J. Phys. 6 92
+[208] Leifgen M, Schrder T, Gdeke F, Riemann R, Mtillon V, Neu E, Hepp C, Arend C, Becher C,
+Lauritsen K and Benson O 2014 New J. Phys. 16 023021
+[209] Hensen B, Bernien H, Dr´eau A E, Reiserer A, Kalb N, Blok M S, Ruitenberg J, Vermeulen R F L,
+Schouten R N, Abell´an C, Amaya W, Pruneri V, Mitchell M W, Markham M, Twitchen D J,
+Elkouss D, Wehner S, Taminiau T H and Hanson R 2015 Nature 526 682–686
+[210] Loredo J C, Broome M A, Hilaire P, Gazzano O, Sagnes I, Lemaitre A, Almeida M P, Senellart
+P and White A G 2017 Phys. Rev. Lett. 118(13) 130503
+[211] Giesz V, Portalupi S L, Grange T, Ant´on C, De Santis L, Demory J, Somaschi N, Sagnes I,
+Lemaˆıtre A, Lanco L and et al 2015 Phys. Rev. B 92 161302(R)
+[212] Lo H K, Curty M and Qi B 2012 Phys. Rev. Lett. 108 130503
+[213] Prtljaga N, Coles R J, O’Hara J, Royall B, Clarke E, Fox A M and Skolnick M S 2014 Appl.
+Phys. Lett. 104 231107
+[214] Rengstl U, Schwartz M, Herzog T, Hargart F, Paul M, Portalupi S L, Jetter M and Michler P
+2015 Appl. Phys. Lett. 107 021101
+[215] Schnauber P, Schall J, Bounouar S, H¨ohne T, Park S I, Ryu G H, Heindel T, Burger S, Song
+J D, Rodt S and Reitzenstein S 2018 Nano Lett. 18 2336–2342

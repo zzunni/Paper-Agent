@@ -1,0 +1,378 @@
+
+
+===== Page 1 =====
+
+Intrinsic defects in silicon carbide LED as a perspective room temperature single
+photon source in near infrared
+F. Fuchs1, V. A. Soltamov2, S. V¨ath1, P. G. Baranov2, E. N. Mokhov2, G. V. Astakhov1,∗and V. Dyakonov1,3
+1Experimental Physics VI, Julius-Maximilian University of W¨urzburg, 97074 W¨urzburg, Germany
+2Ioﬀe Physical-Technical Institute, 194021 St. Petersburg, Russia
+3Bavarian Center for Applied Energy Research (ZAE Bayern), 97074 W¨urzburg, Germany
+(Dated: November 2, 2018)
+Generation of single photons has been demonstrated in several systems. However, none of them
+satisﬁes all the conditions, e.g. room temperature functionality, telecom wavelength operation, high
+eﬃciency, as required for practical applications. Here, we report the fabrication of light emitting
+diodes (LEDs) based on intrinsic defects in silicon carbide (SiC). To fabricate our devices we used
+a standard semiconductor manufacturing technology in combination with high-energy electron irradiation. The room temperature electroluminescence (EL) of our LEDs reveals two strong emission
+bands in visible and near infrared (NIR), associated with two diﬀerent intrinsic defects. As these
+defects can potentially be generated at a low or even single defect level, our approach can be used
+to realize electrically driven single photon source for quantum telecommunication and information
+processing.
+PACS numbers: 85.60.Jb, 61.72.jd, 78.60.Fi
+Robust and cheap light sources emitting single photons on demand are at the heart of many demanding optical technologies [1, 2]. Single photon emission has been
+demonstrated in a variety of systems, including atoms [3],
+ions [4], molecules [5–7], quantum dots (QDs) [8, 9] and
+color centers in diamond [10, 11]. The most signiﬁcant
+progress has been achieved for QDs [12–14], however, the
+necessity to use cryogenic temperatures and high inhomogeneity (the emission wavelength is individual for each
+QD) make this system impractical. Electrically driven
+single photon sources in visible have also been demonstrated using nitrogen-vacancy (NV) centers in diamond
+[15, 16], but the compatibility of this system with the
+present-day integrated circuits manufacturing is not obvious.
+The operation principle of single photon sources is
+based on the quantum mechanical properties of a single two-level system. When a single photon is desired,
+this system is put into the excited state by an external
+stimulus, and a single photon is emitted upon relaxation
+into the ground state. A perspective approach to fabricate an eﬃcient, room temperature single photon source
+based on this principle is to use color centers in semiconductors. In our work, we exploit two defect centers in
+SiC, the so-called D1 defect [17] and the silicon vacancy
+(VSi) defect [18], making two-color LED [Fig. 1(a)].
+Remarkably, the VSi defects in SiC comprise the technological advantages of semiconductor quantum dots and
+the unique quantum properties of the NV defects in diamond [19]. In particular, VSi spin qubits can be optically
+initialized and read out, and, therefore, our demonstration of room temperature EL from VSi defects is an important step towards realization of all-electrical control
+of VSi spins. Further, the VSi EL reveals a broad-band
+emission spectrum in NIR (850 −1050 nm), where the
+Light&&
+Emission&
+(VIS&&&NIR)&
+n4type&SiC&
+p4type&SiC&
+Al&contact&
+6H4SiC&substrate&
+Cu&plate&
+I&
+Epitaxial&layers&
+BB""
+400nm"
+D1""
+550nm"
+VSi""
+950nm"
+CB"
+VB"
+!
+!
+p0type"SiC"
+n0type"SiC"
++"
++"                    
+	  a	                                            
+	  b	            
+FIG. 1: (a) A scheme of the SiC LED. (b) Electron-hole recombination through the D1 and VSi defects results in the
+550 nm and 950 nm emission bands, respectively. The radiative band-to-band recombination (BB) at 400 nm is ineﬃcient
+because SiC is an indirect bandgap semiconductor.
+absorption of silica glass optical ﬁbers is relatively weak.
+While this spectrum range is still below the telecom window (1.3 µm), it can be changed in the direction of long
+wavelengths by proper choosing over family of VSi-related
+defects in diﬀerent SiC polytypes. Alternatively, the frearXiv:1212.2989v1  [cond-mat.mtrl-sci]  12 Dec 2012
+
+===== Page 2 =====
+
+2
+1.2 1.4 1.6 1.8 2.0 2.2 2.4 2.6 2.8 3.0 3.2
+T = 300 K
+Eg(SiC)
+EL
+PL
+VSi
+Energy (eV)
+D1
+1100 900 800 700
+600
+500
+400
+Wavelength (nm)                  
+	  	  	  	  	  	  	  	                    
+	  	  a	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  b	  	          
+FIG. 2: (a) An image of the luminous LED around an Al
+contact. (b) Electroluminescence (EL) spectrum of the SiC
+LED and photoluminescence (PL) spectrum of the reference
+SiC sample recorded at room temperature. The PL spectrum
+is excited by a He-Ne laser with Eexc = 1.96 eV (633 nm).
+The bandgap of 6H-SiC is Eg(SiC) = 3.05 eV.
+quency conversion of NIR photons to a telecom wavelength can be applied [20, 21]. Therefore, the integration
+of defect-based SiC LEDs with existing telecommunication infrastructure seems feasible.
+SiC with highly developed device technologies (e.g.
+MOSFETS, MEMS, sensors) is a very attractive material for practical applications. SiC is also known as the
+material on which the ﬁrst LED has been created [22].
+Until the 90’s, SiC was used for commercial yellow and
+blue LEDs, but later it was replaced with GaN. The reason is that SiC is an indirect bandgap semiconductor and
+as a consequence direct band-to-band radiative recombination is ineﬃcient. For the same reason, recombination
+through defects is preferential in SiC [Fig. 1(b)]. If one
+would isolate a single defect with radiative recombination
+channel, this property of SiC could be used to eﬃciently
+generate single photons.
+The LED structures used in our experiments were
+grown on a n-type 6H-polytype SiC substrate [Fig. 1(a)].
+First, an epitaxial 15-µm-thick SiC layer was grown by
+the sublimation method. The layer is n-type with donor
+concentrations of 3 × 1018 cm−3 (N). It also contains Ga
+impurities (2 × 1018 cm−3), serving as PL activation centers. The layer is followed by a p-type SiC layer of thickness 5 µm grown at a temperature of 2300 C◦in Ar atmosphere in the presence of Al vapors (pressure 100 Pa).
+This results in the concentration of Al acceptors of ca.
+1020 cm−3. In order to generate intrinsic defects at the pn junction the samples were irradiated with 0.9 MeV electrons to a dose of 1018 cm−2. After irradiation, the samples were annealed for 10 minutes in Ar atmosphere at a
+temperature of 1700 C◦. At the ﬁnal stage, 0.4×0.4 mm2
+1.25 1.30 1.35 1.40 1.45 1.50
+(1.96 eV)
+PL
+V2
+V3
+V1
+T = 77 K
+VSi
+Energy (eV)
+a
+PL intensity
+ 
+ 
+1.4
+1.6
+1.8
+2.0
+2.2
+2.4
+2.6
+2.8
+T = 77 K
+(2.62 eV)
+PL
+EL
+V1
+D1
+Energy (eV)
+EL and PL intensity
+0
+4
+8
+12
+16
+×2500
+D1
+VSi (V1)
+Integral EL intensity
+ LED Current (mA)
+c
+ 
+1.43
+1.44
+ 
+ 
+b
+ 
+FIG. 3:
+EL and PL spectra of the SiC LED recorded at
+T = 77 K.
+(a) Comparison of the EL (shaded area) and
+PL spectra under excitation with an energy Eexc = 2.62 eV
+(473 nm). Inset: The same, but shown in the spectral range
+where the strongest VSi ZPL (V1) is expected.
+(b) PL
+spectrum obtained under excitation with a He-Ne laser with
+Eexc = 1.96 eV (633 nm). The V1, V2 and V3 ZPLs characteristic for the VSi defects in SiC are clearly seen. (c) Integral
+intensity of the VSi and D1 mission bands [the shaded areas
+in (a)] as a function of LED current. The solid line is a ﬁt
+(see text for details).
+Al contacts were deposited on the top of the p-type SiC
+layer.
+We mount LED samples on a Cu plate serving as the
+back electrode.
+Upon applying voltage between an Al
+contact and the Cu plate the luminescence glow is seen
+by the naked eye [Fig. 2(a)]. The room temperature EL
+spectrum of one of our LEDs is presented in Fig. 2(b). It
+consists of two broad emission bands, labeled as D1 and
+VSi. The corresponding recombination processes at the
+p-n junction are schematically shown in Fig. 1(b).
+We now discuss the EL bands of Fig. 2(b) in details.
+Remarkably, the corresponding emission energies are signiﬁcantly smaller than the bandgap of 6H-SiC (3.05 eV).
+We, therefore, ascribe them to the defects in SiC. The
+emission in the spectral range 450 −650 nm is characteristic for the D1 defect [17]. The nature of this defect is
+still not clear – several models have been proposed, including bound-exciton-like center [23] and ﬁrst-neighbor
+antisite pair SiC −CSi [24]. The second emission band in
+the NIR spectral range 850 −1050 nm coincides with the
+photoluminescence (PL) spectrum of the silicon vacancy
+defects VSi [25] in the reference 6H-SiC bulk sample.
+To prove this interpretation we repeat the experiment
+
+===== Page 3 =====
+
+3
+of Fig. 2(b) at a temperature of 77 K [see Fig. 3(a)], when
+the spectroscopic features individual for each defect can
+be resolved.
+In this low-temperature experiment, the
+samples are kept in vacuum and the Cu plate is also used
+as a cold ﬁnger. The results are summarized in Fig. 3 and
+below we discuss them in details.
+First, we demonstrate the presence of VSi defects in
+our LED structures.
+Figure 3(b) shows photoluminescence (PL) spectrum recorded under excitation with the
+energy Eexc = 1.96 eV, which is below the D1 emission energy. Three zero-phonon lines (ZPLs) at 1.368 eV,
+1.398 eV and 1.434 eV are the well known ﬁngerprint of
+the VSi defects in 6H-SiC [26]. These three ZPLs originate from three nonequivalent crystallographic sites in
+this SiC polytype and are frequently labeled as V3, V2,
+and V1, respectively. The highest ZPL intensity is observed for VSi(V1).
+Second, we demonstrate that the VSi(V1) defect can
+be electrically driven. Figure 3(a) shows EL spectrum
+recorded at T = 77 K. In contrast to room temperature
+[Fig. 2(b)], the D1 emission dominates in the spectrum.
+The reason is the much higher concentration of D1 defects than of VSi defects. However, the activation energy
+of the D1 defect is relatively small (57 meV [27]), leading to the intensity increase with lowering temperature.
+On the other hand, the activation energy of the VSi defects is much higher and their intensity weakly depends
+on temperature.
+Indeed, we observe the characteristic
+VSi(V1) ZPL at 1.434 eV in the EL spectrum [the inset
+of Fig. 3(a)].
+Third, we verify that the electrical excitation of the
+VSi(V1) defect shown in the inset of Fig. 3(a) is not due
+to the re-emission process via D1. We excite PL with the
+energy of 2.62 eV, coinciding with the maximum of the
+D1 EL band [Fig. 3(a)]. The laser intensity per area is
+several orders of magnitude higher than that of the D1
+emission, but no signiﬁcant enhancement of the VSi(V1)
+PL is observed. This means that while the reemission
+may potentially take place, it is ineﬃcient as compared
+to electrical excitation. Therefore, we conclude, the recombination of electrically injected electron and holes is
+responsible for the VSi EL, as schematically shown in
+Fig. 1(b).
+Finally, we present an input-output characteristic of
+one of our LED devices [Fig. 3(c)].
+A clear tendency
+to saturation of the emission intensity P with injection
+current I is seen. This behavior can be well described as
+P ∝(1 + I0/I)−α [the solid line in Fig. 3(c) corresponds
+to α = 0.75 ]. The characteristic saturation current I0 =
+17 mA is higher than that in QD-based single photon
+LEDs [28] and comparable with that in NV-based single
+photon LEDs [16].
+In conclusion, we generated intrinsic defects in SiC devices and demonstrated that these defects can be electrically driven, resulting in the eﬃcient EL with emission
+energies well below the SiC bandgap. Our LEDs are twocolor in a sense that they show two spectrally diﬀerent
+emission bands associated with diﬀerent defects. The D1
+defects show EL in visible, which is intense at low temperatures but quenches with rising temperature.
+The
+VSi defects emit in NIR even at room temperature. By
+varying the irradiation dose one can control defect concentration, which should allow to isolate single defects,
+similar to single NV centers in diamond or single semiconductor QDs. Because isolated defects are ideal single
+photon emitters, our ﬁndings open a new way to fabricate cheap and robust LEDs emitting single photons on
+demand in NIR.
+∗E-mail: astakhov@physik.uni-wuerzburg.de
+[1] Single-photon
+devices
+and
+applications,
+C.
+Santori,
+D. Fattal, and Y. Yamamoto. (Wiley-VCH, Weinheim,
+2010).
+[2] M. D. Eisaman, J. Fan, A. Migdall, and S. V. Polyakov,
+Rev. Sci. Instr. 82, 071101 (2011).
+[3] J. McKeever,
+A. Boca,
+A. D. Boozer,
+R. Miller,
+J. R. Buck, A. Kuzmich, and H. J. Kimble, Science 303,
+1992 (2004).
+[4] M. Keller, B. Lange, K. Hayasaka, W. Lange, and
+H. Walther, Nature 431, 1074 (2004).
+[5] C. Brunel, B. Lounis, P. Tamarat, and M. Orrit, Phys.
+Rev. Lett. 83, 2722 (1999).
+[6] B. Lounis and W. E. Moerner, Nature 407, 491 (2000).
+[7] M. Nothaft, S. H¨ohla, F. Jelezko, N. Fr¨uhauf, J. Pﬂaum,
+and J. Wrachtrup, Nat. Commun. 3, 628 (2012).
+[8] P. Michler, A. Kiraz, C. Becher, W. V. Schoenfeld,
+P. M. Petroﬀ, Lidong Zhang, E. Hu, and A. Imamoglu,
+Science 290, 2282 (2000).
+[9] Z. Yuan, B. E. Kardynal, R. M. Stevenson, A. J. Shields,
+C. J. Lobo, K. Cooper, N. S. Beattie, D. A. Ritchie, and
+M. Pepper, Science 295, 102 (2002).
+[10] C. Kurtsiefer, S. Mayer, P. Zarda, and H, Weinfurter,
+Phys. Rev. Lett. 85, 290 (2000).
+[11] E. Neu, D. Steinmetz, J. Riedrich-M¨oller, S. Gsell,
+M. Fischer, M. Schreck, and C. Becher, New J. Phys.
+13, 025012 (2011).
+[12] M.
+Pelton,
+C.
+Santori,
+J.
+Vu˘ckovi´c,
+B.
+Zhang,
+G. S. Solomon, J. Plant, and Y. Yamamoto, Phys. Rev.
+Lett. 89, 233602 (2002).
+[13] A. Muller, W. Fang, J. Lawall, and G. S. Solomon, Phys.
+Rev. Lett. 103, 217402 (2009).
+[14] T. Heindel,
+C. A. Kessler,
+M. Rau,
+C. Schneider,
+M. F¨urst, F. Hargart, W.-M. Schulz, M. Eichfelder,
+R. Roßbach, S. Nauerth, M. Lermer, H. Weier, M. Jetter, M. Kamp, S. Reitzenstein, S. H¨oﬂing, P. Michler,
+H. Weinfurter, and A. Forchel, New J. Phys. 14, 083001
+(2012).
+[15] A. Lohrmann, S. Pezzagna, I. Dobrinets, P. Spinicelli,
+V. Jacques, J.-F. Roch, J. Meijer, and A. M. Zaitsev,
+Appl. Phys. Lett. 99, 251106 (2011).
+[16] N.
+Mizuochi,
+T.
+Makino,
+H.
+Kato,
+D.
+Takeuchi,
+M. Ogura, H. Okushi, M. Nothaft, P. Neumann, A. Gali,
+F. Jelezko, J. Wrachtrup, and S. Yamasaki, Nat. Photon.
+6, 299 (2012).
+[17] L. Patrick and W. J. Choyke, Phys. Rev. B 5, 3253
+
+===== Page 4 =====
+
+4
+(1972).
+[18] P. G. Baranov, A. P. Bundakova, A. A. Soltamova,
+S. B. Orlinskii, I. V. Borovykh, R. Zondervan, R. Verberk, and J. Schmidt, Phys. Rev. B 83, 125203 (2011).
+[19] D. Riedel, F. Fuchs, H. Kraus, S. V¨ath, A. Sperlich, V. Dyakonov, A. A. Soltamova, P. G. Baranov,
+V. A. Ilyin, and G. V. Astakhov, Phys. Rev. Lett. 109,
+226402 (2012); arXiv:1210.0505.
+[20] S. Zaske, A. Lenhard, C. A. Keßler, J. Kettler, C. Hepp,
+C. Arend, R. Albrecht, W.-M. Schulz, M. Jetter, P. Michler, and C. Becher, Phys. Rev. Lett. 109, 147404 (2012).
+[21] K. D. Greve, L. Y.
+Peter, L. McMahon, J. S. Pelc,
+C. M. Natarajan, N. Y. Kim, E. Abe, S. Maier, C. Schneider, M. Kamp, S. H¨oﬂing, R. H. Hadﬁeld, A. Forchel,
+M. M. Fejer, and Y. Yamamoto, Nature 491, 421 (2012).
+[22] N. Zheludev, Nat. Photon. 1, 189 (2007).
+[23] A. Fissel, W. Richter, J. Furthm¨uller, and F. Bechstedt,
+Appl. Phys. Lett. 78, 2512 (2001).
+[24] A. Gali, P. Deak, E. Rauls, N. T. Son, I. G. Ivanov,
+F. H. C. Carlsson, E. Janzen, and W. J. Choyke, Phys.
+Rev. B 67, 155203 (2003).
+[25] V. S. Vainer and V. A. Ilyin, Sov. Phys. Solid State 23,
+2126 (1981).
+[26] Mt. Wagner, B. Magnusson, W. M. Chen, E. Janz´en,
+E. S¨orman, C. Hallin, J. L. Lindstr¨om, Phys. Rev. B 62,
+16555 (2000).
+[27] L.
+Storasta,
+F.
+H.
+C.
+Carlsson,
+S.
+G.
+Sridhara,
+J. P. Bergman, A. Henry, T. Egilsson, A. Hall´en, and
+E. Janz´en, Appl. Phys. Lett. 78, 46 (2001).
+[28] C. B¨ockler, S. Reitzenstein, C. Kistner, R. Debusmann,
+A. L¨oﬄer, T. Kida, S. H¨oﬂing, A. Forchel, L. Grenouillet,
+J. Claudon, and J. M. G´erard, Appl. Phys. Lett. 92,
+091107 (2008).

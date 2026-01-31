@@ -1,0 +1,1143 @@
+
+
+===== Page 1 =====
+
+Prototyping Tools for CMOS Bioelectronic Sensors
+Wafer-Level Prototyping Tools for CMOS Bioelectronic Sensors
+Advait Madhavan,1, a) Ruohong Shi,1, 2, a) Alokik Kanwal,1 Glenn Holland,1 Jacob M. Majikes,1, 3
+Paul N. Patrone,4 Anthony J. Kearsley,4 and Arvind Balijepalli1
+1)Physical Measurement Laboratory, National Institute of Standards and Technology,
+Gaithersburg, MD 20899
+2)Johns Hopkins University, Baltimore, MD
+3)Theiss Research, LaJolla, CA
+4)Information Technology Laboratory, National Institute of Standards and Technology,
+Gaithersburg, MD 20899
+(*Electronic mail: arvind.balijepalli@nist.gov)
+Integrating biology with complementary metal-oxide-semiconductor (CMOS) sensors can enable highly parallel
+measurements with minimal parasitic effects, significantly enhancing sensitivity. However, realizing this potential
+often requires overcoming substantial barriers related to design, fabrication, and heterogeneous integration. In this
+context, we present a comprehensive suite of tools and methods designed for wafer-scale biosensor prototyping that
+is sensitive, highly parallelizable, and manufacturable.
+A central component of our approach is a new initiative
+that allows for open-source multi-project wafers (MPW), giving all participants access to the designs submitted by
+others. We demonstrate that this strategy not only promotes design reuse but also facilitates advanced back-end-of-line
+(BEOL) fabrication techniques, improving the manufacturability and process yield of CMOS biosensors. Developing
+CMOS-based biosensors also involves the challenge of heterogeneous integration, which includes external electrical,
+mechanical, and fluid layers. We demonstrate simple modular designs that enable such integration for sample delivery
+and signal readout. Finally, we showcase the effectiveness of our approach in measuring the hybridization of DNA
+molecules by focusing on data acquisition and machine learning (ML) methods that leverage the parallelism of the
+sensors to enable robust classification of desirable analyte interactions.
+I.
+INTRODUCTION
+Rapid
+advances
+in
+both
+biomolecular
+technologies
+and complementary metal oxide semiconductor (CMOS)
+manufacturing have not yet translated into a broad ecosystem
+of commercial bioelectronic sensors that combine both
+approaches.1–4 This is not an accident. Widespread adoption
+is partly impeded by the complex requirements surrounding
+the development of integrated CMOS biosensors, which
+include access to robust prototype manufacturing, packaging,
+and testing tools.
+Smaller academic and commercial
+groups must overcome significant economic, supply chain,
+and technical challenges to access custom silicon devices
+produced by semiconductor manufacturers.
+Therefore,
+sustained research into manufacturable practices can improve
+the availability and use of electronic biosensors. Here, we
+show one approach to utilizing wafer-scale processing within
+a multi-facility multi-project wafer (MPW) framework to
+address the above core challenges.
+In the long-term effort to develop integrated CMOS
+biosensors,
+there
+have
+been
+relatively
+few
+successful
+examples. These products include next-generation sequencing
+platforms that use millions of ion-sensitive field-effect
+transistors
+(ISFETs)
+to
+detect
+small
+changes
+in
+pH
+upon base incorporation.5 Commercial DNA sequencing
+now incorporates biological nanopores into individually
+addressable arrays with electronic readout and applicationspecific integrated circuits (ASICs) for on-device processing
+in a compact form factor.6 Additionally, there are ongoing
+a)These authors contributed equally to this work.
+efforts to develop CMOS chips that integrate photonics
+with electronics in large arrays for commercial protein
+sequencing.7 CMOS technology is also being developed
+for multi-analyte and multiplexed sensing of biomarkers by
+combining molecular and electronic components in a highly
+parallel architecture.8
+While impressive, the commercialization success stories
+are few in comparison to demonstrations of novel sensors
+and techniques by academic groups and small companies.9–18
+Academic groups must invest considerable resources to
+develop engineering capabilities and pay for mask sets
+used in custom CMOS design.
+Small companies, such as
+startups, face the additional burden of shouldering expensive
+licensing fees to access the electronic design automation
+(EDA) tools required to realize their designs. Furthermore,
+designing successful measurements and products often
+requires multiple iterations of design, fabrication, and testing,
+which cumulatively become cost-prohibitive.
+The preferred approach to reducing the investment needed
+to access custom CMOS designs is to participate in an
+MPW run, which allows multiple organizations to pool
+their resources to purchase a single mask set that contains
+all of their designs.
+The foundry fabricates wafers with
+all the projects from the MPW, dices them into small
+chips, each of which contains an individual design, and
+returns them to the participants.
+MPW runs have the
+additional advantage of minimizing the sharing of intellectual
+property between projects.
+Such a siloed framework
+is not well-suited for bioelectronics projects that require
+considerable postprocessing to integrate critical fluidic and
+organic elements.
+The small form factor (≤1 cm per side) of chips returned
+from an MPW run makes them difficult to handle and
+arXiv:2509.24075v1  [physics.ins-det]  28 Sep 2025
+
+===== Page 2 =====
+
+Prototyping Tools for CMOS Bioelectronic Sensors
+2
+increases processing challenges, which results in lower yield.
+To work around this limitation, the chips are mounted in
+larger carrier substrates. This is typically accomplished by
+adhering a handle wafer to the chip by using a photoresist19 or
+placing the chip face-down in a petri dish with epoxy and then
+curing the assembly.20 While such approaches ease packaging
+challenges, the lack of precise alignment between the chip
+and substrate handle requires them to be processed using lowthroughput techniques such as contact aligners or direct write
+lithography, resulting in lower yields than achievable when
+using high-throughput lithography tools.
+Finally, in cases
+where the handle wafers are too bulky or cumbersome to
+integrate with board-level electronics, chips are directly wirebonded onto daughter boards with glob-top epoxy,21, or by
+attaching plastic wells to create a fluidic reservoir.12
+While the techniques discussed above allow fluidic
+integration,
+making electrical contact with the CMOS
+circuitry poses additional challenges.
+The chips must be
+passivated to minimize ion contamination of the CMOS
+layers, which prevents access to the top metal of the
+design, thereby hindering electrical contact.22 Making robust
+electrical connections is further complicated by the surface
+roughness of the passivation layer and step height of the
+insulating surface, which follows the topography of the
+CMOS top metal layer. Finally, each individual integration
+step can take significant time, with minimal component reuse
+across projects. The net result is that there is a potential for
+small errors at each step that cumulatively cause significant
+delays and result in a low yield of functioning devices.
+In this work, we aim to address several challenges by
+utilizing the Nanotechnology Xccelerator, a pilot multifacility MPW program that employs open-source tools for
+generating CMOS designs.
+This initiative facilitates the
+efficient use of wafer-level back-end-of-the-line (BEOL)
+fabrication, enabling the development of prototypes that can
+be manufactured effectively. The rest of the manuscript is
+organized as follows. We first describe the Nanotechnology
+Xcellerator (Sec. II) followed by an example CMOS design
+that leverages this MPW program to design, fabricate,
+and integrate the components needed to measure DNA
+hybridization (Sec. III). Next, we detail the instrumentation,
+data acquisition,
+and analysis infrastructure needed to
+efficiently acquire and process data for biological applications
+(Sec. IV). Finally, we demonstrate measurements of DNA
+hybridization using the system developed in this work
+(Sec. V).
+II.
+NANOTECHNOLOGY XCCELERATOR:
+MANUFACTURABLE CMOS PROTOTYPING
+The Nanotechnology Xccelerator program, by design, has
+several unique features designed to promote nanotechnology
+research and prototyping that are amenable to developing
+manufacturable bioelectronics.
+The open-source nature of
+this program requires participants to collectively develop
+measurement test structures.
+This requirement allows
+groups to leverage design capabilities while lowering overall
+costs.
+Because all designs on the wafer are open-source,
+each participant can receive either individual flash fields
+(containing all projects) or entire wafers at a low cost to allow
+optimum post-processing for their final application.
+The fabrication process is stopped after the last set of
+inter-layer vias are deposited and the surface planarized.
+This planarized surface with a well-characterized topology
+greatly simplifies BEOL processing.
+Additionally, the
+wafers received are not passivated, which allows a wide
+range of surface chemistries to be developed for different
+end applications.
+Furthermore, the planar substrate makes
+it straightforward to borrow integration strategies from
+traditional CMOS packaging, such as redistribution layers
+to fan out electrical contacts or integrate interposers to
+simplify packaging. Finally, the ability to work at the wafer
+level promotes the reuse of measurement instrumentation and
+infrastructure for multiple applications across MPW runs to
+enable affordable prototyping functions like a test vehicle that
+provides a low-parasitic interface to novel technologies.
+III.
+WAFER-SCALE DNA BIOCHIP INTEGRATION
+We offer a comprehensive guide to the design process,
+fabrication, and integration process of a CMOS device
+for measuring DNA hybridization using the wafer-level
+Nanotechnology Xccelerator MPW. Although certain aspects,
+such as the design of specific sensors, are single-use, we
+emphasize the modularity and component reuse enabled by
+working at the wafer scale throughout this section.
+This
+approach makes the tools developed here suitable for rapid
+and iterative prototyping while promoting manufacturability.
+We first describe the CMOS design of a 25-unit-cell
+amplifier array to measure DNA hybridization and the results
+from its experimental validation (Sec. III A).
+This section
+is followed by a description of the BEOL fabrication of a
+redistribution layer to fan out the CMOS pads for easier
+electrical connections (Sec. III B). Notably, this fabrication
+step also provides a standardized interface that is available for
+other projects on the MPW tape-out. Finally, we describe a
+manufacturable integration approach that combines electrical
+and fluidic connections to allow measurements for biological
+applications (Sec. III C).
+A.
+CMOS Design and Validation
+The CMOS circuitry used in this measurement is based
+on a specific physical model (see Fig. 1A) of the biologicalelectrical interface,
+which has been previously studied
+using electrochemical impedance spectroscopy (EIS).14,23
+The circuit topology is chosen in order to be compatible with
+the experimental setup, which meaures the transfer function
+of the interface as a function of frequency, through a lock-in
+frequency sweep measurement. The circuit topology used is
+shown in Fig. 1A, which shows a conceptual description of
+each sensing location, consisting of an amplifier connected
+to the working electrode (WE) and the reference electrode
+
+===== Page 3 =====
+
+Prototyping Tools for CMOS Bioelectronic Sensors
+3
+(RE). We modified each WE with ssDNA probes of a known
+sequence. When an analyte with a complementary sequence
+binds to the ssDNA probes, it changes the surface charge of
+the WE. To measure this change, we overlaid a DC bias with
+a small-amplitude AC voltage and applied it to the RE. The
+WE is connected to the negative terminal of an operational
+amplifier as shown in (Fig. 1A). Such a configuration operates
+as a capacitive gain amplifier in the designed frequency range,
+where the circuit’s gain depends only on the ratio of the WE’s
+capacitance(CDNA) to the feedback capacitance (CF).
+This
+allows the circuit to convert changes in capacitance of the WE
+surface into a variable gain, amplifying small-signal input for
+frequency sweep measurements, enabling compatibility with
+previously developed measurement infrastructure24.
+The DNA-functionalized WE is described by a Randles
+circuit23,25 that models the solution resistance (RSOL) in
+series with the electroactive interface resistance (RDNA)
+and capacitance (CDNA) that are in parallel as seen from
+Fig. 1A. Our previous measurements that used a ≈1 mm
+diameter circular electrode provide baseline values for these
+circuit parameters (RDNA ≈1.5 MΩ, CDNA ≈38.7 nF, and
+RSOL ≈918 Ω).23 In this design, the electrode sizes are
+considerably smaller (≈10 µm per side) and can be varied
+during the BEOL fabrication process to tune the measurement
+sensitivity.
+Assuming conventional area scaling for the
+electrode impedance, we expect an increase in RDNA to ≥
+10 GΩ, and a decrease in CDNA to ≤10 pF, comparable
+to metal-insulator-metal (MIM) capacitors typically found in
+CMOS processes.
+In order to determine the frequency range at which
+capacitive sensing can be performed, we first model the
+transfer function of the circuit assuming an ideal amplifier.
+The input impedance of the Randles circuit is given by
+Zinp = Rsol +
+RDNA
+1+ jωRDNACDNA
+,
+(1)
+where j is the imaginary unit, and ω corresponds to the
+operating frequency. For jωRDNACDNA ≫1, which is satisfied
+by ω > 10 rad/s this expression simplifies to,
+Zinp = Rsol +
+1
+jωCDNA
+.
+(2)
+The impedance of the feedback circuit is then found to be,
+Zf =
+R f
+1+ jωRfCf
+,
+(3)
+where R f and Cf are the resistance and capacitance of the
+feedback path, respectively. For jωRfCf ≫1 this expression
+simplifies to
+Zf =
+1
+jωCf
+.
+(4)
+Note that the operating frequency range does not always
+satisfy the above condition, and hence, it sets the lowfrequency cut-off for the circuit behavior.
+Assuming an ideal amplifier, we calculate the gain (G) by
+using the expression,
+G =−Zf
+Zinp
+(5)
+=−CDNA
+CF
+(
+1
+1+ jωRsolCDNA
+).
+(6)
+When jωRsolCDNA ≪1, which for RSOL ≈1 kΩand
+CDNA ≈10 pF is satisfied for ω < 108 rad/s Eq. 6 simplifies
+to,
+G = −CDNA
+CF
+.
+(7)
+Hence, in an ideal system operated in the correct frequency
+range with a constant feedback capacitor, the circuit gain is
+directly proportional to the capacitance of the WE. In order
+for the circuit to have a lower cutoff frequency (as described
+in Eq 4) of f ≤10 kHz, RF = 2 MΩand CF = 10 pF were
+chosen as parameters. Other parameters used in the design of
+the circuit are RSOL = 1 kΩ, CDNA = 10 pF or 100 pF.
+In practical circuits, however, the amplifier is not ideal and
+must be designed under practical constraints such as gain,
+bandwidth, and drive strength. Typical operation parameters
+are variable gain from 5 to 50, based on input capacitance
+(10 pF to 100 pF), an operational frequency range of 10 kHz
+to 100 kHz, and an ability to drive a capacitive load of
+90 pF (approximately equal to 3 feet of coaxial cable). In
+order to meet these specifications, a two-stage amplifier was
+designed in a 130 nm process, with a high-gain differential
+input stage followed by a high-drive-strength push-pull output
+stage as shown in Fig. 1B. Because such an amplifier is not
+unconditionally stable, we added load compensation by using
+a resistor (RC = 10 kΩ) and a capacitor (CC = 2 pF).
+The panels in Fig. 2 show the theoretical and experimental
+gain and phase plots for the circuit shown in Fig. 1A
+with the above parameters for two input capacitance values,
+10 pF and 100 pF.
+The solid lines show the theoretical
+circuit simulations, while the solid markers represent the
+experimentally verified circuit behavior.
+We observed
+good agreement between the theory and the experiment for
+frequencies below 100 kHz, after which the output signal
+began to distort and failed to follow the simulated behavior.
+From 100 Hz to 10 kHz, we found that the circuit behavior
+followed the expected values defined by Eq. 4, for a frequency
+range where jωR fCf ≤1.
+This behavior flattens out at
+fL = ωL/2π = 7.95 Hz, which sets the lower limit of the
+valid frequency range in Eq. 6. The optimal operating range
+of the circuit, where the gain is maximum, was between
+10 kHz and 100 kHz. The realized bandwidth is adequate for
+practical measurements using these sensors, as described in
+the following sections. We employed a lock-in amplifier24 that
+operates at a single frequency chosen from this range. This
+setup is effective for measuring the changes in capacitance
+that occur due to biomolecular binding.
+
+===== Page 4 =====
+
+Prototyping Tools for CMOS Bioelectronic Sensors
+4
+FIG. 1. Model of the biological interface to CMOS and amplifier design. (A) A simplified schematic of the biological-electrical interface and
+embedded capacitive gain amplifier circuit. The feedback and compensation resistors and capacitors are implemented with high-resistance
+polysilicon and metal-insulator-metal capacitors. (B) A detailed circuit schematic of the amplifier, showing the differential input stage, the
+push-pull output stage, and the compensation resistor and capacitor.
+B.
+Back End of Line Fabrication
+We utilized a BEOL process flow to create electrodes to
+access the underlying CMOS circuitry while passivating the
+chip from mobile ion contamination during measurements.
+The biggest challenge with adding metal and passivation
+layers to foundry-fabricated CMOS wafers is adhering to
+a strict thermal budget.
+The wafers cannot be exposed to
+temperatures exceeding 450 ◦C without initiating a diffusion
+of dopants that cause damage to the chips.26 Therefore, we
+limited all processes to a maximum temperature of 300 ◦C.
+We received 200 mm wafers from the foundry with vias
+in place for the final metal layer (metal 4 in all chips
+discussed here). The foundry stopped processing after this
+step, returning planar wafers with a surface roughness of
+≈1 nm and maximum step height of ≈10 nm.
+This
+attribute of the Nanotechnology Xcellerator MPW allows us
+to use the same signal redistribution strategy in multiple
+wafer projects, allowing for a common electrical interface and
+greater reusability for different applications.
+The process flow for the mid-process wafers is shown in
+Fig. 3A.
+(i) We first cored 100 mm diameter wafers from the 200 mm
+substrates received from the foundry to facilitate easier
+processing within our cleanroom.
+(ii) We covered the vias with ≈100 nm thick titanium (Ti)
+pads that were defined by using optical lithography and
+a metal deposition and lift-off process. This step was
+performed to protect the vias and also provide an etch
+stop for future processing steps.
+(iii) We followed this step by depositing ≈1 µm of
+low-stress Silicon Nitride by using plasma-enhanced
+chemical vapor deposition (PECVD). The PECVD
+nitride served two purposes:
+it provided electrical
+passivation for the fanout pads described in subsequent
+steps and also prevented mobile ion contamination
+of the underlying CMOS layers from Potassium and
+Sodium ions present in biological solutions. We then
+lithographically patterned windows and etched back the
+nitride films up to the Ti pads by using reactive ion
+etching (RIE) with a CF4 chemistry.
+(iv) The windows were then back-filled with ≈1.1 µm of
+Ti by using an additional lithography step followed by
+metal deposition and lift-off.
+(v) Leads to fan out the peripheral pads around the CMOS
+active area (Fig.
+3B) were fabricated by using an
+additional lithography step followed by the deposition
+of ≈1 µm of Ti followed by lift-off. A critical feature
+of our MPW that allows fan-out is the fact that the leads
+can be routed on top of the other projects in the reticle,
+resulting in a large handle area of ≈31 mm × 25 mm.
+Furthermore, the nitride layers that were deposited in
+the previous step electrically isolate the unused projects,
+thereby minimizing failures.
+(vi) Following the definition of the fan-out leads,
+we
+deposited ≈1 µm of Silicon Nitride by using PECVD
+followed by the definition of windows and backfilling
+with Ti using the process outlined in steps iii and iv.
+(vii) Next, the contact pads, working electrodes, and dice
+lines were patterned by using optical lithography,
+followed by the deposition of ≈10 nm of Ti for an
+adhesion layer and ≈100 nm of gold (Au), and liftoff. Finally, the reference electrodes were patterned by
+using optical lithography, followed by the deposition of
+
+===== Page 5 =====
+
+Prototyping Tools for CMOS Bioelectronic Sensors
+5
+FIG. 2. Gain and phase plots of capacitive gain amplifier. The solid
+lines show the theoretical circuit simulations, while the solid markers
+represent the experimentally verified circuit behavior. (A) Response
+of the amplifier when connected to a 10 pF input load. (B) Circuit
+response when connected to a 100 pF input load.
+≈10 nm of Ti for an adhesion layer and ≈100 nm of
+platinum (Pt), and lift-off.
+(viii) The finished wafers were then diced into chips for
+assembly into the fluidic cell described in Sec. III C.
+Since the lead times for CMOS fabrication can be
+substantial, on the order of months, we designed and
+fabricated test chips that lacked CMOS circuitry to develop
+and validate packaging and integration strategies.
+We
+designed the test chips, shown in Fig. 4B, to have an identical
+pad layout as the CMOS chips. To account for the lack of
+circuitry, additional leads were added to route output signals
+to the peripheral contact pads so they could be measured using
+external instrumentation. The fabrication steps for these test
+chips (Fig. 4A) were as follows:
+FIG. 3. (A) Back end of line (BEOL) stack of CMOS chips. The
+schematic is not to scale.
+(B) The layout of fanout pads for the
+CMOS chips is shown in the central region, where the active area
+is located. The fanout interconnects extend over the other projects
+in the reticle and terminate in large pads measuring ≈1 mm at the
+periphery. The overall chip size is ≈31 mm×25 mm.
+(i) First, ≈2.8 µm of thermal oxide was grown on the
+100 mm wafers using a wet oxidation process. The leads
+and contact pads were deposited via a lithography step,
+followed by deposition of ≈100 nm Ti and then ≈90 nm
+Pt.
+(ii) Next, ≈200 nm of low-stress silicon nitride was
+deposited using a PECVD process. The windows were
+patterned lithographically for the reference electrodes
+and then etched into the nitride layer by using an RIE
+process.
+(iii) Finally, the dice lines and windows for the peripheral
+contact
+pads
+and
+the
+working
+electrodes
+were
+lithographically patterned and then etched using an
+RIE process.
+Once etched, ≈100 nm of Ti and
+≈100 nm of Au were deposited by using an e-beam
+evaporation process,
+followed by lift-off.
+Metal
+
+===== Page 6 =====
+
+Prototyping Tools for CMOS Bioelectronic Sensors
+6
+FIG. 4. (A) Back end of line (BEOL) process stack for the test chips.
+The schematic is not to scale. (B) Enlarged image of the working
+and reference electrodes at the center of the test chips.
+Fanout
+interconnects from the working and reference electrodes are shown
+in pink.
+deposition was designed to ensure that the electrodes
+rise up to or above the silicon nitride layer ≈200 nm.
+The wafers were diced into individual chips as shown in
+Fig. 4B.
+C.
+Packaging Design and Integration
+The ability to prototype at the wafer scale and to use
+BEOL techniques to redistribute contact pads, as described
+in Sec. III B, eases packaging challenges and can allow
+solutions that are (i) modular to allow components such as
+fluidics inserts to be rapidly exchanged, (ii) manufacturable
+because they use standard industrial processes such as CNC
+machining and 3D printing, and (iii) flexible to provide
+standard interfaces that allow the package to be configured
+for chips built for different applications.
+Our packaging solution, which strives to achieve the above
+attributes, is shown in Fig. 5.
+The package comprises
+FIG. 5. (A) CAD model of the package that integrates mechanical,
+fluidic, and electrical components.
+Channel guides and stops
+ensure positive registration of the chip, while the upper mechanical
+component supports the electrical interface and interchangeable
+fluidic inserts. (B) A photograph of the assembled fluidic package.
+The printed circuit board (PCB) implements the electrical interface
+and also validates chip registration and alignment through the use
+of three light-emitting diodes (LEDs) that illuminate when the pogo
+pins contact the chip pads.
+two primary structural elements, the base support that
+houses and aligns the chip, and the electrical and fluidics
+interface that provides structural support for electrical and
+fluid connections. In the example shown in the figure, the
+base support was CNC machined while the electrical fluidics
+interface was 3D-printed with a biocompatible resin, although
+it is also possible to fabricate these components using CNC
+machining for enhanced mechanical durability or chemical
+resistance. Both components are discussed in detail next.
+Base Support: This element simplifies the alignment of
+the chip to ensure reproducible contact with the electrical
+and fluidics interface.
+Guides constrain the chip and help
+alignment at the stop (dashed white lines) at the top right
+
+===== Page 7 =====
+
+Prototyping Tools for CMOS Bioelectronic Sensors
+7
+corner of the base support as seen in Fig. 5A. The thin
+channels to the left allow the chip to be pushed against the
+guide to ensure positive registration and alignment. When
+measurements are complete, we ejected the chip by using a
+pin guided by a channel on the back of the base support.
+The movement of the electrical and fluidics interface when
+lowered to make electrical contact with the chip is constrained
+by four alignment posts integrated into the base support.
+Finally, the base support houses small spring-loaded bolts that
+are compressed by thumb screws that control the engagement
+of the pogo pins with contact pads on the chip.
+Fig. 5B shows a version of the base support used in
+this study that was 3D-printed using the thermoplastic
+Polyoxymethylene.
+We designed the parts to be easily
+adapted for injection molding for low-cost, high-volume
+applications or to allow tighter mechanical tolerance using
+CNC machining.
+Electrical and Fluidics Interface:
+The electrical and
+fluidics interface (Fig. 5A) supports the critical functions of
+making electrical contact with the chip to apply control signals
+or read data and delivering fluids via a customizable insert.
+The redistribution layer described in Sec. III B simplifies the
+electrical interface by allowing contact pads that are ≈1 mm
+on an edge with an inter-pad pitch of ≈1.7 mm. The large
+pad size makes the design tolerant to angular alignment errors
+of up to ≈±1◦. Our pad layout also permits using springloaded pogo pins (Fig. 5) to create electrical connections. The
+electrical and fluidic interface body contains double-ended
+pogo pins in pockets sandwiched between the printed circuit
+board (PCB) and the chip. This design eliminates the need for
+wire bonding and soldering, allowing for rapid chip exchange.
+We verified the proper insertion of the CMOS chip and its
+electrical contact with the electrical and fluidics interface by
+designing a loopback interface comprised of pairs of pads on
+three corners of the chip as seen from the magnified region
+(top right) of the CMOS chip in Fig.5A. We connected one
+pad in the pair to the common ground of the circuit. The
+second pad was connected to a light-emitting diode (LED),
+which was powered by a 5 V power supply via a currentlimiting resistor. When both pogo pins make positive contact
+with their corresponding pads, the LED illuminates as seen in
+Fig. 5B. The illumination of all three LEDs indicates positive
+registration against the chip guides, the chip is oriented
+properly, and there are no angular misalignments beyond the
+design tolerance.
+In addition to electrical connections, we developed modular
+fluidics inserts to facilitate sample delivery, as seen in Fig. 5.
+The fluidic inserts can be threaded from the top of the
+electrical and fluidics interface.
+In the current study, an
+open well insert with a volume of ≈160 µL was used
+to allow rapid fluid exchange using standard laboratory
+pipettes.
+Importantly, this insert can be customized for
+specific applications, for example, by replacing the open well
+insert with one that incorporates microfluidic channels that
+allow rapid fluid exchange.
+FIG. 6. Schematic of the hardware setup for multiplexed sensing.
+The on-board multiplexers are controlled by using a digital IO (DIO)
+interface. The measurements are initiated by using a trigger signal
+from the lock-in amplifier, which starts the voltage scan using the
+arbitrary waveform generator (AWG) and also arms the measurement
+for each sensor as described in the main text.
+IV.
+INSTRUMENTATION
+A.
+Instrumentation Layout and Signal Timing
+We performed the measurements by using a two-electrode
+electrochemical cell with a single global RE and 25
+independently addressed WEs.
+Instead of individual REs
+paired to each WE as designed, we employed a global
+Ag/AgCl quasi-reference electrode in this study.
+We then
+sequentially connected each WE in the array to a lock-in
+amplifier (LIA) via a 25:1 multiplexer (MUX) as illustrated in
+Fig. 6. The measurements were initiated with the transmission
+of a global measurement trigger (indicated in green).
+At
+the same time, we connected the first sensor to the LIA by
+using the digital I/O (DIO) interface through the MUX. After
+completing the measurements with the connected electrode,
+we sequentially connected the subsequent sensors to the LIA
+according to a scan list.
+The global measurement trigger also initiated a voltage
+scan, Vscan, controlled by the arbitrary waveform generator
+(AWG) and summed with the LIA reference AC signal.
+The switch pulse is then overlaid on top of Vscan.
+While
+we demonstrate this ability with a triangle wave, it is
+straightforward to adapt this approach for other waveforms,
+such as a square wave or even a constant DC voltage.
+This technique allows us to supply arbitrary waveforms to
+interrogate the samples that can be tailored to particular
+applications. Multiple scans of the array allow us to robustly
+sample Vscan each sensor, measuring a slightly different region
+of the waveform. By saving both the measured signal and the
+corresponding segment of Vscan, we can accurately reconstruct
+the signal-voltage response for the entire array.
+Finally,
+because the phase relationship between the scan pulse and
+Vscan is well-defined and adjustable, we are able to repeat
+the measurements with a different starting phase for Vscan
+to improve coverage of the desired waveform and tune the
+
+===== Page 8 =====
+
+Prototyping Tools for CMOS Bioelectronic Sensors
+8
+granularity of the signal-voltage data.
+B.
+Data Acquisition
+We used purpose-built Python scripts27 run on a PC
+(Fig. 6, gray lines) to handle instrument configuration and
+data handling. The scripts abstracted communications with
+the instrumentation either over the universal serial bus (USB)
+or the general-purpose interface bus (GPIB) for seamless
+operations. The configuration included initializing the MUX
+with the scan list that enumerated the connection order of
+the measurement. We configured AWG with the waveform
+for Vscan that was summed with the lock-in reference signal.
+We initiated the measurements by programming the LIA
+to emit the measurement trigger signal as seen in Fig. 6.
+Measurements of each connected WE were saved separately
+to disk to simplify data analysis as described in the next
+section.
+V.
+DNA MEASUREMENTS
+DNA
+Sequences
+and
+Preparation:
+The
+ssDNA
+anchor
+sequence
+used
+was
+/5ThioMC6-D/
+TAGTCGTAAGCTGATATGGCTGATTAGTCGGAAGCATCGAACGCTGAT,
+and
+the
+analyte
+sequence
+was
+ATCAGCGTTCGATGCTTCCGACTAATCAGCCATATCAGCTTACGACTA.
+The
+control
+strand
+sequence
+was
+TTTATACAGGAGCAATCATAAGGG
+CATTAGACCCAGCCC. We purchased both DNA sequences
+in 100 µmol/L (µM) in 1 x TE buffer containing 10 mmol/L
+(mM) Tris and 100 µmol/L (µM) Ethylenediaminetetraacetic
+acid (EDTA). 1x TAE buffer comprising ≈40 mmol/L (mM)
+Tris base, ≈20 mmol/L (mM) acetic acid, ≈1 mmol/L (mM)
+EDTA, was diluted from commercially available 50x TAE
+buffer with deionized water.
+To prepare the ssDNA anchor, 10 µL of 400 nmol/L
+(nM)
+ssDNA
+was
+reduced
+with
+30
+µL
+of
+tris(2carboxyethyl)phosphine
+(TCEP)
+as
+the
+reducing
+agent
+for 2 hours.
+Similarly, 10 µL of 6-mercapto-1-hexanol
+(MCH) was reduced with 30 µL of TCEP for 2 hours.
+Following reduction, the mixtures were centrifuged at 1000
+relative centrifugal force (RCF), and the supernatant solution
+was collected for subsequent experiments.
+Electrode
+Functionalization
+and
+Electrical
+Measurements:
+The chips with an array of 25 gold
+electrodes were prepared for measurements by first cleaning
+and modifying them with thiol chemistry. After the chamber
+was pre-cleaned for 30 minutes, the chips were cleaned for
+30 minutes in a UV Ozone cleaner. The cleaned electrodes
+were immediately immersed in 50 mmol/L(mM) sulfuric
+acid solution, and each electrode was chemically cleaned
+by scanning the applied potential from −0.25 V to +1.5 V
+relative to an Ag/AgCl reference electrode for at least 10
+cycles at a sweep rate of 0.5 V/s.
+The chips were then rinsed five times with DIW and
+immediately immersed in a solution of ≈10 µmol/L (µM)
+FIG. 7. Representative data from a single sensor. (A) Capacitance
+response for baseline single-stranded DNA (blue) and hybridized
+double-stranded DNA (pink). The measurements were performed
+under an applied AC field with amplitude VAC,pk = 50 mV and
+frequency of 500 Hz. (B) The capacitance of the single-stranded
+DNA (blue) and double-stranded DNA (pink) was estimated by
+averaging the steady-state signal across the shaded region shown in
+panel A, which represents ≈50 % of the dwell time. The error bars
+represent one standard deviation.
+of the ssDNA anchor in TAEM buffer for ≈1 hour at room
+temperature. This functionalization with an ssDNA anchor
+strand was followed by a second incubation step to passivate
+the unreacted gold electrode surface by immersing the chips
+
+===== Page 9 =====
+
+Prototyping Tools for CMOS Bioelectronic Sensors
+9
+FIG. 8. DNA chip measurement schematic. The square-shaped gold
+sheet represents one of the 25 ( approx10 µm per side) gold electrode
+arrays. DNA anchors (magenta) are attached to the surface using
+thiol chemistry. The analyte (yellow) was added to bind the DNA
+anchors through complementary sequence hybridization.
+in a solution comprised of ≈1 mmol/L (mM) of MCH in
+ethanol for ≈16 hours. Finally, the chips were thoroughly
+washed with running buffer solution (RBS) at least five
+times before being used for electronic measurements.
+For
+these measurements, RBS was prepared with 1x TAE buffer
+containing 50 mmol/L (mM) NaCl, 12.5 mmol/L (mM)
+MgCl2, 200 µmol/L (µM) K4Fe(CN)6, and 200 µmol/L
+(µM) K3Fe(CN)6.
+All electronic measurements were performed by using a
+two-electrode electrochemical cell with a ≈160 µL sample
+volume.
+Capacitance measurements were performed at a
+fixed frequency of 500 Hz with an applied AC voltage with
+amplitude, ≈50 mVPP and a constant DC offset of ≈0 V
+relative to an Ag/AgCl reference electrode and analyzed as
+shown in Fig. 7.
+DNA Hybridization: Baseline measurements of the gold
+electrodes with ssDNA anchor and MCH were performed
+under RBS. Strong chemical interactions exist between the
+DNA bases and the gold surface due to π-metal and van
+der Waals forces. These interactions can cause immobilized
+single-stranded DNA to adsorb nonspecifically onto the gold
+electrode, hindering hybridization and signal generation. To
+mitigate this behavior, we washed the cell five times with RBS
+after first incubating it with the DNA analyte strand that was
+dissovled in RBS at a concentration of 1 mmol/L (mM) for 60
+minutes. We then measured the DNA hybridization two hours
+after the rinse step to allow the DNA to adopt a more upright
+conformation, improving measurement reproducibility.
+VI.
+DNA HYBRIDIZATION RESULTS
+We measured the interfacial capacitance of gold electrodes
+functionalized with single-stranded DNA (ssDNA) anchors in
+the presence of an applied electric field to detect the specific
+hybridization of DNA sequences that have a complementary
+sequence to the probe strands attached to the electrode
+surface, as shown in Fig. 8. When an electric field is applied,
+it attracts counter-ions from the bulk solution to the surface,
+resulting in the formation of an electrical double layer.
+This double layer behaves like a nanoscale capacitor and is
+influenced by the ssDNA, yielding the baseline measurements
+shown in Fig. 7.
+The binding of complementary DNA strands (analytes)
+to the anchored ssDNA alters the structure of this double
+layer, resulting in a change in interfacial capacitance from the
+baseline values, also demonstrated in Fig. 7. The increase
+in the capacitance, relative to the baseline value, can be
+understood from the change in conformation adopted by
+DNA upon hybridization.
+Surface-bound ssDNA strands
+typically lie flat against the gold surface, obstructing parts
+of the electrode from interacting directly with the electrolyte.
+However, upon hybridization, the double-stranded DNA
+adopts a more rigid and upright orientation,
+exposing
+additional electrode surface area that was previously hidden
+by the surface-adsorbed ssDNA and resulting in an overall
+higher capacitance.
+Capacitance measurements, at a constant potential 0.0 V
+relative to an Ag/AgCl reference electrode, shown in Fig. 9,
+were recorded for both the baseline ssDNA case and after
+the addition of the analyte with a complementary sequence.
+We measured a total of ten chips, each with 25 electrodes.
+Following the addition of the analyte, we observed an
+increase in the capacitance, indicating successful detection
+of hybridization between the analyte strand and the ssDNA
+anchor (Fig. 9 B). Across ten chips, n = 250 electrodes in
+total, DNA hybridization resulted in an average capacitance
+change of (24.5 ± 3.9) pF or a relative change of (7.8 ±
+0.9) % (k = 2,≈95 % confidence) upon hybridization.
+To
+verify
+the
+specificity
+of
+the
+sensors,
+a
+noncomplementary
+DNA
+strand
+was
+used
+as
+a
+negative
+control
+and
+incubated
+under
+the
+same
+conditions
+as
+the
+complementary
+analyte
+strands.
+The
+probability
+of
+hybridization
+with
+the
+non-complementary
+strand
+was estimated using NUPACK simulations, which were
+conducted at a temperature of 25°C and a concentration of
+10 nmol/L(nM), allowing for the formation of complexes
+with up to four strands. Under these conditions, NUPACK
+predicted a binding probability of less than 1 % for the
+non-complementary control strand interacting with the
+ssDNA anchor.
+For these control electrodes (n = 75),
+the average change in capacitance after incubating with
+the non-complementary sequence was measured to be
+(−5.5 ± 4.8) pF or a relative change of (−1.3 ± 0.9) %
+(k = 2,≈95 % confidence). This result confirms that nonspecific binding did not produce a significant change in the
+measured capacitance.
+To assess the performance of the biosensors in accurately
+detecting the analyte, we performed a homotopy-classification
+analysis28–30 as shown in Fig. 9B. The central idea of
+this analysis is to first assume that “positive” sensors (i.e.,
+those exposed to analyte) yield measurements x according
+to some distribution P(x), whereas control sensors yield
+measurements x with a different distribution N(x).
+In this
+work, x is taken to be a two-dimensional vector x = (x1,x2)
+
+===== Page 10 =====
+
+Prototyping Tools for CMOS Bioelectronic Sensors
+10
+FIG. 9. A. Representative capacitance measurements from all 25 electrodes on a single chip under baseline conditions (ssDNA) and after
+hybridization with an analyte with a complementary sequence (dsDNA). B. Classification analysis characterizing the performance of ten
+chips comprised of 25 electrodes each. Blue diamonds are measurements from individual sensors exposed to the analyte, whereas red
+circles are control sensors that were not exposed to the analyte. The colored surface and contours quantify the relative likelihood R(x)
+that a sensor with a given measurement value x is being bound by the analyte. From bottom to top, the contours correspond to values
+R(x) = 0.11,0.25,0.43,0.67,1.0,1.5,2.3,4.0,9.0. C. Heatmaps showing the spatial distribution of relative capacitance changes across ten
+measured chips, with electrode positions corresponding to their actual physical locations.
+with components,
+x1 = Ci
+(8)
+x2 = Cf −Ci
+Ci
+,
+(9)
+where Ci is the initial capacitance, and Cf is the capacitance
+after exposure to the analyte or control sample.
+We then
+construct a family of classification boundaries that correspond
+to different values of the relative likelihood R(x) = N(x)/P(x).
+Physically, we can interpret R(x) as quantifying the extent to
+which a positive sensor would generate a measurement x as
+compared to a negative sensor.
+To quantify the probability Pr[+|r] that a given sensor
+detects an analyte, it is necessary to first estimate the
+prevalence q (or fraction) of positive sensors. This task, which
+has been addressed in a number of fields, has a rich history that
+is beyond the scope of the current manuscript (see Ref. 30 and
+the references therein for more details). Here we note that
+given q, the probability Pr[+|r] is given by
+Pr[+|r] =
+q
+q+(1−q)R(x).
+(10)
+Absent a reasonable estimate of q, the R(x) = 1 boundary
+(bold contour in Fig. 9B) can also be used as a classifier for
+determining when a sensor is positive. For the data presented
+here, the characteristic accuracy of this classifier is at least
+95 % for any value of prevalence.
+The visualization of the electrode arrays as 5×5 heatmaps,
+shown in Fig.
+9C, facilitates a quick assessment of both
+inter-chip and intra-chip variation.
+The figure reveals that
+nine out of the ten measured chips exhibited consistent
+performance, predominantly showing positive capacitance
+changes, with relatively few electrodes displaying negative
+values.
+Only one chip demonstrated behavior in which
+a significant portion of the electrodes had either negative
+
+===== Page 11 =====
+
+Prototyping Tools for CMOS Bioelectronic Sensors
+11
+or near-zero capacitance changes following incubation with
+the analyte.
+This anomaly may be attributed to localized
+surface contamination, fabrication defects, or handling errors
+specific to that chip.
+When excluding this outlier, 95 %
+of the electrodes on the remaining chips showed a relative
+capacitance change ranging from 2 % to 21 %.
+VII.
+CONCLUSIONS
+We present a manufacturable method for creating CMOS
+sensors suitable for healthcare by addressing key research
+areas that currently hinder innovation.
+A significant
+advancement supporting our approach is the Nanotechnology
+Xcellerator program, an open-source MPW initiative that
+enables all participants to reuse designs while promoting
+research in BEOL fabrication techniques to yield innovative
+devices. The program’s flexibility and the ability to prototype
+using full wafers are distinguishing features that significantly
+enhance the manufacturability and yield of biosensors.
+Moreover, these advantages are achieved while benefiting
+from the cost-effectiveness associated with participating in
+MPW tapeouts.
+The ability to work with larger silicon substrates alleviates
+packaging constraints.
+The larger substrates allowed us
+to utilize standard packaging strategies, such as fan-out
+techniques,
+to ensure repeatable electrical connections,
+thereby further improving yield. Our approach also facilitated
+the modular integration of mechanical, electrical, and fluidic
+components, resulting in a comprehensive packaging solution.
+Additionally, our packaging was developed using either 3Dprinted or machined parts to ensure manufacturability.
+Finally, we leveraged the advances in device processing
+and packaging to demonstrate a biosensor array that was
+used to measure the hybridization of DNA strands with a
+complementary sequence. We demonstrated the performance
+of the sensors by using data from ten individual chips (a total
+of 250 sensors) and three control chips (with 75 sensors)
+that were incubated with a non-complementary sequence.
+The data allowed us to perform homotopy classification,
+which allowed us to quantify the likelihood of the sensors
+accurately detecting the analyte. This analysis showed that
+the characteristic accuracy of identifying the analyte was at
+least 95 %.
+ACKNOWLEDGMENTS
+This research was performed, in part, at the NIST Center for
+Nanoscale Science and Technology, nanofabrication facility.
+REFERENCES
+1G. Liu, Frontiers in Bioengineering and Biotechnology 9 (2021).
+2OSTP, “Revitalizing the U.S. Semiconductor Ecosystem,” Tech. Rep.
+(OSTP, 2022).
+3Semiconductor Research Corporation, “2018 Semiconductor Synthetic
+Biology Roadmap,” Tech. Rep. (2018).
+4S. Forouhi, R. Dehghani, and E. Ghafar-Zadeh, Sensors and Actuators A:
+Physical 297, 111531 (2019).
+5J. M. Rothberg, W. Hinz, T. M. Rearick, J. Schultz, W. Mileski, M. Davey,
+J. H. Leamon, K. Johnson, M. J. Milgrew, M. Edwards, J. Hoon, J. F.
+Simons, D. Marran, J. W. Myers, J. F. Davidson, A. Branting, J. R.
+Nobile, B. P. Puc, D. Light, T. A. Clark, M. Huber, J. T. Branciforte, I. B.
+Stoner, S. E. Cawley, M. Lyons, Y. Fu, N. Homer, M. Sedova, X. Miao,
+B. Reed, J. Sabina, E. Feierstein, M. Schorn, M. Alanjary, E. Dimalanta,
+D. Dressman, R. Kasinskas, T. Sokolsky, J. A. Fidanza, E. Namsaraev,
+K. J. McKernan, A. Williams, G. T. Roth, and J. Bustillo, Nature 475,
+348 (2011).
+6M. Jain, H. E. Olsen, B. Paten, and M. Akeson, Genome Biology 17, 239
+(2016).
+7B. D. Reed, M. J. Meyer, V. Abramzon, O. Ad, O. Ad, P. Adcock, F. R.
+Ahmad, G. Alppay, J. A. Ball, J. Beach, D. Belhachemi, A. Bellofiore,
+M. Bellos, J. F. Beltrán, A. Betts, M. W. Bhuiya, K. Blacklock, R. Boer,
+D. Boisvert, N. D. Brault, A. Buxbaum, S. Caprio, C. Choi, T. D. Christian,
+R. Clancy, J. Clark, T. Connolly, K. F. Croce, R. Cullen, M. Davey,
+J. Davidson, M. M. Elshenawy, M. Ferrigno, D. Frier, S. Gudipati,
+S. Hamill, Z. He, S. Hosali, H. Huang, L. Huang, A. Kabiri, G. Kriger,
+B. Lathrop, A. Li, P. Lim, S. Liu, F. Luo, C. Lv, X. Ma, E. McCormack,
+M. Millham, R. Nani, M. Pandey, J. Parillo, G. Patel, D. H. Pike,
+K. Preston, A. Pichard-Kostuch, K. Rearick, T. Rearick, M. RibezziCrivellari, G. Schmid, J. Schultz, X. Shi, B. Singh, N. Srivastava, S. F.
+Stewman, T. Thurston, T. R. Thurston, P. Trioli, J. Tullman, X. Wang, Y.-C.
+Wang, E. A. G. Webster, Z. Zhang, J. Zuniga, S. S. Patel, A. D. Griffiths,
+A. M. van Oijen, M. McKenna, M. D. Dyer, and J. M. Rothberg, Science
+378, 186 (2022), publisher: American Association for the Advancement of
+Science.
+8C. W. Fuller, P. S. Padayatti, H. Abderrahim, L. Adamiak, N. Alagar,
+N. Ananthapadmanabhan, J. Baek, S. Chinni, C. Choi, K. J. Delaney,
+R. Dubielzig, J. Frkanec, C. Garcia, C. Gardner, D. Gebhardt, T. Geiser,
+Z. Gutierrez, D. A. Hall, A. P. Hodges, G. Hou, S. Jain, T. Jones,
+R. Lobaton, Z. Majzik, A. Marte, P. Mohan, P. Mola, P. Mudondo,
+J. Mullinix, T. Nguyen, F. Ollinger, S. Orr, Y. Ouyang, P. Pan, N. Park,
+D. Porras, K. Prabhu, C. Reese, T. Ruel, T. Sauerbrey, J. R. Sawyer,
+P. Sinha, J. Tu, A. G. Venkatesh, S. VijayKumar, L. Zheng, S. Jin, J. M.
+Tour, G. M. Church, P. W. Mola,
+and B. Merriman, Proceedings of
+the National Academy of Sciences 119 (2022), 10.1073/pnas.2112812119,
+publisher: National Academy of Sciences Section: Biological Sciences.
+9K. Hu, J. Ho,
+and J. K. Rosenstein, IEEE Transactions on Biomedical
+Circuits and Systems , 1 (2022), conference Name: IEEE Transactions on
+Biomedical Circuits and Systems.
+10B. Senevirathna, A. Castro, M. Dandin, E. Smela, and P. Abshire, in 2016
+IEEE International Symposium on Circuits and Systems (ISCAS) (2016) pp.
+2863–2866, iSSN: 2379-447X.
+11T. Datta-Chaudhuri, R. C. Araneda, P. Abshire, and E. Smela, Sensors and
+Actuators B: Chemical 235, 74 (2016).
+12J. Zeng, L. Kuang, M. Cacho-Soblechero,
+and P. Georgiou, IEEE
+Transactions on Biomedical Circuits and Systems 15, 820 (2021),
+conference Name: IEEE Transactions on Biomedical Circuits and Systems.
+13S. T. Le, N. B. Guros, R. C. Bruce, A. Cardone, N. D. Amin, S. Zhang, J. B.
+Klauda, H. C. Pant, C. A. Richter, and A. Balijepalli, Nanoscale 11, 15622
+(2019).
+14S. Cho, A. Zaslavsky, C. A. Richter, J. M. Majikes, J. A. Liddle, F. Andrieu,
+S. Barraud,
+and A. Balijepalli, in 2022 International Electron Devices
+Meeting (IEDM) (2022) pp. 24.2.1–24.2.4, iSSN: 2156-017X.
+15C.-Y. Lin and M. Dandin, .
+16M. S. R. Sajal, K.-C. Lin, Y. Gilpin, V. Walawalkar, F. Dehghandehnavi,
+R. E. Taylor,
+and M. Dandin, in 2023 International Electron Devices
+Meeting (IEDM) (2023) pp. 1–4, iSSN: 2156-017X.
+17A. Nizam and N. McFarlane, in 2024 IEEE International Instrumentation
+and Measurement Technology Conference (I2MTC) (2024) pp. 1–6, iSSN:
+2642-2077.
+18D. A. Hall, R. S. Gaster, K. A. A. Makinwa, S. X. Wang, and B. Murmann,
+IEEE Journal of Solid-State Circuits 48, 1290 (2013).
+19Y. Liu, E. Smela, N. Nelson,
+and P. Abshire, in The 26th Annual
+International Conference of the IEEE Engineering in Medicine and Biology
+
+===== Page 12 =====
+
+Prototyping Tools for CMOS Bioelectronic Sensors
+12
+Society, Vol. 1 (2004) pp. 2534–2537.
+20T. Datta-Chaudhuri, P. Abshire, and E. Smela, Lab on a Chip 14, 1753
+(2014), publisher: The Royal Society of Chemistry.
+21Y. Gilpin, C.-Y. Lin, M. Forssell, S. Zheng, P. Grover, and M. Dandin,
+in 2022 29th IEEE International Conference on Electronics, Circuits and
+Systems (ICECS) (2022) pp. 1–4.
+22T. Delbruck, I. A. M. Elfadel, S. Muzaffar, G. Haessig, B. Wang,
+A. Bermak, R. Graca, L. Camu´nas-Mesa, B. Senevirathna, P. Abshire,
+B. Linares-Barranco, S. Afshar, S.-C. Liu, R. M. Wang, P. Dudek, S. Carey,
+J. de la Rosa, M. Dandin, S. Lu, V. Frick, T. Serrano-Gotarredona, P. Lopez,
+M. Payvand, A. Madhavan, E. Fossum, J. C. V. Tieck, I. Williams,
+Y. Liu, T. Constandinou, A. Serb, R. Carmona-Galan, R. Nawrocki, and
+W. D. Leon-Salas, in 2020 IEEE International Symposium on Circuits and
+Systems (ISCAS) (2020) pp. 1–18, iSSN: 2158-1525.
+23J. M. Majikes, S. Cho, T. E. Cleveland, J. A. Liddle, and A. Balijepalli,
+Nanoscale 16, 20893 (2024), publisher: The Royal Society of Chemistry.
+24S. T. Le, S. Cho, C. A. Richter, and A. Balijepalli, Review of Scientific
+Instruments 92, 030901 (2021), publisher: American Institute of Physics.
+25Bard,
+Allen J. and Faulkner,
+Larry R., Electrochemical Methods:
+Fundamentals and Applications, 2nd ed. (Wiley, 2000).
+26H. Takeuchi, A. Wung, X. Sun, R. Howe,
+and T.-J. King, IEEE
+Transactions on Electron Devices 52, 2081 (2005).
+27National Institute of Standards and Technology, “pyLabAuto,” (2024).
+28P. N. Patrone, R. A. Binder, C. S. Forconi, A. M. Moormann,
+and
+A. J. Kearsley, “Analysis of Diagnostics (Part I): Prevalence, Uncertainty
+Quantification, and Machine Learning,” (2024), arXiv:2309.00645 [stat].
+29P. N. Patrone and A. J. Kearsley, “Inequalities for Optimization of
+Classification Algorithms:
+A Perspective Motivated by Diagnostic
+Testing,” (2025), arXiv:2508.01065 [stat].
+30P. Patrone and A. Kearsley, “Probabilistic Consistency in Machine
+Learning and Its Connection to Uncertainty Quantification,”
+(2025),
+arXiv:2507.21670 [cs].

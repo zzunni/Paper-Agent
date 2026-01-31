@@ -1,0 +1,690 @@
+
+
+===== Page 1 =====
+
+Wafer Map Defect Patterns Semi-Supervised
+Classification Using Latent Vector Representation
+Qiyu Wei
+School of Microelectronics
+Shanghai University (SHU)
+Shanghai, China
+qywei@shu.edu.cn
+Wei Zhao∗
+School of Microelectronics
+Shanghai University (SHU)
+Shanghai, China
+zw1315753898@shu.edu.cn
+Xiaoyan Zheng
+School of Microelectronics
+Shanghai University (SHU)
+Shanghai, China
+zxy20000421@shu.edu.cn
+Zeng Zeng∗
+School of Microelectronics
+Shanghai University (SHU)
+Shanghai, China
+zengz@shu.edu.cn
+Abstract—As the globalization of semiconductor design and
+manufacturing processes continues, the demand for defect detection during integrated circuit fabrication stages is becoming
+increasingly critical, playing a significant role in enhancing
+the yield of semiconductor products. Traditional wafer map
+defect pattern detection methods involve manual inspection
+using electron microscopes to collect sample images, which are
+then assessed by experts for defects. This approach is laborintensive and inefficient. Consequently, there is a pressing need
+to develop a model capable of automatically detecting defects as
+an alternative to manual operations. In this paper, we propose
+a method that initially employs a pre-trained VAE model to
+obtain the fault distribution information of the wafer map.
+This information serves as guidance, combined with the original
+image set for semi-supervised model training. During the semisupervised training, we utilize a teacher-student network for
+iterative learning. The model presented in this paper is validated on the benchmark dataset WM-811K wafer dataset. The
+experimental results demonstrate superior classification accuracy
+and detection performance compared to state-of-the-art models,
+fulfilling the requirements for industrial applications. Compared
+to the original architecture, we have achieved significant performance improvement.
+Index Terms—Defect detection; semi-supervised learning; unsupervised learning; variation autoencoder
+I. INTRODUCTION
+Amid the accelerated advancement of industrial intelligence
+manufacturing and electronic information technology, integrated circuits are increasingly playing an essential role in the
+contemporary high-end chip domain. Although semiconductor foundries have achieved a high degree of manufacturing
+automation, the progress of advanced processes lags behind
+the rapid development of the industry. A high proportion and
+intensity of manual labor result in insufficient stability and
+accuracy.
+Owing to the unique nature of the semiconductor industry,
+specialized knowledge is required to identify potential failures, often necessitating expert involvement. However, manual
+classification methods significantly diminish the efficiency
+of wafer map defect pattern analysis and resolution, not to
+mention the additional issues stemming from the instability
+of accuracy. Currently, semiconductor foundries face major
+challenges in defect identification and classification, circuit
+∗Corresponding author
+dimension measurement, and yield testing pattern anomaly
+recognition, such as excessive dependence on manual labor,
+low data collection utilization rates, and overall inefficiency.
+On-site engineers need a vast reservoir of expertise and
+experience, yet unified measurement standards are difficult to
+establish, resulting in considerable latency. With the evolution
+of industrial big data and artificial intelligence technologies, it
+is anticipated that real-time defect detection in semiconductor
+chips (wafers) can be achieved through image analysis, thus
+reducing costs and enhancing yields [1], [2].
+Deep convolutional neural networks have achieved remarkable results in numerous fields, largely due to the availability
+of extensive, high-quality labeled datasets. However, the strong
+data confidentiality, real-time demands, and specialized nature
+of the semiconductor domain result in high costs and time
+expenditures for manual labeling [3]. Particularly, disparities
+between production lines and short product update cycles often
+render timely data labeling unfeasible [4]. To address this
+issue, many high-performance semi-supervised image classification models have been developed, utilizing network semisupervised datasets to achieve exceptional performance in
+tasks such as image classification and fine-grained recognition
+[5], [6]. However, weakly supervised learning labels possess
+certain flaws. Firstly, non-visual, missing, and irrelevant labels
+generate noise, significantly impacting model training. Secondly, weakly supervised [7] network datasets typically adhere
+to Zipf’s law, containing numerous long-tail labels, causing
+models to perform well solely on the most prominent labels.
+Lastly, inherent distribution characteristics of image datasets
+have not been adequately exploited.
+To address these challenges, we explore a semiconductor
+defect detection method that combines a VAE model and a
+semi-supervised approach based on minimal data annotation.
+We propose a large-scale convolutional neural network-based
+semi-supervised learning method utilizing a teacher-student
+architecture and a VAE model. With labeled data, we simultaneously train the teacher and VAE models; after obtaining the
+teacher model, we sample unlabeled data, and the intermediate
+layer representing image feature distribution within the VAE is
+extracted as supplementary information incorporated into the
+teacher-student architecture to train the student model.
+To sum up, the contribution of this work lies in three folds:
+arXiv:2311.12840v1  [cs.CV]  6 Oct 2023
+
+===== Page 2 =====
+
+• We propose a novel approach for exploring fault distribution in wafer maps, employing a Variational Autoencoder
+(VAE) to obtain fault data distribution information from
+the dataset.
+• By utilizing a semi-supervised teacher-student network,
+we effectively leverage a large volume of unlabeled
+data, thereby enhancing data utilization and recognition
+performance.
+• Experimental results demonstrate the remarkable performance of this latent vector based semi-supervised learning method in semiconductor image recognition tasks.
+II. RELATED WORK
+A. Image classification.
+Image classification is a fundamental task in computer
+vision, which involves assigning a label to an image from a
+set of predefined categories. Numerous methods have been
+proposed for image classification, ranging from traditional
+handcrafted feature-based methods to deep learning-based
+approaches. In actual industrial production, the considerable
+variability in object shape, size, texture, color, background,
+layout, and imaging illumination renders defect classification
+in complex environments a formidable task. Owing to the
+robust feature extraction capabilities of Convolutional Neural
+Networks (CNNs) [8], employing CNN-based classification
+networks has become the most prevalent approach for surface
+defect classification. Typically, the feature extraction component of a CNN classification network consists of cascading
+convolutional layers and pooling layers, followed by fully
+connected layers (or average pooling layers) and a softmax
+structure for classification. Generally, existing surface defect
+classification networks often adopt readily available network
+structures in computer vision, including AlexNet [9], VGG
+[10], GoogLeNet [11], ResNet [12], DenseNet [13], SENet
+[14], ShuffleNet [15], and MobileNet [16], among others.
+Alternatively, they may construct simplified network structures
+tailored to specific problems, wherein a test image is inputted
+into the classification network, which then outputs the image’s category and the associated confidence level. Despite
+significant advancements in image classification, several challenges persist, including addressing high computational costs
+and enhancing the model’s stringent requirements for image
+annotation.
+B. Unsupervised learning.
+At present, the most commonly used unsupervised learning
+models for surface defect detection are those based on normal
+sample learning. As these models only require normal (defectfree) samples for network training, the approach is often
+referred to as one-class learning. Networks trained on normal
+samples exclusively accept normal (non-defective) samples,
+endowing them with a strong ability to reconstruct and discriminate normal sample distributions. Consequently, when
+a network input contains defects, it often generates results
+distinct from those of normal samples. Compared to supervised learning models, this method can detect deviations from
+expected patterns or previously unseen patterns, which may
+be considered defects or anomalies. Based on the differences
+in processing spaces, this paper categorizes defect detection
+methods into two types: image-space-based and feature-spacebased. Typically, the network models employed in this approach are autoencoders (AE) [17], variation autoencoders
+(VAE) [18] and Generative Adversarial Networks (GANs)
+[19].
+C. Semi-supervised learning.
+Relative to fully supervised and unsupervised methods,
+semi-supervised methods are currently less frequently applied
+in surface defect detection. Semi-supervised learning is a
+technique in machine learning that leverages both labeled and
+unlabeled data for training models. In contrast to supervised
+learning, where models are trained only on labeled data,
+semi-supervised learning uses a combination of labeled and
+unlabeled data to improve model performance.
+Typically,
+semi-supervised
+approaches
+involve
+using
+image-level
+class
+annotations
+(weak
+labels)
+to
+achieve
+segmentation/localization-level detection results. Marino et
+al. [20] employed a semi-supervised learning method based
+on peak response maps (PRMs) [21] to classify, locate,
+and segment potato surface defects, thereby automating
+quality control tasks. Mayr et al. [22] modified the original
+ResNet50 [12] classification network by removing the original
+fully connected and average pooling layers and adding two
+1x1 convolutions to obtain defect response feature maps,
+thus enabling preliminary crack defect detection on solar
+panels using only image labels. Niu et al. [23] proposed
+a semi-supervised learning defect detection method based
+on GANs. By using CycleGAN [24] to transform input
+test images into their corresponding defect-free images
+and comparing the differences between input images and
+generated defect-free images, surface defect detection is
+achieved. Semi-supervised learning typically uses a large
+amount of unlabeled data and a small portion of labeled data
+for surface defect detection model training. He et al. [25]
+developed a semi-supervised GAN-based approach [26] for
+steel surface defect classification, employing a CAE-based
+encoder in the designed CAEGAN defect detection network
+and feeding it into a softmax layer to form the discriminator.
+The discriminator does not predict a binary classification
+of the input image’s authenticity directly but predicts N+1
+classes, where N represents the number of defect types,
+and the additional class denotes whether the input image
+originates from a real dataset or a generator. He et al. [27]
+proposed a multi-training semi-supervised learning method
+for steel surface defect classification, using cDCGAN [28]
+to generate a large number of unlabeled samples. To utilize
+unlabeled samples, the model introduces a multi-training
+fusion algorithm based on cDCGAN and ResNet-18 for
+unlabeled sample class label prediction. Predicted samples
+with assigned class labels are added to the training set for
+further training. This iterative process is repeated to gradually
+optimize the model. Extensive experiments on the NEU-CLS
+
+===== Page 3 =====
+
+defect dataset [29] demonstrate that even with limited
+original samples, this method is highly effective for defect
+classification. Gao et al. [30] also proposed a semi-supervised
+learning method for classifying steel surface defects using
+convolutional neural networks, improving the performance of
+classification CNNs through the adoption of pseudo-labels.
+Currently, semi-supervised approaches are mostly utilized for
+defect classification or identification tasks and have not been
+widely applied to localization and segmentation tasks.
+In existing semi-supervised learning methods, such as selftraining, co-training, and tri-training, one issue arises: the
+noise level in the training dataset gradually increases during
+iteration. This problem can be attributed to two factors: static
+annotation thresholds and the uncertain timing of stopping example annotation iteration. To address these issues, researchers
+have proposed methods based on teacher-student networks.
+Similar methods were previously suggested by meta [31]
+and [32], but due to data input issues, they were unable to
+effectively extract features.
+III. PROPOSED METHODOLOGY
+A. Global feature extraction via Pre-trained VAE
+Neural networks are commonly understood as approximations of the functions we want to model. However, they
+can also be seen as a data structure for storing information.
+Suppose we have a neural network composed of several deconvolutional layers. We set the input as a unit vector and train the
+network to minimize the mean squared error between it and the
+target image. In this way, the ”data” of the image is contained
+within the current parameters of the neural network, which
+is the basic idea behind the Autoencoder (AE) network. In
+an autoencoder, we introduce a component that automatically
+encodes the original image into a vector. The aforementioned
+deconvolutional layers can then ”decode” these vectors back
+into the original images. However, we aim to build a generative
+model rather than just a ”memory” of the fuzzy structure
+of image data. Besides encoding latent vectors from existing
+images as described earlier, we don’t know how to create
+these vectors, and thus we cannot generate any images from
+scratch. Here’s a simple solution: We add a constraint to
+the encoding network, forcing the latent vectors it generates
+to approximately follow a unit Gaussian distribution. This
+constraint distinguishes the Variational Autoencoder (VAE)
+from the standard autoencoder. The encoding latent vector is
+replaced by a continuous variable Z, this distribution can be
+expressed as:
+P(x) =
+Z
+z
+P(z)P(x | z)dz,
+(1)
+where z ∼N(0, 1),
+x | z ∼N(µ(z), σ(z)).
+Now, generating new images becomes easy: We simply
+sample a latent vector from the unit Gaussian distribution
+and pass it to the decoder. The latent vector in the VAE,
+which follows a unit Gaussian distribution, is the global feature
+representation of wafer images that we need. To implement
+this functionality, we only need to pre-trained a VAE network
+on the existing image dataset. Afterward, each input image
+will yield a latent vector that represents the global features of
+the wafer image.
+B. Teacher Student Network
+To fully exploit unsupervised data, we employ a teacherstudent interactive learning scheme, where the student network
+is optimized using pseudo-labels generated by the teacher network, and the teacher network is updated through the gradual
+transfer of weights from the continuously learning student
+network. During the interaction of teacher-student networks,
+both models can mutually enhance and consistently improve
+detection accuracy. The enhancement of detection accuracy
+implies that the teacher network can generate more accurate
+and stable pseudo-labels, which, compared to current work,
+we find to be crucial in significantly improving algorithm
+performance. On the other hand, we also regard the teacher
+network as an ensemble of student models at different time
+stages, which is consistent with our observation that the
+teacher network’s accuracy consistently surpasses that of the
+student network. To address the issue of unsupervised data
+lacking labels, we adopt the pseudo-labeling method to train
+the student network using unsupervised data.
+The distinction between the pseudo-labeling method and the
+consistency regularization method lies in the fact that consistency regularization typically relies on consistency constraints
+of abundant data transformations. In contrast, the pseudolabeling method depends on high-confidence pseudo-labels,
+which can be added as labeled data to the training dataset. This
+follows the principles of current successful semi-supervised
+learning image classification tasks. Similar to classificationbased methods, to avoid the persistent interference of noisy
+pseudo-labels, we first set a confidence threshold for the
+predicted classification results to filter out low-confidence
+labels.
+Furthermore, noisy pseudo-labels can affect the pseudolabel-generating model (teacher network). Therefore, we separate the teacher network and the student network. For increased
+accuracy, only the learnable weights of the student network can
+be updated through backpropagation after obtaining pseudolabels from the teacher network.
+C. Network Architecture
+In this study, we propose a VAE-based latent feature extraction method to detect fault regions and employ a teacherstudent network to handle unlabeled data to enhance the
+performance of the classification model, the whole architecture
+can be seen in Figure 1. The following are the key steps
+we adopt: Firstly, we pre-train a VAE model using the wafer
+dataset. This model can automatically learn and identify fault
+distribution features in images without relying on manually
+annotated data, with the latent vector in the intermediate layer
+being the feature data we need. Next, we construct the initial
+teacher model, which is trained on a limited amount of labeled
+data to attain sufficient performance to guide the student
+model initially. After building the teacher model, we label
+
+===== Page 4 =====
+
+Unlabeld Dataest
+Labeld Dataest
+Teacher model
+Student model
+Datas with sudo labels
+Center
+Loc
+Scratch
+Center
+Loc
+Scratch
+Step2
+Step3
+Step1
+Z
+(
+|
+)
+q Z X
+(
+|
+)
+p Z X
+Z
+(
+|
+)
+q Z X
+(
+|
+)
+p Z X
+Z
+(
+|
+)
+q Z X
+(
+|
+)
+p Z X
+Output model
+Output model
+Step4
+Pre-train VAE
+Fig. 1. Illustration of our approach: (1) Train an initial teacher model on the labeled dataset; (2) For each class/label pair, use the teacher model to label
+and score unmarked images, selecting the top-K images for each label category to construct new training data; (3) Train the student model on the newly
+constructed data, incorporating the VAE’s latent vector; (4) Fine-tune the pre-trained student model on the initial labeled dataset to avoid potential labeling
+errors.
+and score the unlabeled images. This process typically uses
+the teacher model’s output as a reference to generate pseudolabels for the unlabeled images. Subsequently, we select the
+top-K images with the highest confidence from the pseudolabeled images and combine them with the original labeled
+data to create a new training dataset. Utilizing this new training
+dataset, along with the latent vector obtained after passing
+the dataset through the VAE, we train the student model.
+The student model learns by observing the teacher model’s
+behavior during this process. Lastly, after training the student
+model, we fine-tune it. This step can further enhance the
+model’s performance, making it better suited for practical
+tasks. In summary, by adopting our proposed method based
+on unsupervised semantic segmentation, constructing a teacher
+model, labeling, training a student model, and fine-tuning, we
+successfully improve the model’s performance when dealing
+with unlabeled data.
+IV. EXPERIMENTS
+A. Dataset and Evaluation Protoco
+Dataset. To demonstrate the superiority of the model algorithm presented in this paper, we have selected the WM811K semiconductor dataset for experimentation. This extensive wafer database, originating from a Kaggle competition,
+encompasses 811,457 wafer images, along with additional
+information such as wafer core dimensions, batch numbers,
+and wafer indices. The manually labeled dataset consists of
+172,950 images, with a total of nine labels (0-8), which can
+be seen in Figure 2; label 8 represents defect-free, normal
+wafers, accounting for 85% of the entire dataset, while labels
+0-7 correspond to defective wafer data.
+Evaluation Metrics. In this paper, we employ four widely
+used evaluation metrics, namely Precision, Recall, F1 score,
+and Accuracy, to assess the results of our experiments. These
+metrics are commonly used to evaluate recognition accuracy
+in the context of imbalanced data. These indices are calculated
+as follows:
+Precision =
+TP
+TP + FP,
+(2)
+Center
+Dount
+Edge-Loc
+Edge-Ring
+Loc
+Near-full
+None
+Random
+Scratch
+Fig. 2.
+Examples of wafer map failure patterns
+Recall =
+TP
+TP + FN,
+(3)
+F1-score = 2 · Precision · Recall
+Precision + Recall
+,
+(4)
+Accuracy =
+TP + TN
+TP + FN + TN + FP,
+(5)
+where the notation TP, FN, TN, and FP are used to represent
+true positive samples, false negative samples, true negative
+samples, and false positive samples, respectively.
+B. Implementation Details.
+The experiments conducted in this study were based on the
+CentOS 7 system, utilizing Python 3.8 and the PyTorch v1.9.1
+framework. The hardware specifications included an NVIDIA
+
+===== Page 5 =====
+
+TABLE I
+DETAILS OF RESNET50.
+layer name
+output size
+50-layer
+Repeats
+conv1
+112*112
+7*7,64
+-
+conv2
+56*56
+1*1,64
+3*3,64
+1*1,256
+3
+ResNet50
+conv3
+28*28
+1*1,128
+3*3,128
+1*1,512
+3
+conv4
+14*14
+1*1,256
+3*3,256
+1*1,1024
+6
+conv5
+7*7
+1*1,512
+3*3,512
+1*1,2048
+3
+1*1
+average pool
+-
+GeForce RTX A5000 with 24GB of video memory. The Adam
+optimizer [33] was employed for network optimization, with
+an initial learning rate (LR) of 0.002, momentum parameters
+β1 = 0.9 and β2 = 0.99, and a training epoch setting of 100.
+For both the teacher and student models, we employ Residual Networks (ResNet-50) as the backbone architecture, the
+details of the network structure used in our experiments are
+shown in the table.
+ResNet is divided into five stages, where Stage 0 has a relatively simple structure and can be considered as preprocessing
+for the input. The following four stages consist of Bottleneck
+structures and are relatively similar. Stage 1 contains three
+Bottlenecks, while the remaining three stages encompass four,
+six, and three Bottlenecks respectively. Each stage contains
+distinct information, constrained by the convolution and receptive field; earlier stages primarily process local information,
+whereas later stages gradually aggregate local information to
+obtain global information. We attempt to introduce the latent
+vector extracted by the VAE between the five stages, testing
+the effect of incorporating global distribution information at
+different stages. It is worth noting that when incorporating
+latent vectors of varying sizes at different positions, the size of
+the intermediate latent vector within our VAE must be adjusted
+accordingly.
+Unbalanced Labeled Data. We investigated the distribution
+of patterns in the dataset and observed a noticeable imbalance
+in the original dataset. This class imbalance can adversely
+affect the performance of traditional classifiers. Non-Pattern
+modes constitute the vast majority, while Dount and NearFull
+modes account for only 0.3% and 0.1%, respectively. To address this issue, we explored oversampling and undersampling
+techniques, balancing the labeled data in the dataset so that
+the number of images for each class is approximately two
+thousand.
+Strategy of pseudo labels selection. To maintain the quality
+of pseudo-labels, analyze the model’s prediction probabilities
+for each unlabeled image. Set a confidence threshold as
+TABLE II
+QUANTITATIVE COMPARISON.
+P
+R
+F1
+A
+Without VAE
+0.932
+0.911
+0.944
+0.961
+With VAE
+0.946
+0.912
+0.962
+0.977
+TABLE III
+ABALATION STUDY.
+P
+R
+F1
+A
+Behind Stage1
+0.811
+0.701
+0.761
+0.891
+Behind Stage2
+0.946
+0.912
+0.962
+0.977
+Behind Stage3
+0.671
+0.724
+0.701
+0.811
+Behind Stage4
+0.656
+0.681
+0.637
+0.737
+0.9, and only retain images where the model’s prediction
+probability is above this threshold. Then add the selected
+high-confidence pseudo-labeled images to the labeled dataset.
+The augmented dataset now contains a mix of true labels and
+pseudo-labels.
+C. Performance study
+Quantitative Comparison. To demonstrate the effectiveness
+of adding the latent vector as global information to the input of
+the classification performance, we compared the performance
+of models with and without latent vector in different ResNet
+models: our proposed method with latent vector and the
+standard ResNet without latent vector. Both models were
+trained from scratch under the same settings. The comparison
+results of the two models on the test set are shown in Table
+II.
+From the table, we can observe that by incorporating the
+latent vector representing global features, the overall classification performance of the model is significantly improved. In
+particular, the sensitivity values of our proposed method are
+much higher than those of the standard method, indicating a
+significant improvement in the classification accuracy of wafer
+defects.
+Abalation study. In order to investigate the impact of the
+position of the latent vector insertion within the ResNet
+architecture on model performance, we conducted an ablation
+study. As illustrated in Table III, we examined the performance
+of various network structures on the test set when the insertion
+positions were set to stages 1, 2, 3, and 4, respectively. Based
+on a comprehensive comparison of the results, the performance
+is optimal when the latent vector is incorporated after stage
+2, demonstrating the most significant enhancement in model
+performance due to the global distribution information from
+the VAE. In light of these observations, we have chosen to
+integrate the model by inserting the latent vector after stage 2
+in the ResNet architecture.
+V. CONCLUSIONS
+The work employs a semi-supervised learning approach to
+detect defects on wafer surfaces, utilizing the classic teacherstudent model in the field of semi-supervised object detection,
+aiming to reduce the high costs associated with labeling large
+
+===== Page 6 =====
+
+quantities of images. While maintaining the teacher-student
+model framework, improvements are made to the teacher and
+student models in the form of a feature fusion mechanism.
+By altering the serial structure of the ResNet network in the
+teacher-student model to a parallel structure with a VAE,
+the difficulty of extracting global wafer defect features is
+circumvented. Ablation experiments and lateral comparison
+experiments conducted on the W811K dataset validate the
+practicality and effectiveness of the improved teacher-student
+model from different perspectives.
+REFERENCES
+[1] Xiaolei and Jianbo, “Wafer map defect detection and recognition using
+joint local and nonlocal linear discriminant analysis,” IEEE Transactions on Semiconductor Manufacturing: A Publication of the IEEE
+Components, Hybrids, and Manufacturing Technology Society, the IEEE
+Electron Devices Society, the IEEE Reliability Society, the IEEE SolidState Circuits Council, 2016.
+[2] S. Yoon and S. Kang, “Semi-automatic wafer map pattern classification
+with convolutional neural networks,” Computers & Industrial Engineering, no. 166-, p. 166, 2022.
+[3] N. Xu, F. Chen, W. Qi, J. Kim, J. Wang, Y. Lu, and W. Choi, “Systems
+and methods for wafer map analysis,” 2022.
+[4] T. Nakazawa and D. V. Kulkarni, “Wafer map defect pattern classification and image retrieval using convolutional neural network,” IEEE
+Transactions on Semiconductor Manufacturing, vol. 31, no. 2, pp. 309–
+314, 2018.
+[5] J. Li, R. Socher, and S. C. Hoi, “Dividemix: Learning with noisy labels
+as semi-supervised learning,” arXiv preprint arXiv:2002.07394, 2020.
+[6] K. Kong, J. Lee, Y. Kwak, M. Kang, S. G. Kim, and W.-J. Song,
+“Recycling: Semi-supervised learning with noisy labels in deep neural
+networks,” IEEE Access, vol. 7, pp. 66 998–67 005, 2019.
+[7] Z.-H. Zhou, “A brief introduction to weakly supervised learning,”
+National science review, vol. 5, no. 1, pp. 44–53, 2018.
+[8] Y. LeCun, Y. Bengio, and G. Hinton, “Deep learning,” nature, vol. 521,
+no. 7553, pp. 436–444, 2015.
+[9] A. Krizhevsky, I. Sutskever, and G. E. Hinton, “Imagenet classification
+with deep convolutional neural networks,” Communications of the ACM,
+vol. 60, no. 6, pp. 84–90, 2017.
+[10] K. Simonyan and A. Zisserman, “Very deep convolutional networks for
+large-scale image recognition,” arXiv preprint arXiv:1409.1556, 2014.
+[11] C. Szegedy, W. Liu, Y. Jia, P. Sermanet, S. Reed, D. Anguelov, D. Erhan,
+V. Vanhoucke, and A. Rabinovich, “Going deeper with convolutions,”
+in Proceedings of the IEEE conference on computer vision and pattern
+recognition, 2015, pp. 1–9.
+[12] K. He, X. Zhang, S. Ren, and J. Sun, “Deep residual learning for image
+recognition,” in Proceedings of the IEEE conference on computer vision
+and pattern recognition, 2016, pp. 770–778.
+[13] G. Huang, Z. Liu, L. Van Der Maaten, and K. Q. Weinberger, “Densely
+connected convolutional networks,” in Proceedings of the IEEE conference on computer vision and pattern recognition, 2017, pp. 4700–4708.
+[14] J. Hu, L. Shen, and G. Sun, “Squeeze-and-excitation networks,” in
+Proceedings of the IEEE conference on computer vision and pattern
+recognition, 2018, pp. 7132–7141.
+[15] X. Zhang, X. Zhou, M. Lin, and J. Sun, “Shufflenet: An extremely efficient convolutional neural network for mobile devices,” in Proceedings
+of the IEEE conference on computer vision and pattern recognition,
+2018, pp. 6848–6856.
+[16] A. G. Howard, M. Zhu, B. Chen, D. Kalenichenko, W. Wang,
+T. Weyand, M. Andreetto, and H. Adam, “Mobilenets: Efficient convolutional neural networks for mobile vision applications,” arXiv preprint
+arXiv:1704.04861, 2017.
+[17] C.-Y. Liou, W.-C. Cheng, J.-W. Liou, and D.-R. Liou, “Autoencoder for
+words,” Neurocomputing, vol. 139, pp. 84–96, 2014.
+[18] C. Doersch, “Tutorial on variational autoencoders,” arXiv preprint
+arXiv:1606.05908, 2016.
+[19] I. Goodfellow, J. Pouget-Abadie, M. Mirza, B. Xu, D. Warde-Farley,
+S. Ozair, A. Courville, and Y. Bengio, “Generative adversarial networks,”
+Communications of the ACM, vol. 63, no. 11, pp. 139–144, 2020.
+[20] S. Marino, P. Beauseroy, and A. Smolarz, “Weakly-supervised learning
+approach for potato defects segmentation,” Engineering Applications of
+Artificial Intelligence, vol. 85, pp. 337–346, 2019.
+[21] Y. Zhou, Y. Zhu, Q. Ye, Q. Qiu, and J. Jiao, “Weakly supervised instance
+segmentation using class peak response,” in Proceedings of the IEEE
+conference on computer vision and pattern recognition, 2018, pp. 3791–
+3800.
+[22] M. Mayr, M. Hoffmann, A. Maier, and V. Christlein, “Weakly supervised
+segmentation of cracks on solar cells using normalized l p norm,” in 2019
+IEEE International Conference on Image Processing (ICIP).
+IEEE,
+2019, pp. 1885–1889.
+[23] S. Niu, H. Lin, T. Niu, B. Li, and X. Wang, “Defectgan: Weaklysupervised defect detection using generative adversarial network,” in
+2019 IEEE 15th international conference on automation science and
+engineering (CASE).
+IEEE, 2019, pp. 127–132.
+[24] J.-Y. Zhu, T. Park, P. Isola, and A. A. Efros, “Unpaired image-to-image
+translation using cycle-consistent adversarial networks,” in Proceedings
+of the IEEE international conference on computer vision, 2017, pp.
+2223–2232.
+[25] H. Di, X. Ke, Z. Peng, and Z. Dongdong, “Surface defect classification
+of steels with a new semi-supervised learning method,” Optics and
+Lasers in Engineering, vol. 117, pp. 40–48, 2019.
+[26] A. Odena, “Semi-supervised learning with generative adversarial networks,” arXiv preprint arXiv:1606.01583, 2016.
+[27] Y. He, K. Song, H. Dong, and Y. Yan, “Semi-supervised defect classification of steel surface based on multi-training and generative adversarial
+network,” Optics and Lasers in Engineering, vol. 122, pp. 294–302,
+2019.
+[28] I. B. Mustapha, S. Hasan, H. Nabus, and S. M. Shamsuddin, “Conditional deep convolutional generative adversarial networks for isolated
+handwritten arabic character generation,” Arabian Journal for Science
+and Engineering, vol. 47, no. 2, pp. 1309–1320, 2022.
+[29] Y. He, K. Song, Q. Meng, and Y. Yan, “An end-to-end steel surface
+defect detection approach via fusing multiple hierarchical features,”
+IEEE Transactions on Instrumentation and Measurement, vol. 69, no. 4,
+pp. 1493–1504, 2019.
+[30] Y. Gao, L. Gao, X. Li, and X. Yan, “A semi-supervised convolutional
+neural network-based method for steel surface defect recognition,”
+Robotics and Computer-Integrated Manufacturing, vol. 61, p. 101825,
+2020.
+[31] I. Z. Yalniz, H. J´egou, K. Chen, M. Paluri, and D. Mahajan, “Billionscale semi-supervised learning for image classification,” arXiv preprint
+arXiv:1905.00546, 2019.
+[32] Y. Bhalgat, Z. Liu, P. Gundecha, J. Mahmud, and A. Misra, “Teacherstudent learning paradigm for tri-training: an efficient method for
+unlabeled data exploitation,” arXiv preprint arXiv:1909.11233, 2019.
+[33] D. P. Kingma and J. Ba, “Adam: A method for stochastic optimization,”
+arXiv preprint arXiv:1412.6980, 2014.

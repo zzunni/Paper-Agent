@@ -1,0 +1,1350 @@
+
+
+===== Page 1 =====
+
+PyCDT: A Python toolkit for modeling point defects in semiconductors and
+insulators
+Danny Broberga,1,∗, Bharat Medasanib,c,1,∗, Nils Zimmermannb,1,∗, Andrew Canningb, Maciej Haranczykb, Mark
+Astaa, Geoﬀroy Hautierd,∗
+aDepartment of Materials Science and Engineering, University of California, Berkeley, CA 94720, USA
+bComputational Research Division, Lawrence Berkeley National Laboratory, Berkeley, CA 94720, USA
+cPhysical and Computational Sciences Directorate, Paciﬁc Northwest National Laboratory, Richland, WA 99354, USA
+dInstitute of Condensed Matter and Nanosciences (IMCN), Universit´e catholique de Louvain, 1348 Louvain-la-Neuve, Belgium
+Abstract
+Point defects have a strong impact on the performance of semiconductor and insulator materials used in technological applications, spanning microelectronics to energy conversion and storage. The nature of the dominant defect
+types, how they vary with processing conditions, and their impact on materials properties are central aspects that
+determine the performance of a material in a certain application. This information is, however, diﬃcult to access
+directly from experimental measurements. Consequently, computational methods, based on electronic density functional theory (DFT), have found widespread use in the calculation of point-defect properties. Here we have developed
+the Python Charged Defect Toolkit (PyCDT) to expedite the setup and post-processing of defect calculations with
+widely used DFT software. PyCDT has a user-friendly command-line interface and provides a direct interface with
+the Materials Project database. This allows for setting up many charged defect calculations for any material of interest,
+as well as post-processing and applying state-of-the-art electrostatic correction terms. Our paper serves as a documentation for PyCDT, and demonstrates its use in an application to the well-studied GaAs compound semiconductor.
+We anticipate that the PyCDT code will be useful as a framework for undertaking readily reproducible calculations of
+charged point-defect properties, and that it will provide a foundation for automated, high-throughput calculations.
+Keywords: Point Defects, Charged Defects, Semiconductors, Insulators, Density Functional Theory, Python
+PROGRAM SUMMARY
+Program title: PyCDT
+Licensing Provisions: MIT License.
+Program obtainable from: https://bitbucket.org/mbkumar/pycdt
+Distribution format: Git repository
+Programming language: Python
+Computer: Any computer with a Python interpreter;
+RAM: Problem dependent
+External routines/libraries: NumPy [1], matplotlib [2], and Pymatgen [3],
+Nature of problem: Computing the formation energies and stable point defects with ﬁnite size supercell error corrections for
+charged defects in semiconductors and insulators
+Solution method: Automated setup, and parsing of defect calculations, combined with local use of ﬁnite size supercell corrections.
+All combined into a code with a standard user-friendly command line interface that leverage a core set of tools with a wide range
+of applicability
+∗Corresponding authors: D.Broberg (dbroberg@berkeley.edu), B. Medasani (bharat.medasani@pnnl.gov), N. Zimmermann (nerz@lbl.gov) and
+G. Hautier (geoﬀroy.hautier@uclouvain.be).
+1These authors contributed equally to this work.
+Preprint submitted to Elsevier
+June 8, 2017
+arXiv:1611.07481v2  [cond-mat.mtrl-sci]  7 Jun 2017
+
+===== Page 2 =====
+
+Running time: Problem dependent
+Additional comments: This article describes version 1.0.0.
+1. Introduction
+Point defects in semiconductors and insulators govern a range of mechanical, transport, electronic, and optoelectronic properties [4, 5, 6, 7, 8]. Due to the fact that the properties of these defects are diﬃcult to characterize fully
+from experiment [8, 9], computational tools have been widely applied. Many applications such as lanthanide-doped
+scintillator materials [10, 11], transparent conducting oxide materials [12, 13, 14], photovoltaic materials [15, 16], and
+new thermoelectric materials [17, 18] have beneﬁted from leveraging theory for calculating point defect properties in
+next generation technologies.
+For this reason, calculations using electronic density functional theory (DFT) have arisen as a reliable route to
+explore the dopability of materials at the atomic scale [9, 19, 20, 21]. However, two sources of error in the associated
+point defect calculations limit the application of charged defect DFT eﬀorts in a high-throughput framework. First,
+semi-local exchange-correlation approximations (e.g., generalized gradient approximation (GGA)) can severely underestimate the band gap so that usage of post DFT methods becomes pivotal (e.g., GW [22, 23, 24] and GGA+U
+methods [25, 26], and hybrid functionals [27]). Second, applying periodic boundary conditions with ﬁnite sized defect supercells to model point defects makes a defect interact with its own images [9, 28], thus, causing departure
+from the key assumption made in the dilute limit formation energy formalism [9, 28]. In the case of charged point
+defects, the ﬁnite sized supercell assumption also introduces the need for correcting the electrostatic potential [9, 20].
+Typically, the strongest defect-defect interaction is the Coulomb interaction between charged point defects. Based on
+well-known scaling laws, these interactions were ﬁrst treated with computationally costly supercell scaling methods,
+which require multiple calculations for each defect [28]. A faster route to computing defect formation energies became available with the development of a posteriori correctional techniques. While the a posteriori corrections allow
+for fewer calculations to be performed, their usage requires experience in addressing issues arising from delocalization
+of the defect wavefunction [20]. Furthermore, the calculations are often resource demanding and tedious because of
+the large number of pre- and post-processing steps involved.
+To address these problems we have developed the Python Charged Defects Toolkit (PyCDT), which enables expanded applications in the context of materials discovery and design. Our python-based tools automate the setup and
+analysis of DFT calculations of isolated intrinsic and extrinsic point defects (vacancies, antisites, substitutions, and
+interstitials) in semiconductors and insulators. While other eﬀorts have recently been made available with similar objectives [29, 30, 31], PyCDT is unique in its direct queries to the Materials Project [32] database (expediting chemical
+potential and stability analysis for Perdew–Burke–Ernzerhof (PBE) GGA calculations) [33].
+A central objective of defects modeling in non-metallic systems is determining the relative stability of diﬀerent defect charge states. PyCDT therefore implements the defect formation energy formalism reviewed in Sections 2.1, 2.2, 2.3 and 2.4. To minimize the errors in defect formation energies arising from the periodic boundary
+conditions, PyCDT supports the commonly used correction scheme due to Freysoldt et al. [34] and its extension to
+anisotropic systems by Kumagai and Oba [35] (Section 2.4). Our tools also include charge-state assignment procedures developed on the basis of extensive literature data (Section 2.5) and an eﬀective interstitial-ﬁnding algorithm [36] (Section 2.6). Furthermore, PyCDT provides a user-friendly command-line interface that provides ready
+access to all tools. We demonstrate the setup and analysis of the defect calculations from the command line in Section 3 using gallium arsenide (GaAs) as an example system and by employing the widely-used Vienna Ab initio
+Simulation Package (VASP) [37, 38] as a backend DFT software. In Section 4, we validate the ﬁnite-size charge
+correction schemes implemented and verify the results obtained for GaAs. We emphasize that our approaches and
+implementations are entirely general, thus, seamlessly facilitating extensions to other DFT packages.
+2. Background and Methods
+In general, point defects can be divided into two categories: intrinsic and extrinsic [8]. Intrinsic (or native [8, 9])
+point defects (Figure 1: top) involve only chemical species that are part of the perfect bulk material (e.g., Si in silicon).
+2
+
+===== Page 3 =====
+
+For elemental materials, there are two basic intrinsic defect types: vacancies (e.g., vacSi, denoting a vacancy on Si site)
+and self-interstitials (e.g., Sii). For compounds (e.g., GaAs), there is an additional defect type: antisites (e.g., AsGa).
+Because intrinsic point defects are equilibrium defects due to conﬁgurational entropy, they can be well described and
+their occurrence understood in the framework of equilibrium thermodynamics (formation energies, Ef, used to predict
+equilibrium concentrations, c).
+Vacancy
+Intrinsic
+interstitialcy
+Antisite
+Substitution
+Extrinsic interstitialcy
+Figure 1: Intrinsic point defects (top: vacancy, intrinsic interstitialcy, antisite) and extrinsic point defects (bottom: substitution, extrinsic interstitialcy).
+Extrinsic defects (Figure 1: bottom), which are also referred to as impurities [8, 9], introduce a foreign chemical
+species into the perfect bulk material [4]. These include substitutional defects (e.g., MnGa) and extrinsic interstitials
+(e.g., Mni). We distinguish between extrinsic and intrinsic defects because impurities are often inserted on purpose
+(intentional doping) under well-deﬁned conditions to achieve desired material properties; in particular, electrical
+and optoeletronic properties [8]. The conditions under which extrinsic defects are inserted (e.g., via implantation
+or quenching) often diﬀer extremely from the thermodynamic equilibrium assumption made in the assessment of
+intrinsic point defects. Despite the limited conceptual applicability, the thermodynamic framework still represents the
+most commonly pursued route to assessing “dopability” of materials [9, 10, 11, 12, 13, 14, 15, 16, 17, 18].
+In contrast to metals, point defects in semiconductors and insulators can carry a charge [8] localized around the
+defect site. Physically, these charged point defects introduce states within the band gap which can trap charge carriers
+(electrons and holes). Defect states that are close to the band edges are able to ionize to create free carriers, while
+states that are deep in the gap lead to strong carrier trapping. This may be wanted (e.g., in photovoltaics [16]) or
+not (e.g., solid-state electrolyte batteries [39]). Because many technological applications use intentional doping to
+improve performance, knowledge of the capacity to dope a material (“dopability”) is desirable and motivates the
+exploration of defect properties with theoretical methods.
+2.1. Formalism for equilibrium point defects
+The thermodynamics of point defects has been the subject of many excellent reviews (see, for example, refs. [9,
+19, 20] and references therein), which have presented and discussed the underlying physics and properties in great
+detail. In the following sections, we focus on describing the procedures implemented in PyCDT for computing
+quantities of interest for point defects (i.e., formation energies and transition levels) with DFT calculations. The
+applications of the defect formalism to be described are limited by the intrinsic shortcomings of DFT (e.g., the wellknown underestimation of the band gap [20]).
+There is a hierarchy of DFT-based methods that can be used within the defect formalism implemented by PyCDT.
+The simplest approximation in DFT is the use of a semilocal functional (i.e., local-density approximation (LDA),
+GGA), which is computationally most eﬃcient, but has well-known limitations due to band gap inaccuracies. Higher
+levels of theory include hybrid-functionals and meta-GGA, both of which can be used to achieve higher accuracy,
+however, at an increased computational cost [40, 41]. Despite the limitations of semilocal DFT, defect calculations
+3
+
+===== Page 4 =====
+
+have proven useful for revealing the dominating defects under diﬀerent growth conditions encountered in many experiments, such as the III-V semiconductors [42]. While recent developments in hybrid functionals and meta-GGA have
+shown promise in addressing the inherent limitations in accuracy associated with semi-local functionals [40, 41], recent evidence shows that new improvements to the approximations for exchange and correlation in one system do not
+always yield universal improvements for other systems with similar chemistries [43]. With this fact considered, semilocal approximations at least have the beneﬁt of having predictable errors which can be corrected with appropriate
+techniques [20].
+While PyCDT’s unique interface with the Materials Project (MP) database, which is composed of GGA and
+GGA+U level data, suggests a restriction to semi-local approaches, PyCDT has many functionalities which help
+place defect formation energetics closer to those obtained from higher levels of theory. One feature that is particularly
+useful is the ability for PyCDT to help expedite the setup and parsing stages of defect calculations performed on higher
+levels of DFT theory (e.g. for improved chemical potentials, setting up a user’s personal phase diagram calculation
+based on a composition of interest). These features are described further in the following sections.
+2.2. Defect Formation Energies
+The primary quantity of interest is the formation energy, Ef[X], which is the energy cost to form or create an
+isolated defect, X, in a bulk or host material. The formation energy of an isolated defect (i.e., in the dilute limit)
+depends on the defect charge state, q: Ef[Xq]. It can be calculated from DFT supercells using:
+Ef[Xq] = Etot[Xq] −Etot[bulk] −
+X
+i
+niµi + qEF + Ecorr
+(1)
+We illustrate this equation graphically in Figure 2 and note that each term will be described in detail in subsequent
+sub-sections. Etot[Xq] and Etot[bulk] are the total DFT-derived energies of the defective and pristine bulk supercells,
+respectively. The third term, −P
+i niµi, is a summation over the atomic chemical potentials, or the energy cost of an
+atom, µi, being added (ni = +1) or removed (ni = −1) from the bulk undefective supercell. The atomic chemical
+potential can reﬂect the growth conditions of the material, allowing this formalism to be used to guide defect engineering approaches (cf., Section 2.3). The fourth term, qEF, represents the energetic cost of adding or removing
+electrons, where EF is the Fermi energy, which serves as the chemical potential of the electron reservoir. The Fermi
+energy is usually referenced to the valence band maximum from a band structure calculation, such that the formation
+energy can be plotted as a function of the Fermi energy across the band gap. Finally, Ecorr is a correction term due
+to the presence of periodic images that becomes necessary for charged defects in DFT supercell calculations. This
+correction has drawn signiﬁcant attention from the defects modeling community, resulting in a number of alternative
+computational approaches that are discussed in more detail in Section 2.4.
+2.3. Chemical Potentials
+The atomic chemical potential is associated with the thermodynamic energy cost for exchanging atoms between
+the defect and a thermodynamic reservoir. The individual chemical potentials are set by the composition of the material (e.g., the mole fraction of As in GaAs) which itself is determined by the defect formation energies. Hence,
+two approaches can be used to derive the individual chemical potentials. One involves the use of a statistical thermodynamic formalism (canonical ensemble approach), to compute the concentration dependent free energy of the
+compound and to derive the relationship between the chemical potentials and composition [44]. More frequently,
+bounds on the chemical potentials are set (grand-canonical ensemble approach), in a manner ﬁrst deﬁned by Zhang
+and Northrup [45], from zero-temperature energies alone. Only the grand-canonical approach is currently included in
+PyCDT, whereas future versions will also support canonical approaches to chemical potential calculations. Below we
+demonstrate the grand-canonical approach for the simple example of GaAs.
+The bulk energy (or free energy at ﬁnite temperature) per formula unit, µ0
+GaAs, ﬁxes a relation for the chemical
+potentials of gallium, µGa, and arsenic, µAs, respectively: µ0
+GaAs = µGa + µAs. For Ga-rich compositions, the values of
+µGa are constrained by stability of the compound relative to the precipitation of excess Ga to form a bulk Ga phase. At
+zero temperature, this constraint can be expressed as µGa < µ0
+Ga, where µ0
+Ga is the energy per atom of bulk Ga. Thus,
+one extremum can be selected as the “Ga-rich” limit, where µGa = µ0
+Ga. The atomic chemical potential of As is then
+ﬁxed: µAs = µ0
+GaAs −µ0
+Ga. The same approach holds for As-rich compositions (above: interchange Ga and As labels
+4
+
+===== Page 5 =====
+
+(1)
+(2)
+Text
+Figure 2: Diﬀerent contributions to the formation energy: (a) energy of defective supercell in charge state q, (b) energy of pristine bulk supercell,
+(c) atomic chemical potential computed from the ground state hull, (d) electron/hole chemical potential generated from electron reservoir, and (e)
+correction terms to account for defect-defect interactions arising from periodic boundary conditions as well as for the homogeneous background
+charge which requires potential re-alignment. The diﬀerent labeled X’s given in 2c show stable and metastable compounds. The latter case yields
+a complication which will be discussed in Section 2.3
+.
+with each other). While the Ga-As system has a phase diagram with just one unique compound, the more general
+case has multiple stable compounds, which requires the limits of stability to be expressed in terms of the formation
+of compounds with neighboring compositions within the phase diagram. In general, the chemical potentials in an
+n-component system will be deﬁned in PyCDT by deﬁning the limits of stability for the diﬀerent possible n-phase
+states of equilibria.
+As an example, consider the Sn-Se system which has a 0 K ground-state hull that contains the phases Sn, SnSe,
+SnSe2 and Se. When calculating defects in the SnSe phase, the “Se-rich” limit would instead be deﬁned by equilibrium
+with the SnSe2 phase (Equation 2), combined with the stability condition for bulk SnSe (Equation 3). This forms a
+system of equations for the chemical potentials of µS n and µS e.
+µ0
+S nS e2 > µS n + 2µS e
+(2)
+µ0
+S nS e = µS n + µS e
+(3)
+This formalism for calculating equilibrium bounds on the chemical potentials requires knowledge of the groundstate hull, which governs the zero-temperature limit of the phase diagram of the system. The advantage of this
+formalism is that defect formation energies can be obtained entirely from ﬁrst principles calculations, rendering experimental input unnecessary. The drawback is that one must compute the full phase diagram of the system using
+the same functional choice used for the defect calculations. In applications of the PyCDT code based on the PBEGGA exchange-correlation potential, PyCDT uses the ground-state hulls that are made available through the MP
+database [32]. PyCDT has integrated functionality that queries the MP database for every computed DFT entry in the
+phase diagram so that no new calculations are required to compute the bounds on the chemical potentials. Note that
+correct usage of the MP data for defect calculations requires consistency between personal defect calculations and
+the calculations from the MP. This is easily checked through the compatibility tools available in pymatgen [3]. If the
+bulk phase is thermodynamically stable and is not already computed in the MP database, PyCDT manually inserts
+the computed phase into the phase diagram and then provides all of the associated bounds on the chemical potentials.
+If a user prefers to compute chemical potentials on a diﬀerent level of theory than is provided by the MP, the core
+code of PyCDT can be used to setup and calculate atomic chemical potentials through ﬁrst pulling the composition’s
+phase diagram, and using the structural information to setup a personal phase diagram calculation for the user. In a
+similar manner, this information can be setup for any DFT code desired by the user through the use of Pymatgen’s
+code agnostic classes.
+For highly correlated systems such as transition metal oxides, MP settings default to GGA+U. When computing
+the phase diagram that contains a mixture of GGA and GGA+U computed phases, MP employs the mixing scheme
+of Jain et al. [46], which adds an empirical correction to the energies of GGA+U compounds. The mixing scheme
+5
+
+===== Page 6 =====
+
+was shown to give formation energies that are consistent with experimental data with a mean absolute relative error
+of under 2%. The resulting correction term to the chemical potentials was found to be important in several defect
+studies [47, 48].
+One complication that should be mentioned is the case where the compound under consideration does not reside
+on the convex hull. That is, the compound is higher in energy than another compound with the same composition or
+with respect to phase separation to compounds with other compositions. In this instance, the calculation is predicting
+the compound to not be present in the equilibrium phase diagram in the limit of zero temperature. For small energyabove-hull values, this situation could indicate that the compound is stabilized by entropic contributions at ﬁnite
+tempearture [49], or could be an artifact of the previously mentioned inaccuracies of DFT [50], or the experimentally
+synthesized phase exists in a state of metastable equilibrium [51]. Regardless of the reason, a positive energy-abovehull value presents a practical problem for deﬁning the chemical potential.
+In such cases, PyCDT issues a warning and the chemical potentials used are with respect to the phases in equilibrium at the given composition in the phase diagram. In ﬁgure 2c, this situation is graphically represented by the data
+points labeled “(2)”, where the red X above the hull is the compound of interest and PyCDT uses the red triangle to
+deﬁne a set of compounds in equilibrium for deﬁning the atomic chemical potentials. In these instances, the computed
+defect physics should be interpreted with caution. The user may wish to deﬁne the chemical-potential limits based on
+more detailed knowledge of the growth conditions or compute the chemical potentials from a full ﬁnite-temperature
+free energy model of the compound of interest.
+2.4. Periodic Supercell Corrections
+Periodic boundary conditions (PBCs) are the standard way to deal with the regular arrangement of crystalline
+solids in DFT calculations. Once a defect is introduced, PBCs can give rise to sizable interactions of the defect with
+its periodic images, contrasting the assumption made above for the dilute-defect limit. Because this limit is consistent
+with the thermodynamic formalism outlined in Sec. 2.2, the interactions between neighboring defect images should
+be minimized to yield accurate formation energies. For charged defects in semiconductors and insulators, Coulombic
+interaction with neighboring images exists, which decays as 1/L, where L is the supercell periodic length. The charge
+interactions are the dominant eﬀect that need to be taken into account when correcting the formation energy of defects
+in non-metals. Elastically-mediated interactions which are due to the strain ﬁelds induced when the positions of
+atoms near the defects also exist, but decay more rapidly in real space, and are often minimal [9]. In cases where these
+interactions are important, methods have been developed to account for them (see [9] and references therein), which
+will not be addressed in the following discussion.
+To account for the charge correction one approach has been to create successively larger defect supercells. Scaling
+laws for the electrostatic interactions with respect to system size are then used in order to extrapolate Ef to the dilute
+limit [52, 53]. An alternative approach is based on an a posteriori analysis of the electrostatic potential for a single
+supercell calculation [34, 54]. An important requirement for the alternative approach is that the charge be suﬃciently
+localized within the vicinity of the defect. If so, a moderately sized defect supercell typically suﬃces, hence, oﬀering
+a computationally more eﬃcient route to calculating reliable defect formation energies. The latter methodology,
+referred to as “correction methods” in the following, is employed in PyCDT.
+Correction methods address two issues:
+1. the electrostatic energy from the interaction between the charged defect and its images, and
+2. a potential alignment term that corrects for a ﬁctitious jellium background required to maintain overall charge
+neutrality in the system.
+Many diﬀerent methods have been proposed to correct for these two terms, as summarized in several comprehensive
+reviews (see, e.g., [9, 19, 20, 28] and references therein).
+The theoretical starting point for the correction methods considers a periodic array of point charges (cf., Figure 2e)
+with an associated Madelung energy, EM:
+EM = qVM
+2
+= q2α
+2ϵL
+(4)
+where VM is the Madelung potential, ϵ is the dielectric constant, and α is the Madelung constant which solely depends on the geometry of the periodic array. Makov and Payne [55] introduced one of the earliest charge correction
+6
+
+===== Page 7 =====
+
+methodologies by deriving the next leading order term to the interaction potential. This results in a term that scales as
+L−3, and, therefore, most supercell scaling approaches ﬁt uncorrected formation energies to the form of aL−1 + bL−3.
+Komsa et al. [56] used this supercell scaling method for evaluating the performance of diﬀerent correction methods
+that are based on single supercell calculations. They concluded that the correction by Freysoldt et al. [34] produces
+the most reliable charge corrections for defects with charges that are well localized within the supercell. From all considered defects, the authors calculated a mean absolute error of 0.09 eV in the formation energy between the estimate
+from the 64-atom supercell with charge corrections and the estimate from the supercell-scaling method (i.e., using
+extrapolation toward the dilute-defect limit, but without applying any charge correction).
+PyCDT includes a Python implementation of the correction scheme derived by Freysoldt et al. [34] and implemented in the open-source DFT software S/PHI/nX [57]. The approach is based on a separation of the long-range
+and short-range interactions between charged defects, using information directly outputted from a DFT calculation.
+Originally, an isotropic dielectric constant was assumed. Recently, Kumagai and Oba [35] extended the approach to
+anisotropic systems, by considering the full dielectric tensor. The analytic expression of the Madelung potential under
+isotropic conditions facilitates the use of a Gaussian distribution for the defect charge, whereas the analytic expression
+of Madelung potential for anisotropic systems is limited to point charges.
+The authors of the two correction methods suggest diﬀerent approaches to calculating the potential alignment
+correction. The isotropic correction by Freysoldt et al. uses a planar average of the electrostatic short range potential
+while the anisotropic correction by Kumagai and Oba takes averages of this same potential at each atomic site outside
+a given radius from the defect. Both approaches are available in the PyCDT code, with the isotropic correction by
+Freysoldt et al. being the default. The planar averaging method can become problematic when large relaxation occurs,
+as the atomic sites contribute heavily to the change in electrostatic potential. The atomic site averaging method can
+become problematic if a small cell size results in a small number of atoms being sampled, causing statistical sampling
+errors. While, in principle, these alignment corrections should be equivalent, tests that we conducted revealed nonnegligible discrepancies. However, the potential-alignment term often tends to be small (∼0.1 eV), and, therefore, to
+not change overall trends in defect formation energies.
+The correction methods used for point defects in semiconductors and insulators have been an intensely debated
+topic in the past decade [9]. One issue upon which there is common agreement is that large defect-defect interactions
+change the energetics of the system so that the computed defect formation energies are no longer relevant for physical
+quantities like defect concentrations or thermodynamic transition levels. These unwanted defect-defect interactions
+frequently lead to delocalization of the defect charges, the instance of which has to be ascertained manually. Several
+methods that address delocalization can be found in the literature [9, 20, 52].
+If we assume that the defect charge can indeed be localized within the level of DFT used, then best practice
+demands to balance computational expediency (supercell size) with suﬃcient localization of the charge around a
+defect as indicated by the outputs of the charge correction method chosen. In the original derivation of the isotropic
+correction by Freysoldt et al., the middle “plateau” region of the electrostatic potential yields information about the
+separation of long range and short range eﬀects. A ﬂat plateau indicates that the Coulomb potential has been removed
+from the total potential generated by DFT, and short range eﬀects have not delocalized throughout the entire supercell.
+As a result, Freysoldt et al. [34] suggested that the ﬂatness of the resultant “plateau” yields a qualitative metric for the
+success of the calculation. When running the isotropic correction by Freysoldt et al. in PyCDT, the planar averaged
+electrostatic potential is analyzed for variations larger than 0.2 eV—a number that stems from experience, and can be
+altered in the code if the user prefers to. If this criterion is not met, the code raises a warning. In such a case, the user
+should consider the possibility of delocalization.
+For users who desire additional corrections related to improving corrections with semilocal functional approaches,
+the development branch of PyCDT also includes the ability to include band edge level alignment with respect to the
+average electrostatic potential, shallow level corrections based on the values for band edge alignment, and MossBurnstein band ﬁlling corrections [20]. Parts of these corrections require some subjective judgment calls to be made
+by the user, so they are not included in the automation procedure by default.
+2.5. Charge Ranges
+Charge ranges, [qmin, qmax], have to be estimated beforehand for a given defect X, and for this purpose ionic models
+typically form the basis of such predictions [58]. Known oxidation states of the element(s) involved in X can then
+7
+
+===== Page 8 =====
+
+be used to deﬁne the charge states to be considered. However, common ionic models do not always predict the most
+stable defect. Tahini et al. have, in this context, shown that combining gallium or aluminum with group-V elements
+can yield negatively charged anion vacancies, whereas an ionic model predicts a +3 charge state [42]. In PyCDT, we
+implemented diﬀerent procedures to determine the range of defect charges for semiconductors and insulators. Users
+can choose between either of these two options and a custom range of defect charges for each defect, as described in
+Section 3.1.
+To address the issue of uncommon charge states found in semiconductors, we developed a data-driven approach
+that combines elemental oxidation states with results from literature for determining the optimal charge assignment
+process. We compiled a list of stable charge states (Table A.2) from previous studies for various defects in zinc
+blende and diamond-like semiconductor structures [27, 42, 58, 59, 60, 61, 62, 63, 64]. Procedures adhering more or
+less strictly to ionic models resulted in too few charge states when compared with the literature. The most eﬀective
+approach that we found employs a bond-valence estimation scheme [3, 65] to obtain formal charges of elements in the
+bulk structure, as well as minima and maxima of common oxidation states of bulk and defect elements. The formal
+charges and common oxidation-state ranges are subsequently used in a defect type-dependent assignment procedure:
+1. Vacancies: Use the formal charge of the species originally located on the vacant site, oxi, to deﬁne the charge
+range: [−oxi, +oxi]. For GaAs, this procedure results in defect charges ranging from -3 to 3 for both VGa and
+VAs.
+2. Anti-sites: Use the minimum and the maximum from combining all oxidation states of all elements in the bulk
+structure, oxisbulk, to deﬁne the relevant charge range: [min(oxisbulk), max(oxisbulk)]. Data mining determined
+that the upper range limit can, in fact, be decreased by 2: [min(oxisbulk), max(oxisbulk)−2]. With this procedure,
+the antisites in GaAs are assigned charge values from -3 to +3.
+3. Substitutions: Determine the oxidation states of the foreign (or, extrinsic) species, oxisex. Then subtract the
+formal charge of the site species to be replaced from this list. Use the minimum and maximum of this set to
+produce [min(oxissub), max(oxissub)]. Data mining determined that, if the new range has more than 3 charge
+states and has an upper bound larger than 2, one can cap the range by 3 to prevent excessively high charge
+states. For example, when GaAs is doped with Si, SiGa generates charges in the range of [-7,1], and SiAs
+generates charges in the range of [-1,4].
+4. Interstitials: Use the minimum and maximum of all oxidation states of the interstitial species:
+[min(oxisint), max(oxisint)]. If 0 is not included, data mining suggests that we extend the range to 0 accordingly.
+For As interstitials in GaAs, the resulting defect charges are in the range [-3, 5].
+The algorithm successfully includes all charge states from our benchmark list in Table A.2 by yielding, on an
+average, 6.4 states per defect. The average number of states produced too much per defect in comparison to literature
+(excess charge states) are 1.1 is 1.9 at the lower (more negative) and at the upper (more positive) charge bound,
+respectively. This is desirable because including more charge states on either side ensures no extra states become
+stabilized when varying the Fermi level within the band gap. Hence, the eﬀective relative excess in charge states is
+20% and, thus, acceptable.
+For insulators, the number of defect charge states is typically less than for the above discussed semiconductors. For
+example, the charge states in MgO range from −2 to 0 and 0 to +2 for cation and anion vacancies, respectively [66].
+Any other charge state is not considered because of the high ionization energy required to form Mg3+ and the high
+electron aﬃnity of O2– to form O3–. Hence, the oxidation states of cations and anions are limited to [0, y] and [−x, 0]
+for a binary AxBy insulator, where A is a cation and B is an anion.
+2.6. Interstitials
+PyCDT uses an eﬀective and easily extendable approach for interstitial site ﬁnding (Interstitial Finding Tool: InFiT) that has been recently introduced by Zimmermann et al. [36]. The procedure systematically searches for tentative
+interstitial sites by employing coordination pattern-recognition capabilities [67, 68] implemented in pymatgen [3]. In
+Algorithm 1, we provide a simpliﬁed pseudo-code representation of the approach. The detected interstitial sites exhibit coordination patterns that resemble basic structural motifs (e.g., tetrahedral and octahedral environments). Such
+interstitial sites are particularly important because several [69, 70, 71, 72, 73, 74, 75, 76, 77, 78] β−emission channeling measurements [79, 80] have identiﬁed them as the most prevalent types of isolated defects after substitutions
+8
+
+===== Page 9 =====
+
+for impurities implanted into similar materials as we consider here (zinc blende/wurtzite-like and diamond-like structures). Bond-center interstitials in a so-called split-vacancy conﬁguration are also observed frequently. However,
+these are defect complexes—not isolated defects—and, thus, beyond the scope of the present PyCDT implementation. The interstitial search approach should also be suitable for intercalation and ion diﬀusion applications because
+related design rules typically rely on detection of tetrahedral, octahedral, bcc-, and fcc-like environments [81, 82].
+Algorithm 1 Interstitial Site Searching
+1: GetNeighbors(struct, inter trial site, dmin, delta) ▷Get a list of neighbors of site inter trial site in struct that
+are within a sphere of (1 + delta) dmin.
+2: GetCoordinationDescriptor(point, neighs, coord type)
+▷Calculate the value of the descriptor for the target
+coordination environment coord type of an atom at point with neighbors neighs.
+3:
+4: procedure GetCoordinationPatternInterstitials(struct, inter elem, all coord types= [tet, oct], thresh
+=
+[0.3, 0.5], dl = 0.2, dstart = 0.1, ddelta = 0.1, dend = 0.7)
+5:
+Let inter sites be a new empty list
+6:
+Let coord descr be a new empty list
+7:
+for point on a regularly mashed grid in struct with resolution dl do
+8:
+Let dmin be the distance from point to the closest crystal atom
+9:
+if dmin > 1 Å then
+10:
+Let inter trial site be a new S ite object of type inter elem located at point
+11:
+Let struct plus inter be a new S tructure object ←struct appended by inter trial site
+12:
+for delta starting from dstart in ddelta steps to dend do
+13:
+Let neighs be a new list ←GetNeighbors(struct plus inter, inter trial site, dmin, delta)
+14:
+for coord type having index icoord in all coord types do
+15:
+Let this coord descr be a ﬂoat number ←GetCoordinationDescriptor(point, neighs, coord type)
+16:
+if this coord descr > thresh[icoord] then
+17:
+Add entry to inter sites list ←inter trial site
+18:
+Add entry to coord descr list ←this coord descr
+19:
+break
+20:
+Let labels be a list of coord type-speciﬁc cluster labels for each entry in inter sites which are found with a
+distance threshold of 1.01 dl.
+21:
+Let include be a new empty list.
+22:
+for unique label in labels do
+23:
+Find site with index imax in inter sites that has highgest coord descr among site with this unique label.
+24:
+Add entry to include ←imax
+25:
+final inter sites ←Prune the inter sites in include further to include symmetrically distinct sites only
+26:
+return final inter sites
+2.7. Default DFT Calculation Details
+PyCDT includes mechanisms to input user-deﬁned settings for all DFT calculations. If no user settings are speciﬁed, then the following initial settings are speciﬁed for the calculation. The ions in the defective supercells are
+geometrically relaxed at constant volume until the force on each ion is less than 0.01 eV/Å. At each geometric step,
+the energy of the supercell is converged to 10−6 eV. By default, spin polarization is turned on, and crystal symmetry is
+ignored to account for any symmetry breaking relaxations such as Jahn-Teller distortions. Electronic states are populated using a Gaussian smearing method [83] with a width of 0.05 eV. While no geometric relaxation is performed
+for the non-defective bulk supercell, a calculation that is necessary for the charge correction, the electronic degrees of
+freedom are optimized with the same settings applied to the defect-supercell calculations. A 2×2×2 Monkhorst-Pack
+k-point mesh is used for the defect calculations. For any other parameters, we adopt the standard MP settings [3]. Finally, we emphasize that PyCDT also includes mechanisms to input user-deﬁned settings for DFT calculations which
+can be used for extending calculations beyond the exchange and correlation approximation of GGA.
+9
+
+===== Page 10 =====
+
+3. PyCDT Usage and Examples
+PyCDT was developed in a way that reﬂects diﬀerent analysis stages (Figure 3): setup of DFT calculations,
+parsing of ﬁnished jobs, computation of a correction term, and plotting of formation energies. This allows reuse and
+integration of parts of the code in other packages. Our package has a dependency on pymatgen [3], matplotlib [2] and
+numpy [1], and it was developed and tested for Linux and Mac OS X. However, we also expect it to work on Windows
+(with cygwin).
+Figure 3: Steps in the computation of charged-defect formation energies with PyCDT.
+Below, we describe in detail how to proceed through the general charged-defect calculation workﬂow outlined in
+Figure 3 using our PyCDT command-line feature. We demonstrate its usage on the basis of GaAs and with VASP [37,
+38] as the backend DFT code. While the command-line interface is a quick and easy route to use PyCDT, we point
+out that the core classes within PyCDT are entirely general and can be used for any desired applications that involves
+setting up, computing charge corrections, and/or parsing defect calculations.
+3.1. Setup of DFT Defect Calculations
+The starting point for setting up charged defect calculations is the crystal structure. The user can provide the bulk
+structure in one of two ways:
+1. by the name of a structure ﬁle of conventional format (e.g., cif, cssr), or code speciﬁc formats such as POSCAR
+that are recognized by pymatgen, or
+2. via a Materials Project identiﬁer (MPID).
+Crystal structures from MP [32] are obtained through the Materials Application Programming Interface (MAPI) [3].
+In the MP database, each structure is assigned a unique identiﬁer. These MPIDs have the format mp-XXX in which
+mp- is preﬁxed to a positive integer XXX. In the following, we use GaAs (mp-2534), which has the zinc-blende
+structure, as an example for performing all diﬀerent stages of charged defect-property calculations with PyCDT.
+We ﬁrst generate the defect supercells and the bulk supercell using pymatgen’s defect structure generator and the
+defect structure classes in the core of PyCDT. The two steps for generating the input ﬁles are combined into a single
+command:
+▷pycdt generate input
+(
+--structure ﬁle
+⟨structure ﬁle⟩
+|
+--mpid ⟨mpid⟩
+)
+[
+--mapi key
+⟨mapi key⟩
+]
+[
+--nmax
+⟨max no atoms in supercell⟩
+]
+With --nmax, the user deﬁnes the maximal number of atoms in the defect supercell. If the parameter is not given,
+a default value of 128 is used, which was shown to result in well converged defect formation energies after ﬁnite size
+corrections were included in systems with dielectric constants greater than 5.0 [27, 56]. The mapi key is required if
+querying the MP database, and is found on the Dashboard after logging into the MP website.
+The input ﬁle-generation command creates a folder, representing the reduced chemical formula of the crystal
+structure (e.g., GaAs). It contains several subfolders, whose names are indicative of the calculations to be performed:
+10
+
+===== Page 11 =====
+
+• bulk: calculation of pristine crystal structure,
+• dielectric: calculation of macroscopic static dielectric tensor (ion clamped high frequency, ϵ∞, plus the ionic
+contribution, ϵion) from DFT perturbation theory, (used by the charged defect correction)
+• deftype n info: calculation of the n-th symmetrically distinct defect of type deftype (vacancies: vac; antisites:
+as; substitutions: sub; interstitials: inter) with properties info.
+By default, the above command generates vacancy and antisite defects only. Hence, there are four defect folders
+for GaAs, which has two sublattices, corresponding to one antisite and one vacancy defect on each sublattice. Table 1
+summarizes the default defect types and resulting folder names for GaAs.
+Table 1: Default defects set up for GaAs with PyCDT
+Defect Type
+Folder Name
+VacGa
+GaAs/vac 1 Ga
+VacAs
+GaAs/vac 2 As
+GaAs
+GaAs/as 1 Ga on As
+AsGa
+GaAs/as 2 As on Ga
+Substitutional and interstitial defects have to be invoked explicitly with the keyword --sub host species substitution species.
+Multiple substitutional defects can be generated by repeating the --sub keyword with the desired host species and
+the corresponding substituting species. The substitution folders are labeled in the same manner as the antisites, only
+changing as to sub.
+The setup of coordination-pattern resembling interstitials is invoked by the --include interstitials command-line
+option. PyCDT produces intrinsic interstitials as per default only. Extrinsic interstitials can be achieved by providing
+a list of elements as positional arguments (e.g., --include interstitials Mn). To obtain both intrinsic and extrinsic
+interstitials the intrinsic elements have to be explicitly mentioned (e.g., --include interstitials Ga As Mn). As for
+the other defect types, PyCDT enumerates the interstitial calculation folders according to symmetrically distinct sites
+found. The info part of the interstitial folder names indicate (1) the type of the atom located on an interstitial site
+having a certain (2) coordination pattern and (3) chemical environment. For example, inter 1 As oct Ga6 shows
+that we are dealing with an As interstitial that is octahedrally coordinated by six Ga atoms.
+For each defect type in semiconductors, multiple charge states are considered according to the algorithm outlined
+in Sec. 2.5. For insulators a conservative charge assignment is used as described in Sec. 2.5. By default, the input
+structure is considered a semiconductor. To specify the input structure is of insulator type, the option --type insulator
+can be used. The user can also modify the charge assignments for each defect by specifying either of the two ﬂags,
+--oxi state or --oxi range. Alternatively, the option --type manual allows for the user to specify every charge state
+that is desired. The DFT input ﬁles associated with each of these charge states, q, are deposited into subfolders named
+charge q. For example, seven charge states are generated for the gallium vacancy in GaAs.
+Apart from the structure ﬁle, PyCDT automatically generates all other input ﬁles according to the settings used
+for the MP. The input settings can also be easily modiﬁed by supplying the parameters in a yaml or json ﬁle and
+using the keyword --input settings ﬁle ⟨settings ﬁle.yaml⟩. For instance, the ﬁle user settings.yaml that we provide
+in the examples folder changes the default functional from PBE to PBEsol and increases the energy cutoﬀto 620 eV.
+When such changes are made, the user has to keep in mind that the atomic chemical potentials obtained from the MP
+database in the ﬁnal parsing step have to be replaced by user computed ones with the corresponding changes included
+during chemical potential calculations - a process which can be sped up substantially with PyCDT’s phase diagram set
+up and parsing feature. Any DFT settings that are speciﬁc to either the bulk, or the dielectric, or the defect calculations
+can be thus realized, too, as demonstrated in the example ﬁle. The input settings whether chosen by default or by the
+user are expected to be tested for appropriate convergence criteria. In addition to the input ﬁles for DFT calculations,
+PyCDT saves a transformation.json in each calculation folder, except for dielectric, to facilitate post-processing.
+3.2. Parsing Finished Calculations
+The DFT calculations can be run either manually, with bash scripts, or with high throughput frameworks [84].
+Once all the calculations have successfully completed, the generated output ﬁles are parsed to obtain all the data
+11
+
+===== Page 12 =====
+
+needed to compute defect formation energies, Ef. This part of PyCDT is executed by reading the transformation.json
+ﬁle that was output from the previous ﬁle generation step. To initiate parsing from the command line interface, the
+user issues:
+▷pycdt parse output
+[
+--directory
+⟨directory⟩
+]
+[
+--mpid
+⟨mpid⟩
+]
+[
+--mapi key
+⟨mapi key⟩
+]
+Here, directory is the root folder of the calculations. If executed within the folder of the calculations the option
+can be omitted. Once the parsing is completed, PyCDT stores all the data required for next steps in a ﬁle called
+“defect data.json”. If any of the calculations were not successfully converged according to the code output ﬁles, PyCDT raises a warning, but continues parsing the rest of the calculations. The output ﬁle “defect data.json” contains
+the parsed energies of the defect and bulk supercells as well as other information required in the next steps to calculate
+ﬁnite size charge corrections and defect formation energies. Some of the additional data such as the dielectric constant
+is obtained by parsing the output from the dielectric calculation. The band gap and atomic chemical potentials generated in this step are obtained from computed entries in the MP database. Note that these band gaps are only accurate
+at the level of GGA, which often underestimates the gap by about 50%. The output ﬁle “defect data.json” is highly
+readable and users can edit the ﬁle to supplant parameters either parsed from the DFT calculations or obtained from
+the MP database. If the user prefers to have formation energies and transition levels closer to a higher level of theory
+(which can provide better band gaps than the GGA approximation), the band edge alignment procedures suggested in
+Section 2.4 can be used. Furthermore note that some structures in the MP database do not have fully computed band
+structures, which results in poorly converged band-gap characteristics.
+3.3. Computation of Correction Term
+Correcting the errors due to long-range Coulomb interactions in ﬁnite-size supercells results in improved defect
+formation energies. A feature of PyCDT is the possibility to compute such corrections with minimal work from the
+end user. The following command-line call computes individual correction values for all charged defects found in the
+present directory:
+▷pycdt compute corrections
+[
+--correction method
+⟨correction method⟩
+]
+[
+--epsilon
+⟨epsilon tensor⟩
+]
+[
+--input ﬁle name
+⟨defect data ﬁle⟩
+]
+[
+--plot results
+]
+Here, correction method keywords can be either freysoldt for correction due to Freysoldt et al. [34, 54] or kumagai
+for the approach extended to anisotropic systems by Kumagai and Oba [35]. As shown in Section 4.1, these codes
+have been rigorously tested against the results from the codes of the original authors. The command line interface
+requires the defect data ﬁle generated in the previous step, defect data.json, for computing the corrections. This ﬂag
+can be omitted if the ﬁle name is unchanged. The calculated corrections for each defect charge state are stored in a
+ﬁle called corrections.json. By rerunning the command with diﬀerent correction keywords, one can quickly obtain
+the corrections computed with diﬀerent frameworks. Shown in Figure 4 are the resulting potential alignment plots for
+each correction type on the Ga−2
+As defect in GaAs.
+The sampling regions for obtaining the potential alignment correction defaults to 1Å in the middle region of the
+planar average plots recommended by Freysoldt et al. [54], and to the region outside of the Wigner-Seitz radius for
+12
+
+===== Page 13 =====
+
+atomic site averaging method, following the approach described in Ref. [35]. The width of these default sampling
+regions can be changed by modifying the instantiation of the relevant PyCDT correction classes.
+0
+2
+4
+6
+8
+10
+12
+14
+16
+distance along axis 1 (Å)
+0.1
+0.0
+0.1
+0.2
+0.3
+Potential (V)
+Ga−2
+As  defect potential
+long range from model
+DFT locpot diff
+short range (aligned)
+sampling region
+0
+2
+4
+6
+8
+10
+12
+14
+16
+Distance from defect (Å)
+1.0
+0.8
+0.6
+0.4
+0.2
+0.0
+0.2
+Potential (V)
+Ga−2
+As  atomic site potential plot
+As: Vq/b
+As: Vpc
+Ga: Vq/b
+Ga: Vpc
+Vq/b - Vpc
+pot. align. / q
+sampling region
+Figure 4: Two diﬀerent methods for computing the potential alignment correction on GaAs calculation. At left is isotropic correction, developed
+by Freysoldt et al., using the planar average method [34, 54], and at right is anisotropic correction by Kumagai and Oba, using the atomic site
+averaging method. [35].
+3.4. Formation Energy Plots and Transition Levels
+Once the defect energetics and the correction values are obtained and speciﬁed in the defect data.json and corrections.json ﬁles, the transitition levels and formation energies of each defect across the band gap can be determined
+by:
+▷pycdt compute formation energies
+[
+--input ﬁle name
+⟨defectsdata json ﬁle⟩
+]
+[
+--corrections ﬁle name
+⟨corrections json ﬁle⟩
+]
+[
+--bandgap
+⟨band gap⟩
+]
+[
+--plot results
+]
+By default, PyCDT uses the band gap stored in the MP database, which is computed with GGA-PBE and, hence,
+under-predicted when compared to the experimental band gap. As mentioned several times in this work, this approximation can be improved upon with the optional corrections included, such as the band edge realignment feature of
+PyCDT. A simpler approximation to improving the defect formation energies is to plot the defect formation energies
+across the experimental gap the user can specify the experimental band gap. This can be done from the command
+line with the keyword –bandgap ⟨band gap⟩. This has the eﬀect of extending the gap by shifting the conduction band
+minimum, but keeping the position of the valence band maximum and the defect levels ﬁxed, and it is often called
+the “extended gap” scheme. We note that the extended gap option is strictly for plotting purposes and, thus, does
+not alter the defect formation energies nor the transition levels. If the names of the ﬁles obtained in the previous
+two steps are not changed, the corresponding options can be omitted. If the corrections.json ﬁle is not found and an
+alternative corrections ﬁle is not speciﬁed, PyCDT assumes that electrostatic corrections are not desired and computes
+the defect formation energies without any corrections. As detailed in Section 2.3, the defect formation energies are
+inﬂuenced by the chemical environment, and their range is determined by the phase stability of the various compounds formed by the constituent host and defect elements. Hence, two plots are generated corresponding to the
+chemical availability of the constituent host elements in the compound. The ﬁles ”Ga rich formation energy.eps”
+13
+
+===== Page 14 =====
+
+and ”As rich formation energy.eps” are shown in Figure 5. These results are veriﬁed to be consistent with literature
+results in Section 4.2.
+−0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Fermi energy (eV)
+−3
+−2
+−1
+0
+1
+2
+3
+Defect Formation Energy (eV)
+GaAs
+VacAs
+VacGa
+AsGa
+−0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Fermi energy (eV)
+−3
+−2
+−1
+0
+1
+2
+3
+Defect Formation Energy (eV)
+GaAs
+VacAs
+VacGa
+AsGa
+Figure 5: Defect formation-energy plots from PyCDT for GaAs. The left panel is obtained in the As-rich growth regime, whereas the right panel
+is obtained under Ga-rich conditions. The dotted black line indicates the GGA-PBE band gap of GaAs [32].
+4. Validation and Veriﬁcation
+4.1. Validation
+To validate PyCDT’s implementation of each correction method, we ran the correction methods on the defects generated and computed for 21 zinc blende structures (binary and elemental), comparing the charge corrections generated
+by PyCDT with the open-source code developed by Freysoldt et al., sxdefectalign, as well as with the command line
+code developed by Kumagai and Oba. Over a total of 192 defects calculated, the root mean square diﬀerence (absolute
+average relative errors) between PyCDT and the original author’s codes were 6.4 meV (1.5%) and 14.4 meV (3.4%)
+for the correction by Freysoldt et al. and the correction by Kumagai and Oba, respectively. The diﬀerences in the
+corrections are almost entirely attributed to the resolution in the calculation of the potential correction.
+4.2. Veriﬁcation
+To verify the results predicted from the example GaAs test set, we compared the defect formation energies in
+GaAs obtained from PyCDT with the data reported in literature. We note that all of the transition levels for the VacGa
+and AsGa defects are within the range of transition levels that we found for semi-local functional approximations in
+the literature. An exception is the AsGa(-1/-2) transition, which appears very far into the GGA-PBE conduction
+band. This outlier is oﬀby 0.273 eV relative to the reported results by Chroneos et al [60]. For all transition
+levels that we predicted, we ﬁnd a root mean square deviation of 0.218 eV from the window of values found in
+the literature [42, 60, 85, 86, 87, 88, 89, 90]. This is a modest variation that reﬂects the diﬃculty in predicting defect
+levels consistently—even within the same level of theory.
+5. Conclusion
+We have introduced PyCDT, a Python toolkit which facilitates the setup and post-processing of point defect calculations of semiconductor and insulator materials with widely available DFT suites. This open source code allows
+for coupling automated defect calculations to the massive amount of data generated by the Materials Project database.
+Apart from the underlying theory, approaches, and algorithms, this paper presents a detailed guide for how to use
+PyCDT at every step of the computation of charged defect properties employing the well-studied example of GaAs.
+14
+
+===== Page 15 =====
+
+While the example results were obtained from VASP [37, 38] calculations, we carefully developed PyCDT in an abstracted form that adopts the advantageous code agnosticism of pymatgen [3]. This makes the provided tools attractive
+to any user interested in running defect calculations, regardless of DFT code preference. However, we emphasize that,
+despite its convenience and our eﬀort to construct sensible defaults, the computation of defect properties with PyCDT
+still requires user expertise for choosing appropriate settings in certain circumstances and for interpreting the results
+meaningfully in general (i.e., we discourage purely “black box” usage).
+The PyCDT version presented here is 1.0.0. Future updates will, amongst others, include adaptations related to
+improved charge delocalization analysis, further defect corrections for issues like artiﬁcial band dispersion, as well as
+the possibility of generating defect complexes. On the application side, PyCDT could also be extended to compute
+conﬁguration coordinate diagrams, so as to evaluate optical and luminescence transitions associated with the point
+defects in materials targeting optical applications.
+We hope that our openly available tools will help to standardize computational research in the realm of charged
+defects. In particular, we hope that reproducibility issues commonly encountered in DFT calculations [91] can be
+more eﬀectively identiﬁed and tackled.
+6. Acknowledgments
+This work was intellectually led by the Materials Project Center, supported by the Oﬃce of Basic Energy Sciences (BES) of the U.S. Department of Energy (DOE) under Grant No. EDCBEE. B. Medasani was supported by
+the U.S. DOE, Oﬃce of BES, Division of Materials Sciences and Engineering. Paciﬁc Northwest National Laboratory is a multiprogram national laboratory operated for DOE by Battelle. This work used resources of the National
+Energy Research Scientiﬁc Computing Center, supported by the BES of the U.S. DOE under Contract No. DE-AC0205CH11231. The authors would like to thank Yu Kumagai for insightful discussions about charge corrections.
+15
+
+===== Page 16 =====
+
+Appendix A. Charge States from Literature
+Table A.2: Charge states from literature; brackets refer to hybrid functional rather than (semi-)local functional results.
+Structure
+Defect
+Charge States
+Ref.
+from
+to
+C
+VC
++2
+−2
+59
+NC
++1
+−1
+AlP
+VAl
+0
+−3
+42
+VP
++1
+−2
+AlP
++1
+−2
+60
+PAl
++2
+−2
+AlAs
+VAl
+0
+−3
+42
+VAs
++1
+−2
+AlAs
++1
+−2
+60
+AsAl
++1
+−1
+AlSb
+VAl
+0
+−3
+42
+VSb
++1
+−3
+AlSb
+0
+−2
+60
+SbAl
++1
+−1
+Si
+VSi
++2
+−2
+61
+ZnS
+VS
++2
+0
+62
+VZn
+0 (+1)
+−2
+62 (58)
+SZn
+0
+−2
+62
+ZnS
++2
+0
+Zni
++2
+0
+Si
+0
+−2
+ZnSe
+VSe
++2
+−2
+63
+VZn
++2
+−2
+ClSe
++2
+−1
+FSe
++1
+−2
+FZn
+−2
+−2
+ZnTe
+VZn
+0 (+1)
+−2
+58
+GaN
+VGa
+0 (+1)
+−3
+64 (58)
+VN
++1
++1
+64
+GaN
++1
+−2
+NGa
++2
+−1
+Ni
++3
+−1
+Gai
++3
++1
+CN
+0 (+1)
+−1
+58
+GaP
+VGa
+0
+−3
+42
+VP
++1
+−3
+GaP
+0
+−2
+60
+PGa
++2
+−2
+GaAs
+VGa
+−1
+−3
+42
+VAs
++1
+−3
+GaAs
+0
+−3
+60
+AsGa
++1
+−2
+GaSb
+VGa
+0
+−3
+42
+VSb
+0
+−3
+GaSb
+0
+−2
+60
+To be continued on next page.
+16
+
+===== Page 17 =====
+
+Structure
+Defect
+Charge States
+Ref.
+from
+to
+SbGa
++1
+−1
+CdS
+VS
++2
+0
+27
+VCd
+0
+−2
+CdS
++2
++2
+SCd
++4
+−2
+Cdi
++2
++2
+Si
++4
+−2
+MnCd
++1
+0
+FeCd
++2
+0
+CoCd
++1
+0
+NiCd
++1
+0
+Mni
++3
++2
+Fei
++3
++2
+Coi
++3
++2
+Nii
++2
++1
+InP
+VIn
+0
+−3
+42
+VP
++1
+−1
+InP
++1
+−2
+60
+PIn
++2
+−1
+InAs
+VIn
+0
+−2
+42
+VAs
++1
+0
+InAs
+0
+−1
+60
+AsIn
++1
+0
+InSb
+VIn
+−1
+−2
+42
+VSb
++1
+0
+InSb
+0
+−1
+60
+SbIn
++1
+0
+Appendix B. List of Acronyms
+Acronym
+Full Form
+DFT
+electronic density functional theory
+GGA
+generalized gradient approximation
+LDA
+local-density approximation
+MAPI
+Materials Application Programming Interface
+MP
+The Materials Project
+MPID
+Materials Project identiﬁer
+PBC
+periodic boundary conditions
+PBE
+Perdew–Burke–Ernzerhof
+PyCDT
+Python Charged Defect Toolkit
+Pymatgen
+Python Materials Genomics
+VASP
+Vienna Ab initio Simulation Package
+17
+
+===== Page 18 =====
+
+Appendix C. Reference
+References
+[1] Numpy developers, http://numpy.org/.
+[2] J. D. Hunter, Matplotlib: A 2d graphics environment, Computing In Science & Engineering 9 (3) (2007) 90–95.
+[3] S. P. Ong, W. D. Richards, A. Jain, G. Hautier, M. Kocher, S. Cholia, D. Gunter, V. L. Chevrier, K. A. Persson, G. Ceder, Python materials
+genomics (pymatgen): A robust, open-source python library for materials analysis, Computational Materials Science 68 (2013) 314–319.
+[4] W. D. Callister, Jr., Materials Science and Engineering: an Introduction, 7th Edition, John Wiley & Sons, Inc., New York, NY, USA, 2007.
+[5] H. Queisser, J. Spaeth, H. Overhof, Point Defects in Semiconductors and Insulators: Determination of Atomic and Electronic Structure from
+Paramagnetic Hyperﬁne Interactions, Springer Series in Materials Science, Springer Berlin Heidelberg, 2013.
+[6] M. McCluskey, E. Haller, Dopants and Defects in Semiconductors, CRC Press, 2012.
+[7] P. Rodnyi, Physical Processes in Inorganic Scintillators, Laser & Optical Science & Technology, Taylor & Francis, 1997.
+[8] E. G. Seebauer, M. C. Kratzer, Charged point defects in semiconductors, Mater. Sci. Eng., R 55 (3-6) (2006) 57–149. doi:{10.1016/j.
+mser.2006.01.002}.
+[9] C. Freysoldt, B. Grabowski, T. Hickel, J. Neugebauer, G. Kresse, A. Janotti, C. G. Van de Walle, First-principles calculations for point defects
+in solids, Rev. Mod. Phys. 86 (2014) 253–305. doi:10.1103/RevModPhys.86.253.
+URL http://link.aps.org/doi/10.1103/RevModPhys.86.253
+[10] P. Dorenbos, Scintillation mechanisms in Ce3+ doped halide scintillators, physica status solidi (a) 202 (2) (2005) 195–200. doi:10.1002/
+pssa.200460106.
+URL http://dx.doi.org/10.1002/pssa.200460106
+[11] A. Chaudhry, R. Boutchko, S. Chourou, G. Zhang, N. Grønbech-Jensen, A. Canning, First-principles study of luminescence in Eu2+-doped
+inorganic scintillators, Phys. Rev. B 89 (2014) 155105. doi:10.1103/PhysRevB.89.155105.
+URL http://link.aps.org/doi/10.1103/PhysRevB.89.155105
+[12] S. Lany, A. Zunger, Dopability, Intrinsic Conductivity, and Nonstoichiometry of Transparent Conducting Oxides, Phys. Rev. Lett. 98 (2007)
+045501. doi:10.1103/PhysRevLett.98.045501.
+URL http://link.aps.org/doi/10.1103/PhysRevLett.98.045501
+[13] D. O. Scanlon, G. W. Watson, Conductivity Limits in CuAlO2 from Screened-Hybrid Density Functional Theory, The Journal of Physical
+Chemistry Letters 1 (21) (2010) 3195–3199. arXiv:http://dx.doi.org/10.1021/jz1011725, doi:10.1021/jz1011725.
+URL http://dx.doi.org/10.1021/jz1011725
+[14] J. B. Varley, V. Lordi, A. Miglio, G. Hautier, Electronic structure and defect properties of B6O from hybrid functional and many-body
+perturbation theory calculations: A possible ambipolar transparent conductor, Phys. Rev. B 90 (2014) 045205. doi:10.1103/PhysRevB.
+90.045205.
+URL http://link.aps.org/doi/10.1103/PhysRevB.90.045205
+[15] A. Zakutayev, C. M. Caskey, A. N. Fioretti, D. S. Ginley, J. Vidal, V. Stevanovic, E. Tea, S. Lany, Defect Tolerant Semiconductors for Solar
+Energy Conversion, The Journal of Physical Chemistry Letters 5 (7) (2014) 1117–1125, pMID: 26274458. arXiv:http://dx.doi.org/
+10.1021/jz5001787, doi:10.1021/jz5001787.
+URL http://dx.doi.org/10.1021/jz5001787
+[16] A. Walsh, D. O. Scanlon, S. Chen, X. G. Gong, S.-H. Wei, Self-regulation mechanism for charged point defects in hybrid halide perovskites,
+Angewandte Chemie 127 (6) (2015) 1811–1814. doi:10.1002/ange.201409740.
+URL http://dx.doi.org/10.1002/ange.201409740
+[17] H. Zhu, G. Hautier, U. Aydemir, Z. M. Gibbs, G. Li, S. Bajaj, J.-H. Pohls, D. Broberg, W. Chen, A. Jain, M. A. White, M. Asta, G. J. Snyder,
+K. Persson, G. Ceder, Computational and experimental investigation of TmAgTe2 and XYZ2 compounds, a new group of thermoelectric
+materials identiﬁed by ﬁrst-principles high-throughput screening, J. Mater. Chem. C 3 (2015) 10554–10565. doi:10.1039/C5TC01440A.
+URL http://dx.doi.org/10.1039/C5TC01440A
+[18] G. S. Pomrehn, A. Zevalkink, W. G. Zeier, A. vandeWalle, G. J. Snyder, Defect-Controlled Electronic Properties in AZn2Sb2 Zintl Phases,
+Angewandte Chemie International Edition 53 (13) (2014) 3422–3426. doi:10.1002/anie.201311125.
+URL http://dx.doi.org/10.1002/anie.201311125
+[19] C. G. Van de Walle, J. Neugebauer, First-principles calculations for defects and impurities: Applications to III-nitrides, Journal of Applied
+Physics 95 (8) (2004) 3851–3879. doi:http://dx.doi.org/10.1063/1.1682673.
+URL http://scitation.aip.org/content/aip/journal/jap/95/8/10.1063/1.1682673
+[20] S. Lany, A. Zunger, Accurate prediction of defect properties in density functional supercell calculations, Modelling and Simulation in Materials Science and Engineering 17 (8) (2009) 084002.
+URL http://stacks.iop.org/0965-0393/17/i=8/a=084002
+[21] H. Peng, D. O. Scanlon, V. Stevanovic, J. Vidal, G. W. Watson, S. Lany, Convergence of density and hybrid functional defect calculations for
+compound semiconductors, Physical Review B 88 (11) (2013) 115201.
+[22] M. Giantomassi, M. Stankovski, R. Shaltaf, M. Gr¨uning, F. Bruneval, P. Rinke, G.-M. Rignanese, Electronic properties of interfaces and
+defects from many-body perturbation theory: Recent developments and applications, physica status solidi (b) 248 (2) (2011) 275–289.
+[23] J. E. Northrup, M. S. Hybertsen, S. G. Louie, Theory of quasiparticle energies in alkali metals, Phys. Rev. Lett. 59 (1987) 819–822. doi:
+10.1103/PhysRevLett.59.819.
+URL http://link.aps.org/doi/10.1103/PhysRevLett.59.819
+[24] J.-L. Li, G.-M. Rignanese, E. K. Chang, X. Blase, S. G. Louie, GW study of the metal-insulator transition of bcc hydrogen, Phys. Rev. B 66
+(2002) 035102. doi:10.1103/PhysRevB.66.035102.
+URL http://link.aps.org/doi/10.1103/PhysRevB.66.035102
+18
+
+===== Page 19 =====
+
+[25] A. I. Liechtenstein, V. I. Anisimov, J. Zaanen, Density-functional theory and strong interactions: Orbital ordering in mott-hubbard insulators,
+Phys. Rev. B 52 (1995) R5467–R5470. doi:10.1103/PhysRevB.52.R5467.
+URL https://link.aps.org/doi/10.1103/PhysRevB.52.R5467
+[26] E. Finazzi, C. Di Valentin, G. Pacchioni, A. Selloni, Excess electron states in reduced bulk anatase TiO2: comparison of standard GGA,
+GGA+U, and hybrid DFT calculations., The Journal of Chemical Physics 129 (15) (2008) 154113–154113.
+[27] J.-C. Wu, J. Zheng, P. Wu, R. Xu, Study of native defects and transition-metal (Mn, Fe, Co, and Ni) doping in a zinc-blende CdS photocatalyst
+by DFT and hybrid DFT calculations, J. Phys. Chem. C 115 (13) (2011) 5675–5682. doi:{10.1021/jp109567c}.
+[28] C. W. M. Castleton, A. Hglund, S. Mirbt, Density functional theory calculations of defect energies using supercells, Modelling and Simulation
+in Materials Science and Engineering 17 (8) (2009) 084003.
+URL http://stacks.iop.org/0965-0393/17/i=8/a=084003
+[29] A. Goyal, P. Gorai, H. Peng, S. Lany, V. Stevanovi´c, A computational framework for automation of point defect calculations, Computational
+Materials Science 130 (2017) 1–9.
+[30] E. P´ean, J. Vidal, S. Jobic, C. Latouche, Presentation of the PyDEF post-treatment python software to compute publishable charts for defect
+energy formation, Chemical Physics Letters.
+[31] K. Yim, J. Lee, D. Lee, M. Lee, E. Cho, H. Lee, H. Nahm, S. Han, Property database for single-element doping in ZnO obtained by automated
+ﬁrst-principles calculations., Scientiﬁc Reports 7 (2017) 40907–40907.
+[32] A. Jain, S. P. Ong, G. Hautier, W. Chen, W. D. Richards, S. Dacek, S. Cholia, D. Gunter, D. Skinner, G. Ceder, et al., Commentary: The
+materials project: A materials genome approach to accelerating materials innovation, APL Materials 1 (1) (2013) 011002.
+[33] J. P. Perdew, K. Burke, M. Ernzerhof, Generalized gradient approximation made simple, Physical review letters 77 (18) (1996) 3865.
+[34] C. Freysoldt, J. Neugebauer, C. G. Van de Walle, Fully Ab Initio Finite-Size Corrections for Charged-Defect Supercell Calculations, Phys.
+Rev. Lett. 102 (2009) 016402. doi:10.1103/PhysRevLett.102.016402.
+URL http://link.aps.org/doi/10.1103/PhysRevLett.102.016402
+[35] Y. Kumagai, F. Oba, Electrostatics-based ﬁnite-size corrections for ﬁrst-principles point defect calculations, Phys. Rev. B 89 (2014) 195205.
+doi:10.1103/PhysRevB.89.195205.
+URL http://link.aps.org/doi/10.1103/PhysRevB.89.195205
+[36] N. E. R. Zimmermann, A. Jain, M. Haranczyk, Structure motif assessment based on order parameters for automatic motif identiﬁcation,
+interstitial ﬁnding, and diﬀusion path characterization, in preparation (2017).
+[37] G. Kresse, J. Hafner, Ab initio molecular dynamics for liquid metals, Physical Review B 47 (1) (1993) 558.
+[38] G. Kresse, J. Hafner, Ab initio molecular-dynamics simulation of the liquid-metal–amorphous-semiconductor transition in germanium, Physical Review B 49 (20) (1994) 14251.
+[39] W. D. Richards, L. J. Miara, Y. Wang, J. C. Kim, G. Ceder, Interface stability in solid-state batteries, Chemistry of Materials 28 (1) (2015)
+266–273.
+[40] J. Sun, R. C. Remsing, Y. Zhang, Z. Sun, A. Ruzsinszky, H. Peng, Z. Yang, A. Paul, U. Waghmare, X. Wu, et al., Accurate ﬁrst-principles
+structures and energies of diversely bonded systems from an eﬃcient density functional, Nature Chemistry 8 (9) (2016) 831–836.
+[41] B. G. Janesko, T. M. Henderson, G. E. Scuseria, Screened hybrid density functionals for solid-state chemistry and physics, Phys. Chem.
+Chem. Phys. 11 (2009) 443–454. doi:10.1039/B812838C.
+URL http://dx.doi.org/10.1039/B812838C
+[42] H. A. Tahini, A. Chroneos, S. T. Murphy, U. Schwingenschl¨ogl, R. W. Grimes, Vacancies and defect levels in III-V semiconductors, J. Appl.
+Phys. 114 (6). doi:{10.1063/1.4818484}.
+[43] M. G. Medvedev, I. S. Bushmarinov, J. Sun, J. P. Perdew, K. A. Lyssenko, Density functional theory is straying from the path toward the
+exact functional, Science 355 (6320) (2017) 49–52. arXiv:http://science.sciencemag.org/content/355/6320/49.full.pdf,
+doi:10.1126/science.aah5975.
+URL http://science.sciencemag.org/content/355/6320/49
+[44] J. W. Doak, K. J. Michel, C. Wolverton, Determining dilute-limit solvus boundaries in multi-component systems using defect energetics: Na
+in PbTe and PbS, Journal of Materials Chemistry C 3 (40) (2015) 10630–10649.
+[45] S. B. Zhang, J. E. Northrup, Chemical potential dependence of defect formation energies in GaAs: Application to Ga self-diﬀusion, Phys.
+Rev. Lett. 67 (1991) 2339–2342. doi:10.1103/PhysRevLett.67.2339.
+URL http://link.aps.org/doi/10.1103/PhysRevLett.67.2339
+[46] A. Jain, G. Hautier, S. P. Ong, C. J. Moore, C. C. Fischer, K. A. Persson, G. Ceder, Formation enthalpies by mixing GGA and GGA + U
+calculations, Phys. Rev. B 84 (2011) 045115. doi:10.1103/PhysRevB.84.045115.
+URL https://link.aps.org/doi/10.1103/PhysRevB.84.045115
+[47] B. Medasani, M. L. Sushko, K. M. Rosso, D. K. Schreiber, S. M. Bruemmer, Vacancies and vacancy-mediated self diﬀusion in Cr2O3: A
+ﬁrst-principles study, The Journal of Physical Chemistry C 121 (3) (2017) 1817–1831. arXiv:http://dx.doi.org/10.1021/acs.jpcc.
+7b00071, doi:10.1021/acs.jpcc.7b00071.
+URL http://dx.doi.org/10.1021/acs.jpcc.7b00071
+[48] H. A. Tahini, X. Tan, U. Schwingenschlgl, S. C. Smith, Formation and migration of oxygen vacancies in SrCoO3 and their eﬀect on oxygen
+evolution reactions, ACS Catalysis 6 (8) (2016) 5565–5570. arXiv:http://dx.doi.org/10.1021/acscatal.6b00937, doi:10.1021/
+acscatal.6b00937.
+URL http://dx.doi.org/10.1021/acscatal.6b00937
+[49] P. ´Agoston, K. Albe, R. M. Nieminen, M. J. Puska, Intrinsic n-type behavior in transparent conducting oxides: A comparative hybridfunctional study of In2O3, SnO2, and ZnO, Physical review letters 103 (24) (2009) 245501.
+[50] G. Hautier, S. P. Ong, A. Jain, C. J. Moore, G. Ceder, Accuracy of density functional theory in predicting formation energies of ternary oxides
+from binary oxides and its implication on phase stability, Phys. Rev. B 85 (2012) 155208. doi:10.1103/PhysRevB.85.155208.
+URL http://link.aps.org/doi/10.1103/PhysRevB.85.155208
+[51] W. Sun, S. T. Dacek, S. P. Ong, G. Hautier, A. Jain, W. D. Richards, A. C. Gamst, K. A. Persson, G. Ceder, The thermodynamic scale of
+19
+
+===== Page 20 =====
+
+inorganic crystalline metastability, Science Advances 2 (11). arXiv:http://advances.sciencemag.org/content/2/11/e1600225.
+full.pdf, doi:10.1126/sciadv.1600225.
+URL http://advances.sciencemag.org/content/2/11/e1600225
+[52] S. Lany, A. Zunger, Assessment of correction methods for the band-gap problem and for ﬁnite-size eﬀects in supercell defect calculations:
+Case studies for ZnO and GaAs, Physical Review B 78 (23) (2008) 235104.
+[53] S. E. Taylor, F. Bruneval, Understanding and correcting the spurious interactions in charged supercells, Physical Review B 84 (7) (2011)
+075155.
+[54] C. Freysoldt, J. Neugebauer, C. G. Van de Walle, Electrostatic interactions between charged defects in supercells, physica status solidi (b)
+248 (5) (2011) 1067–1076. doi:10.1002/pssb.201046289.
+URL http://dx.doi.org/10.1002/pssb.201046289
+[55] G. Makov, M. C. Payne, Periodic boundary conditions in ab initio calculations, Phys. Rev. B 51 (1995) 4014–4022.
+doi:10.1103/
+PhysRevB.51.4014.
+URL http://link.aps.org/doi/10.1103/PhysRevB.51.4014
+[56] H.-P. Komsa, T. T. Rantala, A. Pasquarello, Finite-size supercell correction schemes for charged defect calculations, Phys. Rev. B 86 (2012)
+045112. doi:10.1103/PhysRevB.86.045112.
+URL http://link.aps.org/doi/10.1103/PhysRevB.86.045112
+[57] S. Boeck, C. Freysoldt, A. Dick, L. Ismer, J. Neugebauer, The object-oriented DFT program library S/PHI/nX, Computer Physics Communications 182 (3) (2011) 543 – 554. doi:http://dx.doi.org/10.1016/j.cpc.2010.09.016.
+URL http://www.sciencedirect.com/science/article/pii/S0010465510003619
+[58] G. Petretto, F. Bruneval, Systematic defect donor levels in III-V and II-VI semiconductors revealed by hybrid functional density-functional
+theory, Phys. Rev. B 92 (22) (2015) 224111. doi:{10.1103/PhysRevB.92.224111}.
+[59] P. De´ak, B. Aradi, M. Kaviani, T. Frauenheim, A. Gali, Formation of NV centers in diamond: a theoretical study based on calculated
+transitions and migration of nitrogen and vacancy related defects, Phys. Rev. B 89 (7) (2014) 075203. doi:{10.1103/PhysRevB.89.
+075203}.
+[60] A. Chroneos, H. A. Tahini, U. Schwingenschl¨ogl, R. W. Grimes, Antisites in III-V semiconductors: Density functional theory calculations, J.
+Appl. Phys. 116 (2). doi:{10.1063/1.4887135}.
+[61] F. Corsetti, A. A. Mostoﬁ, System-size convergence of point defect properties: the case of the silicon vacancy, Phys. Rev. B 84 (3) (2011)
+035209. doi:{10.1103/PhysRevB.84.035209}.
+[62] P. Li, S. Deng, L. Zhang, G. Liu, J. Yu, Native point defects in ZnS: ﬁrst-principles studies based on LDA, LDA + U and an extrapolation
+scheme, Chem. Phys. Lett. 531 (2012) 75–79. doi:{10.1016/j.cplett.2012.02.008}.
+[63] L. S. dos Santos, W. G. Schmidt, E. Rauls, Group-VII point defects in ZnSe, Phys. Rev. B 84 (11) (2011) 115201.
+doi:{10.1103/
+PhysRevB.84.115201}.
+[64] J. Neugebauer, C. G. Van de Walle, Atomic geometry and electronic structure of native defects in GaN, Phys. Rev. B 50 (11) (1994) 8067–
+8070. doi:{10.1103/PhysRevB.50.8067}.
+[65] M. O’Keeﬀe, N. E. Brese, Atom sizes and bond lengths in molecules and crystals, J. Am. Chem. Soc. 113 (9) (1991) 3226–3229. doi:
+{10.1021/ja00009a002}.
+[66] A. Gibson, R. Haydock, J. P. LaFemina, Stability of vacancy defects in MgO: The role of charge neutrality, Phys. Rev. B 50 (1994) 2582–
+2592. doi:10.1103/PhysRevB.50.2582.
+URL http://link.aps.org/doi/10.1103/PhysRevB.50.2582
+[67] B. Peters, Competing nucleation pathways in a mixture of oppositely charged colloids: out-of-equilibrium nucleation revisited, J. Chem.
+Phys. 131 (24) (2009) 244103.
+[68] N. E. R. Zimmermann, B. Vorselaars, D. Quigley, B. Peters, Nucleation of NaCl from aqueous solution: critical sizes, ion-attachment kinetics,
+and rates, J. Am. Chem. Soc. 137 (41) (2015) 13352–13361.
+[69] S. Decoster, B. De Vries, U. Wahl, J. G. Correia, A. Vantomme, Experimental evidence of tetrahedral interstitial and bond-centered Er in Ge,
+Appl. Phys. Lett. 93 (14) (2008) 141907. doi:{10.1063/1.2996280}.
+[70] S. Decoster, S. Cottenier, B. De Vries, H. Emmerich, U. Wahl, J. G. Correia, A. Vantomme, Transition metal impurities on the bond-centered
+site in germanium, Phys. Rev. Lett. 102 (6) (2009) 065502. doi:{10.1103/PhysRevLett.102.065502}.
+[71] S. Decoster, B. De Vries, U. Wahl, J. G. Correia, A. Vantomme, Lattice location study of implanted In in Ge, J. Appl. Phys. 105 (8) (2009)
+083522. doi:{10.1063/1.3110104}.
+[72] S. Decoster, S. Cottenier, U. Wahl, J. G. Correia, A. Vantomme, Lattice location study of ion implanted Sn and Sn-related defects in Ge,
+Phys. Rev. B 81 (15) (2010) 155204. doi:{10.1103/PhysRevB.81.155204}.
+[73] S. Decoster, S. Cottenier, U. Wahl, J. G. Correia, L. M. C. Pereira, C. Lacasta, M. R. Da Silva, A. Vantomme, Diluted manganese on the
+bond-centered site in germanium, Appl. Phys. Lett. 97 (15) (2010) 151914. doi:{10.1063/1.3501123}.
+[74] L. M. C. Pereira, U. Wahl, S. Decoster, J. G. Correia, M. R. da Silva, A. Vantomme, J. P. Ara´ujo, Direct identiﬁcation of interstitial Mn in
+heavily p-type doped GaAs and evidence of its high thermal stability, Appl. Phys. Lett. 98 (20) (2011) 201905. doi:{10.1063/1.3592568}.
+[75] L. M. C. Pereira, U. Wahl, S. Decoster, J. G. Correia, L. M. Amorim, M. R. da Silva, J. P. Araujo, A. Vantomme, Stability and diﬀusion of
+interstitial and substitutional Mn in GaAs of diﬀerent doping types, Phys. Rev. B 86 (12) (2012) 125206. doi:{10.1103/PhysRevB.86.
+125206}.
+[76] S. Decoster, U. Wahl, S. Cottenier, J. G. Correia, T. Mendonc¸a, L. M. Amorim, L. M. C. Pereira, A. Vantomme, Lattice position and thermal
+stability of diluted As in Ge, J. Appl. Phys. 111 (5) (2012) 053528. doi:{10.1063/1.3692761}.
+[77] L. M. Amorim, U. Wahl, L. M. C. Pereira, S. Decoster, D. J. Silva, M. R. da Silva, A. Gottberg, J. G. Correia, K. Temst, A. Vantomme,
+Precise lattice location of substitutional and interstitial Mg in AlN, Appl. Phys. Lett. 103 (26) (2013) 262102. doi:{10.1063/1.4858389}.
+[78] D. J. Silva, U. Wahl, J. G. Correia, L. M. C. Pereira, L. M. Amorim, M. R. da Silva, E. Bosne, J. P. Ara´ujo, Lattice location and thermal stability
+of implanted nickel in silicon studied by on-line emission channeling, J. Appl. Phys. 115 (2) (2014) 023504. doi:{10.1063/1.4861142}.
+[79] H. Hofs¨ass, G. Lindner, Emission channeling and blocking, Phys. Rep. (Rev. Sec. Phys. Lett.) 201 (3) (1991) 121–183. doi:{10.1016/
+20
+
+===== Page 21 =====
+
+0370-1573(91)90121-2}.
+[80] M. R. Silva, U. Wahl, J. G. Correia, L. M. Amorim, L. M. C. Pereira, A versatile apparatus for on-line emission channeling experiments, Rev.
+Sci. Instrum. 84 (7) (2013) 073506. doi:{10.1063/1.4813266}.
+[81] Z. Rong, R. Malik, P. Canepa, G. S. Gautam, M. Liu, A. Jain, K. Persson, G. Ceder, Materials design rules for multivalent ion mobility in
+intercalation structures, Chem. Mater. 27 (17) (2015) 6016–6021. doi:{10.1021/acs.chemmater.5b02342}.
+[82] Y. Wang, W. D. Richards, S. P. Ong, L. J. Miara, J. C. Kim, Y. Mo, G. Ceder, Design principles for solid-state lithium superionic conductors,
+Nat. Mater. 14 (10) (2015) 1026–1031. doi:{10.1038/NMAT4369}.
+[83] A. De Vita, The energetics of defects and impurities in metals and ionic materials from ﬁrst principles, Ph.D. thesis, Keele University (Aug
+1992).
+[84] A. Jain, S. P. Ong, W. Chen, B. Medasani, X. Qu, M. Kocher, M. Brafman, G. Petretto, G.-M. Rignanese, G. Hautier, D. Gunter, K. A.
+Persson, Fireworks: a dynamic workﬂow system designed for high-throughput applications, Concurrency and Computation: Practice and
+Experience 27 (17) (2015) 5037–5059, cPE-14-0307.R2. doi:10.1002/cpe.3505.
+URL http://dx.doi.org/10.1002/cpe.3505
+[85] P. A. Schultz, O. A. von Lilienfeld, Simple intrinsic defects in gallium arsenide, Modelling and Simulation in Materials Science and Engineering 17 (8) (2009) 084007.
+URL http://stacks.iop.org/0965-0393/17/i=8/a=084007
+[86] F. El-Mellouhi, N. Mousseau, Self-vacancies in gallium arsenide: An ab initio calculation, Phys. Rev. B 71 (2005) 125207. doi:10.1103/
+PhysRevB.71.125207.
+URL http://link.aps.org/doi/10.1103/PhysRevB.71.125207
+[87] J. T. Schick, C. G. Morgan, P. Papoulias, First-principles study of As interstitials in GaAs: Convergence, relaxation, and formation energy,
+Phys. Rev. B 66 (2002) 195302. doi:10.1103/PhysRevB.66.195302.
+URL http://link.aps.org/doi/10.1103/PhysRevB.66.195302
+[88] H.-P. Komsa, A. Pasquarello, Identiﬁcation of defect levels at As/oxide interfaces through hybrid functionals, Microelectronic Engineering
+88 (7) (2011) 1436 – 1439, proceedings of the 17th Biennial International Insulating Films on Semiconductor Conference17th Biennial
+International Insulating Films on Semiconductor Conference. doi:http://dx.doi.org/10.1016/j.mee.2011.03.081.
+URL http://www.sciencedirect.com/science/article/pii/S0167931711003406
+[89] J. E. Northrup, S. B. Zhang, Energetics of the As vacancy in GaAs: The stability of the 3+ charge state, Phys. Rev. B 50 (1994) 4962–4964.
+doi:10.1103/PhysRevB.50.4962.
+URL http://link.aps.org/doi/10.1103/PhysRevB.50.4962
+[90] H.-P. Komsa, A. Pasquarello, Assessing the accuracy of hybrid functionals in the determination of defect levels: Application to the As antisite
+in GaAs, Phys. Rev. B 84 (2011) 075207. doi:10.1103/PhysRevB.84.075207.
+URL http://link.aps.org/doi/10.1103/PhysRevB.84.075207
+[91] K. Lejaeghere, G. Bihlmayer, T. Bjoerkman, P. Blaha, S. Bluegel, V. Blum, D. Caliste, I. E. Castelli, S. J. Clark, A. Dal Corso, S. de Gironcoli, T. Deutsch, J. K. Dewhurst, I. Di Marco, C. Draxl, M. Dulak, O. Eriksson, J. A. Flores-Livas, K. F. Garrity, L. Genovese, P. Giannozzi,
+M. Giantomassi, S. Goedecker, X. Gonze, O. Granaes, E. K. U. Gross, A. Gulans, F. Gygi, D. R. Hamann, P. J. Hasnip, N. A. W. Holzwarth,
+D. Iusan, D. B. Jochym, F. Jollet, D. Jones, G. Kresse, K. Koepernik, E. Kuecuekbenli, Y. O. Kvashnin, I. L. M. Locht, S. Lubeck, M. Marsman, N. Marzari, U. Nitzsche, L. Nordstrom, T. Ozaki, L. Paulatto, C. J. Pickard, W. Poelmans, M. I. J. Probert, K. Refson, M. Richter, G.-M.
+Rignanese, S. Saha, M. Scheﬄer, M. Schlipf, K. Schwarz, S. Sharma, F. Tavazza, P. Thunstroem, A. Tkatchenko, M. Torrent, D. Vanderbilt, M. J. van Setten, V. Van Speybroeck, J. M. Wills, J. R. Yates, G.-X. Zhang, S. Cottenier, Reproducibility in density functional theory
+calculations of solids, Science 351 (6280) (2016) 1415–U81.
+21

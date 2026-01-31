@@ -1,0 +1,814 @@
+
+
+===== Page 1 =====
+
+Advancing SEM Based Nano-Scale Defect
+Analysis in Semiconductor Manufacturing
+for Advanced IC Nodes
+Bappaditya Dey1,∗, Matthias Monden1,2,∗, Victor Blanco1, Sandip Halder1,
+and Stefan De Gendt1,2
+imec, Kapeldreef 75, 3000 Leuven, Belgium1
+KU Leuven, Oude Markt 13, 3000 Leuven, Belgium2
+Equal Contribution∗
+Bappaditya.Dey@imec.be
+Abstract. In this research, we introduce a unified end-to-end Automated Defect Classification-Detection-Segmentation (ADCDS) framework for classifying, detecting, and segmenting multiple instances of
+semiconductor defects for advanced nodes. This framework consists of
+two modules: (a) a defect detection module, followed by (b) a defect
+segmentation module. The defect detection module employs Deformable
+DETR to aid in the classification and detection of nano-scale defects,
+while the segmentation module utilizes BoxSnake. BoxSnake facilitates
+box-supervised instance segmentation of nano-scale defects, supported by
+the former module. This simplifies the process by eliminating the laborious requirement for ground-truth pixel-wise mask annotation by human
+experts, which is typically associated with training conventional segmentation models. We have evaluated the performance of our ADCDS framework using two distinct process datasets from real wafers, as ADI and
+AEI, specifically focusing on Line-space patterns. We have demonstrated
+the applicability and significance of our proposed methodology, particularly in the nano-scale segmentation and generation of binary defect
+masks, using the challenging ADI SEM dataset where ground-truth pixelwise segmentation annotations were unavailable. Furthermore, we have
+presented a comparative analysis of our proposed framework against previous approaches to demonstrate its effectiveness. Our proposed framework achieved an overall mAP@IoU0.5 of 72.19 for detection and 78.86
+for segmentation on the ADI dataset. Similarly, for the AEI dataset,
+these metrics were 90.38 for detection and 95.48 for segmentation. Thus,
+our proposed framework effectively fulfils the requirements of advanced
+defect analysis while addressing significant constraints.
+1
+Introduction
+The scaling of semiconductor circuits has yielded various advantages, including
+enhanced device speed and reduced power consumption. This trend of scaling
+(towards sub-30nm pitches for 5nm node and below), spanning the past fifty
+arXiv:2409.04310v1  [cs.CV]  6 Sep 2024
+
+===== Page 2 =====
+
+2
+B. Dey et al.
+years, is aptly represented by Moore’s Law. However, to maintain this trajectory of scaling, it is imperative to introduce novel concepts for manufacturing
+processes. Currently, industry is evaluating the use of High-Numerical Aperture
+Extreme Ultraviolet Lithography (High-NA EUVL) [16] technology for reducing
+further the pitch in future nodes. One of the main challenges in introducing HighNA EUV in High Volume Manufacturing (HVM) is its low depth of focus which
+is pushing resist material suppliers to use thinner resists [20] and new underlayers/hardmask’s. When thin resist materials are used in conjunction with novel
+underlayers and hardmask’s, often it poses signal detection challenges for inspection and metrology equipment’s due to low Signal-to-Noise Ratio (SNR). In such
+a scenario, detection of these tiny defects becomes extremely challenging. Furthermore, manual classification and detection of these nano-scale defects accurately and consistently in the acquired Scanning Electron Microscope (SEM) images is nearly impossible for humans. Moreover, industrial defect-inspection tools
+face challenges in consistently enhancing sensitivity and scalability to address the
+aforementioned issues. Neither approach is sustainable in the long run. Under
+these circumstances, deep learning based methods [6] are becoming more and
+more useful to enhance signal from the tiny defects/perturbations. Furthermore,
+as increasingly powerful CPU/GPU units emerge and various deep learning (DL)
+models continue to develop, their implementation is becoming increasingly ubiquitous. When implemented correctly, these models enhance defect detection efficiency, maintain scalability, and achieve heightened accuracy/precision, thus
+reducing the necessity for human intervention. Supervised algorithms necessitate meticulous manual data labelling, adding extra time and effort, especially
+when annotating accurate pixel-wise segmentation masks for training models
+focused on nano-scale defect instance segmentation. Alternatively, unsupervised
+strategies may offer significant advantages, particularly if we can avoid the need
+for manual bounding-box labelling or precise pixel-wise segmentation mask labelling during model training. This approach could lead to more efficient and
+scalable solutions for defect analysis in semiconductor manufacturing processes,
+facilitating unsupervised defect classification, detection, and segmentation.
+The aim of this research is to advance towards unsupervised defect localization and segmentation by introducing a novel ADCDS framework. The defect
+dataset utilized in this study is obtained from real FAB processes, specifically
+post-litho (After-Development-Inspection) and post-etch (After-Etch-Inspection)
+stages. Examples for different defects are given in figure 2a and figure 2b for
+these two SEM datasets. Unlike some previous studies that rely on digital twins
+or synthetic datasets, we opted to focus on real FAB data to address the challenges posed by stochastic defectivity scenarios. Additionally, we avoided using
+fabricated datasets with intentionally placed or programmed defect types. Our
+research contributions are as follows:
+– Introduction of a unified end-to-end framework for classifying, detecting, and
+segmenting semiconductor defect instances in aggressive pitches.
+– Adoption of the Deformable DETR architecture, a query-based framework
+employing deformable convolution to increase convergence speed and sensi-
+
+===== Page 3 =====
+
+Advancing SEM Defect Analysis for Advanced IC Nodes
+3
+tivity to smaller defect features, as the primary defect detection module for
+classification and detection of nano-scale defects. This information is then
+seeded into the segmentation module for further processing.
+– Integration of the BoxSnake architecture in the segmentation module to eliminate the requirement for laborious ground-truth pixel-wise mask annotation
+by human experts. This alleviates the difficulty associated with annotating
+pixel-level stochastic defects accurately enough to train a supervised model
+for deployment in high-volume manufacturing (HVM).
+– Generation of pixel-precise segmented binary masks for various inter-class
+and intra-class defect instances, facilitating advanced data analytics to aid
+improved semiconductor process control.
+– Benchmarking of the proposed ADCDS framework on two process datasets,
+namely ADI- and AEI- SEM datasets. Additionally, a first demonstration on
+the challenging ADI SEM dataset, where ground-truth pixel-wise segmentation annotations were unavailable, is presented.
+2
+Related Work
+This section aims to briefly discuss selected previous research works that will
+serve as a baseline for our proposed framework in this study. Our selection criteria are based on: (1) previous studies utilizing real resist wafer datasets from
+FAB for benchmarking on different process steps, primarily After-DevelopmentInspection (ADI) and After-Etch-Inspection (AEI); (2) studies targeting both
+defect instance detection and segmentation; and finally, (3) some baseline advanced architectures/strategies that have inspired our proposed framework.
+Ref. [3] offers a comparative analysis of state-of-the-art DL-based object detector models for semiconductor defect detection in ADI SEM images. This study
+revisits previously reported applications of RetinaNet [6], and YOLOv7 [15] models on semiconductor defect detection. Furthermore, the authors introduce several other benchmarks utilizing models such as YOLOv7x, an architecture variant of YOLOv7 [15] with larger dimensions aimed at preserving speed, DINO
+[18], and Faster R-CNN [13]. In Ref. [4], the authors optimized the YOLOv7
+model architecture for semiconductor defect detection by manually adjusting
+hyperparameters and merging predictions from various models using the WBF
+(Weighted Box Fusion1) method, replacing the conventional NMS method (NonMaximum Suppression). Only one framework places emphasis on defect detection
+in AEI SEM images, namely SEMI-Centernet [14], which primarily focuses on
+inference speed.
+To assess the performance of the semiconductor defect instance segmentation module, examined two baseline frameworks are: SEMI-PointRend [10], and
+SEMI-DiffusionInst [2]. Although the Mask R-CNN approach [5] provides valuable insights that are considered in this study, it is the initial model to have been
+applied to the AEI SEM dataset and therefore will not be included in our comparison. PointRend [11] tries to solve image segmentation as classical rendering
+1 https://github.com/ZFTurbo/Weighted-Boxes-Fusion
+
+===== Page 4 =====
+
+4
+B. Dey et al.
+problem in computer graphics, resulting in far more efficient computations and
+allowing higher resolution input images. Hence, SEMI-PointRend is capable of
+creating more clear boundaries for the segmentation masks resulting in higher
+precision on the masks compared to the standard Mask R-CNN framework [5].
+DiffusionInst [9] treats image segmentation as a gradual denoising process, starting from a constructed noisy image. SEMI-DiffusionInst is the first diffusion-like
+model applied on SEM images for defect segmentation [2]. Reportedly, SEMIDiffusionInst [2] surpasses the previous leading SEM defect segmentation model,
+SEMI-Pointrend [10], when benchmarked on the same AEI SEM dataset.
+The references mentioned above exclusively feature supervised segmentation
+models, necessitating a ground-truth segmentation mask (manually labeled pixelwise annotation). These ground-truth masks for the AEI SEM dataset were initially introduced in [5]. To date, no models have been employed to segment ADI
+SEM images; hence, no discussions can be made on this dataset.
+The concept of utilizing detection transformers, particularly queries, for instance segmentation is not new. For instance, ‘Segment Objects by Learning
+Queries’ (SOLQ) [7] leverages Deformable DETR and a new Unified Query Representation (UQR) module to enable end-to-end object detection and segmentation. Similarly, in the paper ‘Instances as Queries’ [8], authors the authors
+address the challenge of integrating DETR (and other variants) into Mask RCNN by introducing QueryInst. QueryInst presents a novel multi-stage instance
+segmentation network that incorporates a new dynamic convolution mask head
+architecture on top of a query based end-to-end object detector for image segmentation. The authors effectively demonstrate parallel supervision on the mask
+heads by using queries greatly improve instance segmentation compared to nonquery based frameworks. Masked-attention Mask Transformer (Mask2Former)
+[1] attempts to establish a universal query-based segmentation architecture that
+outperforms specialised models like QueryInst or SOLQ.
+In this work we employ two modules in the proposed ADCDS framework:
+(1) the Deformable DETR [19], and (2) BoxSnake [17]. The Deformable DETR
+greatly improves convergence speed and small object detection over the original
+DETR [12] by introducing the deformable attention module. BoxSnake is the
+first box-supervised DL-framework built on top of Mask R-CNN, capable of
+segmenting objects.
+3
+Proposed ADCDS framework
+In this section, we briefly outline our proposed unified framework for detecting and segmenting nano-scale defect instances in both ADI- and AEI- SEM
+images. Our approach relies exclusively on bounding-box ground-truth annotations, aiming to achieve unsupervised precise defect instance segmentation and
+mask generation.
+The schematic of our proposed ADCDS framework pipeline is depicted in figure
+1, comprising two modules: (a) a defect detection module, followed by (b) a defect segmentation module. The defect detection module utilizes the Deformable
+DETR [19] architecture primarily for classifying and detecting nano-scale defects.
+At this stage, the module takes SEM images with corresponding ground-truth
+
+===== Page 5 =====
+
+Advancing SEM Defect Analysis for Advanced IC Nodes
+5
+Fig. 1: Schematic of the proposed ADCDS framework
+bounding box annotations (manually annotated by a defect inspection expert)
+for training. Once we validate the model’s robustness and generalizability on
+the same defect patterns/types, we deploy it to generate defect classification,
+detection, and localization information (in terms of bounding box coordinates)
+for new SEM image batches from similar processes (both ADI and AEI), automating the defect detection mechanism. Subsequently, we feed this defect
+classification and detection result (bounding box information) as the Regionof-Interest (ROI) to the segmentation module, which utilizes the BoxSnake [17]
+architecture. This architecture enables box-supervised instance segmentation of
+nano-scale defects, simplifying the process by eliminating the laborious requirement for ground-truth pixel-wise mask annotation by human experts, typically
+associated with training conventional segmentation models. After training, the
+segmentation module predicts precise segmentation masks for each defect instance. Therefore, our proposed ADCDS framework assists in accurately segmenting the extent of defect patterns and aids in distinguishing between various
+types of inter-class and intra-class stochastic defect patterns (such as differentiating between a line collapse and a bridge or distinguishing between closely
+related patterns like multi-bridge horizontal and multi-bridge non-horizontal).
+This segmentation is crucial for conducting root-cause analysis of defect generation, including factors such as process drift and tool deviations. The training
+
+===== Page 6 =====
+
+6
+B. Dey et al.
+strategy of the proposed framework, along with each corresponding module, is
+discussed in subsequent subsection4.3
+4
+Experiments
+4.1
+Datasets
+Both ADI and AEI SEM image datasets (for Line-Space pattern) with stochastic
+defect patterns have been obtained from actual FAB environments. Raw SEM
+images are acquired from the imaging tool in ".tiff" format and subsequently converted to ".jpg" format to align with the expected format by the models used. All
+ADI SEM images have a resolution of 1024x1024, while all AEI SEM images have
+a resolution of 480x480. Typical defects found in the ADI dataset include gaps,
+probable gaps (pgaps), line collapses, bridges, and microbridges, as depicted in
+figure 2a. Figure 2b illustrates typical defects for the AEI dataset, which include
+thin bridges, single bridges, multi bridges (non) horizontal (MBH/MBNH), and
+line collapses. The distribution of defects for total images and representative
+defect classes is presented in table 1 for the ADI dataset and table 2 for the AEI
+dataset, respectively.
+4.2
+Evaluation criteria
+In the subsequent subsections, the methodology for training and inference results is outlined. Based on these specifications, results are presented in section
+5 and compared with previous related research works [3,10,2,14], in section 6,
+alongside insights from our proposed approach. Key performance metrics of interest include AP (Average Precision), mAP (mean AP), and inference speed.
+The AP is computed using the COCO evaluation framework integrated into the
+Deformable DETR and BoxSnake frameworks. Typically, the AP of the detector/segmentation model is determined using Intersection-over-Union (IoU). IoU
+calculates the intersection of the ground truth annotated bounding box containing the defect instance with the predicted bounding box, divided by the union
+of both bounding boxes. The inference speed for the Deformable DETR is determined by the time it takes for an image to propagate through the model,
+without considering the extraction of results due to hardware and implementation dependencies. Inference speed for BoxSnake is taken from the Detectron2
+output.
+Table 1: Data distribution and defect
+class information of ADI SEM images
+Train Validation
+Total images
+1054
+117
+Classes
+Total instances
+Gap
+1046
+156
+Probable gap
+315
+49
+Bridge
+238
+19
+Micro bridge
+380
+47
+Line collapse
+550
+66
+Total instances
+2529
+337
+Table 2: Data distribution and defect
+class information of AEI SEM images
+Train Validation
+Total images
+1062
+131
+Classes
+Total instances
+Multi bridge NH
+179
+21
+Multi bridge H
+90
+10
+Single bridge
+271
+29
+Thin bridge
+270
+29
+Line collapse
+236
+40
+Total instances
+1046
+129
+
+===== Page 7 =====
+
+Advancing SEM Defect Analysis for Advanced IC Nodes
+7
+(a) Examples defect classes for the ADI dataset (Line-Space pattern). From left to right: bridge,
+line collapse, gap and probable gap, and micro bridge
+(b) Examples defect classes for the AEI dataset (Line-Space pattern). From left to right: thin bridge,
+single bridge, multi bridge horizontal, multi bridge non-horizontal, and line collapse
+Fig. 2: Defect examples from ADI (a) and AEI (b) dataset
+4.3
+Training
+To ensure comparability and consistency in results, all trainings/simulations and
+inference runs are performed on an NVIDIA A100 GPU.
+Defect instance detection. All configurations of Deformable DETR [19] utilize a ResNet-50 backbone with COCO pretrained weights. While maintaining
+hyperparameters as closely as possible to the baseline Deformable DETR implementation, adjustments are made to the learning rate, learning rate drop, and
+the number of queries of the transformer. The learning rate for both ADI- and
+AEI datasets is reduced to 5e −6 in order to reach AP convergence in a reasonable time window. The learning rate drop is increased from 40 to 175. Lastly,
+the batch size is set to 2 and training is done over a period of 500 epochs. The
+epoch with the best AP is chosen as benchmark.
+Defect instance segmentation. In our proposed framework, we explored each
+baseline configuration outlined in the original BoxSnake [17] GitHub2 repository,
+providing an overview in Table 3. We highlighted only the most effective configuration for our research goal. We conducted a total of 10,000 training iterations,
+as reported by Detectron2.
+For the ADI dataset, we had ground-truth bounding box annotations but no
+ground-truth pixel-wise defect mask annotations. Therefore, ‘segmentation AP’
+is calculated manually by using the typical precision formula
+#T rueP ositives
+#T P +#F alseP ositives,
+where a True Positive segmentation indicates that the model accurately segmenting the defect instance(s) based solely on bbox supervision, while a False Positive
+indicates instances where the model incorrectly segments defect instances (say,
+a probable gap as a gap) or segments other parts in the SEM images not corresponding to intended defect instances guided by bbox supervision. Additionally,
+the recall metric is based on the following formula:
+#T rueP ositives
+#T P +#F alseNegatives. In this
+2 https://github.com/Yangr116/BoxSnake
+
+===== Page 8 =====
+
+8
+B. Dey et al.
+case False Negative indicates the model failed to detect true defect instances.
+Only detections with a confidence threshold of 0.7 or higher are considered. ADI
+SEM images are too noisy to generate precise masks for all instances and require
+refinement. Improved binary masks are generated by creating one from the original image and then performing an AND-operation with the predicted segmented
+mask result from the BoxSnake module for each defect instance. Further refinement is accomplished by coloring a pixel based on the color of its neighboring
+pixel. For the AEI dataset, we present (m)AP detection and segmentation results
+using the same metric calculation strategy as outlined in [5], as this dataset includes both ground-truth bounding box annotations and pixel-wise defect mask
+annotations.
+Table 3: Benchmark configurations for the segmentation model
+Dataset
+Backbone
+Learning rate scheduler
+ADI & AEI
+ResNet-50
+1 & 2
+ResNet-101
+1 & 2
+Swin Base & Large
+1
+5
+Results
+5.1
+Proposed ADCDS framework
+In this section, we will discuss and demonstrate the performance of our proposed
+ADCDS framework, along with each corresponding module, in the task of nanoscale defect inspection and segmentation, supported by proof-of-validation.
+Defect detection module.
+The metrics presented in this section encompass
+both the ADI and AEI datasets. The per-class AP and mAP for the ADI dataset
+are presented in table 4 for the detection module, with different query configurations of 5, 35, and 100. All configurations seem to converge after 200 epochs,
+as shown in figure 3a. Likewise, per-class AP and mAP for the AEI dataset are
+presented in table 5, with results obtained from two different training epochs
+(100 and 200) and two query configurations (5 and 35), as shown in figure 3b.
+We discarded the query configuration for 100 as it adversely affected the precision metrics. Among all experimental configurations, we selected the model
+with the highest mAP score @IoU 0.5 for comparative analysis with previous
+benchmarks in section 6, for both ADI and AEI datasets. Table 7 presents detection inference timings (ms/image). Examples illustrating defect classification
+and detection results on both ADI and AEI SEM test datasets are presented in
+figure 4.
+Defect segmentation module.
+As we mentioned in previous section 4.3,
+we explored each baseline configuration outlined in the original BoxSnake [17]
+GitHub3 repository for defect segmentation module, and only depicted the best
+performing model configuration as Swin-Transformer Large. The per-class AP
+3 https://github.com/Yangr116/BoxSnake
+
+===== Page 9 =====
+
+Advancing SEM Defect Analysis for Advanced IC Nodes
+9
+(a) ADI dataset
+(b) AEI dataset
+Fig. 3: mAP @ IoU 0.5, train, and test loss with Deformable DETR architectures on
+the (a) ADI and (b) AEI SEM datasets
+(a) Prediction results on ADI SEM Test dataset
+(b) Prediction results on AEI SEM Test dataset
+Fig. 4: Defect detection results with proposed ADCDS framework (Deformable DETR
+based defect detection module) on ADI (a) and AEI (b) SEM dataset
+
+===== Page 10 =====
+
+10
+B. Dey et al.
+and mAP metrics for this model configuration on both ADI and AEI SEM
+datasets are summarized in table 9. As previously mentioned, because groundtruth pixel-wise segmentation annotations for the ADI dataset were unavailable,
+we manually computed the necessary metrics to determine the “segmentation
+per-class AP and mAP,” focusing specifically on this dataset. These calculations
+were conducted solely based on the corresponding ground-truth bbox annotations available to us and are presented in table 6. Manually computed segmentation AP and mAP for ADI SEM defect types/dataset is added to table 9 following the method as described in section 3. The inference timings (ms/image) vary
+and depend on the number of defects in a single SEM image, table 8 shows the
+typical range for inference timings. However, it is understandable that ADI SEM
+images pose greater challenges compared to AEI SEM images due to factors such
+as low SNR, varying grayscale pixel contrast, and pixel-level extent, thus necessitating more time for segmentation. Examples illustrating defect classification
+and segmentation results on both ADI and AEI SEM test datasets are presented
+in figure 5.
+6
+Discussion
+6.1
+Proposed ADCDS framework
+In this section, we will delve into a comparative analysis of our proposed ADCDS
+framework, encompassing each corresponding module, in the realm of nano-scale
+defect inspection and segmentation. This comparison will be conducted against
+selected previous research works [3,14,10,2] that underwent benchmarking on
+the same real FAB dataset (for both ADI and AEI), supported by proof-ofvalidation. This will also aid us in identifying limitations of our proposed framework, thereby guiding further improvements and future research directions.
+6.2
+Comparative analysis of defect detection module against
+previous research works
+The reported results from SEMI-CenterNet [14] and the comparative study [3]
+are summarised and compared against our proposed ADCDS framework in table
+10, for both datasets. On the AEI SEM dataset, the Deformable DETR based
+proposed defect detection module and SEMI-CenterNet, both are trained for
+200 epochs. Our proposed defect detection module based on Deformable DETR
+demonstrates superior performance in all defect categories, achieving a mAP
+improvement of 51.24% @ IoU0.5. For the ADI SEM dataset, it’s evident that our
+model is underperforming, especially in smaller defect features such as gap and
+probable gap. However, Deformable DETR outperforms YOLOv7x in detecting
+instances of bridge by 20.62% and line collapse defects.
+During our experimentation, we observed a decrease in AP for AEI defects
+(see table 5) when using more queries, whereas the opposite trend was noticed for
+ADI defects. This variation could be attributed to the number of defect instances
+present in the corresponding SEM datasets. The AEI dataset typically contains
+at most 1 defect instance per image, and these defect features are generally
+
+===== Page 11 =====
+
+Advancing SEM Defect Analysis for Advanced IC Nodes
+11
+Table 4: Per class AP and mean AP for Deformable DETR with a ResNet 50 backbone
+at different IoUs for ADI SEM dataset
+# queries Epoch
+Per class AP @ IoU 0.5:0.95 (%)
+mAP @
+Microbridge Bridge Gap Probable gap Line collapse IoU 0.5:0.95 (%)
+5
+200
+36.45
+23.24
+0.58
+0.00
+80.12
+28.08
+35
+200
+43.67
+42.17 14.44
+4.05
+81.49
+37.16
+100
+200
+50.49
+42.44 34.16
+13.53
+81.19
+44.36
+Per class AP @ IoU 0.5 (%)
+mAP @ IoU 0.5
+(%)
+5
+200
+61.79
+77.31
+2.45
+0.00
+100.00
+48.31
+35
+200
+72.72
+77.23 36.08
+12.10
+100.00
+59.62
+100
+200
+76.63
+86.92 68.84
+28.64
+99.93
+72.19
+Table 5: Per class AP and mean AP for Deformable DETR with a ResNet 50 backbone
+at different IoUs for AEI SEM dataset
+# queries Epoch
+Per class AP @ IoU 0.5:0.95 (%)
+mAP @
+Thin bridge Single bridge MBNH MBH Line collapse IoU 0.5:0.95 (%)
+5
+200
+76.01
+62.34
+45.84
+35.80
+71.50
+58.30
+35
+100
+71.29
+56.34
+42.40
+37.05
+76.77
+56.77
+Per class AP @ IoU 0.5 (%)
+mAP @ IoU 0.5
+(%)
+5
+200
+98.65
+92.93
+80.50
+79.84
+100.00
+90.38
+35
+100
+99.63
+86.65
+77.96
+67.38
+100.00
+86.33
+Table 6: Manually computed metrics to determine the segmentation per-class AP and
+mAP for BoxSnake with a Swin-Transformer Large backbone on ADI SEM defects
+Microbridge Bridge Gap Probable gap Line collapse Segmentation
+mAP @ IoU
+0.5 (%)
+Total instances
+47
+19
+156
+49
+66
+False negative
+8
+0
+1
+17
+0
+False positives
+9
+0
+9
+17
+0
+True positives
+39
+19
+147
+31
+66
+Per class AP @ IoU 0.5 (%)
+72.58
+100.00 91.30
+30.43
+100.00
+78.86
+Table 7: Detection inference speed for the ADI and AEI datasets
+Dataset
+Model
+Inference speed (ms/image)
+ADI
+D-DETR with 100 queries
+33.99
+AEI
+D-DETR with 5 queries
+33.26
+Table 8: Segmentation inference speed for the ADI and AEI datasets
+Dataset
+Model
+Inference speed (ms/image)
+ADI
+BoxSnake SwinL
+1500.00 - 10760.00
+AEI
+BoxSnake SwinL
+180.00 - 320.00
+
+===== Page 12 =====
+
+12
+B. Dey et al.
+Table 9: Per class AP and mean AP for BoxSnake with a Swin-Transformer Large
+backbone on ADI and AEI SEM datasets
+Dataset
+Per class AP @ IoU 0.5:0.95 (%)
+mAP @
+Thin bridge Single bridge MBNH
+MBH
+Line collapse IoU
+0.5:0.95
+(%)
+68.90
+70.62
+34.03
+38.77
+71.68
+56.80
+AEI
+Per class AP @ IoU 0.5 (%)
+mAP @ IoU
+0.5 (%)
+99.53
+96.40
+84.25
+97.21
+100.00
+95.48
+Per class AP (%)
+mAP @ IoU
+0.5 (%)
+ADI
+Microbridge
+Bridge
+Gap
+Probable gap Line collapse
+72.58
+100.00
+91.30
+30.43
+100.00
+78.86
+more prominent and discernible to learn. Therefore, attempting to predict more
+instances in a single image may result in a decrease in AP. Conversely, the ADI
+dataset often exhibits a higher population density of defect instances (specifically,
+for gaps, probable gaps and micro-bridges) in a single image, tentatively up to
+40 defects. Additionally, learning features from ADI images is challenging due to
+factors such as noise interference, subtle grayscale variations between background
+and foreground etc. Therefore, increasing the number of queries improves both
+precision and recall.
+SEMI-CenterNet [14] demonstrates a significant superiority over Deformable
+DETR in terms of inference speed metric, with 8.7 ms/image compared to 33.26
+ms/image, for AEI SEM dataset. In contrast, for the ADI SEM dataset, Deformable DETR surpasses DINO [3], achieving 33.99 ms/image compared to
+108.7 ms/image (with ResNet-50 backbone), and it is comparable to YOLOv7X
+with 20.3 ms/image. However, YOLO architectures are single-stage object detector models and thus are expected to have faster inference speed.
+6.3
+Comparative analysis of defect instance segmentation module
+against previous research works
+SEMI-PointRend [10] and SEMI-DiffusionInst [2] all investigated segmentation
+applications on a similar AEI SEM dataset. The segmentation metrics, achieved
+by our proposed framework compared to these two previous benchmarks [10,2]
+are presented in table 11, expressed as per-class AP and mAP @ IoU 0.5:0.95.
+We also reported the same @ IoU 0.5. It is evident that proposed framework
+underperforms against previous frameworks on similar SEM dataset. However,
+it’s essential to consider a conceptual validation here. The defect instance segmentation module based on BoxSnake [17] is supervised solely by bounding box
+annotations, unlike the previous two architectures [10,2], which undergo supervised training with corresponding ground-truth segmentation annotations. We
+only utilized these ground-truth segmentation annotations to present a quantification metric, validating the performance of our proposed ADCDS framework
+in nano-scale defect instance segmentation solely guided by bounding box annotations provided by the previous D-DETR-based detection module.
+
+===== Page 13 =====
+
+Advancing SEM Defect Analysis for Advanced IC Nodes
+13
+(a) Left to right: gap and probable gap, line collapse, bridge, and micro bridge
+(b) Left to right: thin bridge, MBNH, MBH, line collapse, single bridge
+Fig. 5: Defect mask segmentation and generation results with proposed ADCDS framework (BoxSnake based defect segmentation module) on ADI (a) and AEI (b) SEM
+datasets.
+To validate our rationale, we showcased the effectiveness of our proposed
+defect segmentation module on the ADI SEM dataset, where no precise groundtruth pixel-wise segmentation annotations exist. Figure 5a visually illustrates the
+importance of our proposed framework, while table 6 presents the quantitative
+metrics. In table 6, the AP is manually computed by considering the precision
+value at a specific recall level, typically set at 0.5, as AP = P@R=0.5. Finally,
+the mean Average Precision (mAP) is calculated by averaging the AP values
+across all classes or instances.
+This is our first ever demonstration on nano-scale defect instance segmentation on this challenging ADI SEM dataset. Segmenting gap and probable gap
+instances is particularly crucial because while bounding boxes can localize the occurrence of these critical defects, they do not accurately represent the pixel-wise
+defect extent. This pixel-wise characterization is essential for reducing stochastic
+defect rates and increasing device yield.
+
+===== Page 14 =====
+
+14
+B. Dey et al.
+Table 10: Comparison analysis on defect detection (for both ADI and AEI SEM
+dataset) using proposed ADCDS framework against selected previous research works
+[3,14].
+Model
+ADI | Per class AP @ IoU 0.5 (%)
+mAP @ IoU mAP
+@
+Microbridge
+Bridge
+Gap
+Probable gap Line collapse
+0.5:0.95 (%) IoU
+0.5
+(%)
+DINO [3]
+82.4
+96.0
+96.0
+57.9
+100.00
+-
+86.5
+YOLOv7x [3]
+85.4
+66.3
+97.4
+72.1
+99.5
+-
+83.5
+Proposed
+ADCDS framework
+76.63
+86.92
+68.84
+28.64
+99.93
+44.36
+72.19
+AEI | Per class AP @ IoU 0.5:0.95 (%)
+Thin bridge Single bridge MBH
+MBNH
+Line collapse
+SEMI-CN [14]
+6.95
+32.60
+20.17
+0.00
+57.75
+23.49
+39.14
+Proposed
+ADCDS framework
+76.01
+62.34
+45.84
+35.80
+71.50
+58.30
+90.38
+Table 11: Comparison analysis on defect segmentation (for AEI SEM dataset only)
+using proposed ADCDS framework against selected previous research works [10,2]. Bold
+number represent best value.
+Model
+Per class AP @ IoU 0.5:0.95 (%)
+mAP @
+Thin bridge Single bridge MBH MBNH Line collapse
+IoU 0.5:0.95
+(%)
+SEMI-PR [10]
+55.0
+77.7
+53.5
+57.4
+63.6
+61.7
+SEMI-DI [2]
+75.38
+74.22
+53.09
+50.75
+74.28
+63.0
+Proposed ADCDS framework
+68.90
+70.62
+34.03
+38.77
+71.68
+56.80
+7
+Conclusion
+This research introduces a unified end-to-end framework for classifying, detecting, and segmenting multiple instances of semiconductor defects in aggressive
+pitches. Our framework integrates two modules. The detection module’s role is
+to localize nano-scale defect instances in input SEM images across different process steps and provide that information, in terms of bounding boxes, to the segmentation module. The segmentation module’s role is to generate pixel-precise
+segmented binary masks for various inter-class and intra-class defect instances to
+aid advanced semiconductor process control. Our proposed framework facilitates
+box-supervised defect instance segmentation, completely eliminating the laborious requirement for ground-truth pixel-wise mask annotation at the nano-scale
+level by human experts. We have benchmarked our proposed ADCDS framework
+on two real wafer SEM datasets for two different process steps, ADI and AEI,
+with a primary focus on the ADI SEM dataset. This marks the first demonstration of the applicability and significance of our proposed work on the ADI
+SEM dataset. This progress moves us towards unsupervised/weakly supervised
+defect instance segmentation, achieving 78.86% mAP on ADI SEM images and
+95.48% on AEI SEM images with IoU@0.5. In the future, it can serve as a tool
+in the semiconductor industry for advanced defect analysis for advanced defect
+analysis in High Volume Manufacturing (HVM).
+
+===== Page 15 =====
+
+Advancing SEM Defect Analysis for Advanced IC Nodes
+15
+References
+1. Cheng, B., Misra, I., Schwing, A.G., Kirillov, A., Girdhar, R.: Masked-attention
+mask transformer for universal image segmentation. arXiv (2021)
+2. De Ridder, V., Dey, B., Halder, S., Van Waeyenberge, B.: Semi-diffusioninst: A
+diffusion model based approach for semiconductor defect classification and segmentation. In: 2023 International Symposium ELMAR. pp. 61–66 (2023). https:
+//doi.org/10.1109/ELMAR59410.2023.10253920
+3. Dehaerne, E., Dey, B., Halder, S.: A comparative study of deep-learning object
+detectors for semiconductor defect detection. In: 2022 29th IEEE International
+Conference on Electronics, Circuits and Systems (ICECS). pp. 1–2 (2022). https:
+//doi.org/10.1109/ICECS202256217.2022.9971022
+4. Dehaerne, E., Dey, B., Halder, S., Gendt, S.D.: Optimizing YOLOv7 for semiconductor defect detection. In: Robinson, J.C., Sendelbach, M.J. (eds.) Metrology,
+Inspection, and Process Control XXXVII. vol. 12496, p. 124962D. International
+Society for Optics and Photonics, SPIE (2023). https://doi.org/10.1117/12.
+2657564
+5. Dey, B., Dehaerne, E., Halder, S., Leray, P., Bayoumi, M.A.: Deep learning based
+defect classification and detection in SEM images: a mask R-CNN approach. In:
+Robinson, J.C., Sendelbach, M.J. (eds.) Metrology, Inspection, and Process Control XXXVI. vol. PC12053, p. PC120530K. International Society for Optics and
+Photonics, SPIE (2022). https://doi.org/10.1117/12.2618178
+6. Dey, B., Goswami, D., Halder, S., Khalil, K., Leray, P., Bayoumi, M.A.: Deep
+learning-based defect classification and detection in sem images. In: Robinson,
+J.C., Sendelbach, M.J. (eds.) Metrology, Inspection, and Process Control XXXVI.
+SPIE (Jun 2022). https://doi.org/10.1117/12.2622550
+7. Dong, B., Zeng, F., Wang, T., Zhang, X., Wei, Y.: Solq: Segmenting objects by
+learning queries. NeurIPS (2021)
+8. Fang, Y., Yang, S., Wang, X., Li, Y., Fang, C., Shan, Y., Feng, B., Liu, W.:
+Instances as queries. In: Proceedings of the IEEE/CVF International Conference
+on Computer Vision (ICCV). pp. 6910–6919 (October 2021)
+9. Gu, Z., Chen, H., Xu, Z., Lan, J., Meng, C., Wang, W.: Diffusioninst: Diffusion
+model for instance segmentation. arXiv preprint arXiv:2212.02773 (2022)
+10. Hwang, M., Dey, B., Dehaerne, E., Halder, S., han Shin, Y.: SEMI-PointRend:
+improved semiconductor wafer defect classification and segmentation as rendering.
+In: Robinson, J.C., Sendelbach, M.J. (eds.) Metrology, Inspection, and Process
+Control XXXVII. vol. 12496, p. 1249608. International Society for Optics and
+Photonics, SPIE (2023). https://doi.org/10.1117/12.2657555
+11. Kirillov, A., Wu, Y., He, K., Girshick, R.: Pointrend: Image segmentation as rendering. In: 2020 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR). pp. 9796–9805 (2020). https://doi.org/10.1109/CVPR42600.2020.
+00982
+12. Nicolas, C., Francisco, M., Gabriel, S., Nicolas, U., Alexander, K., Sergey, Z.: Endto-end object detection with transformers. Computer Science (2020)
+13. Ren, S., He, K., Girshick, R., Sun, J.: Faster r-cnn: Towards real-time object detection with region proposal networks (2016)
+14. Vic, D.R., Bappaditya, D., Enrique, D., Sandip, H., Stefan, D.G., Bartel, V.W.:
+Semi-centernet: A machine learning facilitated approach for semiconductor defect
+inspection. Computer Science (2023)
+
+===== Page 16 =====
+
+16
+B. Dey et al.
+15. Wang, C.Y., Bochkovskiy, A., Liao, H.Y.M.: Yolov7: Trainable bag-of-freebies sets
+new state-of-the-art for real-time object detectors (2022)
+16. Weiss, M.: Overlay challenges in the era of high-NA. In: Robinson, J.C., Sendelbach, M.J. (eds.) Metrology, Inspection, and Process Control XXXVII. vol. 12496,
+p. 1249603. International Society for Optics and Photonics, SPIE (2023). https:
+//doi.org/10.1117/12.2664960
+17. Yang, R., Song, L., Ge, Y., Li, X.: Boxsnake: Polygonal instance segmentation with
+box supervision (2023)
+18. Zhang, H., Li, F., Liu, S., Zhang, L., Su, H., Zhu, J., Ni, L.M., Shum, H.Y.: Dino:
+Detr with improved denoising anchor boxes for end-to-end object detection (2022)
+19. Zhu, X., Su, W., Lu, L., Li, B., Wang, X., Dai, J.: Deformable detr: Deformable
+transformers for end-to-end object detection (2021)
+20. Zidan, M., Dey, B., Simone, D.D., Severi, J., Charley, A.L., Halder, S., Leray,
+P., Gendt, S.D., Lorusso, G.F.: Extraction of roughness measurements from thin
+resists with low signal-to-noise-ratio (SNR) SEM images by applying deep learning denoiser. In: Itani, T., Naulleau, P.P., Gargini, P.A., Ronse, K.G. (eds.) International Conference on Extreme Ultraviolet Lithography 2022. vol. 12292, p.
+122920I. International Society for Optics and Photonics, SPIE (2022). https:
+//doi.org/10.1117/12.2643315, https://doi.org/10.1117/12.2643315

@@ -1,0 +1,867 @@
+
+
+===== Page 1 =====
+
+Shadow epitaxy for in-situ growth of generic semiconductor/superconductor hybrids
+Damon J. Carrad,1, ∗Martin Bjergfelt,1, ∗Thomas Kanne,1 Martin Aagesen,1, 2 Filip Krizek,1, 3
+Elisabetta M. Fiordaliso,4 Erik Johnson,1, 5 Jesper Nyg˚ard,1, † and Thomas Sand Jespersen1, ‡
+1Center for Quantum Devices, Niels Bohr Institute,
+University of Copenhagen, 2100 Copenhagen, Denmark.
+2Danish Defence Research Center, 2750 Ballerup, Denmark.
+3Department of Spintronics, Institute of Physics,
+Czech Academy of Sciences, 162 00 Praha 6, Czech Republic.
+4DTU Nanolab, Technical University of Denmark, 2800 Kgs. Lyngby, Denmark.
+5Department of Mechanical Engineering, Technical University of Denmark, 2800 Kgs. Lyngby, Denmark.
+Uniform, defect-free crystal interfaces and surfaces are crucial ingredients for realizing highperformance nanoscale devices. A pertinent example is that advances in gate-tunable and topological
+superconductivity using semiconductor/superconductor electronic devices are currently built on the
+hard proximity-induced superconducting gap obtained from epitaxial indium arsenide/aluminium
+heterostructures. Fabrication of devices requires selective etch processes; these exist only for InAs/Al
+hybrids, precluding the use of other, potentially superior material combinations. We present a crystal growth platform – based on three-dimensional structuring of growth substrates – which enables
+synthesis of semiconductor nanowire hybrids with in-situ patterned superconductor shells. This
+platform eliminates the need for etching, thereby enabling full freedom in choice of hybrid constituents. We realise and characterise all the most frequently used architectures in superconducting
+hybrid devices, ﬁnding increased yield and electrostatic stability compared to etched devices, along
+with evidence of ballistic superconductivity. In addition to aluminium, we present hybrid devices
+based on tantalum, niobium and vanadium.
+This is the submitted version of the manuscript. The accepted, peer reviewed version is available
+from Advanced Materials: http://doi.org/10.1002/adma.201908411
+Keywords: superconductor/semiconductor epitaxy, quantum materials, nanowires
+One-dimensional
+semiconductor
+(SE)
+nanowires
+(NWs)
+proximity
+coupled
+to
+superconductors
+(SU)
+have attracted considerable attention from the condensed matter community since the prediction1,2 and
+observation3–5 of Majorana zero-modes,
+which have
+been proposed as a basis for topologically protected
+quantum information processors.6,7 To ensure topological protection, methods for growing disorder-free
+‘hard-gap’ SE/SU epitaxial hybrids were developed.8–10
+These materials use bottom-up crystal growth of InAs
+NWs with uniform epitaxial aluminium coatings, an
+approach which has been extended to high mobility
+two-dimensional systems11,12 and selective area grown
+networks.13,14 The success of epitaxial InAs/Al hybrids
+lies in the ability to selectively remove the Al via
+top-down processing,
+and thereby realise important
+device
+classes
+such
+as
+normal
+metal
+spectroscopic
+devices,5,9,11,12
+Josephson
+Junctions15–18
+for
+gatecontrolled transmon qubits,19,20 and superconducting
+Majorana islands.21–23 A limitation of this method is
+that the need for post-process etching inherently limits
+materials choice. For instance, despite strong incentives
+to utilise technologically important superconductors
+such as Nb24 and NbTiN25 – which exhibit higher
+transition temperatures, critical magnetic ﬁelds and
+superconducting energy gaps – selectively removing Nb
+from InAs remains an unsolved problem.
+Similarly,
+while InSb is an attractive semiconductor due to its high
+mobility, g-factor and strong spin-orbit coupling,25–28
+there is no reported method for selectively removing
+even Al from InSb without damage.
+Thus, most potential improvements in epitaxial SE/SU technology
+are predicated on developing a materials-independent
+method for device fabrication. An attractive approach
+to eliminating etch processes is to employ an in-situ
+‘shadow approach’ that masks speciﬁc segments along
+the NW from superconductor growth.
+Initial progress
+was demonstrated in Refs. 29,30 where deterministically
+positioned NWs were shadowed by adjacent NWs. This
+approach, however, requires accurate control of relative
+NW positions and growth directions. Further, the range
+of the possible device geometries is limited, since the
+NWs create only narrow gaps in the SU coating.
+Here, we demonstrate a ﬂexible platform for growing device-ready hybrids in numerous geometries.
+We
+combine pre-growth fabrication of shadow structures directly on NW growth substrates with precise positioning
+of NW growth sites and full in-situ control of the orientation of superconductor ﬂux.
+The shadow epitaxy
+platform enables independent materials choice (SU,SE)
+and we demonstrate simultaneous growth of the most
+important hybrid device architectures using aluminium,
+niobium, tantalum and vanadium.31 Eliminating postprocess chemical etching increased spectroscopic device
+yield (5 out of 5 for Al and Ta devices), enabled ballistic
+superconductivity in Nb devices, and enhanced electrostatic stability by an order of magnitude in Majorana island devices. Very high yield and large-range, hysteresisfree device operation are crucial metrics for future advanced circuitry that incorporates a large number of hyarXiv:1911.00460v2  [cond-mat.mes-hall]  8 May 2020
+
+===== Page 2 =====
+
+2
+f
+g
+d
+N
+S
+N
+S
+S
+N
+S
+N
+S
+S
+N
+S
+N
+S
+N
+S
+S
+Substrate
+Superconductor
+Oxide
+Nanowire
+a
+b
+c
+e
+NW
+FIG. 1. Shadow epitaxy platform for hybrid nanowire growth. a, False colour scanning electron micrograph (SEM) of
+SiOx (blue) bridges spanning trenches in an InAs (grey) substrate. InAs nanowires (NW) are grown in proximity to the bridges,
+which act as a shadow mask. Inset: Overview SEM of bridge substrate before growth. b,c, Schematics viewed from b, side and
+c, the direction of superconductor (yellow) deposition. Direction of superconductor deposition is shown by the arrows in b. The
+bridge geometry is projected onto each NW to lithographically deﬁne the regions left uncoated during superconductor deposition.
+d-h, False colour SEMs of as-grown NW hybrids with Al overlayer (yellow) with d, half-shadowed/tunnel spectroscopy, e,
+Josephson junction, f, island and g, double island geometries. S and N indicate the superconducting and bare NW segments,
+respectively. Scale bars represent a, 5 µm (main) and 50 µm (inset) d-g, 2 µm (left images) and 500 nm (right images).
+brid elements. Finally, we show that the platform is compatible with both half-shell and full-shell hybrid geometries and allows for functional devices to be encapsulated
+in-situ with passivating dielectrics, thus protecting sensitive elements. While the focus here is on semiconductor/superconductor hybrids, shadow epitaxy is equally
+applicable for any metal/semiconductor/insulator combination, extending the scope to other applications where
+pristine surfaces and interfaces are key.32,33
+THE SHADOW EPITAXY PLATFORM
+Figure 1 illustrates the platform features. A (111)Boriented InAs growth substrate is patterned with etched
+trenches and a series of silicon oxide (SiOx) ‘bridges’.
+NWs are grown from gold catalyst particles,
+prepositioned at the trench bottom with the desired lateral distance from the overhanging bridge(s). NWs are
+grown by molecular beam epitaxy8 and the bridges act as
+shadow masks for subsequent in-situ deposition of superconductors, normal metals, or dielectrics. The material is
+deposited from a direction parallel to the trenches and inclined by an angle θ = 5−45◦from the substrate surface.
+
+===== Page 3 =====
+
+3
+b
+c
+a
+Al
+InAs
+Ta
+InAs
+Nb
+InAs
+lt
+lt
+lt
+FIG. 2.
+SEM (left panels) and TEM (middle and
+rightmost panels) of half-shadowed, half-shell hybrid
+materials grown using the shadow epitaxy platform.
+a, Al/InAs shadow hybrid with 8 nm thick Al deposited at
+T = −150◦C, exhibiting an epitaxially matched interface.8
+b, Tantalum (middle panel 20 nm thick; right panel 5 nm
+thick) and c, niobium (40 nm thick) ﬁlms exhibited nanocrystalline/amorphous structure. The length lt of the tail at the
+SU shadow edge was determined by the geometry of the mask
+and chamber, as well as material diﬀusion (Supplementary
+Section 2). Ta and Nb had typical lt ∼65 −120 nm and Al
+lt ≤60 nm. The broad bright/dark fringes in low-resoultion
+TEM (middle panels) are likely bending contours, whereby
+slight bends in the NW result in modulation of the crystal
+plane orientation with respect to the beam. Scale bars represent 500 nm (left images), 100 nm (middle images) and 1 nm
+(right images).
+The situation is schematically shown in Figure 1b,c. The
+bridge design is thereby projected as a pattern in the
+superconducting layer on each NW, eﬀectively growing
+the desired device architecture, with independent choice
+of SE and SU material. For process details see Methods
+and Supplementary Section 1.
+To ensure a pristine interface, the sample remains
+under ultra-high vacuum (< 10−8 Torr) between NW
+growth and superconductor deposition.8,10,11,24,31
+In
+the simplest, single-deposition case, the superconductor
+coats 2 or 3 of the NW’s 6 facets – i.e.
+a half-shell
+coating – except for regions shadowed by the bridge.
+This breaks the NW into a sequence of SU segments
+separated by bare SE. The length and number of segments are controlled by θ and the projected bridge design (Supplementary Section 2). Additional possibilities
+using multiple depositions, angles and/or materials are
+demonstrated below (Figure 5). Figure 1e-g show scanning electron micrographs (SEMs) of bridges designed to
+produce the four most important hybrid device geometries. Half-shadowed NWs (Figure 1d) are the canonical design for tunnel-spectroscopy characterisation of the
+(sub)gap properties of hybrids,3,5,9,28 and are obtained by
+shadowing the entire lower section of the NW with a wide
+bridge.
+A single, narrow bridge (Figure 1e) produces
+a gate-tunable Josephson junction,34 the component at
+the heart of gatemon and Andreev qubits.15–20 Double
+and triple bridges (Figure 1f,g) produce hybrids with
+single21,35,36 and double22 Majorana island geometries,
+respectively, which are the building blocks of topological quantum computation schemes.7,37 In summary, the
+shadow epitaxy platform enables materials-independent,
+wafer-scale, parallel synthesis of device-ready hybrids, in
+many diﬀerent geometries.
+PATTERNING AND STRUCTURAL
+CHARACTERISATION OF SU FILMS
+The SU and SE feature sizes are largely deﬁned by the
+shadow epitaxy mask used, although evaporation chamber geometry and material diﬀusion8 become important
+when high precision is required. In particular, the ﬁnite
+evaporation source size and the distances between NW,
+mask and source generate ‘tail regions’ between fully covered and fully shadowed segments (Supplementary Section 2). The expected tail length is lt = 100 −200 nm
+for our mask/chamber dimensions. To characterise this,
+Figure 2 shows SEM and transmission electron micrographs (TEMs) of InAs hybrids with Al, Ta and
+Nb shells.
+Depositions were performed using e-beam
+evaporation at room temperature except for Al, where
+T ∼−150◦C (see Methods), with thicknesses tAl = 8 nm,
+tNb = 40 nm, tTa = 20 nm (left and middle panel) and
+tTa = 5 nm (right panel). Figure 2 middle panels show
+typical lt = 65 −120 nm for Nb/Ta and lt < 60 nm
+for Al. The smaller-than-estimated lt suggests that material diﬀusion acts to shorten lt. The enhanced diﬀusion and associated shorter lt for Al is expected from the
+lower heat of vaporisation; ∆HAl
+vap ∼300 kJ/mol, c.f.
+∆HTa,Nb
+vap
+∼700 kJ/mol.8,31 Note that these eﬀects can
+be compensated for by, e.g., altering mask design and
+NW position, using a smaller deposition source or collimator, and/or double-angle evaporation (Supplementary
+Section 2).
+The semiconductor/superconductor interface proper-
+
+===== Page 4 =====
+
+4
+I
+d
+e
+a
+b
+c
+f
+g
+Al
+Ta
+Nb
+Nb
+A1
+A2
+A3
+A4
+A5
+T1
+T2
+T3
+T5
+Vsd
+Vg
+0
+0.5
+Vsd (mV)
+Vg (V) 
+-14 
+-12.5 
+-10.25
+Al
+T4
+0
+0
+0.05
+0.14
+0
+0
+0.2
+0.24
+G (2e2/h)
+G (2e2/h)
+Dev. #
+Dev. #
+Vg
+FIG. 3. Induced superconductivity in Al/InAs, Ta/InAs and Nb/InAs hybrids. a, False-color SEM of InAs NW
+(grey) with shadow patterned Al (purple) and ex-situ Ti/Au contacts (gold). Scale bar represents 500 nm. b, Diﬀerential
+conductance G = dI/dVsd vs. Vsd and Vg close to pinch-oﬀ. A continuous, hard gap with ∆= 0.25 meV and sub-gap states
+are evident. c, Measured G vs. B∥for Vg ﬁxed at the position of the line trace in b shows the gap closing at BC
+∼2 T.
+A peak at zero bias emerges at B = 1.3 T from coalescing bound states.5 d, Typical measurements of G (normalised to GN
+at Vsd = −0.4 mV) vs. Vsd on a logarithmic scale. A hard superconducting gap is found for all ﬁve Al/InAs devices, A1-A5.
+e, Corresponding measurement for Ta/InAs devices (GN = G(Vsd = −0.25 mV)). Traces in d,e are oﬀset by two decades for
+clarity. f, G vs. Vg for a Nb/InAs device exhibiting conductance plateaus for Vsd = 0.5 mV > ∆at multiples of 0.7 × 2e2/h
+(dashed lines), and conductance doubling in the superconducting state, Vsd = 0. g, G vs Vsd shows conductance doubling on
+the ﬁrst plateau at Vg = −10.25 V, and a soft gap in the tunnelling regime, Vg = −12.5, −14 V. Contact resistance RC = 3.2 kΩ
+was subtracted from the data in f,g.
+ties crucially inﬂuence the quality of the induced superconducting gap8,9 and the rightmost panels in Figure 2
+show high resolution TEM of each interface. All interfaces were uniform, with clear semiconductor termination
+and no interface oxides/contamination. Al and InAs exhibited an epitaxial relation, with the Al growing with
+⟨111⟩out-of-plane orientation. This conﬁrms that shadowed interfaces and e-beam deposited Al retain the high
+quality and structure of MBE-grown hybrids.8,24 The
+Ta and Nb ﬁlms were amorphous/nanocrystalline with
+a columnar morphology related the deposition angle, as
+previously observed for Nb24 (Supplementary Section 3).
+Reliable characterisation of nanocrystalline/amorphous
+ﬁlms is challenging due to overlapping signals from randomly oriented grains.
+However, by imaging a thin
+(5 nm) Ta ﬁlm, randomly oriented grains with diameter
+2−5 nm can be resolved. An amorphous/nanocrystalline
+structure was found for Nb depositions both with substrate temperature T ∼−150◦C and at room temperature.
+TUNNEL SPECTROSCOPY DEVICES
+Low temperature transport experiments were performed both to benchmark the shadow-patterned hybrids against the wide literature on etched epitaxial
+Al5,8–10,14,21,22,35,36,38 – performance gains are expected
+due to eliminating post-process etching (Supplementary
+Section 4) – and to characterise the new Ta and Nbbased hybrids.
+Figure 3 displays results of tunnelspectroscopy measurements utilising half-shadowed hybrids (Figure 1d).
+The exposed SE segment was contacted by a normal metal (Ti/Au) and electrostatic
+gates were used to induce a quantum dot (QD) or
+quantum point contact (QPC) tunnel barrier between
+the Ti/Au and proximitised region.3,5,9,11,39 The differential conductance, G = dI/dVsd, in the tunneling
+regime is proportional to the hybrid density of states,
+as shown in Figure 3b for Al/InAs. A hard superconducting gap is seen for all Vg with coherence peaks at
+Vsd = ±∆/e = ±0.25 mV, highlighted by the line trace
+at Vg = −9.195 V. The gap hardness GN/GS (where
+GS = G(Vsd = 0 mV) and GN is the out-of-gap conduc-
+
+===== Page 5 =====
+
+5
+tance G(Vsd = −0.4 mV)) was ∼75 throughout the studied Vg range, with a peak value of 350 (Supplementary
+Section 5). This is the highest reported ﬁgure in a SE/SU
+hybrid, conﬁrming the high quality of the interface. Figure 3c shows the evolution in parallel magnetic ﬁeld, B∥,
+with Vg ﬁxed at the position of the line trace of Figure 3b.
+The gap closes at critical ﬁeld BC ∼2 T; consistent with
+the thin (8 nm), ﬂat, epitaxial ﬁlm.5 Coalescing bound
+states that stick to zero energy for B∥> 1.3 T were
+also observed – highlighted by the line trace taken with
+B∥= 1.5 T – resembling previously reported topological
+zero modes.3,5 While a detailed analysis of zero-modes
+is outside the scope of this article, the magnetic ﬁeldcompatibility and eﬀective g-factor = 6.538 highlight the
+potential of the shadow hybrids for studying the topological regime.
+In total, we fabricated ﬁve Al/InAs tunnel devices,
+A1-A5, and logarithmic line traces of normalised conductance G/GN vs Vsd at ﬁxed Vg are shown in Figure 3d. All
+ﬁve devices exhibited similar behaviour and a hard superconducting gap, with GN/GS = 50−100. Devices A2-A4
+feature multiple peaks below the coherence peaks at ∆
+due to bound states (Supplementary Section 6). Overall,
+the results conﬁrm the high quality of the Al/InAs hybrids synthesised using shadow epitaxy, and the device
+yield (5 out of 5) compares favourably with conventional
+device processing using wet etching (Supplementary Section 4).
+Turning to devices grown with Ta and Nb, all ﬁve
+Ta/InAs devices exhibited induced superconductivity
+(Fig 3e).
+Devices T1-T4 showed hard gaps with values GN/GS = 50–100, persisting over a wide Vg range
+(Supplementary Section 6), similar to Al/InAs hybrids.
+T5 showed a lower hardness GN/GS ∼
+10. Since the
+Ta is nanocrystalline/amorphous (Figure 2b) these results show that the atomic ordering of epitaxial interfaces is not a prerequisite for hard gap superconductivity.
+Rather, an impurity-free, uniform interface is
+suﬃcient. The values for ∆Ta = 0.13 meV and corresponding T Ta
+C
+= 0.7 K are consistent with bulk ﬁlms of
+matching thickness, 20 nm (Supplementary Section 7).40
+The Ta/InAs out-of-plane critical ﬁeld BTa
+C⊥
+∼
+3.5 T
+(Supplementary Section 7) is signiﬁcantly higher than for
+Al/InAs BAl
+C⊥∼100 mT with similar dimensions, making Ta/InAs hybrids potentially attractive for studies of
+topological superconductivity.
+The
+technological
+importance
+of
+niobium
+basedsuperconductors – owing to their high TC
+∼
+9 K
+and high critical magnetic ﬁelds – has motivated efforts to incorporate them in ex-situ-fabricated hybrid
+nano-devices.3,12,25,26,41 Shadow epitaxy enables in-situ
+Nb/InAs devices previously impossible due to lack of
+selective process techniques.
+Figures 3f,g present lowtemperature spectroscopic results. Upon increasing Vg,
+the conductance for Vsd = 0.5 mV > ∆increases in steps
+of 0.7 × 2e2/h and shows a doubling at the plateaus for
+Vsd = 0. This is consistent with a near ballistic junction
+and near perfect transmission at the contacts.11,26,27,42 In
+the tunnelling regime, Vg ≤−12.5 V, conductance suppression is clearly observed for eVsd < |∆| ∼0.2 meV in
+Figure 3g, albeit with relatively low hardness (GN/GS ∼
+3).
+Considering the near ballistic device characteristic
+and high contact transmission, and given the excellent
+gap hardness achieved in Al/InAs and Ta/InAs shadow
+devices, it is unlikely the soft superconducting gap for
+our in-situ Nb/InAs hybrid was caused by contaminated
+or process-damaged interfaces. Rather, native oxides at
+the Nb surface could provide an explanation. Nb oxides
+can be superconducting with lower TC ∼2 K, metallic,
+or magnetic43,44; each of these eﬀects leads to soft-gap
+superconductivity in thin niobium ﬁlms. Using in-situ
+surface passivation of Nb hybrids would likely provide
+insights into how the surface impacts gap properties (see
+Figure 5a). To summarise, the main result of Figure 3
+is the demonstration of high-quality hybrid devices with
+expanded choice of SU and SE.
+STABILITY OF IN-SITU MAJORANA ISLAND
+DEVICES
+While tunnel spectroscopy devices are the essential
+tool for characterising induced superconductivity, the elemental building block in most topological quantum computing architectures are ‘Majorana islands’,7,37 which
+consist of a ﬁnite length hybrid segment retaining a
+charging energy EC.
+Single21 and double22 island geometries with arbitrary superconductors are realised using a shadow epitaxy pattern of two or three bridges
+as shown in Figure 1f,g. The bridge separation(s) and
+widths determine the lengths of the hybrid segment(s)
+(∝EC) and the exposed NW segments, respectively.
+Figure 4a shows a typical Al-based shadow-patterned
+device, measured to enable comparison with conventional
+etched devices. The gate potentials Vg and Vsg1,sg2 control the charge on the island and the tunnel coupling
+to the Ti/Au leads.21,23,35,36 For EC < ∆and in the
+absence of quasi-particles or sub-gap states, charge is
+added in units of 2e (Cooper pairs). Figure 4b, shows
+G vs. Vsd and Vg exhibits 2e-periodic Coulomb diamonds
+that correspond to a charging energy 2EC ∼130 µeV
+(dashed lines). Quasi-particle 1e periodic charging is seen
+for |eVsd| > ∆∼180 µeV (solid lines).21,35 Figure 4c
+shows the temperature dependence of the low-bias Vginduced charging. The 2e periodic state persists up to
+T ∼250 −300 mK, where a transition to 1e periodicity
+occurs due to thermal excitation of quasi-particles. This
+temperature is set by ∆and the volume of the superconductor and is comparable to that observed in etched
+devices.14,23,35
+A reproducible and quiet electrostatic platform is crucial for charge-based topological devices, since environmental charge ﬂuctuations and noise couple both to the
+island charge and tunnel couplings through the semiconductor, and thereby constitute a direct source of qubit
+decoherence.45,46 Furthermore, with increasing complex-
+
+===== Page 6 =====
+
+6
+0
+0.7 G (2e2/h)
+0
+0.48 G (2e2/h)
+0
+0.25
+G (2e2/h)
+2e
+1e
+0
+0.25 G (2e2/h)
+a
+c
+b
+d
+e
+f
+g
+I
+Vsd
+Vg
+Al
+Vsg1
+Vsg2
+Vsg1
+Vsg2
+FIG. 4. Electron transport in a Majorana island. a, False color SEM of shadow patterned Al/InAs island device. Middle
+gate voltage, Vg, was varied, with the four other gates used to generate tunnel barriers. Scale bar represents 500 nm. b, Bias
+spectroscopy showing Coulomb blockade diamonds with 2e-periodicity in Vg for Vsd
+< ∆and 1e-periodicity for Vsd
+> ∆.
+c, Zero bias conductance, G vs. Vg and temperature, T. 1e-periodic peaks above T = 250 −300 mK emerge due to thermally
+excited quasi-particles. d, A single, continuous measurement of G vs. Vg and B∥, presented without corrections for, e.g.,
+switching. 364 electrons were removed from the island. The 2e- to 1e-periodic transitions in the range B∥= 0.15 – 0.25 T
+occur as bound states move to zero energy. This can occur with e, equal spacing between 1e peaks, or f, B∥-dependant spacing,
+depending on the nature of the bound states.14,21,36 g, A parity transition to a state where only odd numbers of electrons are
+on the island is also possible.36
+ity of topological Majorana circuits, ﬁne-tuning in a
+multi-dimensional space of cross-coupled parameters is
+required, and stability and reproducibility become important requirements.
+In conventional etched devices,
+the stable operation range is typically limited to ≲20
+consecutive charge states,14,21,23,35,36 as uncontrolled discrete charging of nearby impurity sites leads to random
+switches of the island charge/parity. The shadow device
+exhibits an increase of this range by at least an order
+of magnitude, consistent with a cleaner electrostatic environment due to the obviation of processing.
+This is
+demonstrated in Figure 4d, which shows the stable evolution of 182(364) consecutive 2e(1e) charge states accessed by continuously sweeping Vg, and an interleaved,
+step-wise increase of B∥. The island is superconducting
+in this ﬁeld range, and the bifurcation of the spectrum
+at B∥∼200 mT is caused by the appearance of a bound
+state below the gap, as previously analysed.14,21,36 In ad-
+
+===== Page 7 =====
+
+7
+b
+Substrate
+Superconductor
+Oxide
+Nanowire
+Metal
+Insulator
+a
+c
+d
+S=9 μm, θ1=15o, θ2=16o
+S
+θ1
+θ2
+θ1
+θ2
+S=17 μm, θ1=15o, θ2=16o
+FIG. 5. Advanced device geometries a, Schematic of twoangle procedure for Josephson, or metal-NW-metal junctions
+protected by an in-situ conformal insulator coating. b, Contacting the NW with two diﬀerent materials is possible using
+evaporation of the desired materials from two diﬀerent angles, θ1 and θ2. The pictured example constitutes an in-situ
+formed tunnel spectroscopy device. c, Example of vanadium
+Josephson junctions realised by two-angle deposition, where
+junction length depends on θ1, θ2 and the NW-bridge separation, S. d, Demonstration of a full-shell extension of the
+shadow concept. Depositing from six diﬀerent angles matching a six-fold symmetric bridge structure aligned with the
+facets of the NW, yields a full-shell JJ. Scale bars represent
+c, 200 nm, d, 10 µm (left) and 200 nm (right).
+dition to a topological transition, various trivial eﬀects
+can lead to a 2e −1e-transition in B∥, each exhibiting
+distinct peak spacing and amplitude modulation.14,21,36
+For example, the zooms of three regions of panel Figure 4d, shown in Figures 4e-g, exhibit strikingly diﬀerent behaviors. Figure 4e features 1e-spacings independent of B∥, in Figure 4f the peaks spacing and amplitude
+are modulated by B∥,47 while a 2e-2e transition occurs
+with a parity change in the range of Figure 4h.36 The behaviour shown in Figure 4f is consistent with a topological transition;14,21,22,36,47,48 however, a detailed study is
+outside the scope of this work and will be presented elsewhere. The important point here is that the shadow platform greatly enhances the range of hysteresis-free, stable
+device operation, which in turn facilitates the simultaneous study of diﬀerent behaviours. Measuring over this
+larger, stable range provides new information, including
+the identiﬁcation of slowly varying features such as the
+Vg-dependence of the 2e-1e transitions, which may be
+linked to gate-dependent g-factor of the bound state38 or
+related to weakly coupled bound-states localised in the
+leads.39 The potential for increased understanding of device features and large range stability may thus enable
+reliable and rapid identiﬁcation of the topological regime.
+In addition, stable and non-hysteretic navigation in parameter space is a prerequisite for employing automatic
+tuning and operation procedures that will be essential for
+operation of complex quantum devices in the future.49
+Just as the Majorana island is the basic component for topological architectures, gate-tunable Josephson junctions (JJs) constitute the elementary component
+of superconducting ‘gatemon’19,20 and Andreev qubit
+devices.15–18 Electrostatic stability is also critical here
+for qubit decoherence and tuning.20 In-situ JJ devices
+are grown using single-bridge shadows (Figure 1e), and
+low-temperature characterisation is presented in Supplementary Section 8, demonstrating quiet operation and
+gate-tunable critical currents ∼10 nA, consistent with
+previous devices.15,16,19
+ADVANCED ARCHITECTURES
+Having demonstrated the use of shadow epitaxy to realise the most important hybrid device geometries, we
+now discuss further extensions and the ﬂexibility of the
+method. Firstly, Figure 5a illustrates how steep-angle
+depositions under rotation enable in-situ conformal dielectric coatings that protect sensitive interfaces, contacts, and surfaces during subsequent device processing. A second extension, illustrated in Figure 5b, employs consecutive shadow depositions from diﬀerent angles to realise a complete in-situ junction with nonidentical contact elements. Such double-angle-generated
+structures thus produce both lateral and axial hybrid devices incorporating, e.g., normal metal, superconducting
+and/or magnetic elements with pristine epitaxial interfaces.
+Double-angle deposition also enables JJ devices
+with arbitrarily short junction length, as demonstrated
+in Figure 5c for a vanadium based hybrid31 made by two
+depositions from diﬀerent angles θ1 = 16◦, θ2 = 17◦.
+Conveniently, the semiconductor segment length lSE depends not only the angles θ1 and θ2, but also the separation S between bridge and NW. Increasing S from 9 µm
+to 17 µm reduced lSE from ∼400 nm to ∼40 nm.
+An important feature of our shadow epitaxy platform
+is the straightforward generalisation to full-shell geometries, achieved by radially copying the bridge design and
+depositing the coating from corresponding angles around
+the NW. Figure 5d shows an example full-shell JJ,48
+and the other geometries from Figure 1 can be implemented following the same strategy. Deposition of different materials from the various directions further in-
+
+===== Page 8 =====
+
+8
+creases the possible functionality. Shadow epitaxy also
+applies to planar structures such as selective area grown
+nanostructures13,14,50 or vapour-liquid-solid NWs grown
+parallel to the substrate29 (Supplementary Section 9).
+Finally, we discuss the potential for large scale fabrication using vertical device structures in Supplementary
+Section 10.
+CONCLUSION
+In-situ-grown superconductor/semiconductor hybrid
+devices form the backbone of electronic implementations
+of quantum information ranging from topological qubits,
+gatable transmon devices and Andreev quantum dots.
+The shadow epitaxy platform transcends previous restrictions on the possible material combinations, and obviates the most potentially damaging fabrication steps,
+thus providing clear enhancement of device quality and
+functionality. Beyond these applications, electrical contact quality, reproducibility and surface disorder play an
+pivotal role in nearly all nanoscale devices32,33 and thus
+improving material quality via shadow epitaxy holds the
+potential to strongly impact also conventional electronics, sensor-applications and optoelectronic devices.32,33
+EXPERIMENTAL SECTION
+Fabrication of the shadow epitaxy platform.
+The platform is based on InAs (111)B-oriented substrates, capped with a 100 −150 nm thick SiOx layer
+grown by plasma-enhanced chemical vapor deposition.
+The fabrication procedure is illustrated schematically in
+Supplementary Figure 1. The bridges were formed by two
+sequential wet etching steps using a single photolithographically deﬁned resist mask (photoresist AZ1505),
+with the custom pattern exposed using a Heidelberg
+µPG501 LED writer. Etching the SiOx using buﬀered
+hydroﬂouric acid (6% in H2O at room temperature)
+leaves strips of oxide in the desired bridge pattern, with
+typical length L
+∼
+10 µm and widths in the range
+W = 400 nm – 2 µm. The resist was removed and the
+InAs was subsequently etched using a 37:23:12 solution
+of C6H8O7(40%):H3PO4(80%):H2O2 with the SiOx pattern acting as an etch mask. The anisotropic etch preferentially exposes (111)B InAs crystal planes and thereby
+forms trenches in the substrate, with a (111)B surface at
+the trench bottom suitable for NW growth. An etch time
+of 5 mins at room temperature produced trences with
+depth D ∼7 µm. The InAs etchant under-etches material from both sides of each SiOx strip and a void forms
+underneath the strips since their width W ≪D. The
+result is SiOx bridges suspended above the etched InAs
+surface (Figure 1a). The process is highly reproducible
+and robust on a wafer scale (Supplementary Figure 2).
+The potential to use the platform with antimonide, nitride, silicon, and other NW materials is discussed in
+Supplementary Section 1.
+Electron beam lithography
+(PMMA A4.5 and EL13 resist stack) and e-beam deposition of Au were used to deﬁne the catalyst particles for
+NW growth. The platform is naturally compatible with
+multiple catalyst particles per bridge, and methods for
+randomly deﬁning catalyst position. Note that fabricating the bridges requires merely a single photolithography
+step; the complex structures are obtained via relatively
+simple processing.
+Nanowire hybrid growth. InAs NWs were grown
+via the Au catalyst-assisted vapour-liquid-solid mechanism in a solid-source Varian GEN-II MBE system following a two-step protocol. In the ﬁrst step, NWs were
+grown vertically along the (111)B direction, using As4
+cracker temperature 500◦C, substrate thermocouple temperature of 447◦C and V/III ﬂux ratio ∼10. A growth
+time of 80 mins resulted in 5 −8 µm-long NWs. The
+second step involved growth at reduced substrate thermocouple temperature (350◦C) and increased As cracker
+temperature (800◦C) for 10 mins. These conditions promote radial overgrowth and ﬂatter NW facets, optimal
+for subsequent superconductor deposition.
+After InAs growth, the substrate was transferred under ultra-high vacuum to a metal evaporation chamber,
+with a freely rotatable sample holder that can be cooled
+to a thermocouple temperature of approx. −150◦C using
+liquid nitrogen. The low temperature is used to decrease
+the size and pitch between the initial critical clusters,
+which promotes a continuous and ﬂat ﬁlm morphology.8
+It also suppresses the potential for parasitic material to
+settle outside the shadow-mask deﬁned regions, which
+may occur in particular for Al depositions at higher temperatures. The superconductor layers (Al, Ta, Nb, V)
+were deposited using e-beam evaporation at a ﬁxed angle to align with the shadow mask design. The NWs grow
+with type-I, {1100} facets and the shadow mask design
+is oriented such that the superconductor deposition coats
+either 2 or 3 of the NW facets, as desired.
+Electron microscopy. SEM characterisation of the
+substrates, as-grown NWs and ﬁnished devices was carried out in a JEOL 7800F using acceleration voltage
+Vacc = 5 −10 kV. For TEM characterisation, NWs
+were transferred from the growth substrate to a carbon
+membrane grid using a micromanipulator under an optical microscope. TEM micrographs were obtained using either a Philips CM20 (Figure 2, center panels) with
+Vacc = 200 kV, a FEI Titan Analytical 80-300ST featuring a monochromator and Vacc = 300 kV (Figure 2a,
+right panel) or a Phillips 3000F with Vacc = 300 kV (Figures. 2b,c, right panels). NWs were oriented with the
+beam parallel to an InAs facet (⟨2¯1¯10⟩zone-axis).
+Device fabrication and measurement. NWs were
+transferred from the growth substrate to pre-patterned
+device substrates using a micromanipulator under an optical microscope.
+Ti/Au contacts and side gates were
+deﬁned simultaneously using electron beam lithography
+and e-beam deposition.
+Ar+-ion milling was used immediately prior to contact deposition to remove native
+
+===== Page 9 =====
+
+9
+InAs oxide and ensure ohmic contact to the NW. Electron transport measurements were conducted in an Oxford Triton dilution refrigerator with a base temperature
+∼20 mK and a 6-1-1 T vector magnet. Standard low
+frequency (∼200 Hz) lock-in techniques were used to
+measure diﬀerential conductance. For the island device
+in Figure 4, the cross-coupling of Vg to the tunnel barrier segments was compensated by sweeping Vsg1,sg2 simultaneously with Vg using experimentally determined
+proportionality factors.
+Note the small oﬀsets in Figures 4d-g between measurements at successive Vg vanish when measuring within a smaller gate range, as in
+Figures 4b,c.
+All electrical data throughout this work
+are presented ‘raw’, without any corrections for switching events.
+ACKNOWLEDGMENTS
+This work was funded by Innovation Fund Denmark’s
+Quantum Innovation Center Qubiz, the Carlsberg Foundation, the Danish National Research Foundation, the
+Villum Foundation, European Union’s Horizon 2020 research and innovation programme FETOpen grant no.
+828948 (AndQC) and QuantERA project no.
+127900
+(SuperTOP). We thank Saulius Vaitiekenas, Asbjørn
+Drachmann, Juan Carlos Estrada Salda˜na, Kasper Grove
+Rasmussen, Dags Olsteins, Mikelis Marnauza, Lukas
+Stampfer, Joachim Sestoft, David van Zanten, Peter
+Krogstrup and I-Ju Chen for many helpful discussions.
+We also thank Shivendra Upadhyay, Claus B. Sørensen,
+Ajuan Cui and Thomas Pedersen (DTU Nanolab) for
+technical assistance and Charline Kirchert and Bilal
+Kousar for assistance with fabrication.
+SUPPORTING INFORMATION
+Supporting
+Information
+is
+available
+at
+https://sid.erda.dk/share_redirect/BxJJoUWo0N.
+Raw electrical data and images for all ﬁgures are
+available
+from
+https://doi.org/10.17894/ucph.
+3a22ad55-37fb-4495-b21d-4294e1e57fcc
+∗These two authors contributed equally
+† nygard@nbi.ku.dk
+‡ tsand@nbi.ku.dk
+1 R. M. Lutchyn, J. D. Sau, S. Das Sarma, Physical Review
+Letters 2010, 105, 077001.
+2 Y. Oreg, G. Refael, F. von Oppen, Physical Review Letters
+2010, 105, 177002.
+3 V. Mourik, K. Zuo, S. M. Frolov, S. R. Plissard, E. P. A. M.
+Bakkers, L. P. Kouwenhoven, Science 2012, 336, 1003.
+4 A. Das, Y. Ronen, Y. Most, Y. Oreg, M. Heiblum,
+H. Shtrikman, Nature Physics 2012, 8, 887.
+5 M. T. Deng, S. Vaitiek˙enas, E. B. Hansen, J. Danon,
+M. Leijnse, K. Flensberg, J. Nyg˚ard, P. Krogstrup, C. M.
+Marcus, Science 2016, 354, 1557.
+6 S. Das Sarma, M. Freedman, C. Nayak, Physical Review
+Letters 2005, 94, 166802.
+7 D. Aasen, M. Hell, R. V. Mishmash, A. Higginbotham,
+J. Danon, M. Leijnse, T. S. Jespersen, J. A. Folk, C. M.
+Marcus, K. Flensberg, J. Alicea, Physical Review X 2016,
+6, 031016.
+8 P. Krogstrup, N. L. B. Ziino, W. Chang, S. M. Albrecht,
+M. H. Madsen, E. Johnson, J. Nyg˚ard, C. M. Marcus, T. S.
+Jespersen, Nature Materials 2015, 14, 400.
+9 W. Chang, S. M. Albrecht, T. S. Jespersen, F. Kuemmeth,
+P. Krogstrup, J. Nyg˚ard, C. M. Marcus, Nature Nanotechnology 2015, 10, 232.
+10 J.-H. Kang, A. Grivnin, E. Bor, J. Reiner, N. Avraham,
+Y. Ronen, Y. Cohen, P. Kacman, H. Shtrikman, H. Beidenkopf, Nano Letters 2017, 17, 7520.
+11 M. Kjaergaard, F. Nichele, H. J. Suominen, M. P. Nowak,
+M. Wimmer, A. R. Akhmerov, J. A. Folk, K. Flensberg,
+J. Shabani, C. J. Palmstrøm, C. M. Marcus, Nature Communications 2016, 7, 12841.
+12 A. C. C. Drachmann, H. J. Suominen, M. Kjaergaard,
+B. Shojaei, C. J. Palmstrøm, C. M. Marcus, F. Nichele,
+Nano Letters 2017, 17, 1200.
+13 F. Krizek, J. E. Sestoft, P. Aseev, S. Marti-Sanchez,
+S.
+Vaitiek˙enas,
+L.
+Casparis,
+S.
+A.
+Khan,
+Y.
+Liu,
+T. Stankeviˇc, A. M. Whiticar, A. Fursina, F. Boekhout,
+R. Koops, E. Uccelli, L. P. Kouwenhoven, C. M. Marcus,
+J. Arbiol, P. Krogstrup, Physical Review Materials 2018,
+2, 093401.
+14 S. Vaitiek˙enas, A. M. Whiticar, M.-T. Deng, F. Krizek,
+J. E. Sestoft, C. J. Palmstrøm, S. Marti-Sanchez, J. Arbiol,
+P. Krogstrup, L. Casparis, C. M. Marcus, Physical Review
+Letters 2018, 121, 147701.
+15 D. J. van Woerkom, A. Proutski, B. van Heck, D. Bouman,
+J. I. V¨ayrynen, L. I. Glazman, P. Krogstrup, J. Nyg˚ard,
+L. P. Kouwenhoven, A. Geresdi, Nature Physics 2017, 13,
+876.
+16 D. Laroche, D. Bouman, D. J. van Woerkom, A. Proutski,
+C. Murthy, D. I. Pikulin, C. Nayak, R. J. J. van Gulik,
+J. Nyg˚ard, P. Krogstrup, L. P. Kouwenhoven, A. Geresdi,
+Nature Communications 2019, 10, 1.
+17 L. Tosi, C. Metzger, M. F. Goﬀman, C. Urbina, H. Pothier,
+S. Park, A. L. Yeyati, J. Nyg˚ard, P. Krogstrup, Physical
+Review X 2019, 9, 011010.
+18 M. Hays, G. de Lange, K. Serniak, D. J. van Woerkom,
+D. Bouman, P. Krogstrup, J. Nyg˚ard, A. Geresdi, M. H.
+Devoret, Physical Review Letters 2018, 121, 047001.
+19 T. W. Larsen, K. D. Petersson, F. Kuemmeth, T. S. Jespersen, P. Krogstrup, J. Nyg˚ard, C. M. Marcus, Physical
+Review Letters 2015, 115, 127001.
+20 F. Luthi, T. Stavenga, O. W. Enzing, A. Bruno, C. Dickel,
+N. K. Langford, M. A. Rol, T. S. Jespersen, J. Nyg˚ard,
+P. Krogstrup, L. DiCarlo, Physical Review Letters 2018,
+120, 100502.
+21 S. M. Albrecht, A. P. Higginbotham, M. Madsen, F. Kuemmeth, T. S. Jespersen, J. Nyg˚ard, P. Krogstrup, C. M.
+Marcus, Nature 2016, 531, 206.
+
+===== Page 10 =====
+
+10
+22 D. Sherman, J. S. Yodh, S. M. Albrecht, J. Nyg˚ard,
+P. Krogstrup, C. M. Marcus, Nature Nanotechnology 2017,
+12, 212.
+23 A. Proutski, D. Laroche, B. van ’t Hooft, P. Krogstrup,
+J. Nyg˚ard, L. P. Kouwenhoven, A. Geresdi, Physical Review B 2019, 99, 220504.
+24 N. A. G¨usken, T. Rieger, P. Zellekens, B. Bennemann,
+E. Neumann, M. I. Lepsa, T. Sch¨apers, D. Gr¨utzmacher,
+Nanoscale 2017, 9, 16735.
+25 ¨O. G¨ul, H. Zhang, F. K. de Vries, J. van Veen, K. Zuo,
+V. Mourik, S. Conesa-Boj, M. P. Nowak, D. J. van Woerkom, M. Quintero-P´erez, M. C. Cassidy, A. Geresdi,
+S. Koelling, D. Car, S. R. Plissard, E. P. A. M. Bakkers,
+L. P. Kouwenhoven, Nano Letters 2017, 17, 2690 .
+26 H. Zhang, ¨O. G¨ul, S. Conesa-Boj, M. P. Nowak, M. Wimmer, K. Zuo, V. Mourik, F. K. de Vries, J. van Veen,
+M. W. A. de Moor, J. D. S. Bommer, D. J. van Woerkom,
+D. Car, S. R. Plissard, E. P. A. M. Bakkers, M. QuinteroP´erez, M. C. Cassidy, S. Koelling, S. Goswami, K. Watanabe, T. Taniguchi, L. P. Kouwenhoven, Nature Communications 2017, 8, 16025.
+27 ¨O. G¨ul, H. Zhang, J. D. S. Bommer, M. W. A. de Moor,
+D. Car, S. R. Plissard, E. P. A. M. Bakkers, A. Geresdi,
+K. Watanabe, T. Taniguchi, L. P. Kouwenhoven, Nature
+Nanotechnology 2018, 13, 192–197.
+28 H. Zhang, C.-X. Liu, S. Gazibegovic, D. Xu, J. A. Logan,
+G. Wang, N. van Loo, J. D. S. Bommer, M. W. A. de
+Moor, D. Car, R. L. M. Op het Veld, P. J. van Veldhoven,
+S. Koelling, M. A. Verheijen, M. Pendharkar, D. J. Pennachio, B. Shojaei, J. S. Lee, C. J. Palmstrøm, E. P. A. M.
+Bakkers, S. D. Sarma, L. P. Kouwenhoven, Nature 2018,
+556, 74.
+29 F. Krizek, T. Kanne, D. Razmadze, E. Johnson, J. Nyg˚ard,
+C. M. Marcus, P. Krogstrup, Nano Letters 2017, 17, 6090.
+30 S. Gazibegovic, D. Car, H. Zhang, S. C. Balk, J. A. Logan,
+M. W. A. de Moor, M. C. Cassidy, R. Schmits, D. Xu,
+G. Wang, P. Krogstrup, R. L. M. Op het Veld, K. Zuo,
+Y. Vos, J. Shen, D. Bouman, B. Shojaei, D. Pennachio,
+J. S. Lee, P. J. van Veldhoven, S. Koelling, M. A. Verheijen,
+L. P. Kouwenhoven, C. J. Palmstrøm, E. P. A. M. Bakkers,
+Nature 2017, 548, 434.
+31 M. Bjergfelt, D. J. Carrad, T. Kanne, M. Aagesen, E. M.
+Fiordaliso, E. Johnson, B. Shojaei, C. J. Palmstrøm,
+P. Krogstrup, T. S. Jespersen, J. N. ard, Nanotechnology
+2019, 30, 294005.
+32 J. A. del Alamo, Nature 2011, 479, 317.
+33 H. Riel, L.-E. Wernersson, M. Hong, J. A. del Alamo, MRS
+Bulletin 2014, 39, 668.
+34 Y.-J. Doh, J. A. van Dam, A. L. Roest, E. P. A. M.
+Bakkers, L. P. Kouwenhoven, S. D. Franceschi, Science
+2005, 309, 272.
+35 A. P. Higginbotham, S. M. Albrecht, G. Kirˇsanskas,
+W. Chang, F. Kuemmeth, P. Krogstrup, T. S. Jespersen,
+J. Nyg˚ard, K. Flensberg, C. M. Marcus, Nature Physics
+2015, 11, 1017.
+36 J. Shen, S. Heedt, F. Borsoi, B. Van Heck, S. Gazibegovic,
+R. L. M. O. het Veld, D. Car, J. A. Logan, M. Pendharkar, S. J. J. Ramakers, G. Wang, D. Xu, D. Bouman,
+A. Geresdi, C. J. Palmstrom, E. P. A. M. Bakkers, L. P.
+Kouwenhoven, Nature Communications 2018, 9, 4801.
+37 S. Plugge, A. Rasmussen, R. Egger, K. Flensberg, New
+Journal of Physics 2017, 19, 012001.
+38 S. Vaitiek˙enas, M.-T. Deng, J. Nyg˚ard, P. Krogstrup,
+C. M. Marcus, Physical Review Letters 2018, 121, 037703.
+39 E. J. H. Lee, X. Jiang, M. Houzet, R. Aguado, C. M.
+Lieber, S. De Franceschi, Nature Nanotechnology 2014,
+9, 79.
+40 J. J. Hauser, H. C. Theuerer, Reviews of Modern Physics
+1964, 36, 80.
+41 K. Gharavi, G. W. Holloway, R. R. LaPierre, J. Baugh,
+Nanotechnology 2017, 28, 085202.
+42 S. Chuang, Q. Gao, R. Kapadia, A. C. Ford, J. Guo,
+A. Javey, Nano Letters 2013, 13, 555.
+43 T. Proslier, J. F. Zasadzinski, L. Cooley, C. Antoine,
+J. Moore, J. Norem, M. Pellin, K. E. Gray, Applied Physics
+Letters 2008, 92, 212505.
+44 J. Halbritter, Applied Physics A 1987, 43, 1.
+45 C. Knapp, T. Karzig, R. M. Lutchyn, C. Nayak, Phys. Rev.
+B 2018, 97, 125404.
+46 T. Li, W. A. Coish, M. Hell, K. Flensberg, M. Leijnse,
+Phys. Rev. B 2018, 98, 205403.
+47 E. B. Hansen, J. Danon, K. Flensberg, Physical Review B
+2018, 97, 041411.
+48 S. Vaitiek˙enas, M.-T. Deng, P. Krogstrup, C. M. Marcus
+2018.
+49 D. T. Lennon, H. Moon, L. C. Camenzind, L. Yu, D. M.
+Zumb¨uhl, G. a. D. Briggs, M. A. Osborne, E. A. Laird,
+N. Ares, npj Quantum Information 2019, 5, 1.
+50 P. Sch¨uﬀelgen, D. Rosenbach, C. Li, T. W. Schmitt,
+M. Schleenvoigt,
+A. R. Jalil,
+S. Schmitt,
+J. K¨olzer,
+M. Wang, B. Bennemann, U. Parlak, L. Kibkalo, S. Trellenkamp, T. Grap, D. Meertens, M. Luysberg, G. Mussler, E. Berenschot, N. Tas, A. A. Golubov, A. Brinkman,
+T. Sch¨apers, D. Gr¨utzmacher, Nature Nanotechnology
+2019, 14, 825–831.

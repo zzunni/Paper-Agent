@@ -1,0 +1,617 @@
+
+
+===== Page 1 =====
+
+Attention Modules Improve Modern Image-Level Anomaly Detection:
+A DifferNet Case Study
+Andr´e Luiz B. Vieira e Silva1
+Francisco Sim˜oes1,3
+Danny Kowerko2
+Tobias Schlosser2
+Felipe Battisti1
+Veronica Teichrieb1
+1 Voxar Labs, Centro de Inform´atica, Universidade Federal de Pernambuco, Brazil
+2 Junior Professorship of Media Computing, Chemnitz University of Technology, Germany
+3 Visual Computing Lab, DC, Universidade Federal Rural de Pernambuco, Brazil
+Abstract
+Within (semi-)automated visual inspection, learningbased approaches for assessing visual defects, including
+deep neural networks, enable the processing of otherwise
+small defect patterns in pixel size on high-resolution imagery.
+The emergence of these often rarely occurring defect patterns explains the general need for labeled data corpora.
+To not only alleviate this issue but to furthermore advance
+the current state of the art in unsupervised visual inspection, this contribution proposes a DifferNet-based solution
+enhanced with attention modules utilizing SENet and CBAM
+as backbone – AttentDifferNet – to improve the detection and
+classification capabilities on three different visual inspection
+and anomaly detection datasets: MVTec AD, InsPLAD-fault,
+and Semiconductor Wafer. In comparison to the current
+state of the art, it is shown that AttentDifferNet achieves improved results, which are, in turn, highlighted throughout our
+quantitative as well as qualitative evaluation, indicated by a
+general improvement in AUC of 94.34 vs. 92.46, 96.67 vs.
+94.69, and 90.20 vs. 88.74 %. As our variants to AttentDifferNet show great prospects in the context of currently
+investigated approaches, a baseline is formulated, emphasizing the importance of attention for anomaly detection.
+1. Introduction
+The automation of visual defect inspection can reduce
+inspection costs and security risks within real-world applications in the industry. Areas such as manufacturing, healthcare, or power delivery, often suffer from a scarcity of defective samples to train deep learning methods due to the high financial and social impact of defects [1,2,5,6,9,15,16,18,26].
+This increases the importance of unsupervised anomaly detection methods [13], which often rely on mostly normal
+or flawless samples during model training. They extract
+unique information from those samples, e.g., data distributions, whereby they can discriminate between flawless and
+anomalous samples during test time.
+Recent public datasets for anomaly detection, such as
+MVTec AD [2] and Magnetic Tiles Defects (MTD) [11],
+fostered the proposition of new anomaly detection methods [5, 8, 15–17, 26]. The MVTec AD is the most used
+dataset for industrial anomaly detection. However, it only
+presents limited challenges from the manufacturing industry,
+i.e., components are captured under a controlled environment. On the contrary, anomaly detection in the wild, e.g.,
+in power line inspections, is an open problem due to the
+lack of public datasets and benchmarks, for which additional
+challenges arise from often uncontrolled environments as
+changes in the background, lighting, scale, perspective, image resolution, object orientation, and occlusion.
+Nowadays, a popular class of unsupervised approaches
+for anomaly detection is based on feature embedding manipulation [13]. Two techniques within this approach are distribution mapping through normalizing flows [8,16,17,26] and
+feature memory bank [4,5,15]. Normalizing Flows are commonly used for density estimation and have become popular
+since they can model complex probability distributions using
+simpler ones, e.g., normal distributions [16]. In a feature
+memory bank, the extracted features are stored in a memory
+bank, whereas each method uses a different approach to how
+the features are grouped and relate to each other.
+To improve the spatial and/or channel encoding, multiple image-level anomaly detection methods apply attention
+mechanisms [6,21–23]. In other words, they highlight relevant information from foreground objects while concealing
+the background and other less relevant image regions and objects [3,14]. On a similar path, in [25], the authors proposed
+to apply attention blocks during the normalizing flow step,
+which can lead to complex modifications due to their mathematically invertible nature. Two of the most popular ones
+are the Squeeze-and-Excitation network (SENet) [10] and
+1
+arXiv:2401.08686v1  [cs.CV]  13 Jan 2024
+
+===== Page 2 =====
+
+the Convolutional Block Attention Module (CBAM) [24].
+This work studies the usage of Attention Mechanisms on
+DifferNet, a state-of-the-art anomaly detection method based
+on normalizing flows, by integrating attention blocks such
+as CBAM and SENet in its architecture. The new method
+is tested on three anomaly detection datasets: MVTec AD
+(public industrial dataset in controlled scenarios), the Semiconductor Wafer dataset [19] (private industrial dataset with
+real faulty data), and our InsPLAD-fault (under review/to be
+published, an in-the-wild dataset of power line asset inspection). The main contributions of this work are:
+• The new Attention-based DifferNet is superior to the
+standard DifferNet on all objects from three anomaly
+detection datasets, each dataset from a distinct domain;
+• The Attention-based DifferNet achieves state-of-the-art
+performance on InsPLAD-fault (in the wild);
+• The Attention-based DifferNet is qualitatively superior
+over standard DifferNet considering the most quantitatively improved categories;
+• A straightforward coupling of attention mechanisms
+to modern feature-embedding-based unsupervised
+anomaly detection.
+2. AttentDifferNet
+DifferNet is a state-of-the-art method for unsupervised
+image-based anomaly detection, combining convolutional
+neural networks with normalizing flows. The CNN in DifferNet is an AlexNet [12], which works as a backbone for
+feature-embedding extraction. It takes the training images
+to generate descriptive features of flawless images. The features are then mapped to a latent space using a Normalizing
+Flow model. It is possible to calculate the likelihood of image samples from this latent space, and anomalous images
+should present a lower likelihood than the flawless samples
+present in the training process. Because of this, the training
+goal is to find parameters that maximize the likelihood of
+extracted features in the latent space.
+DifferNet was conceived to detect defects in objects from
+images captured in a controlled context, such as objects from
+an industrial production line. To adapt it to overcome the
+challenges of object inspection in the wild, modular attentionbased mechanisms were added to its backbone architecture.
+This allows the backbone network to focus on foreground
+elements and generate more relevant feature embeddings
+of the image with the inspected object. In this work, two
+architectures are experimented with, one using Squeeze-andExcitation Networks [10] and the other using Convolutional
+Block Attention Modules [24].
+SENets and CBAMs are well-known architectural unit
+attention mechanisms with similar objectives: to increase the
+227x227x3
+3x[55x55x64]
+3x[27x27x192]
+Convolutional + ReLU
+Max pooling
+13x13x384 13x13x256
+2x[13x13x256]
+Attention block
+Attention blocks
+NF
+Normalizing flow
+z
+x
+Figure 1. Proposed AttentDifferNet architecture.
+representation power of CNNs by selectively emphasizing
+important features and suppressing irrelevant ones. While
+SENet focuses on modeling channel-wise relationships efficiently, CBAM infers intermediate attention maps along both
+channel and spatial dimensions to refine features adaptively.
+Figure 1 shows our proposed architecture. The attention
+block’s role changes according to the depth in which it is
+placed within the neural network. In the first few layers, it
+learns to highlight lower-level, class-agnostic features. In
+the deeper layers, it becomes more specialized, responding
+to different inputs in a class-specific manner. Therefore, our
+proposed architecture leverages the advantages of attention
+blocks throughout the entire network.
+3. Experiments
+For our experiments, we use three datasets which are
+briefly described below.
+InsPLAD is a power line asset inspection in-the-wild
+dataset that offers multiple computer vision challenges, one
+being anomaly detection in power line components called
+InsPLAD-fault. Its data are real-world Unmanned Aerial
+Vehicle (UAV) images of operating power line transmission
+towers. It contains five power line object categories with one
+or two types of anomalies for each class, resulting in 11 662
+images, of which 402 are samples of defective objects annotated on an image level. Since they are real-world defects,
+none of the faults have been fabricated or generated manually. Table 1 shows the InsPLAD-fault properties for the
+anomaly detection task, whereas Figure 2 depicts a flawless
+and defective sample for each of the five power line object
+classes. Its related publication is currently under review and
+the dataset will be made publicly available.
+MVTec AD [2] is the most popular public dataset for
+unsupervised anomaly detection. It contains annotated data
+of objects and textures in controlled industrial scenarios at
+2
+
+===== Page 3 =====
+
+Asset category
+Anomaly detection
+Train
+Test
+Flawless
+Flawless
+Anomalous
+Glass Insulator
+2298
+581
+90
+Lightning Rod Suspension
+462
+117
+50
+Polymer Insulator Upper Shackle
+935
+235
+102
+Vari-grip
+477
+114
+63/48
+Yoke Suspension
+4834
+1207
+49
+Table 1. InsPLAD-fault anomaly detection dataset description.
+Glass Insulator anomalies are missing caps, while the rest is
+corrosion-related. Vari-grip has two types: bird nest/corrosion.
+Figure 2. InsPLAD samples. The first row shows flawless assets,
+while the second shows defective ones. From left to right: Glass
+Insulator, Lightning Rod Suspension, Polymer Insulator Upper
+Shackle, Vari-grip, and Yoke Suspension.
+both image and pixel levels with and without anomalies. The
+anomalies are manually generated in an attempt to mimic
+real-world defects. It has ten objects and five textures categories, as shown in Table 3.
+The Semiconductor Wafer dataset [19] is a visual inspection wafer dataset for image classification (annotated in
+image-level), encompassing various wafers, chips, streets,
+and street segments. Wafer images were obtained from various real-world dicing manufacturers by scanning the wafers’
+chips after their cutting process. Different from MVTec AD,
+it contains real faulty data.
+3.1. Quantitative results
+Tables 2, 3 and 4 show the quantitative results for all three
+evaluated datasets. Our AttentDifferNets are compared to
+other state-of-the-art anomaly detection methods based on
+feature-embedding extraction. Values in bold font indicate
+the best result for a given category, while underlined values
+highlight the best result between the three DifferNet variations: standard DifferNet, AttentDifferNet (SENet), and
+AttentDifferNet (CBAM).
+Table 2 shows that the AttentDifferNet implementation
+that uses the SENet attention blocks achieved superior results
+in all categories of the InsPLAD-fault, not only compared
+to the DifferNet variations, but to all other state-of-the-art
+techniques. For the MVTec dataset, Table 3 shows a higher
+performance for FastFlow, achieving improved results in
+DifferNet
+AttentDifferNet
+Figure 3. Exemplary Grad-CAM-based class activation mapping
+comparison for DifferNet vs. AttentDifferNet given two categories
+from InsPLAD-fault (Glass Insulator and Vari-grip) and two from
+MVTec AD (Capsule and Grid), respectively.
+73% of the categories. The DifferNet using the CBAM attention block got the highest overall performance in one-third
+of the categories. However, it is worth mentioning that both
+AttentDifferNet variations outperformed the regular DifferNet in every category. Finally, on the Semiconductor Wafer
+dataset, CS-Flow has the higher overall average AUROC.
+When comparing DifferNet variations, it is noted that both
+AttentDifferNets outperformed the standard DifferNet.
+The results indicate that using the attention blocks increased the average performance in the three datasets, with a
+highlight on AttentDifferNet’s (SENet) performance on the
+InsPLAD-fault dataset, outperforming every other method
+tested with in-the-wild data. Another highlight is AttentDifferNet (CBAM) reaching the best AUROC in the Screw
+category of MVTec AD, surpassing all compared methods.
+3.2. Qualitative results
+Here we show the qualitative results for some categories
+from two of the tested datasets. Figure 3 compares the DifferNet and AttentDifferNet considering the two categories from
+InsPLAD-fault and two from MVTec AD. The Grad-CAM
+tool [7,20] is used to reveal where the network is focusing
+to make its decisions. The two comparisons on the left side
+are from InsPLAD-fault in-the-wild data, and it is clear that
+AttentDifferNet focuses on the object and ignores the background. The Glass Insulator’s missing cap is now taken into
+account. The two other comparisons are from MVTec AD
+data. AttentDifferNet was more specific on them, focusing
+on the anomaly itself, both from an object and a texture.
+4. Conclusion and outlook
+The main hypothesis of this work is that attention modules
+would help to improve the performance of state-of-the-art
+anomaly detection methods in an in-the-wild/uncontrolled
+3
+
+===== Page 4 =====
+
+Category
+DifferNet
+AttentDifferNet
+(SENet)
+AttentDifferNet
+(CBAM)
+CS-Flow
+PatchCore
+Fastflow
+CFLOW-AD
+Glass Insulator
+82,81%
+86,57%
+81,03%
+85,73%
+78,44%
+80,82%
+82,22%
+Lightning Rod Suspension
+99,08%
+99,62%
+99,33%
+96,60%
+85,11%
+87,98%
+95,52%
+Polymer Insulator Upper Shackle
+92,42%
+94,62%
+92,10%
+88,40%
+81,02%
+87,57%
+86,60%
+Vari-Grip
+91,20%
+93,52%
+88,99%
+91,53%
+91,92%
+81,89%
+90,37%
+Yoke Suspension
+96,77%
+97,38%
+96,86%
+90,70%
+58,06%
+80,40%
+83,87%
+Average AUROC
+92,46%
+94,34%
+91,66%
+90,59%
+78,91%
+83,73%
+87,72%
+Table 2. Comparison of AUROC results on the InsPLAD-fault dataset. Bold font indicates the best category result, while underlined values
+show the best result between our DifferNet variations.
+Category
+DifferNet
+AttentDifferNet
+(SENet)
+AttentDifferNet
+(CBAM)
+CS-Flow
+PatchCore
+Fastflow
+CFLOW-AD
+Bottle
+99,00%
+99,84%
+99,68%
+99,80%
+100%
+100%
+100%
+Cable
+95,90%
+98,43%
+96,65%
+99,10%
+99,50%
+100%
+97,59%
+Capsule
+86,90%
+93,86%
+92,58%
+97,10%
+98,10%
+100%
+97,68%
+Carpet
+92,90%
+93,74%
+95,18%
+100%
+98,70%
+100%
+98,73%
+Grid
+84,00%
+90,89%
+91,23%
+99,00%
+98,20%
+99,70%
+99,60%
+Hazelnut
+99,30%
+99,89%
+100,00%
+99,60%
+100%
+100%
+99,98%
+Leather
+97,10%
+98,61%
+99,32%
+100%
+100%
+100%
+100,00%
+Metal Nut
+96,10%
+96,53%
+97,70%
+99,10%
+100%
+100%
+99,26%
+Pill
+88,80%
+91,79%
+93,48%
+98,60%
+96,60%
+99,40%
+96,82%
+Screw
+96,30%
+96,21%
+98,93%
+97,60%
+98,10%
+97,80%
+91,89%
+Tile
+99,40%
+100,00%
+100,00%
+100%
+98,70%
+100%
+99,88%
+Toothbrush
+98,60%
+100,00%
+100,00%
+91,90%
+100%
+94,40%
+99,65%
+Transistor
+91,10%
+94,08%
+93,92%
+99,30%
+100%
+99,80%
+95,21%
+Wood
+99,80%
+99,83%
+100,00%
+100%
+99,20%
+100%
+99,12%
+Zipper
+95,10%
+96,30%
+95,88%
+99,70%
+98,80%
+99,50%
+98,48%
+Avg. AUROC
+94,69%
+96,67%
+96,97%
+98,72%
+99,06%
+99,37%
+98,26%
+Table 3. Comparison of AUROC results on MVTec AD dataset. Bold font indicates the best category result, while underlined values show
+the best result between DifferNet variations.
+Category
+DifferNet
+AttentDifferNet
+(SENet)
+AttentDifferNet
+(CBAM)
+CS-Flow
+PatchCore
+Fastflow
+CFLOW-AD
+Street Classification
+86,40%
+90,44%
+84,53%
+97,19%
+79,26%
+80,94%
+70,86%
+Chip Classification
+91,09%
+89,96%
+93,39%
+90,31%
+93,90%
+76,27%
+92,01%
+Average AUROC
+88,74%
+90,20%
+88,96%
+93,75%
+86,58%
+78,60%
+81,44%
+Table 4. Comparison of AUROC results on Semiconductor Wafer dataset. Bold font indicates the best category result, while underlined
+values show the best result between DifferNet variations.
+environment scenario. We propose AttentDifferNet, an unsupervised anomaly detection method based on distribution
+mappings through normalizing flows that benefit from attention mechanisms by strategically coupling modular attention
+blocks to its feature extraction step. AttentDifferNet is able
+to achieve state-of-the-art performance on InsPLAD-fault,
+an anomaly detection in-the-wild dataset. We also show that
+AttentDifferNet not only maintains the model performance
+compared to DifferNet in controlled environments but it is
+able to improve it in virtually all categories of two relevant
+controlled environments’ datasets for anomaly detection, the
+popular MVTec AD and the Semiconductor Wafer dataset.
+This work implies that the state-of-the-art unsupervised
+anomaly detection methods have limitations in uncontrolled
+4
+
+===== Page 5 =====
+
+environments. It also portrays how the usage of attention
+blocks stands well suited to deal with such limitations.
+Acknowledgements
+This research was co-funded by the German Academic Exchange Service (DAAD) and the Coordenac¸˜ao de
+Aperfeic¸oamento de Pessoal de N´ıvel Superior (CAPES)
+within the funding program “Co-financed Short-Term Research Grant Brazil, 2022 (ID: 57594818)”.
+References
+[1] Samet Akc¸ay, Amir Atapour-Abarghouei, and Toby P.
+Breckon. Skip-GANomaly: Skip Connected and Adversarially Trained Encoder-Decoder Anomaly Detection. In 2019
+International Joint Conference on Neural Networks (IJCNN),
+pages 1–8, 2019. 1
+[2] Paul Bergmann, Michael Fauser, David Sattlegger, and
+Carsten Steger. MVTec AD – a comprehensive real-world
+dataset for unsupervised anomaly detection. In Proceedings
+of the IEEE/CVF Conference on Computer Vision and Pattern
+Recognition (CVPR), June 2019. 1, 2
+[3] Gaurab Bhattacharya, Bappaditya Mandal, and Niladri B.
+Puhan. Interleaved deep artifacts-aware attention mechanism
+for concrete structural defect classification. IEEE Transactions on Image Processing, 30:6957–6969, 2021. 1
+[4] Niv Cohen and Yedid Hoshen. Sub-image anomaly detection
+with deep pyramid correspondences, 2020. 1
+[5] Thomas Defard, Aleksandr Setkov, Angelique Loesch, and
+Romaric Audigier.
+PaDiM: A Patch Distribution Modeling Framework for Anomaly Detection and Localization.
+In Alberto Del Bimbo, Rita Cucchiara, Stan Sclaroff, Giovanni Maria Farinella, Tao Mei, Marco Bertini, Hugo Jair
+Escalante, and Roberto Vezzani, editors, Pattern Recognition. ICPR International Workshops and Challenges, pages
+475–489, Cham, 2021. Springer International Publishing. 1
+[6] Bangbang Ge, Chunping Hou, Yang Liu, Zhipeng Wang, and
+Ruiheng Wu. Anomaly detection of power line insulator
+from aerial imagery with attribute self-supervised learning.
+International Journal of Remote Sensing, 42(23):8819–8839,
+2021. 1
+[7] Jacob Gildenblat and contributors.
+Pytorch library for
+cam methods.
+https://github.com/jacobgil/
+pytorch-grad-cam, 2021. 3
+[8] Denis Gudovskiy, Shun Ishizaka, and Kazuki Kozuka. Cflowad: Real-time unsupervised anomaly detection with localization via conditional normalizing flows. In Proceedings of the
+IEEE/CVF Winter Conference on Applications of Computer
+Vision (WACV), pages 98–107, January 2022. 1
+[9] Changhee Han, Leonardo Rundo, Kohei Murao, Tomoyuki
+Noguchi, Yuki Shimahara, Zolt´an ´Ad´am Milacski, Saori
+Koshino, Evis Sala, Hideki Nakayama, and Shin’ichi Satoh.
+MADGAN: Unsupervised medical anomaly detection GAN
+using multiple adjacent brain MRI slice reconstruction. BMC
+bioinformatics, 22(2):1–20, 2021. 1
+[10] Jie Hu, Li Shen, and Gang Sun. Squeeze-and-excitation networks. In Proceedings of the IEEE Conference on Computer
+Vision and Pattern Recognition (CVPR), June 2018. 1, 2
+[11] Yibin Huang, Congying Qiu, and Kui Yuan. Surface defect
+saliency of magnetic tile. The Visual Computer, 36:85–96,
+2020. 1
+[12] Alex Krizhevsky, Ilya Sutskever, and Geoffrey E. Hinton. Imagenet classification with deep convolutional neural networks.
+Commun. ACM, 60(6):84–90, may 2017. 2
+[13] Jiaqi Liu, Guoyang Xie, Jingbao Wang, Shangnian Li,
+Chengjie Wang, Feng Zheng, and Yaochu Jin. Deep industrial
+image anomaly detection: A survey. arXiv e-prints, pages
+arXiv–2301, 2023. 1
+[14] Nicolae-C˘at˘alin Ristea, Neelu Madan, Radu Tudor Ionescu,
+Kamal Nasrollahi, Fahad Shahbaz Khan, Thomas B. Moeslund, and Mubarak Shah. Self-supervised predictive convolutional attentive block for anomaly detection. In Proceedings
+of the IEEE/CVF Conference on Computer Vision and Pattern
+Recognition (CVPR), pages 13576–13586, June 2022. 1
+[15] Karsten Roth, Latha Pemula, Joaquin Zepeda, Bernhard
+Sch¨olkopf, Thomas Brox, and Peter Gehler. Towards Total Recall in Industrial Anomaly Detection. In Proceedings of
+the IEEE/CVF Conference on Computer Vision and Pattern
+Recognition (CVPR), pages 14318–14328, June 2022. 1
+[16] Marco Rudolph, Bastian Wandt, and Bodo Rosenhahn. Same
+Same but DifferNet: Semi-Supervised Defect Detection With
+Normalizing Flows. In Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV),
+pages 1907–1916, January 2021. 1
+[17] Marco Rudolph, Tom Wehrbein, Bodo Rosenhahn, and
+Bastian Wandt.
+Fully Convolutional Cross-Scale-Flows
+for Image-Based Defect Detection. In Proceedings of the
+IEEE/CVF Winter Conference on Applications of Computer
+Vision (WACV), pages 1088–1097, January 2022. 1
+[18] Thomas Schlegl, Philipp Seeb¨ock, Sebastian M. Waldstein,
+Georg Langs, and Ursula Schmidt-Erfurth. f-AnoGAN: Fast
+unsupervised anomaly detection with generative adversarial
+networks. Medical Image Analysis, 54:30–44, 2019. 1
+[19] Tobias Schlosser, Michael Friedrich, Frederik Beuth, and
+Danny Kowerko. Improving automated visual fault inspection for semiconductor manufacturing using a hybrid multistage system of deep neural networks. Journal of Intelligent
+Manufacturing, 33(4):1099–1123, 2022. 2, 3
+[20] Ramprasaath R. Selvaraju, Michael Cogswell, Abhishek Das,
+Ramakrishna Vedantam, Devi Parikh, and Dhruv Batra. Gradcam: Visual explanations from deep networks via gradientbased localization. In Proceedings of the IEEE International
+Conference on Computer Vision (ICCV), Oct 2017. 3
+[21] Chuanwang Song, Ziyu Li, Yuming Li, Hao Zhang, Mingjian
+Jiang, Keyong Hu, and Rihong Wang. Research on blast
+furnace tuyere image anomaly detection, based on the local
+channel attention residual mechanism.
+Applied Sciences,
+13(2), 2023. 1
+[22] Jian Sun, Hongwei Gao, Xuna Wang, and Jiahui Yu. Scale
+enhancement pyramid network for small object detection from
+uav images. Entropy, 24(11), 2022. 1
+[23] Hironori Takimoto, Junya Seki, Sulfayanti F. Situju, and Akihiro Kanagawa. Anomaly detection using siamese network
+5
+
+===== Page 6 =====
+
+with attention mechanism for few-shot learning. Applied
+Artificial Intelligence, 36(1):2094885, 2022. 1
+[24] Sanghyun Woo, Jongchan Park, Joon-Young Lee, and In So
+Kweon. Cbam: Convolutional block attention module. In
+Proceedings of the European Conference on Computer Vision
+(ECCV), September 2018. 2
+[25] Ruiqing Yan, Fan Zhang, Mengyuan Huang, Wu Liu, Dongyu
+Hu, Jinfeng Li, Qiang Liu, Jinrong Jiang, Qianjin Guo, and
+Linghan Zheng. Cainnflow: Convolutional block attention
+modules and invertible neural networks flow for anomaly
+detection and localization tasks, 2022. 1
+[26] Jiawei Yu, Ye Zheng, Xiang Wang, Wei Li, Yushuang Wu,
+Rui Zhao, and Liwei Wu. FastFlow: Unsupervised Anomaly
+Detection and Localization via 2D Normalizing Flows, 2021.
+1
+6

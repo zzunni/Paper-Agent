@@ -1,0 +1,1133 @@
+
+
+===== Page 1 =====
+
+Image-Intrinsic Priors for Integrated Circuit Defect Detection and
+Novel Class Discovery via Self-Supervised Learning
+Botong.Zhao,Xubin.Wang,Shujing.Lyu,Yue.Lu
+Abstract
+Integrated circuit manufacturing is highly complex, comprising hundreds of process steps. Defects can
+arise at any stage, causing yield loss and ultimately degrading product reliability. Supervised methods
+require extensive human annotation and struggle with emergent categories. We propose IC-DefectNCD,
+a support-set-free framework that leverages Image-Intrinsic Priors in IC SEM images for defect detection
+and novel class discovery. First, Self-Normal Information Guided IC Defect Detection is introduced, which
+aggregates representative normal features through a learnable normal information extractor and uses
+reconstruction residuals to coarsely localize defect regions. To handle saliency variations across defects,
+an adaptive binarization strategy is adopted to produce stable subimages focused on defective areas.
+Finally, Self-Defect Information Guided IC Defect Classification is developed, which incorporates a softmask guided attention to inject spatial defect priors into a teacher-student model, enhancing sensitivity
+to defective regions and suppressing background interference.
+This enhances sensitivity to defective
+regions, suppresses background interference, and enables recognition and classification of unseen defects.
+The proposed approach is validated on a real-world dataset spanning three key fabrication stages and
+covering 15 defect types. Experiments demonstrate robust performance on both defect detection and
+unseen defect classification.
+Keywords:
+Integrated circuit; defect detection; unknown defect discovery; self-supervised learning;
+1
+Introduction
+With the rapid advancement of semiconductor manufacturing, Integrated circuit(IC) technology nodes
+continue to shrink and circuit density continue to rise, making fabrication increasingly complex. During
+production, even minute anomalies at any process step can manifest as surface defect. As shown in Fig.
+1, wafer images captured by scanning electron microscopy (SEM) typically exhibit complex backgrounds,
+extremely low defect rates, and marked diversity in defect morphology. These defects indicate process excursions and equipment health, and are tightly linked to final device performance and reliability. Efficient
+wafer defect detection and management are therefore essential for improving manufacturing yield.
+Figure 1: Wafer site sampling and SEM imaging pipeline, with layout changes in IC manufacturing continuously introducing unseen defects.
+Therefore, semiconductor fabs typically employ a large team of yield engineers dedicated to defect
+inspection and analysis. Engineers use SEM images to closely examine wafers, then quantify, analyze, and
+1
+arXiv:2511.03120v1  [cs.CV]  5 Nov 2025
+
+===== Page 2 =====
+
+classify observed defects by type, size, and appearance. Engineers infer root causes and coordinate with
+the process-module owners, making SEM-based defect analysis integral to every stage of IC manufacturing.
+Although AI methods improve detection efficiency [15, 49, 44, 51, 40], most approaches rely on the
+unrealistic assumption that defects and backgrounds at inference time must have appeared in the training
+or support set. This hinders deployment in real production environments. As shown in Fig. 2, supervised
+models [36, 31, 52] classify known defects accurately but fail to generalize to unknown categories. Unsupervised methods can discover anomalies, yet their classification performance is weak and the support
+set cannot cover complex and evolving process backgrounds. Fundamentally, these approaches adopt a
+static design that cannot adapt to continually emerging backgrounds and defects driven by new processes,
+materials, and layouts in production. In addition, the uniqueness, scarcity, and confidentiality of SEM
+images make large-scale annotation difficult.
+Therefore, fast adaptation for detecting and classifying
+unseen defect categories is a core requirement for practical industrial deployment.
+Figure 2: Comparison of unsupervised and supervised defect detection. (a) Unsupervised methods use normal
+features to localize anomalies but cannot categorize unseen defects. (b) Supervised methods classify known
+defects from labeled data but fail on unseen categories and demand extensive annotation.
+Building on these observations, we identify two key differences between IC scenarios and conventional
+industrial defect detection. First, IC SEM images have highly complex backgrounds, and the task must
+both localize defects and determine their categories.
+Second, within a single IC SEM image, normal
+regions are strongly correlated in structure, and defect regions show a stable contrast to the image’s
+normal patterns. These characteristics mean that localization alone or cross-image priors are insufficient,
+and leveraging normal information within each image is essential for detection and classification.
+We present IC-DefectNCD, a unified framework that leverages single-image priors for IC defect detection and novel class discovery. First, a learnable Normal-Information Extractor (NI-Extractor) aggregates
+single-image normal informations, reconstructs normal content, and localizes defects via reconstruction
+residuals. Then, Self-Saliency-Driven Adaptive Binarization produces stable, defect-centered crops. Finally, Soft-Mask–Guided Attention (SMG-Attention) injects spatial defect priors into the teacher–student
+module to focus representations on defects and suppress background. Semi-supervised k-means estimates
+the number of unseen defect classes and configures the classification head. The system delivers robust
+detection and accurate classification of both base and unseen classes.
+The primary contributions of this research are outlined as follows:
+1. We present IC-DefectNCD, a unified framework for IC defect detection and novel class discovery
+that exploits single-image internal cues in SEM imagery and removes any support-set dependency at
+inference.
+2. A self-saliency-driven adaptive binarization with center cropping leverages the relative saliency
+between defective and normal regions to adaptively segment defects in IC SEM images.
+3. SMG-Attention injects a soft-mask spatial prior into a teacher-student self-supervised framework,
+strengthening focus on defective regions and enabling reliable identification and classification of unseen
+defects.
+2
+
+===== Page 3 =====
+
+4. Validated on real data spanning BEOL, DEP, and DPR with 15 defect types, the approach delivers strong detection and classification performance with a simple, support-set-free inference pipeline,
+demonstrating robust generalization.
+2
+Related work
+2.1
+IC defect detection
+Due to early technological limitations, wafer-surface defect inspection primarily relied on manual visual
+checks. Faced with increasingly complex IC designs, this approach demands substantial manpower and
+suffers from low efficiency, limited accuracy, and frequent misses and false alarms. With technological
+progress, traditional computer vision techniques have been applied to defect detection, such as edge
+detection [53], morphological operations [16], and texture feature extraction [57]. In parallel, machine
+learning–based methods have also been explored, most commonly feature-driven schemes using descriptors
+like gray-level co-occurrence matrices and wavelet transforms. However, these approaches depend heavily
+on hand-crafted rules and expert knowledge, making them ill-suited to the diverse, subtle, and rapidly
+evolving defect types in IC manufacturing [18, 26].
+In recent years, driven by deep learning, defect detection has shifted toward more intelligent paradigms
+with several mainstream directions. Reconstruction-based methods learn the distribution of normal samples and localize anomalies via reconstruction error, for example transparency-guided residual inpainting
+in TransFusion [8], multi-scale latent restoration and contrast in DiAD [12], and adaptive-step denoising
+for varying saliency in GLAD [48]. Memory-bank–based methods extract features with pretrained models and detect anomalies by comparing against stored normal features, such as multi-scale local mutual
+scoring in MuSc [27], patch-level noise discrimination with denoising before building the core memory
+in SoftPatch [21], and DINOv2-based patch similarity for few-shot detection in AnomalyDINO [4]. In
+addition, with the rise of vision–language models, multimodal approaches align textual prompts with
+localized visual features for anomaly localization and recognition, including PromptAD [25], AA-CLIP
+[30], AnomalyCLIP [56], FiLo [9], and MultiADS [38].
+These general methods face inherent challenges on IC SEM images. Unlike conventional industrial
+products with uniform appearance, IC SEM imagery exhibits highly structured and strongly repetitive
+textures, and defects often manifest as subtle, localized anomalies embedded in the background. This
+characteristic misaligns with the global semantic cues that generic vision models rely on, leading to
+substantial challenges in stability and cross-process transferability for IC defect detection.
+To address these domain-specific challenges, several studies have explored IC-tailored solutions. Lu
+leverages Masked Autoencoders (MAE) for reconstruction-based segmentation of SEM defects [29]. Chen
+proposes a CNN–Transformer hybrid framework for IC defect segmentation [31, 36]. Jiang investigates
+trainable multimodal large models to align IC defect semantics [22]. Despite progress, these approaches
+still rely on support sets of normal samples and substantial manual annotation, and their generalization
+across layouts and process stages remains uncertain. Sadikaj et al. use differences in text features across
+defect categories to label masks and thereby classify defects [38]. Zhao introduces a multi-scale receptivefield mechanism to classify defects of varying sizes[52].
+However, a fundamental limitation remains. Most methods assume a closed world in which defects
+and backgrounds observed at inference are predefined in the training phase or the support set. This
+assumption conflicts with the dynamic reality of IC production, where evolving processes and layouts
+continually introduce unseen backgrounds and defect categories.
+Consequently, unseen defect classes
+remain a challenge for existing methods, constraining their practical deployment in IC manufacturing.
+We take a different direction aligned with IC manufacturing. Instead of relying on support sets and
+extensive labels, the approach mines the internal information of each test image to improve generalization
+in defect detection. Concretely, normal information within a single image enables highly generalizable
+detection, while self-supervised learning combined with semi-supervised k-means discovers and classifies
+unknown defect categories. This design better matches fast iteration and open-world uncertainty in IC
+production.
+2.2
+Binarization
+Binarization is a key preprocessing step in many vision tasks and has been widely used in edge detection
+[24, 23], image segmentation [20, 13, 47], document image processing [11, 3, 39], medical image analysis
+[55, 32], and object detection [1, 6, 42]. A classical approach is Otsu’s method [34], which adaptively
+selects a global threshold for separating foreground and background by maximizing inter-class variance.
+3
+
+===== Page 4 =====
+
+Recently, learning-based methods such as DiffuMask [46] leverage cross-attention maps together with
+adaptive thresholds to produce binary masks. Although general-purpose segmentation models such as
+SAM and SAM 2 show strong performance, their substantial computational cost, bias toward natural images, and limited adaptation under scarce IC SEM data constrain their practicality for our task [37]. More
+importantly, IC defects are typically subtle local anomalies embedded within normal structures, which
+provide weak semantic cues, making it difficult for general models to reliably identify them. Existing binarization pipelines often produce scattered false-positive regions when applied to anomaly segmentation,
+which severely interferes with downstream region-level anomaly categorization and overlooks the pronounced saliency differences across defect types. To tackle these issues, we propose a self-saliency driven
+adaptive binarization that concentrates on extracting the principal connected anomalous regions, thereby
+suppressing spurious detections and improving the robustness of subsequent self-supervised classification.
+2.3
+Novel Class Discovery
+Novel Class Discovery(NCD) aims to leverage knowledge learned from labeled classes to identify and
+cluster new classes in unlabeled data. Early frameworks were often formulated as deep transfer clustering
+[11]. Most early methods followed a two-stage pipeline [13, 14, 11]: first learn a representation prior on
+base classes, then transfer it to the novel set for clustering. More recently, one-stage methods [10, 54, 43]
+jointly handle base and unseen data, reducing bias toward base classes and yielding more generalizable
+representations.
+However, these approaches typically assume that the number of unknown classes is
+known a priori and that the unlabeled set contains no samples from seen classes.
+This assumption
+conflicts with the realities of IC manufacturing: defect categories are dynamic and often include previously
+unseen types, and newly emerging and legacy defects frequently co-occur. Moreover, IC defects typically
+occupy only a small portion of an image, leaving their features easily overwhelmed by the extensive
+normal background. To overcome these limitations, we first introduce SMG-Attention to sharpen the
+model’s focus on defect regions while preserving contextual relations between defects and normal areas.
+Building on this, we propose a semi-supervised k-means inference strategy that automatically estimates
+the number of unknown classes, and we construct a self-supervised classifier enhanced with IC defect
+priors to effectively discover and categorize unseen defects.
+3
+Proposed method
+IC-DefectNCD focuses on mining single-image internal cues for robust defect detection and classification
+in wafer production. As shown in Fig. 3, the Self-Normal Information Guided IC Defect Detection stage
+reconstructs the normal component of the image and produces a residual-based defect score map. The
+Self-Saliency-driven Adaptive Binarization module then converts the score map into a compact soft mask
+using adaptive thresholding and center cropping. Finally, the Self-Defect Information Guided IC Defect
+Classification stage adopts SMG-ViT, which augments transformer self-attention with SMG-Attention
+to learn defect-centric representations in a teacher–student self-supervised framework. Semi-supervised
+k-means estimates the number of unknown classes in the unlabeled set and configures the classification
+head, enabling recognition and classification of unseen defects.
+3.1
+Problem Formulation and Notation
+In IC defect detection practical applications, the unlabeled set Du usually contains both base(seen) and
+unseen classes, with the latent label space Yu = Cbase ∪Cu, where the cardinality of unseen classes
+Ku = |Cu| is unknown a priori.
+Our goal is to distinguish the base and unseen classes in Du and
+estimate the total number of classes, thereby providing reliable priors for subsequent learning of the
+unseen classes. Following the standard NCD setting, we adopt a small set of labeled abnormal images
+Dl = {(Il
+i, yl
+i, M l
+i) | i ∈[1, Nl]}, which contains Cl available (“Base”) classes. Here, yl
+i ∈{0, 1}1×(Cl+Cu)
+is the one-hot category label, and M l
+i is the ground-truth anomaly mask of image Il
+i in Dl. The labeled
+set Dl provides industrial priors that guide grouping within Du and the discovery of unseen defect classes.
+3.2
+Self-Normal Information Guided IC Defect Detection
+Many approaches extract or learn “normal” features from a support set and then compare them against
+a test image. However, in IC manufacturing, these methods encounter fundamental limitations. IC SEM
+images exhibit highly structured backgrounds, and attention’s global semantics and positional encodings
+can distort local evidence, making support-derived “normal” features difficult to align with local test
+4
+
+===== Page 5 =====
+
+Figure 3: (a) Self-Normal Information Guided IC Defect Detection: NI-Extractor gathers normal informations and NIG-Decoder reconstructs patch tokens by these normal informations, and feature comparison
+yields a defect score map.(b) Self-Saliency-driven Adaptive Binarization: adaptive thresholding and
+center cropping produce a compact soft mask.(c) Self-Defect Information Guided IC Defect Classification: SMG-ViT uses the soft mask within teacher–student self-supervised learning, and semi-supervised
+k-means estimates the number of unknown classes and sets the number of classification heads for unseen
+defect classification.
+features. We observe that intra-image features are more strongly correlated than features matched from
+an external support set. Moreover, constructing a support set that spans diverse layouts, processes, and
+revisions is impractical in real production.
+To address this challenge, we propose Self-Normal Information Guided IC Defect Detection. As illustrated in Fig. 4(a), the framework has two stages: (i) extraction of representative normal features
+and (ii) normal-information-guided reconstruction. First, a learnable Normal-Information (NI) extractor
+aggregates features that characterize the image’s intrinsic normal patterns. Next, a Normal-InformationGuided(NIG) Decoder uses these features to reconstruct local features. Finally, residuals between reconstructed and original features provide a defect score, which coarsely localizes and segments candidate
+regions.
+The learnable NI-Extractor mines single-image normal informations directly from the input, eliminating any reliance on an external support set. We synthesize pseudo defects and corresponding binary
+masks by randomly masking features extracted from normal samples on the training images, yielding
+paired normal and pseudo-abnormal samples that mimic production cases. Next, a pretrained backbone
+extracts multi layer features{fℓ}L
+ℓ=1, and each feature map satisfies size(fℓ) = N × C. Here, N denotes
+the number of patch tokens, and C denotes the feature dimension.
+As shown in Fig. 4(b), we aggregate features from multiple layers to obtain F, a multi-scale representation that serves as the keys and values of the normal-information extractor.
+Next, we apply
+cross-attention by taking M initialized learnable normal tokens F init
+normal together with F as input, and
+obtain Fnormal ∈RM×C, which encodes the information of normal regions. The computation is as follows.
+5
+
+===== Page 6 =====
+
+Figure 4: (a) Overview of the proposed Self-Normal Information Guided IC Defect Detection
+framework. The framework enhances detection robustness by mining normal cues directly from a single
+image without relying on external support sets. It reconstructs normal patterns guided by these cues and
+isolates abnormal regions through residual analysis. (b) Detailed architecture of each layer in the NI Extractor. (c) Detailed architecture of each layer in the NIG Decoder.
+F =
+L
+X
+ℓ=1
+f ℓ,
+Q = Finit
+normalWq,
+k = FWk,
+v = FWv,
+F′
+normal = Attention(Q, k, v) + Fnormal,
+Fnormal = MLP(F′
+normal) + F′
+normal.
+Wq, Wk, and Wv ∈RC×C denote the learnable parameters in the cross-attention module, and MLP
+denotes a multilayer perceptron.
+To ensure that the extracted normal information truly originates from normal regions, we design the
+following loss function. First, a downsampled mask is employed to separate normal regions from pseudo
+defect areas. Next, we compute the cosine distance between the extracted normal information and the
+features from both normal and abnormal areas. The objective is to minimize the distance to features of
+normal areas while maximizing the distance to those of abnormal areas. This encourages the extracted
+normal information to remain strongly correlated with the true normal regions.
+The loss function is
+defined as follows.
+d+
+i =
+min
+m∈{1,...,M} distance cos
+ F(i), F m
+normal
+
+,
+d−
+j =
+min
+m∈{1,...,M} distance cos
+ F(j), F m
+normal
+
+,
+Lnormal =
+1
+|Ωn|
+X
+i∈Ωn
+d+
+i +
+1
+|Ωa|
+X
+j∈Ωa
+(1 −d−
+j ),
+α ≥0,
+where distance cos(·, ·) denotes the cosine similarity between the patch tokens extracted by the pretrained model and the normal-information tokens Fnormal. Here, d+
+i denotes the distance to the nearest
+normal patch token for i ∈Ωn, and d−
+j denotes the distance to the nearest abnormal patch token for
+j ∈Ωa.
+It is important to note that the extracted normal information is not a single local feature but a crossregional representation capturing the overall normal pattern of the image. Therefore, directly computing
+patch-level feature distances for anomaly scoring using this information is unreliable. Instead, we employ
+the extracted normal information to guide the reconstruction of IC features. Defect regions are subsequently segmented by computing residuals between the reconstructed and original features. This process
+effectively suppresses global bias while amplifying fine-grained deviations from the normal structure.
+As shown in Fig. 4(c), Fnormal is injected into the decoder to guide feature reconstruction. Because
+Fnormal represents only normal region features, we use it as the keys and values. During training, the de6
+
+===== Page 7 =====
+
+coder focuses on reconstructing features from normal regions, which effectively suppresses reconstruction
+for anomalous queries.
+Qℓ= f ℓ−1
+decoderWQ
+ℓ,
+Kℓ= FnormalWK
+ℓ,
+Vℓ= FnormalWV
+ℓ,
+Aℓ= ReLU
+ QℓK⊤
+ℓ
+
+, f ℓ−1′
+decoder = AℓVℓ,
+,
+f ℓ
+decoder = MLP
+ f ℓ−1′
+decoder
+
++ f ℓ−1′
+decoder.
+Here, f ℓ
+decoder ∈RN×C denotes the output of the ℓ-th decoder layer, and WQ
+ℓ, WK
+ℓ, WV
+ℓ∈RC×C are
+the learnable parameters of the ℓ-th decoder layer. To make the reconstructed normal features closely
+match the encoder’s original normal features while emphasizing hard regions during backpropagation
+and suppressing gradient interference from easy regions, we design the loss to directly modulate feature
+gradients.
+wℓ(h, w) =
+M ℓ(h, w)
+u(M ℓ)
+γ
+,
+Lreconstruction = 1
+L
+L
+X
+ℓ=1
+distance cos
+
+vec(f ℓ), vec(ˆf ℓ
+D)
+
+,
+ˆf ℓ
+D(h, w) = cg
+ f ℓ
+D(h, w)
+
+wℓ(h, w).
+where u(M ℓ) represents the average regional cosine distance within a batch, γ ≥0 denotes the
+temperature hyper-parameter, cg(·) wℓ(h, w) denotes a gradient adjustment based on the dynamic weight
+wℓ(h, w), and vec(·) denotes the flattening operation. The overall training loss of our INP-Former can be
+expressed as
+Ltotal = Lreconstruction + λ Lnormal.
+3.3
+Self-Saliency-driven Adaptive Binarization
+The reconstruction residuals yield a defect score map that serves as a coarse prior for localization. As
+shown in Fig. 5, binarization across different thresholds reveals that defects vary in visual saliency, and
+the number of detected defect regions fluctuates noticeably as the threshold decreases. This instability
+arises because defect regions typically receive higher defect scores than normal regions, while normal
+regions, although more consistent, still exhibit inherent fluctuations. These observations motivate an
+image-specific threshold rather than a fixed one.
+Let R ∈RH×W denote the residual map. We compute a self-saliency map S ∈[0, 1] by percentile
+normalization
+S = clip
+
+R −percp1(R)
+percp2(R) −percp1(R), 0, 1
+
+,
+where percp(R) is the p-th percentile. We then sweep a descending threshold set T = {t0 > t1 > · · · >
+tK} uniformly sampled in [0, 1] (e.g., K = 64). For each t ∈T we form a binary mask Bt = 1[S ≥t] and
+count its connected components c(t). Fig. 6 plots c(t) versus the threshold and shows a characteristic
+pattern where a stable plateau transitions to rapid fluctuation as the threshold decreases.
+We define a stable plateau P ⊆T as a maximal consecutive index interval satisfying
+|c(tk+1) −c(tk)| ≤ε,
+with ε ∈{0, 1}. Among all candidate plateaus, we select the longest one P⋆. If multiple plateaus
+tie, we choose the interval with the highest average inter-threshold IoU
+ Btk, Btk+1
+
+between consecutive
+masks. The adaptive threshold is the lowest value on the selected plateau,
+t⋆= min P⋆,
+which yields the most inclusive mask while remaining within the stable regime highlighted in Fig. 6.
+The final mask is
+M = post
+ Bt⋆
+,
+7
+
+===== Page 8 =====
+
+Figure 5: Binarization results under different thresholds.
+3.4
+Self-Defect Information Guided IC Defect Classification
+Unlike conventional classification, where models typically process complete and independent foreground
+objects, defects in integrated circuits take markedly different forms. Beyond a small number of independent particulate defects, most defects such as shorts and bubbles manifest as abnormal deformations of
+circuit structures, whereas opens and voids correspond to missing parts of specific structures. Pretrained
+ViT rely on global semantics learned from natural images and adapt poorly to the highly structured,
+low-saliency, and locally dominated defect patterns in IC-SEM. Under data-scarce production conditions,
+their transferability and robustness are often constrained. Consequently, during classification the model
+must precisely focus on the defect region while capturing the transitions and contextual relationships
+between the defect and the surrounding normal circuitry.
+3.4.1
+Self-supervised feature extractor guided by a soft mask
+To address limited defect awareness and the difficulty of balancing local focus with global context, we
+introduce SMG-Attention after obtaining a defect-centered crop.
+This mechanism injects the defect
+heatmap as a spatial prior into the attention computation, guiding the model to attend to defects while
+preserving their linkage to normal regions. The computation of SMG-Attention is as follows.
+ˆm =
+h
+max(M) ; vec
+ AvgPoolp×p(M)
+i
+∈RN+1,
+N = H
+p
+W
+p ,
+Attn = softmax
+ Ql−1K⊤
+l−1 + Repeat( ˆm)
+
+Vl−1.
+Here M denotes the defect segmentation heatmap of the cropped image. After downsampling and flattening, it is aligned with the patch tokens. The maximum heatmap value is inserted at the first position
+to provide a whole-image defect score aligned with the [CLS] token. Next, Repeat(·) replicates the softmask vector across query rows, and the replicated vector is added as an additive bias in the attention
+computation. Notably, soft-mask–guided attention replaces only the last j transformer layers to construct SMG-ViT. The remaining layers use DINOv2-pretrained ViT parameters and are frozen during
+fine-tuning.
+Following DINO [33], we apply distinct data augmentations to each defect-centered sub-image to
+obtain a pair (xn,i, x′
+n,i), which is then fed to a teacher–student model. This training strategy strengthens
+the sensitivity of SMG-Attention to anomalous regions. The training pipeline is illustrated in Fig.7.
+As shown in Fig. 8, visualizing the last layer verifies the effectiveness of SMG-ViT, which drives the
+model to focus on defect regions.
+8
+
+===== Page 9 =====
+
+Figure 6: Number of defect regions after binarization with different thresholds.
+3.4.2
+Unseen defect classification guided by semi-supervised k-means
+In IC manufacturing, the introduction of new process steps or layouts often brings previously unseen
+defects. However, most NCD methods rely on two impractical assumptions: the unlabeled set contains
+no samples from known classes, and the number of unknown classes is given a priori. These assumptions
+limit applicability in dynamic production lines.
+To overcome this, we introduce a semi-supervised kmeans–based estimator during training that automatically infers the total number of unknown defect
+classes in the unlabeled data.
+We consider a partially labeled dataset D = DL ∪DU. The labeled set DL = {(xi, yi)}NL
+i=1 contains
+samples only from the base classes Cbase. The unlabeled set DU = {xj}NU
+j=1 may contain samples from
+both Cbase and the unseen classes Cunseen.
+Our goal is to estimate the total number of classes ˆK and thereby obtain the number of unknown
+classes ˆCu = ˆK −Cl, which sets the correct output dimension for the downstream classifier. All samples
+are embedded using the feature extractor f(·) trained with the teacher–student framework and SMGAttention:
+z = f(x) ∈Rd,
+ZL = {zi}, ZU = {zj}, Z = ZL ∪ZU.
+For a candidate number of clusters k, we run semi-supervised k-means on the full set Z. We initialize
+the Cl centroids using the class means from DL and anchor them during iterations so that labeled samples
+remain assigned to their ground-truth centroids. The remaining k −Cl centroids are initialized on Z
+using k-means++. Unlabeled samples are assigned to the nearest centroid, and centroids are updated
+until convergence. After convergence, we record the cluster labels ˆC(k) obtained on the labeled set DL.
+To evaluate clustering quality, we compute accuracy only on the labeled subset DL.
+We use the
+Hungarian algorithm to optimally match predicted clusters to ground-truth labels, denoted by a mapping
+m, and compute accuracy:
+ACC(k) = max
+m
+1
+|DL|
+X
+(xi,yi)∈DL
+1
+
+yi = m( ˆCi(k))
+	
+.
+We then search over a predefined range SSS for the k that maximizes ACC(k):
+ˆK = arg max
+k∈S ACC(k),
+ˆCu = ˆK −Cl.
+9
+
+===== Page 10 =====
+
+Figure 7: Overview of the Soft-mask–guided teacher–student model. Stage 1 pretrains the SMGViT encoder with self-supervision to learn single-image priors and focus representations on defect regions.
+Stage 2 estimates the number of unseen classes using semi-supervised k-means on mixed labeled and
+unlabeled features and configures the discovery head.
+Stage 3 trains the classification heads within a
+teacher–student framework to classify both base and unseen defect classes.
+Figure 8: Visualization of SMG-Attention.
+For efficiency, we adopt Brent’s method to maximize ACC(k) within S, and take the optimal ˆK as
+the final estimate of the total number of classes.
+After obtaining ˆK, we construct classification heads for self-supervised training.
+For each defectcentered crop, we generate two augmented views and feed them into a shared encoder E along with two
+independent heads. The encoder is built on the previously trained SMG-Attention and remains frozen in
+this stage. The two heads are a labeled head h for known classes and an unlabeled head g for unknown
+classes. We optimize only the classification layers, and both heads together with their projection share
+parameters across views. The output dimension of the heads is:
+C = Clabeled + Cunlabeled + 1,
+where the final term corresponds to the defect-free class.
+For labeled samples in DL, the labeled head h outputs logits that are supervised with cross-entropy
+against the one-hot ground-truth labels. For unlabeled samples in DU, the unlabeled head g produces
+logits that are assigned online pseudo-labels using the Sinkhorn–Knopp algorithm, followed by crossentropy training.
+Within self-supervised training, to encourage unlabeled samples to form novel clusters rather than
+10
+
+===== Page 11 =====
+
+being absorbed by known classes, we force the teacher’s logits on known classes to zero when processing
+unlabeled inputs. To stabilize the learning signal, we also use different softmax temperatures for teacher
+and student: the teacher adopts a lower, sharpening temperature to produce higher-confidence targets,
+while the student uses a higher, smoothing temperature to better match the teacher’s outputs. This
+improves cross-view consistency and enhances discrimination of unknown defect classes.
+4
+Experiment
+4.1
+Dataset
+The IC-SEM dataset comprises 2,990 images collected from three key manufacturing stages: back end
+of line (BEOL), deposition (DEP), and dummy poly remove (DPR). It spans 15 defect categories and
+reflects highly structured backgrounds with localized anomalies under realistic conditions, providing comprehensive support for process-quality evaluation.
+BEOL forms metal interconnects and dielectric structures for signal routing and device-level reliability. This subset includes 1,290 images across 6 defect types and is used to assess stability and consistency
+during interconnect formation.
+DEP deposits dielectric or metal films that underpin subsequent etching and patterning and directly
+affect electrical characteristics. It contains 2 defect types with 775 images and supports analyses of film
+uniformity and quality control.
+DPR removes temporary dummy polysilicon to prepare surfaces for metallization or packaging while
+preserving layout fidelity. The subset covers 7 defect types with 925 images and facilitates evaluation of
+removal efficiency and surface cleanliness.
+4.2
+Experimental Setup
+Backbone and Hyperparameters. We use ViT-Base/14 pretrained with DINOv3 as the backbone.
+The normal-information extractor aggregates features with 6 learnable normal tokens, and all inputs are
+resized to 448 × 448. Hyperparameters are selected via grid search with γ = 3.0 and λ = 20. Training is
+performed on four NVIDIA RTX 4090 GPUs using AdamW with a learning rate of 1e−3 for 300 epochs.
+Evaluation Metrics for Detection. We report image-level AUROC(i-AUROC) for anomaly recognition and pixel-level AUROC(p-AUROC) for localization accuracy.
+Evaluation Metrics for Classification. For classification, we use F1, normalized mutual information (NMI), and adjusted Rand index (ARI). To avoid label-permutation bias, predictions are optimally
+matched to ground truth with the Hungarian algorithm.
+Generalization Evaluation Protocol. To assess generalization, we conduct cross-process evaluation. For detection, we train on BEOL and test on DEP/DPR, and conversely train on DPR and test on
+BEOL. For classification, we simulate mixed known/unknown settings by treating BEOL as known and
+DEP/DPR as unknown, and also the reverse where BEOL is unknown and DPR is known. This protocol
+targets robustness to new processes and layouts.
+4.3
+Comparative Experiments
+We compare our method against state-of-the-art few-shot and zero-shot detectors, as shown in Table 1.
+Our approach outperforms both memory-bank-based methods and reconstruction-based methods. The
+gain stems from deriving normal cues directly from each test image rather than external support sets,
+which yields context consistent positives and mitigates cross process feature misalignment.
+Table 1: Image-level (i-AUROC) and pixel-level (p-AUROC) on three IC process stages (%).
+Method
+BEOL
+DEP
+DPR
+i-AUROC
+p-AUROC
+i-AUROC
+p-AUROC
+i-AUROC
+p-AUROC
+AA-CLIP[30]
+95.69
+93.12
+97.85
+96.04
+73.08
+89.42
+winCLIP[19]
+65.08
+85.62
+90.86
+93.25
+64.69
+88.24
+MUSC[27]
+92.24
+95.04
+98.01
+97.02
+82.77
+94.12
+AnomalyCLIP[56]
+82.10
+95.40
+90.90
+91.10
+73.70
+92.16
+MAE-IC[29]
+81.70
+90.20
+97.60
+95.20
+82.60
+91.20
+Ours
+97.58
+96.37
+99.19
+98.92
+97.62
+96.62
+To further validate localization quality, we provide visual comparisons. As shown in Fig. 9, selfnormal-information–guided detection focuses more precisely on true defect regions and markedly suppresses background-induced false positives, confirming its effectiveness and robustness on IC SEM images.
+11
+
+===== Page 12 =====
+
+Figure 9: Visualization of different IC defect detection method.
+For defect classification, after estimating the class number k, we compare with multiple classifiers. As
+shown in Table 2, the classifier trained with SMG-Attention and self-supervision consistently surpasses
+unsupervised baselines on all metrics and even exceeds some fully supervised baselines. This indicates
+that soft-mask–guided attention strengthens defect-centric feature learning and improves discrimination
+of unseen defect categories.
+Table 2: Performance comparison across BEOL, DEP, and DPR datasets.
+Method
+BEOL
+DEP
+DPR
+NMI
+ARI
+F1
+NMI
+ARI
+F1
+NMI
+ARI
+F1
+ViT[5]
+0.6637
+0.6041
+0.7034
+0.8084
+0.7981
+0.8856
+0.8813
+0.9132
+0.8924
+swin-transformer[28]
+0.6817
+0.6221
+0.7234
+0.8174
+0.8071
+0.8956
+0.8903
+0.9222
+0.9024
+IC-DETR[52]
+0.6907
+0.7311
+0.7334
+0.8219
+0.8116
+0.9006
+0.8948
+0.9357
+0.8974
+simGCD[45]
+0.4520
+0.3460
+0.5690
+0.6688
+0.6757
+0.7042
+0.7221
+0.7758
+0.8217
+GCD[41]
+0.5507
+0.6529
+0.4195
+0.8148
+0.8233
+0.8898
+0.8502
+0.8914
+0.8766
+promptCAL[50]
+0.6362
+0.6825
+0.6717
+0.7531
+0.7368
+0.9221
+0.7891
+0.8294
+0.8152
+UNO[7]
+0.5866
+0.7542
+0.5133
+0.6574
+0.6793
+0.7022
+0.8476
+0.8821
+0.8521
+AMEND[2]
+0.6291
+0.6749
+0.6642
+0.6977
+0.7285
+0.9087
+0.6084
+0.7562
+0.7092
+DCCL[35]
+0.6102
+0.6714
+0.6402
+0.7825
+0.8889
+0.9036
+0.6036
+0.6861
+0.7251
+AnomalyNCD[17]
+0.6521
+0.7733
+0.6915
+0.8092
+0.8911
+0.9207
+0.7676
+0.8031
+0.7849
+MultiADS[38]
+0.6815
+0.7171
+0.7097
+0.7963
+0.9021
+0.9147
+0.8413
+0.8873
+0.8642
+Ours
+0.7026
+0.8236
+0.7462
+0.8477
+0.9232
+0.9660
+0.9109
+0.9632
+0.9341
+4.4
+Ablation Studies
+We conduct systematic ablations to verify the contribution of each core component under a unified
+train/test split for fair comparison. First, we assess detection with scarce data. As shown in Table 3,
+even with very few training samples, our method maintains stable segmentation performance, showing that
+self-normal information extraction reduces reliance on labeled data and well-suited production settings
+with limited annotations.
+We then analyze the effect of the number of normal tokens. As shown in Fig. 10, performance improves
+and saturates as the token count increases, achieving the best trade-off at 6. This suggests a moderate
+number of tokens sufficiently covers diverse normal patterns, while too few limits capacity and too many
+12
+
+===== Page 13 =====
+
+Table 3: Effect of training sample size (k-shot) on i-AUROC and p-AUROC across three IC process stages.
+BEOL
+DEP
+DPR
+i-AUROC
+p-AUROC
+i-AUROC
+p-AUROC
+i-AUROC
+p-AUROC
+k=1
+92.69
+90.11
+96.71
+94.62
+82.16
+79.98
+k=4
+95.32
+92.97
+97.64
+96.92
+92.57
+89.71
+full-shot
+97.58
+96.37
+99.19
+98.92
+97.62
+94.51
+adds redundancy and higher computational cost.
+Figure 10: Effect of NI Counts.
+To validate the reconstruction strategy, we compare it with direct feature matching. Results in Table
+4 and Fig. 11 show that direct matching is more sensitive to background noise, whereas reconstructionbased detection is more stable under complex structures, indicating that learning normal patterns via
+reconstruction better captures subtle normal–abnormal deviations.
+Table 4: Comparison between direct Normal-Information (NI) matching and NI-guided reconstruction on
+three IC process stages (%). Metrics are image-level (i-AUROC) and pixel-level (p-AUROC).
+Method
+BEOL
+DEP
+DPR
+i-AUROC
+p-AUROC
+i-AUROC
+p-AUROC
+i-AUROC
+p-AUROC
+Direct NI matching
+95.82
+95.41
+98.79
+98.12
+94.67
+92.51
+Ours
+97.58
+96.37
+99.19
+98.92
+97.62
+94.62
+Table 5: Estimation of the number of classes in unlabelled data.
+BEOL
+DEP
+DPR
+Ground truth
+8
+3
+8
+Ours
+8
+3
+9
+Error
+0%
+0%
+12.5%
+We further evaluate the effectiveness of semi-supervised k-means for estimating the number of unknown
+defect classes. Table 5 reports estimation errors across the three process datasets. Even when known and
+unknown samples are mixed, the method accurately infers the true class count with low mean absolute
+error.
+This shows that semi-supervised k-means effectively leverages constraints from limited labels
+while discovering latent structure in unlabeled data, overcoming the need to pre-specify class counts and
+providing a reliable basis for downstream classification.
+Table 6: Comparison of different binarization methods on BEOL.
+Method
+NMI
+ARI
+F1
+threshold=0.5
+0.5412
+0.6941
+0.5978
+Otsu’s method
+0.6297
+0.7412
+0.6509
+ours
+0.7026
+0.8236
+0.7462
+To address saliency disparity across defects, we compare adaptive binarization with fixed thresholds.
+13
+
+===== Page 14 =====
+
+Figure 11: Visual comparison between our normal-information (NI)-guided reconstruction method and a
+baseline that segments defects by directly comparing NI with local features.
+Table 6 shows clear gains in classification, demonstrating that our method dynamically adjusts the segmentation threshold to provide more accurate defect masks for classification.
+Table 7: Ablation study of masking and cropping on BEOL.
+Method
+NMI
+ARI
+F1
+without mask and crop
+0.6637
+0.6041
+0.7034
+without mask
+0.6257
+0.7271
+0.6423
+binarized mask
+0.6401
+0.7937
+0.6903
+SMG-ViT
+0.7026
+0.8236
+0.7462
+We conduct an ablation on SMG-ViT to isolate the contribution of each component and to enable a
+fair comparison with a vanilla ViT. “without mask and crop” corresponds to training a vanilla ViT on
+full images with neither defect-centered cropping nor any spatial prior. “without mask” trains the same
+ViT on defect-centered crops but still omits any spatial prior, isolating the effect of cropping. “binarized
+mask” keeps cropping and injects a binary mask vector as the spatial prior in place of the soft mask vector
+used by SMG-ViT. SMG-ViT combines defect-centered cropping with soft-mask–guided attention. The
+results show that SMG-ViT preserves contextual cues while better focusing learning on defect regions,
+achieving the best NMI, ARI, and F1.
+For deployment feasibility, our method achieves an average inference time of 28.12 ms per image on a
+single NVIDIA RTX 4090, meeting real-time requirements on production lines and highlighting practical
+value.
+5
+Industrial Deployment
+We evaluate IC-DefectNCD using SEM review images collected on KLA SEM G* series tools and conduct
+IC defect detection experiments on these datasets. The software was independently developed by our
+team and has been delivered to Amedac as a deployable application. As shown in Fig. 12, in Amedac’s
+production workflow the module ingests SEM images, generates residual heatmaps and adaptive masks
+on a local workstation GPU, and returns defect classes through a lightweight interface to assist yield
+engineers in rapid disposition.
+To assess cross-vendor generalization, we conduct pilot tests with MEGAROBO on SEM images
+acquired from non-KLA platforms. In our deployment, per-image latency on a single workstation GPU
+satisfies real-time review constraints, and the interface presents confidence scores, masks, and class names
+for rapid disposition. The pipeline preserves data locality, supports audit logging and versioned recipes,
+and can be extended to additional KLA inspection and review modules as needed. This behavior reflects
+the method’s robustness to layout and process shifts and its ability to adapt to images captured on
+different tools, underscoring its deployment value and practical generalization.
+14
+
+===== Page 15 =====
+
+Figure 12: Visual comparison between our normal-information (NI) guided reconstruction method and the
+baseline that segments defects by directly comparing NI with local features.
+6
+conclusion
+In this work, we present IC-DefectNCD, a unified framework for defect detection and novel class discovery
+in IC SEM images, designed to tackle key challenges in semiconductor manufacturing. Our core insight
+is to leverage single-image internal information, eliminating reliance on external support sets used in
+prior methods. The framework is built on mining intra-image cues. Self-Normal Information Guided IC
+Defect Detection performs normal-information guided reconstruction with residual-based localization, and
+Self-Saliency-driven Adaptive Binarization reliably extracts defect-centered crops. For classification, the
+Self-Defect Information Guided IC Defect Classification employs the SMG-ViT model to enhance defectcentered feature representations while preserving critical contextual.
+We introduce a teacher-student
+model coupled with semi-supervised k-means to automatically discover and classify unseen categories
+without prior of the class count.
+Comprehensive experiments on datasets covering BEOL, DEP, and
+DPR, demonstrate strong performance in both segmentation and classification.
+References
+[1] Jiwoon Ahn and Suha Kwak.
+Learning pixel-level semantic affinity with image-level supervision
+for weakly supervised semantic segmentation. In IEEE/CVF Conference on Computer Vision and
+Pattern Recognition, pages 4981–4990, 2018.
+[2] Anwesha Banerjee, Liyana Sahir Kallooriyakath, and Soma Biswas. Amend: Adaptive margin and
+expanded neighborhood for efficient generalized category discovery. In Proceedings of the IEEE/CVF
+winter conference on applications of computer vision, pages 2101–2110, 2024.
+[3] Xinlei Chen and Kaiming He.
+Exploring simple siamese representation learning.
+In IEEE/CVF
+Conference on Computer Vision and Pattern Recognition, pages 15750–15758, 2021.
+[4] Simon Damm, Mike Laszkiewicz, Johannes Lederer, and Asja Fischer.
+Anomalydino: Boosting
+patch-based few-shot anomaly detection with dinov2. In 2025 IEEE/CVF Winter Conference on
+Applications of Computer Vision (WACV), pages 1319–1329. IEEE, 2025.
+[5] Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas
+Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Sylvain Gelly, et al. An image
+is worth 16x16 words: Transformers for image recognition at scale. arXiv preprint arXiv:2010.11929,
+2020.
+[6] Enrico Fini, Enver Sangineto, St´ephane Lathuili`ere, Zhun Zhong, Moin Nabi, and Elisa Ricci. A
+unified objective for novel class discovery. In IEEE/CVF International Conference on Computer
+Vision, pages 9284–9292, 2021.
+15
+
+===== Page 16 =====
+
+[7] Enrico Fini, Enver Sangineto, St´ephane Lathuili`ere, Zhun Zhong, Moin Nabi, and Elisa Ricci. A
+unified objective for novel class discovery. In Proceedings of the IEEE/CVF international conference
+on computer vision, pages 9284–9292, 2021.
+[8] Matic Fuˇcka, Vitjan Zavrtanik, and Danijel Skoˇcaj.
+Transfusion–a transparency-based diffusion
+model for anomaly detection. In European conference on computer vision, pages 91–108. Springer,
+2024.
+[9] Zhaopeng Gu, Bingke Zhu, Guibo Zhu, Yingying Chen, Hao Li, Ming Tang, and Jinqiao Wang. Filo:
+Zero-shot anomaly detection by fine-grained description and high-quality localization. In Proceedings
+of the 32nd ACM International Conference on Multimedia, pages 2041–2049, 2024.
+[10] Kai Han, Sylvestre-Alvise Rebuffi, Sebastien Ehrhardt, Andrea Vedaldi, and Andrew Zisserman.
+Autonovel: Automatically discovering and learning novel visual categories. IEEE Transactions on
+Pattern Analysis and Machine Intelligence, 44(10):6767–6781, 2021.
+[11] Kaiming Han, Andrea Vedaldi, and Andrew Zisserman. Learning to discover novel visual categories
+via deep transfer clustering. In Proceedings of the IEEE/CVF International Conference on Computer
+Vision (ICCV), pages 8401–8409, 2019.
+[12] Haoyang He, Jiangning Zhang, Hongxu Chen, Xuhai Chen, Zhishan Li, Xu Chen, Yabiao Wang,
+Chengjie Wang, and Lei Xie. A diffusion-based framework for multi-class anomaly detection. In
+Proceedings of the AAAI conference on artificial intelligence, volume 38, pages 8472–8480, 2024.
+[13] Yen-Chang Hsu, Zhaoyang Lv, and Zsolt Kira. Learning to cluster in order to transfer across domains
+and tasks. In International Conference on Learning Representations (ICLR), 2018.
+[14] Yen-Chang Hsu, Zhaoyang Lv, Jared Schlosser, Phillip Odom, and Zsolt Kira. Multi-class classification without multi-class labels. In International Conference on Learning Representations (ICLR),
+2019.
+[15] Bozhen Hu, Bin Gao, Wai Lok Woo, Lingfeng Ruan, Jikun Jin, Yang Yang, and Yongjie Yu. A
+lightweight spatial and temporal multi-feature fusion network for defect detection. IEEE Transactions
+on Image Processing, 30:472–486, 2020.
+[16] Jiajuan Hu, Zhiyong He, Guirong Weng, Lining Sun, Baoqi Zuo, and Chen Wang. Detection of
+chemical fabric defects on the basis of morphological processing. The Journal of The Textile Institute,
+107(2):233–241, 2016.
+[17] Ziming Huang, Xurui Li, Haotian Liu, Feng Xue, Yuzhe Wang, and Yu Zhou. Anomalyncd: Towards
+novel anomaly class discovery in industrial scenarios. In Proceedings of the Computer Vision and
+Pattern Recognition Conference, pages 4755–4765, 2025.
+[18] Jung Yoon Hwang and Way Kuo. Model-based clustering for integrated circuit yield enhancement.
+European Journal of Operational Research, 178(1):143–153, 2007.
+[19] Jongheon Jeong, Yang Zou, Taewan Kim, Dongqing Zhang, Avinash Ravichandran, and Onkar
+Dabeer. Winclip: Zero-/few-shot anomaly classification and segmentation. In Proceedings of the
+IEEE/CVF Conference on Computer Vision and Pattern Recognition, pages 19606–19616, 2023.
+[20] Xu Ji, Jo˜ao F Henriques, and Andrea Vedaldi. Invariant information clustering for unsupervised
+image classification and segmentation. In IEEE/CVF Conference on Computer Vision and Pattern
+Recognition, pages 9865–9874, 2019.
+[21] Xi Jiang, Jianlin Liu, Jinbao Wang, Qiang Nie, Kai Wu, Yong Liu, Chengjie Wang, and Feng
+Zheng. Softpatch: Unsupervised anomaly detection with noisy data. Advances in Neural Information
+Processing Systems, 35:15433–15445, 2022.
+[22] Yuqi Jiang, Xudong Lu, Qian Jin, Qi Sun, Hanming Wu, and Cheng Zhuo. Fabgpt: An efficient
+large multimodal model for complex wafer defect knowledge queries.
+In Proceedings of the 43rd
+IEEE/ACM International Conference on Computer-Aided Design, pages 1–8, 2024.
+[23] Prannay Khosla, Piotr Teterwak, Chen Wang, Aaron Sarna, Yonglong Tian, Phillip Isola, Aaron
+Maschinot, Ce Liu, and Dilip Krishnan. Supervised contrastive learning. In Advances in Neural
+Information Processing Systems, volume 33, pages 18661–18673, 2020.
+[24] Yelim Lee, Hyeonji Lim, Seungho Jang, and Hyuk-Jae Yoon. Uniformaly: Towards task-agnostic
+unified framework for visual anomaly detection. arXiv preprint arXiv:2307.12540, 2023.
+[25] Xiaofan Li, Zhizhong Zhang, Xin Tan, Chengwei Chen, Yanyun Qu, Yuan Xie, and Lizhuang Ma.
+Promptad: Learning prompts with only normal samples for few-shot anomaly detection. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pages 16838–16848,
+2024.
+16
+
+===== Page 17 =====
+
+[26] Xiaoli Li, Shiu Kit Tso, Xin-Ping Guan, and Qian Huang. Improving automatic detection of defects
+in castings by applying wavelet technique. IEEE Transactions on Industrial Electronics, 53(6):1927–
+1934, 2006.
+[27] Xurui Li, Ziming Huang, Feng Xue, and Yu Zhou. Musc: Zero-shot industrial anomaly classification and segmentation with mutual scoring of the unlabeled images. In The Twelfth International
+Conference on Learning Representations, 2024.
+[28] Ze Liu, Yutong Lin, Yue Cao, Han Hu, Yixuan Wei, Zheng Zhang, Stephen Lin, and Baining Guo.
+Swin transformer: Hierarchical vision transformer using shifted windows.
+In Proceedings of the
+IEEE/CVF international conference on computer vision, pages 10012–10022, 2021.
+[29] Hu Lu, Jiwei Shen, Botong Zhao, Pengjie Lou, Wenzhan Zhou, Kan Zhou, Xintong Zhao, Shujing
+Lyu, and Yue Lu. A masked autoencoder-based approach for defect classification in semiconductor
+manufacturing. In 2023 International Workshop on Advanced Patterning Solutions (IWAPS), pages
+1–4. IEEE, 2023.
+[30] Wenxin Ma, Xu Zhang, Qingsong Yao, Fenghe Tang, Chenxu Wu, Yingtai Li, Rui Yan, Zihang
+Jiang, and S Kevin Zhou. Aa-clip: Enhancing zero-shot anomaly detection via anomaly-aware clip.
+In Proceedings of the Computer Vision and Pattern Recognition Conference, pages 4744–4754, 2025.
+[31] Zhouzhouzhou Mei, Yuening Luo, Yibo Qiao, and Yining Chen. A novel joint segmentation approach
+for wafer surface defect classification based on blended network structure. Journal of Intelligent
+Manufacturing, 36(3):1907–1921, 2025.
+[32] Konstantinos Ntirogiannis, Basilis Gatos, and Ioannis Pratikakis. Performance evaluation methodology for historical document image binarization. IEEE Transactions on Image Processing, 22(2):595–
+609, 2013.
+[33] Maxime Oquab, Timoth´ee Darcet, Th´eo Moutakanni, Huy Vo, Marc Szafraniec, Vasil Khalidov,
+Pierre Fernandez, Daniel Haziza, Francisco Massa, Alaaeldin El-Nouby, et al. Dinov2: Learning
+robust visual features without supervision. arXiv preprint arXiv:2304.07193, 2023.
+[34] Nobuyuki Otsu. A threshold selection method from gray-level histograms. IEEE Transactions on
+Systems, Man, and Cybernetics, 9(1):62–66, 1979.
+[35] Nan Pu, Zhun Zhong, and Nicu Sebe. Dynamic conceptional contrastive learning for generalized
+category discovery. In Proceedings of the IEEE/CVF conference on computer vision and pattern
+recognition, pages 7579–7588, 2023.
+[36] Yibo Qiao, Zhouzhouzhou Mei, Yuening Luo, and Yining Chen.
+Deepsem-net: Enhancing sem
+defect analysis in semiconductor manufacturing with a dual-branch cnn-transformer architecture.
+Computers & Industrial Engineering, 193:110301, 2024.
+[37] Nikhila Ravi, Valentin Gabeur, Yuan-Ting Hu, Ronghang Hu, Chaitanya Ryali, Tengyu Ma, Haitham
+Khedr, Roman R¨adle, Chloe Rolland, Laura Gustafson, et al. Sam 2: Segment anything in images
+and videos. arXiv preprint arXiv:2408.00714, 2024.
+[38] Ylli Sadikaj, Hongkuan Zhou, Lavdim Halilaj, Stefan Schmid, Steffen Staab, and Claudia Plant.
+Multiads: Defect-aware supervision for multi-type anomaly detection and segmentation in zero-shot
+learning. arXiv preprint arXiv:2504.06740, 2025.
+[39] Yasin Eftekhari Salehani, Ehsan Arabnejad, Ali Rahiche, Abderaouf Bakhta, and Mohamed Cheriet.
+Msdb-nmf: Multispectral document image binarization framework via non-negative matrix factorization approach. IEEE Transactions on Image Processing, 29:9099–9112, 2020.
+[40] Kunye Shen, Xiaofei Zhou, and Zhi Liu.
+Minet:
+Multiscale interactive network for real-time
+salient object detection of strip steel surface defects. IEEE Transactions on Industrial Informatics, 20(5):7842–7852, 2024.
+[41] Sagar Vaze, Kai Han, Andrea Vedaldi, and Andrew Zisserman. Generalized category discovery. In
+Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, pages 7492–
+7501, 2022.
+[42] Sagar Vaze, Kihyuk Han, Andrea Vedaldi, and Andrew Zisserman. Generalized category discovery.
+In IEEE/CVF Conference on Computer Vision and Pattern Recognition, pages 7492–7501, 2022.
+[43] Sagar Vaze, Andrea Vedaldi, and Andrew Zisserman. No representation rules them all in category
+discovery. Advances in Neural Information Processing Systems, 36, 2023.
+17
+
+===== Page 18 =====
+
+[44] Huiyan Wang, Ruihao Peng, Ming Ying, Fashuai Li, Jiuyi Zhang, Xiaolan Li, Yan Tian, and Guofeng
+Zhang. Mff-sdd: A bidirectional guidance and multiscale multimodal fusion model for small defect
+detection in industrial films. IEEE Transactions on Industrial Informatics, pages 1–11, 2025.
+[45] Xin Wen, Bingchen Zhao, and Xiaojuan Qi. Parametric classification for generalized category discovery: A baseline study. In Proceedings of the IEEE/CVF international conference on computer
+vision, pages 16590–16600, 2023.
+[46] Weijia Wu, Yixuan Zhao, Mike Zheng Shou, Hao Zhou, and Chunhua Shen. Diffumask: Synthesizing
+images with pixel-level annotations for semantic segmentation using diffusion models. In IEEE/CVF
+International Conference on Computer Vision, pages 1206–1217, 2023.
+[47] Mengxin Yang, Lei Wang, Cheng Deng, and Heng Zhang.
+Bootstrap your own prior: Towards
+distribution-agnostic novel class discovery.
+In IEEE/CVF Conference on Computer Vision and
+Pattern Recognition, pages 3459–3468, 2023.
+[48] Hang Yao, Ming Liu, Zhicun Yin, Zifei Yan, Xiaopeng Hong, and Wangmeng Zuo. Glad: Towards
+better reconstruction with global and local adaptive diffusion models for unsupervised anomaly
+detection. In European Conference on Computer Vision, pages 1–17. Springer, 2024.
+[49] Zhaoyang Zeng, Bei Liu, Jianlong Fu, and Hongyang Chao. Reference-based defect detection network.
+IEEE Transactions on Image Processing, 30:6637–6647, 2021.
+[50] Sheng Zhang, Salman Khan, Zhiqiang Shen, Muzammal Naseer, Guangyi Chen, and Fahad Shahbaz
+Khan. Promptcal: Contrastive affinity learning via auxiliary prompts for generalized novel category
+discovery. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition,
+pages 3479–3488, 2023.
+[51] Zhe Zhang, Zhenqiao Shang, Xin Wang, and Jie Ma.
+Combined anomaly aware weakly supervised lightweight model for surface defect inspection. IEEE Transactions on Industrial Informatics,
+20(4):6652–6663, 2024.
+[52] Botong Zhao, Yue Lu, Kan Zhou, and Wenzhan Zhou. Integrated circuit defect classification based
+on multi-layer attention mechanisms. In Eighth International Workshop on Advanced Patterning
+Solutions (IWAPS 2024), volume 13423, pages 282–286. SPIE, 2024.
+[53] Jiu-Liang Zhao, Yun-Hui Yan, Wei-Wei Liu, and Jian Tong. A multi-scale edge detection method
+of steel strip surface defects online detection system. Journal of Northeastern University (Natural
+Science), 31(3):432, 2010.
+[54] Zhun Zhong, Liang Zhu, Zhiming Luo, Shaozi Li, Yi Yang, and Nicu Sebe. Openmix: Reviving
+known knowledge for discovering novel visual categories in an open world. In Proceedings of the
+IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), pages 9462–9470,
+2021.
+[55] Hong Zhou, Feng Xue, Yibo Li, Shuaijun Gong, Yuxuan Li, and Yong Zhou. Exploiting low-level
+representations for ultra-fast road segmentation. IEEE Transactions on Intelligent Transportation
+Systems, pages 1–11, 2024.
+[56] Qihang Zhou, Guansong Pang, Yu Tian, Shibo He, and Jiming Chen. Anomalyclip: Object-agnostic
+prompt learning for zero-shot anomaly detection. arXiv preprint arXiv:2310.18961, 2023.
+[57] Haiqin Zuo, Yujie Wang, Xuezhi Yang, and Xin Wang. Fabric defect detection based on texture
+enhancement. In 2012 5th international congress on image and signal processing, pages 876–880.
+IEEE, 2012.
+18

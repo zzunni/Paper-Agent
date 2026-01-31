@@ -1,0 +1,1221 @@
+
+
+===== Page 1 =====
+
+Digital Object Identifier 10.48550/arXiv.2309.11427
+Generative Pre-Training of Time-Series Data for
+Unsupervised Fault Detection in Semiconductor
+Manufacturing
+SEWOONG LEE1, JINKYOU CHOI1, and MIN SU KIM1
+1Mechatronics Research, Samsung Electronics Co., Ltd., 1-1 Samsungjeonja-ro, Hwaseong-si, Gyeonggi-do 18848, Republic of Korea
+Corresponding author: Min Su Kim (e-mail: minsu412.kim@samsung.com)
+ABSTRACT This paper introduces TRACE-GPT, which stands for Time-seRies Anomaly-detection with
+Convolutional Embedding and Generative Pre-trained Transformers. TRACE-GPT is designed to pre-train
+univariate time-series sensor data and detect faults on unlabeled datasets in semiconductor manufacturing. In
+semiconductor industry, classifying abnormal time-series sensor data from normal data is important because
+it is directly related to wafer defect. However, small, unlabeled, and even mixed training data without
+enough anomalies make classification tasks difficult. In this research, we capture features of time-series
+data with temporal convolutional embedding and Generative Pre-trained Transformer (GPT) to classify
+abnormal sequences from normal sequences using cross entropy loss. We prove that our model shows better
+performance than previous unsupervised models with both an open dataset, the University of California
+Riverside (UCR) time-series classification archive, and the process log of our Chemical Vapor Deposition
+(CVD) equipment. Our model has the highest F1 score at Equal Error Rate (EER) across all datasets and is
+only 0.026 below the supervised state-of-the-art baseline on the open dataset.
+INDEX TERMS Anomaly detection, artificial intelligence, attention mechanism, deep learning, explainable
+artificial intelligence, time series classification, visualization
+I. INTRODUCTION
+E
+VEN at this moment, even in a leading semiconductor
+company, equipment engineers are verifying process
+logs with their own eyes on a daily basis whether it is normal
+or not. In order to reduce and automate this inefficiency, researches about Fault Detection and Classification (FDC) [1]–
+[5], time-series classification [6]–[8], or time-series anomaly
+detection [9]–[12] have been conducted. These research areas
+are closely interconnected as shown in Fig. 1.
+Despite extensive research efforts, the semiconductor manufacturing industry faces the aforementioned inefficiency due
+to the following challenges:
+• First, the lack of abnormal data becomes a challenge.
+In other words, abnormal data may not have been sufficiently obtained at the time of developing the detection
+model. The objective of the semiconductor manufacturing industry is to minimize defects, leading to the
+handling of highly biased datasets with scarce anomalies
+[13]. It is often necessary to develop models that can
+detect future anomalies even without any abnormal data.
+In this case, many supervised machine learning methods,
+such as convolutional neural networks (CNN) [1] or KNearest Neighbor (KNN) [14], become inapplicable.
+• Second, the scarcity of data itself acts as a challenge.
+Previous studies in time series typically involved training data with sample sizes in the double digits [15].
+However, with the accelerated advancements in rapid
+circuit integration technology, in the semiconductor industry, where development timelines are crucial, it is
+often necessary to commence model development with
+only a handful of available data. Given these circumstances, acquiring labeled data becomes even more difficult, making unsupervised learning essential [16]. Particularly for precise data labeling, extensive inspection
+or measurement steps before and after the process are
+required, leading to increased costs. This conflicts with
+the fact that fault detection in semiconductor manufacturing is conducted to maximize productivity and profits
+[17].
+• Last, in conjunction with the aforementioned challenges,
+the presence of various mixed types of normal timeseries data makes the problem even more complex.
+For instance, semiconductor manufacturing processes
+require the continuous adjustment of the process conVOLUME 11, 2023
+1
+arXiv:2309.11427v2  [cs.LG]  27 Mar 2024
+
+===== Page 2 =====
+
+S. Lee et al.: Generative Pre-Training of Time-Series Data for Unsupervised Fault Detection in Semiconductor Manufacturing
+FIGURE 1.
+A illustration of fault detection and classification using
+time-series anomaly detection in the semiconductor manufacturing
+industry. This illustrates the relationship between fault, anomaly, and
+abnormal wafer in the semiconductor manufacturing industry, as well
+as the stages of anomaly detection and classification.
+ditions [18]. As a result, the definition of a normal
+time-series can vary. Consequently, datasets can contain
+mixed types of normality, which makes the use of traditional algorithms such as dynamic time warping (DTW)
+[19] impossible.
+One of the most commonly used methods in the current semiconductor manufacturing industry involves utilizing
+CNNs, such as FDC-CNN [1], to classify normal and abnormal data through supervised learning. They used a combination of feature engineering techniques and supervised learning algorithms to achieve high accuracy in fault detection and
+classification. Even though it demonstrates good performance
+when applicable, there are many cases in the real world where
+it cannot be used due to the high cost of building labeled
+data. In unsupervised learning, however, even the most recent
+research [5] attempting unsupervised fault classification on
+manufacturing data faces the limitation of having to finetune the hyperparameters of the anomaly detection model
+through the fault detection stages, partially using a supervised
+approach.
+Across various fields, including but not limited to the
+semiconductor manufacturing industry, a prominent domain
+exploring the characteristics of time-series data through unsupervised learning is time-series representation. Recently, TSTCC [20], TST [21], and TS2Vec [22] aimed to develop an
+unsupervised representation technique for time-series data,
+which could be used for various tasks such as classification,
+anomaly detection, and forecasting. Nevertheless, the limitation of unsupervised representation approaches is that they
+rely on supervised learning methods, such as Support Vector
+Machines (SVM), when constructing classifiers.
+To tackle the challenge of developing unsupervised timeseries classification models, the Robust Temporal Feature
+Network (RTFN) investigates a deep learning approach [6].
+However, RTFN has a limitation in that it can perform
+unsupervised clustering, but ultimately, in order to extract
+features for classification, it needs to be embedded into a
+supervised structure. More recently, a model called the Multimodal Domain Adversarial Network (MDAN) has shown
+promising performance in time-series classification by incorporating both time-domain and frequency-domain feature
+representations [8]. However, MDAN has the limitation of
+requiring a substantial amount of data during the training
+process for transfer learning from source to target data, and
+it has been selectively studied only on electrocardiogram or
+motion sensor data. In contrast, our study aims to address
+issues in semiconductor manufacturing processes where only
+limited data is provided or in situations where a mix of various
+sensors such as gas, electric, pressure, and light emission are
+present.
+To achieve end-to-end unsupervised classification as
+shown in Fig. 1, unsupervised time-series anomaly detection methods can be utilized. Time-series anomaly detection
+methods are able to find anomalous subsequences of varied
+lengths within time-series, which can be either single point or
+collective points [11]. Nonetheless, solving real-world problems remains challenging. Our study shows the limitations of
+existing unsupervised time-series anomaly detection methods
+on datasets of the semiconductor manufacturing industry.
+Humans, despite the challenges mentioned earlier, can relatively easily discern anomalies that existing models struggle
+with. One of the key motivations of this research is that a
+certain type of deep learning model can detect infinite kinds
+of potential anomalies of time-series data in semiconductor
+manufacturing. In other domains such as image processing or
+Natural Language Processing (NLP), generative pre-training
+is also proposed to help deep learning with unlabeled data
+[23] and used to improve performance for image processing
+tasks [24]. After the Transformer model is suggested [25],
+the Transformer based model such as Generative Pre-trained
+Transformers (GPT) [26] was developed and outperformed
+most of state-of-the-art benchmarks in NLP tasks [27]–[29].
+In this paper, we introduce a novel deep learning architecture, TRACE-GPT: Time-seRies Anomaly-detection
+with Convolutional Embedding and Generative Pre-trained
+Transformers. We demonstrate that the Transformer decoder
+can be effective in learning sequential features of semiconductor manufacturing sensor data with temporal convolutional networks. The key contributions of this paper are as
+follows:
+• We propose a novel deep learning architecture, TRACEGPT, for unsupervised time-seres anomaly detection in
+semiconductor manufacturing. We further developed a
+model that can classify abnormal data by observing unlabeled data, like a human, without any prior knowledge
+of anomalies or possible anomalies.
+• We introduce a modified version of the Transformer
+architecture, originally designed for the natural language
+2
+VOLUME 11, 2023
+
+===== Page 3 =====
+
+S. Lee et al.: Generative Pre-Training of Time-Series Data for Unsupervised Fault Detection in Semiconductor Manufacturing
+processing domain, to effectively handle time-series
+data. The idea behind the Transformer architecture is to
+predict the next words in a sentence, but we extended it
+to learn from numerical sequences and predict the next
+sensor values.
+• In consideration of real-world challenges encountered in
+the semiconductor manufacturing industry, we evaluated
+our model on extreme datasets, including the following
+scenarios: insufficient abnormal data, single-digit-sized
+training data, unlabeled data, or mixed normal types. We
+demonstrated that our model outperforms other baselines.
+The structure of this paper is as follows: Section II introduces the related works associated with this study. In Section III, we describe the architecture and methodology of the
+deep learning model we propose. In Section IV, we provide
+a detailed explanation of the datasets from the semiconductor
+manufacturing industry that we conducted experiments on.
+Section V discusses how we set up the experiments and
+presents the results based on these datasets. Finally, in Section VI, we summarize the aspects in which we achieved the
+motivation of our research.
+II. RELATED WORK
+A. UNSUPERVISED TIME-SERIES ANOMALY DETECTION
+Over the past decades, not to mention the semiconductor
+manufacturing industry, the rapid proliferation of sensors has
+increased the demand for temporal observation data, known
+as time-series data [30]. As it is crucial to detect faults
+or abnormalities in this type of data, time-series anomaly
+detection model have shown a great promise [18]. Timeseries anomaly detection involves assigning anomaly scores
+to identify variable-length anomalous points or segments,
+A = {(ts, te) | 1 ≤ts < te ≤n}, within the entire time-series,
+X = {x1, x2, x3, ..., xn} [31]. Due to the difficulty of obtaining
+ground truth data for anomalous points or segments within the
+entire time-series, time-series anomaly detection is primarily
+being researched using unsupervised methods [12]. Due to the
+ability to detect anomalies without labeled training data and
+the prevalence of models that are easy to reproduce through
+code, unsupervised time series anomaly detection techniques,
+as illustrated in Fig. 1, are suitable for the semiconductor
+manufacturing industry. In this section, we discuss some of
+the well-known unsupervised methods that not only exhibit
+good performance but are also reproducible through available
+open-source code.
+Since the 1970s, statistical methods such as AutoRegressive Integrated Moving Average (ARIMA) [32] have been
+investigated for anomaly detection using forecast errors. Even
+though ARIMA is fundamentally a univariate model [18], it is
+still being used as a powerful baseline model on multivariate
+tasks [11].
+Recently, there has been researches employing deep learning techniques. For instance, Long Short-Term Memory
+(LSTM) [33] has demonstrated good performance with sequential data. In the domain of unsupervised learning, AutoFIGURE 2.
+Comparison between a discriminative model and a
+generative model. The objective of a discriminative model is to learn
+the decision boundary, whereas the objective of a generative model is
+to learn the probabilities based on the conditions of features.
+Generative models ultimately classify labels based on the probabilities
+obtained in this manner. In generative model, visualizing probabilities
+can enhance the explainability of the model.
+Encoders (AE) represent one of the most typical architectures.
+This has led to the proposal of models like LSTM-based
+Encoder-Decoder scheme for Anomaly Detection (EncDecAD) [9], also known as LSTM-AE [11], which combine
+LSTM and AE structures. LSTM-AE is capable of detecting
+anomalies in both short time-series (with lengths as small as
+30) and long time-series (with lengths as large as 500).
+In unsupervised learning, Generative Adversarial Networks (GAN) [34] also successfully performed many
+anomaly detection tasks in other domains, such as image
+processing [35], [36]. In the field of time-series analysis,
+following the design of a time-series representation learning method by [37], TadGAN [11] ultimately introduced an
+end-to-end framework for unsupervised anomaly detection.
+TadGAN, through the utilization of Wasserstein Loss, has
+achieved stable convergence for GANs in the context of
+time-series, and has demonstrated exceptional performance
+on datasets from fields such as aerospace and information
+technology.
+Lastly, models such as UnSupervised Anomaly Detection
+for multivariate time series (USAD) [10], which is inspired
+by both GAN and AE, have also been proposed. USAD have
+demonstrated good performance on datasets from fields such
+as hydrology and environmental monitoring. In our paper, we
+will examine the limitations of these well-known approaches
+in terms of their performance on semiconductor manufacturing data.
+B. GENERATIVE PRE-TRAINED TRANSFORMER
+As depicted in Fig. 2, in machine learning, generative models
+learn the distribution of individual classes, whereas discriminative models learn the decision boundary between classes
+[38]. Both methods have been explored for sequential data
+[39]. Recently, by predicting the probability distribution of
+the next word in a sentence, generative pre-training has
+demonstrated significant progress in the field of NLP [27]–
+[29]. In NLP, after unsupervised pre-training stage, pretrained models typically undergo fine-tuning stage for speVOLUME 11, 2023
+3
+
+===== Page 4 =====
+
+S. Lee et al.: Generative Pre-Training of Time-Series Data for Unsupervised Fault Detection in Semiconductor Manufacturing
+cific supervised target tasks, such as natural language inference, question answering, or classification. Generative pretraining stage is advantageous because it enables the model
+to learn by predicting the next word, even without labels for
+specific tasks in the training data. This method was highly
+effective because the scarcity of labels was a challenge in NLP
+[26].
+Although the scarcity of labeled training data is one of
+the major challenges that the semiconductor industry faces
+as well, the same method cannot be directly applied in this
+domain. Typically, when processing word tokens, NLP models use the Transformer architecture introduced by [1], which
+is designed for categorical data such as natural language.
+Consequently, to process numerical time-series data, the original Transformer architecture needs modification. Recently,
+Anomaly Transformer [40], which utilizes the Transformer
+model as a partial component within the two-branch structure to calculate associations and reconstruct the original
+sequence, has also been explored. However, due to the architectural necessity of reconstructing the entire sequence
+instead of predicting within periodic units, it has the limitation
+of requiring a window size of at least a hundred, making it
+impossible to apply to general semiconductor manufacturing
+data with short process steps. Furthermore, rather than employing reconstruction, our work designed the transformer
+to conduct one-step prediction with task-agnostic generative
+pre-training. By visualizing model’s probability prediction as
+shown in Fig. 2, our model offers enhanced explainability.
+III. TRACE-GPT
+In this paper, we present a new generative pre-training model
+for unsupervised time-series anomaly detection and classification. Firstly, as a generative model, our purpose is to learn
+the underlying probability distribution of the data (See Fig. 2).
+Secondly, as a pre-training model, our approach allows us to
+learn the temporal features of data without relying on any
+specific target task or requiring ground truth labels. That is,
+through one step prediction, the model learns the shapes of
+the time series by predicting the probability distribution of the
+next sensor value. By using this approach, each sensor value
+acts as a label, allowing for effective learning even with unlabeled data that has a small number of sequences. Therefore,
+considering the n-th wafer out of a total of N wafers, where
+each wafer has a time-series sequence Xn = {x1, ..., xT} of
+length T, our objective during pre-training is to maximize the
+following likelihood.
+L(Xn) =
+X
+i
+log P(xi|x1, ..., xi−1; w)
+(1)
+where i ∈{2, ..., T}, and the conditional probability P is
+modeled using a neural network with parameters w [26]. As
+the model is trained to predict the next value based on previous data, ultimately it is structured to receive the preceding
+T −1 values as input and return shifted probabilities to the
+right, as depicted in the final part of Fig. 3.
+Algorithm 1 Training and Test Phase of TRACE-GPT
+Require:
+X ∈RN×T : Xn,t ∈[0, r), input data.
+r, data resolution.
+epoch, number of iterations over data.
+η, step size.
+Ensure:
+1: for each epoch do
+# Training Phase
+2:
+for n = 1, ..., Ntraining do
+3:
+for t = 1, ..., (T −1) do
+4:
+X′
+n,t = Xn,t+1
+5:
+Pt = T (C([Xn,t, t]))
+6:
+end for
+7:
+gwC,T = ∇(CrossEntropy(P⊺, ⌊X′
+n⌋))
+8:
+wC,T = wC,T + η · Adam(wC,T , gwC,T )
+9:
+end for
+10: end for
+11: for n = Ntraining+1, ..., N do
+# Test Phase
+12:
+for t = 1, ..., (T −1) do
+13:
+X′
+n,t = Xn,t+1
+14:
+Pt = T (C([Xn,t, t]))
+15:
+end for
+16:
+Ln = CrossEntropy(P⊺, ⌊X′
+n⌋))
+17:
+output_probabilitiesn = Softmax(P, dim = 1)
+18: end for
+A. POSITIONAL EMBEDDING (PE)
+As a first step, we want our model to be aware of the
+global position within the whole sequence. To prevent the
+loss of sequential information when features are computed
+in machine learning or neural networks, a methodology that
+incorporates temporal feature information is referred to as
+positional embedding. There can be several ways to embed
+position, but a simple approach is to normalize and inject it
+as another dimension, as Xn,t →[Xn,t, t]. This is suitable
+when the sequence length is fixed, and the model does not
+need to extrapolate to sequence lengths [25].
+For semiconductor manufacturing data, in typical cases
+that do not use end point detection, it is common to maintain a
+consistent process time to ensure identical process outcomes
+[41]. In the NLP domain, sentence lengths can vary widely,
+and in the finance or hydrology fields, the length of accumulating time series data can become indefinitely long. In
+contrast, the semiconductor manufacturing industry is characterized by periodicity at the wafer level, and maintaining
+consistency is crucial, highlighting these distinct advantages.
+Therefore, our model used positional embedding by injecting
+a positional index and stacking arrays. To mitigate the influence of varying scales between positional index and sensor
+values, which could lead to unequal feature influences and
+delayed learning, we applied min-max normalization alongside.
+4
+VOLUME 11, 2023
+
+===== Page 5 =====
+
+S. Lee et al.: Generative Pre-Training of Time-Series Data for Unsupervised Fault Detection in Semiconductor Manufacturing
+FIGURE 3.
+Deep learning architecture of our model, TRACE-GPT. Even with unlabeled training data, our model can pre-train the temporal features of
+a time-series sequence, which can ultimately be used in other specific target tasks. As our model predicts the next value in the sequence, output
+probabilities are shifted right compared to the input sequence.
+FIGURE 4. Visualization of the convolutional embedding process using
+a Temporal Convolutional Network (TCN). TCN is similar to CNN, but it
+differs in that future data are masked, and only past data are
+convolved with the filter for computation. This distinction makes it
+useful in deep learning architectures for predicting future data.
+Additionally, when multiple layers are employed, the receptive field
+that captures past data expands as dilation increases. These
+characteristics enable the model to effectively learn and utilize
+fluctuations in sensor values prior to the prediction point.
+B. TEMPORAL CONVOLUTIONAL NETWORKS (TCN)
+In other domains like NLP, an embedding layer such as
+word2vec [42] is commonly used to convert categorical
+data into high dimensional numerical data. How can we extract enough temporal features with univariate semiconductor manufacturing sensor data? One approach suggested by
+recent research is using Temporal Convolutional Networks
+(TCN) [43] which belong to the class of CNN designed
+for processing sequential data and capturing local temporal
+changes [44].
+The faults in the semiconductor manufacturing industry
+easily retain temporal characteristics in time-series data that
+are suitable for embedding using TCN. For example, anomalies like sudden spikes, drops, or peripheral points introduce
+discrepancies with previously recorded values. As a result,
+when predicting the normal shape using convolution results
+from past data, differences arise at abnormal points. Therefore, TCN becomes an effective approach for embedding
+into multiple dimensions through 1D convolutions. For this
+reasons, our model employs TCN as one of the steps for embedding dimensions, as shown in Fig. 3. Empirically, we used
+a hidden TCN layer, as shown in Fig. 4, and the dimension d is
+set to 16. We denote this process of convolutional embedding
+as C : R2 →Rd.
+C. TRANSFORMER
+The Transformer has demonstrated strong performance
+across various NLP tasks [26] and offers several advantages
+when processing sequential data. Firstly, its attention mechanism allows for parallel processing, resulting in better time
+performance compared to models like LSTM [25]. Among
+the entire Transformer architecture, the Transformer Decoder
+Layer is particularly well-suited for semiconductor manufacturing data, where the values in the later portion are masked to
+predict the next values. This characteristic enables the model
+to sequentially assess whether the next value deviates from the
+expected, thus facilitating the detection of anomalies, similar
+to how equipment engineers analyze them.
+In line 5 of Algorithm 1, the first transformation of the
+Transformer decoder layer T : Rd →Rr is Qi, Ki, and Vi,
+which are linear transformation of the (T −1) × d size input
+of the i-th attention head as (2), representing the query, key,
+and value, respectively. As the original Transformer research
+[25], we employ h = 8 parallel attention heads. With the
+Transformer decoder layer, masked multi-head attention can
+transform the sequence of the previous values in order to
+predict next values with attention scores.
+VOLUME 11, 2023
+5
+
+===== Page 6 =====
+
+S. Lee et al.: Generative Pre-Training of Time-Series Data for Unsupervised Fault Detection in Semiconductor Manufacturing
+Attentioni(Qi, Ki, Vi) = Softmax(QiK ⊺
+i
+√dk
++ M) · Vi
+(2)
+where M is the mask of R(T−1)×(T−1) with values defined
+by (3), designed to prevent the model from peeking at the next
+value when making predictions.
+Mi,j =
+ −∞
+if i < j,
+0
+otherwise.
+(3)
+When denoting Masked Multi-Head Attention as MMHA,
+MMHA can be expressed as shown in (4), which is subsequently transformed by a Feed Forward Network (FFN) as in
+(5) with Rectified Linear Unit (ReLU) and layer normalization [45].
+MMHA(Q, K, V) = Concath
+i=1{Attentioni(Qi, Ki, Vi)} (4)
+FFN(x) = ReLU(xW1 + b1) · W2 + b2
+(5)
+Finally, after six iterations, as shown in Fig. 3, the linear
+transformation of values based on the data resolution is applied after the Transformer decoder layers. Generally, data
+resolution refers to the level of detail or granularity and represents the smallest difference between adjacent data points in
+terms of value, time, or distance. In this paper, we use the term
+‘data resolution’, r ∈N, to refer to the number of value levels
+that the model can distinguish. In other words, if a model has
+a data resolution of 100, it means that all values are mapped
+to integers within the range from 0 to 100, where 0 represents
+the minimum value and 100 represents the maximum value.
+In this paper, based on the observation that humans tend to
+classify anomalies in sensor data using percentage units, we
+employed a resolution of 100 in our model. As a result, by
+iterating lines 3-8 of Algorithm 1, we can obtain the shifted
+right probability Pt ∈Rr and pre-trained weights wC,T that
+are irrelevant to the specific task.
+D. APPLICATIONS OF OUR MODEL
+The difference of generative pre-trained models in time-series
+compared to NLP lies in the fact that the trained model does
+not undergo supervised training to perform the target task.
+In NLP, the sequences generated by the model can serve as
+labels that can be used for the target tasks, such as translation
+or question answering. However, in time-series, the cross
+entropy between the possibilities generated by the model and
+the original sequences can be used for the target task as in
+lines 11-18 of Algorithm 1. As shown in Fig. 3, by calculating
+the cross-entropy loss L, a typical loss function used between
+a sequence and multi-class probabilities, and minimizing it
+with Adam [46], the most commonly used optimizer, the
+model can learn how to predict next value similar to the actual
+value. As in line 17 of Algorithm 1, by passing through the
+softmax function, the model can visualize the results in an
+TABLE I. The characteristics and size of the datasets.
+CVD
+UCR
+Challenges
+Small size
+Mixed Types
+No abnormala
+Unlabeledb
+Sequence Length / Wafer
+53
+152
+Training
+Normal
+9
+903
+Abnormal
+-
+97
+Total (Ntraining)
+9
+1000
+Test
+Normal
+567
+5499
+Abnormal
+8
+665
+Total (Ntest)
+575
+6164
+aAbnormal data are not available in training phase.
+bNormal or abnormal labels are not used in training phase.
+explainable graph, as shown in Fig. 10 (c) and (d), so that
+equipment engineers can comprehend the results.
+Our specific task can be either calculating anomaly score
+or classifying abnormal sequences, as shown in Fig. 1. For
+anomaly detection, Ln,t can be used as anomaly score at
+timpstamp t. For classification, cross-entropy loss of n-th
+sequence Ln = P
+t
+Ln,t can be used to measure how much the
+predicted value significantly deviates from the actual value.
+Based on training loss distribution, as depicted in Fig. 9,
+threshold τ can be set and utilized to classify abnormal sequences from normal sequences.
+Classifier(Xn) =
+(
+normal
+if τ > P
+t
+Ln,t,
+abnormal
+otherwise.
+(6)
+IV. DATA
+In the cost-sensitive semiconductor manufacturing industry,
+datasets with labeling at each time stamp, as typically used
+in time series anomaly detection, are generally not employed
+due to labeling expenses [16], [17]. Instead, the assessment
+of defects is commonly done at the wafer level through measurements or inspections. Therefore, using datasets where
+normal and anomaly classifications are assigned at the wafer’s
+sequence level, as depicted in Fig. 1, allows for the evaluation of classification performance. For these experiments, as
+shown in Table I, we experimented with the challenges of the
+semiconductor manufacturing industry using two individual
+univariate datasets, including one open dataset1.
+A. CVD EQUIPMENT PROCESS LOG
+We use the process log of the deposition step from one of
+our Chemical Vapor Deposition (CVD) equipment testbeds.
+The data consist of Mass Flow Controller (MFC) sensor data,
+which is used to measure a gas flow rate. Since the length of
+the deposition step time is controlled to be equal, the lengths
+of the sequences are also equal as Table I. Whether it is normal
+or abnormal has been confirmed by the engineer in charge.
+1https://www.timeseriesclassification.com/description.php?Dataset=Wafer
+6
+VOLUME 11, 2023
+
+===== Page 7 =====
+
+S. Lee et al.: Generative Pre-Training of Time-Series Data for Unsupervised Fault Detection in Semiconductor Manufacturing
+FIGURE 5. Compared to the normal data in the upper left, the
+illustration depicts the five fault types proposed by [47]. The five
+abnormal behaviors classified as fault types occur within a maximum
+range of 5% from the normal values.
+FIGURE 6. The illustration depicts the three fault types that occurred in
+our test vehicle. From left to right, when an outlet valve leak occurred,
+it exhibited a damped oscillation pattern; when an inlet valve leak
+occurred, the set point was not reached and sensor values gradually
+decreased; and when micro-arcing occurred, the sensor value showed a
+drop of approximately 1.5% around the mid-point of the process.
+The training data are from the first nine wafers since this
+equipment was installed, and the normal test data are 567
+wafers processed thereafter.
+Abnormal test data are obtained or generated in the following ways. Firstly, there were two abnormal cases that occurred
+in our test vehicle during the data collection period: inlet
+valve leak and outlet valve leak. Secondly, we generated a
+sequence to detect micro-arcing phenomena that may occur
+within the semiconductor manufacturing chamber. In reference to previous research [48] that it can be detected through
+fluctuations in electric current sensor values and the values
+that actually occured in one of our test vehicles, we added
+a sequence that reduced the data value by 1.5% from the
+midpoint. Lastly, we added five fault types in the previous
+suggested semiconductor time-series anomaly classification
+research [47]: bias, temporary change, noise disturbance, sinusoidal disturbance, and peripheral point. For example, in
+the case of noise disturbance, it is a commonly measurable
+fault type in motion sensors [49]. Although the CVD dataset
+is based on gas flow data, these various fault types were used
+to examine the generality and robustness of the model for
+manufacturing data.
+In summary, we conducted tests on the scenario with a
+fault rate of 1.39%, which was augmented based on previous
+research [47], using data with a fault rate of 0.35% relative
+to a total of 567 normal wafer samples. The dataset is based
+on data acquired from real semiconductor manufacturing
+equipment with extremely low fault occurrence frequency.
+Therefore, proper detection can lead to swift improvements
+in equipment or process issues. Particularly, faults such as
+micro-arcing, temporary change, and peripheral point are
+types that cannot be detected by the conventional Lower
+Specification Limits (LSL) and Upper Specification Limits
+(USL) interlocks commonly employed in the current equipment [50]. As a result, this provides an effect of reducing
+temporal losses. If real-time detection is achievable through
+a deep learning model for this dataset, it would have a significant impact on improving the yield of hundreds of wafers
+lost in the process of reaching the measurement stage, confirming the issue, and subsequently enhancing the equipment
+or process, based on the current CVD equipment. Since it is
+a dataset where fault types are clearly identified, we could
+conduct experiments to see which types of abnormalities are
+well classified and which types are difficult to classify, as
+shown in Fig. 9.
+B. THE UCR TIME-SERIES CLASSIFICATION ARCHIVE
+To the best of our knowledge, the wafer sensor data in the
+University of California Riverside (UCR) time-series classification archive [15] are virtually the only open dataset
+available for time-series sensor data in semiconductor manufacturing [51], which consists of six sensor values used in
+the etching process: radio frequency forward power, radio
+frequency reflected power, chamber pressure, 405 nanometer
+emission, 520 nanometer emission, and direct current bias
+[52]. Generally, the UCR datasets are used to compare universal time-series classification algorithms [53], [54]. We
+selected this dataset to prove that our model can outperform
+other unsupervised models on wafer sensor data and even be
+comparable to state-of-the-art supervised models [55].
+It is notable that the six sensor values are combined in a
+single dataset, requiring the model to be robust in processing
+different types of sensors simultaneously. This indicates the
+importance of developing a model that can effectively handle
+mixed sensor data and maintain its performance regardless
+of the sensor type. There are total 7,164 sequences with two
+classes, a normal and an abnormal. 10.6% of the total data are
+abnormal. The training and test data have been pre-divided by
+the original paper, with 1000 sequences specifically allocated
+for the training set.
+With supervised learning, the current state-of-the-art model
+has achieved almost perfect classification with accuracy of
+0.99995 [55]. Our work, however, aims to solve the challenge
+of training without labeled data, with unsupervised learning.
+For unsupervised learning, all experiments were conducted
+without the labels of the training data. In other words, during
+the training phase, all labels were removed, and information
+about the classes or their corresponding labels was not used.
+V. EXPERIMENTAL RESULTS
+A. EXPERIMENTAL SETUP
+Firstly, all data were normalized to the range [0, 1] based on
+the minimum and maximum values of the training data. For a
+total of N wafers with a fixed sequence length of T, the entire
+VOLUME 11, 2023
+7
+
+===== Page 8 =====
+
+S. Lee et al.: Generative Pre-Training of Time-Series Data for Unsupervised Fault Detection in Semiconductor Manufacturing
+TABLE II. Accuracy, Precision, Recall, and F1 score at EER for baseline models. From red to blue, evaluation metrics increase from 0 to 1.
+CVD
+UCR
+Average
+Models
+Accuracy
+Precision
+Recall
+F1
+Accuracy
+Precision
+Recall
+F1
+Accuracy
+Precision
+Recall
+F1
+TRACE-GPT
+1.000
+1.000
+1.000
+1.000
+0.955
+0.995
+0.954
+0.974
+0.977
+0.997
+0.977
+0.987
+ARIMA
+0.988
+0.538
+0.875
+0.667
+0.763
+0.964
+0.763
+0.852
+0.876
+0.751
+0.819
+0.759
+TadGAN
+1.000
+1.000
+1.000
+1.000
+0.495
+0.106
+0.496
+0.175
+0.748
+0.553
+0.748
+0.588
+LSTM-AE
+0.555
+0.019
+0.625
+0.038
+0.764
+0.964
+0.764
+0.852
+0.659
+0.492
+0.694
+0.445
+USAD
+0.829
+0.058
+0.857
+0.109
+0.558
+0.913
+0.558
+0.693
+0.694
+0.485
+0.708
+0.401
+TABLE III. Accuracy, Precision, Recall, and F1 score at EER for ablation study. From red to blue, evaluation metrics increase from 0 to 1.
+CVD
+UCR
+Average
+Models
+Accuracy
+Precision
+Recall
+F1
+Accuracy
+Precision
+Recall
+F1
+Accuracy
+Precision
+Recall
+F1
+TRACE-GPT
+1.000
+1.000
+1.000
+1.000
+0.955
+0.995
+0.954
+0.974
+0.977
+0.997
+0.977
+0.987
+TRACE-GPT w/o PE
+0.997
+0.800
+1.000
+0.889
+0.901
+0.987
+0.901
+0.942
+0.949
+0.893
+0.950
+0.915
+TRACE-GPT w/o TCN
+0.990
+0.571
+1.000
+0.727
+0.941
+0.993
+0.941
+0.966
+0.965
+0.782
+0.970
+0.847
+TRACE-GPT w/o Transformer
+0.969
+0.308
+1.000
+0.471
+0.881
+0.984
+0.882
+0.930
+0.925
+0.646
+0.941
+0.700
+(a) CVD Baselines
+(b) CVD Ablation
+(c) UCR Baselines
+(d) UCR Ablation
+FIGURE 7.
+Resulting ROC curves of the proposed TRACE-GPT model. Corresponding AUC values are given in the legend.
+time-series was concatenated as shown in Fig. 1, resulting in
+{x1, ..., xN×T}.
+We measured the performance of different methods using
+the commonly used metrics such as Accuracy, Precision,
+Recall, and F1-Score as shown in Table II and Table III.
+Specifically, as those metrics of unsupervised learning can
+vary with the anomaly score threshold, they are measured
+at the Equal Error Rate (EER) of the Receiver Operating
+Characteristic (ROC) curve, as shown in Fig. 7. To compare
+performance across all thresholds, the Area Under the ROC
+Curve (AUC), also known as AUROC, can be analyzed, as
+shown in Fig. 7.
+In the semiconductor manufacturing industry, as depicted
+in Fig. 1, the ultimate purpose is to classify whether a sequence of a wafer is normal or abnormal. One of the simplest approaches is using the criterion that anomalies are
+correctly detected when they appear in the abnormal sequence
+[56]. However, this approach is susceptible to the change
+of the anomaly score’s threshold. The method to maximize
+the performance of the baseline model involves converting
+a collection of anomaly scores into errors and then plotting
+the ROC curve based on the threshold. In this regard, [11]
+proposed methods utilizing point-wise difference, area difference, and DTW. We further extended the evaluation metrics
+by incorporating additional metrics, including Mean Squared
+Error (MSE) and Mean Squared Logarithmic Error (MSLE),
+to apply the most effective performance evaluation metric for
+each baseline model.
+We conducted all experiments in one machine with an Intel
+Xeon W-2125 processor containing 4 CPU cores, and one
+Nvidia Quadro P2000 GPU containing 1024 CUDA cores and
+5 GB GDDR5 on-board memory.
+B. BASELINE MODELS
+We include the following baselines in our experiments:
+ARIMA [32] is implemented with the statsmodels
+library. We used p=1, d=0, q=0 with MSLE, which was
+empirically determined as the best setting.
+TadGAN [11] is implemented using Orion [57]. For our
+dataset, using point-wise prediction errors showed better performance than DTW. We employed a window size of T
+3 , as
+specified in the original paper .
+LSTM-AE [9] uses two LSTM layers, each with 64 units
+for the encoder and decoder. A pointwise reconstruction error
+is used to detect anomalies [11].
+USAD [10] consists of one encoder and two decoders,
+ultimately combining two autoencoders. The encoder and
+decoders pass through three layers, halving or doubling the
+dimensions, until reaching the dimensionality m of the latent
+space. The window size was set to the default setting of
+12, and the dimensionality of the latent space was set to
+10. According to the original research, further increasing the
+8
+VOLUME 11, 2023
+
+===== Page 9 =====
+
+S. Lee et al.: Generative Pre-Training of Time-Series Data for Unsupervised Fault Detection in Semiconductor Manufacturing
+FIGURE 8. Comparison of the total execution time in minutes for each
+dataset. The total execution time consists of training and test time.
+latent space did not significantly improve performance, and
+experimentation with higher dimensions was limited by our
+machine’s memory constraints.
+C. BENCHMARKING RESULTS
+As Table II, TRACE-GPT outperforms baseline models
+based on average of both accuracy and F1 score across all
+the datasets. Our model showed better performance while
+maintaining faster runtime compared to most models, as
+shown in Fig. 8. The runtime was longer than that of the
+traditional statistical model, ARIMA. However, given our
+model’s better performance compared to ARIMA, the increase in runtime can be considered as a worthwhile cost
+for improved performance. In the case of USAD, it was
+faster than our model for small datasets, but it suffered from
+significant increases in runtime as the dataset size grew. When
+compared to LSTM-AE, our model outperformed it, likely
+due to the superior performance of Transformers over LSTM
+in general, attributed to parallel computations [25]. TadGAN
+had the least competitive time performance, consistent with
+findings from other studies [12]. Lastly, our model’s computation at the sequence level for each wafer, aligning with the
+characteristics of semiconductor manufacturing data, is also
+considered a positive factor contributing to its performance
+enhancement.
+For the CVD dataset, our model successfully distinguishes
+abnormal wafers from normal wafers without any false classifications. As shown in Fig. 9, the minimum loss of abnormal
+wafers exceeds more than three times the estimated standard
+deviation (ˆσ) of only nine training data points. In other words,
+even with a very limited number of samples, setting the
+threshold at 3-sigma can yield good performance on a large
+amount of test data. The results shows that TRACE-GPT
+can detect time-series anomaly without supervised training.
+Models like ARIMA exhibited limitations in detection performance due to increased noise in normal segments compared to
+anomaly scores at peripheral points. In the case of TadGAN,
+FIGURE 9.
+Distribution of the cross-entropy loss (L) on the CVD dataset.
+This histogram shows that test loss has converged, even with the small
+number of training data. The losses from faults are higher than those
+from normal sequences. Unlike the UCR dataset, since all fault types are
+clearly identified, it is possible to compare the loss among different fault
+types. Peripheral point was the most challenging fault type to classify.
+it responded well to peripheral points and demonstrated good
+detection performance on the CVD dataset. However, due to
+the reconstruction method’s inherent blurring effect, anomaly
+scores escalated in normal regions, leading to over-detection.
+Models like LSTM-AE sometimes yielded lower anomaly
+scores for timestamps with anomalies when the overall reconstruction shifted. Due to the phenomenon where the anomaly
+score appears lower in regions where it should be detected
+as high, we have termed this phenomenon "anti-detection."
+Models like USAD exhibited a lack of significant response
+to very small fluctuations in single values, indicating their
+potential inadequacy for unsupervised anomaly detection in
+the semiconductor manufacturing domain. Across all models,
+due to the unsupervised nature without prior knowledge,
+anomaly scores for transition segment that can occur normally
+in semiconductor manufacturing processes were observed to
+be higher (See Fig. 10 (a)).
+For the UCR dataset, TRACE-GPT outperformed all the
+unsupervised baseline methods by having the largest area
+under the ROC curve (AUC) with 0.9846 as shown in Fig. 7.
+Comparing to the F1 score of the supervised state-of-theart result [55], the F1 score of the TRACE-GPT at Equal
+Error Rate (EER) is only 0.026 below the supervised baseline. As depicted in Fig. 10 (c), for example, when considering the common sinusoidal disturbance type prevalent
+in semiconductor manufacturing processes [47], our model
+TRACE-GPT exhibited a phenomenon in which the anomaly
+score was relatively high in the stable interval without
+anomalies, between time stamps 50 and 90. Nonetheless,
+the scores remained lower compared to the other anomalous
+points, and consequently, this did not significantly impact
+the overall detection performance. Traditional models like
+ARIMA demonstrated relatively effective detection of sinusoidal disturbances and showed good performance. However,
+VOLUME 11, 2023
+9
+
+===== Page 10 =====
+
+S. Lee et al.: Generative Pre-Training of Time-Series Data for Unsupervised Fault Detection in Semiconductor Manufacturing
+(a) CVD Anomaly Scores
+(b) UCR Anomaly Scores
+(c) CVD Prediction by TRACE-GPT
+(d) UCR Prediction by TRACE-GPT
+FIGURE 10.
+Figures (a) and (b) provide examples of how our model and baseline models computed anomaly scores over time for each dataset’s given
+raw data. The ground truth for anomalies (highlighted in red) was confirmed by domain experts in the semiconductor manufacturing process. High
+anomaly scores should appear during periods of anomalies, while remaining relatively low for the rest. Figures (c) and (d) represent visualizations of our
+TRACE-GPT model for the corresponding data. As our model utilizes attention mechanisms, it shows how the eight attention heads learned weights and,
+based on this, how the model predicts sensor values, visualized through blue heatmap on the background. The red line chart corresponds to the original
+raw data for the same original time-series as in (a) and (b). The sensor values and anomaly scores have been normalized between 0 and 1.
+TadGAN did not perform well in detecting anomalies in
+data from semiconductor manufacturing processes. In the
+case of TadGAN, it had demonstrated good performance on
+datasets with existing periodic characteristics [11]. Hence, it
+is inferred that TadGAN might be vulnerable to datasets with
+irregular periods or mixed normal shapes, such as the UCR
+dataset. This phenomenon is also applicable to the rest of the
+baseline models, as even though they successfully assigned
+high anomaly scores before time stamp 50, a tendency for
+anti-detection after 110 substantially increased false positives
+during the classification stage (See Fig. 10 (b)).
+As data visualization plots give a good data explainability
+[58], we visualized attentions scores at each attention head
+and timestamp as shown in Fig. 10 (c) and (d). To predict a
+sequence, our model could learn to assign greater weight (pay
+more attention) to the sensor value that indicates normality
+within the sequence. If there is a specific abnormal shape,
+such as sinusoidal disturbance, broader attention scores are
+assigned to normalize the noise within the abnormality.
+D. ABLATION STUDY
+The combination of all three components is essential to
+achieve the highest accuracy and F1 score. As shown in
+Table III, our experiment demonstrated that three components
+of our model, namely Positional Embedding (PE), Temporal
+Convolutional Networks (TCN), and the Transformer, all contribute to detecting anomalies through unsupervised learning.
+The Transformer architecture is the key component of
+our model, which demonstrates that the Transformer can be
+successfully used in numerical time-series sensor data in the
+semiconductor manufacturing domain.
+Both TCN and the Transformer effectively learn timeseries features from small-sized training data. Particularly,
+Precision in the CVD dataset is significantly improved by
+both TCN and the Transformer.
+With mixed types of normality, the Transformer excels
+in predicting the next sensor value. Especially, the Transformer significantly enhances Recall in the UCR dataset.
+E. LIMITATIONS AND DISCUSSION
+We compared our model, TRACE-GPT, to well-known baseline models. Even though the performance metrics show
+progress in solving challenges within real-world datasets of
+the semiconductor manufacturing industry, there is still room
+for improvement in our model. For instance, TRACE-GPT
+is a univariate model. As it uses TCN for embedding, multivariate settings can be easily implemented by adjusting the
+number of input channels in the TCN layer. With a suitable
+multivariate datasets, this model can be tested as multivariate
+model in the future. Another improvement involves sequence
+length. In this study, since all sequences had the same length,
+there was no need to consider about variable-length [59].
+The advantage of applying the Transformer model, which is
+widely used in the NLP domain, to problems with different
+sequence lengths is that it can be processed by assigning a
+padding token after the end of sequence token [25]. With
+appropriate dataset, we would like to apply our model to
+variable-length sensor data in future. Lastly, by architecture,
+anomaly in the first sensor value in the sequence cannot
+be detected in current setting. This limitation can be solved
+by bidirectional prediction [60] in future. Moreover, bidirectional setting might improve the prediction performance in
+pre-training. Therefore, further research can introduce more
+universal datasets or modification in architecture.
+VI. CONCLUSION
+In this paper, we present a novel framework, TRACEGPT, demonstrating how convolutional embedding and the
+Transformer can be effectively used from anomaly detection
+to classification in time-series data with unsupervised pretraining in the semiconductor industry. We developed a deep
+10
+VOLUME 11, 2023
+
+===== Page 11 =====
+
+S. Lee et al.: Generative Pre-Training of Time-Series Data for Unsupervised Fault Detection in Semiconductor Manufacturing
+learning model that operates similarly to a human’s judgment
+of anomalies when presented with sensor values that deviate from predictions, by altering the embedding method and
+utilizing the concept of data resolution in the conventional
+Transformer architecture. We have shown that the TRACEGPT performs effectively, even with small or mixed datasets,
+and in scenarios where abnormal data are either unlabeled
+or non-existent, which are immediate challenges in the semiconductor manufacturing industry. Especially, we validated
+our model on open dataset, UCR, to prove that this method
+outperforms other unsupervised anomaly detection methods.
+Based on the F1 score at EER, our model almost caught up
+with the supervised state-of-the-art baseline by only 0.026
+with unsupervised learning.
+ACKNOWLEDGMENT
+The authors would like to thank Jaeho Jang, Aekyung Kim,
+and Junmin Lee for helpful discussions and advice. We would
+also like to thank Denise Priwisch for her help in reviewing
+the manuscript.
+REFERENCES
+[1] K. B. Lee, S. Cheon, and C. O. Kim, ‘‘A convolutional neural network
+for fault classification and diagnosis in semiconductor manufacturing processes,’’ IEEE Trans. Semicond. Manuf., vol. 30, no. 2, pp. 135–142, 2017.
+[2] S.-K. S. Fan, C.-Y. Hsu, D.-M. Tsai, F. He, and C.-C. Cheng, ‘‘Data-driven
+approach for fault detection and diagnostic in semiconductor manufacturing,’’ IEEE Trans. on Autom. Sci. Eng., vol. 17, no. 4, pp. 1925–1936, 2020.
+[3] H. Park, J. E. Choi, D. Kim, and S. J. Hong, ‘‘Artificial immune system for
+fault detection and classification of semiconductor equipment,’’ Electronics, vol. 10, no. 8, p. 944, 2021.
+[4] F. Zhu, X. Jia, W. Li, M. Xie, L. Li, and J. Lee, ‘‘Cross-chamber data transferability evaluation for fault detection and classification in semiconductor
+manufacturing,’’ IEEE Trans. Semicond. Manuf., vol. 36, no. 1, pp. 68–77,
+2022.
+[5] L. C. Brito, G. A. Susto, J. N. Brito, and M. A. Duarte, ‘‘An explainable
+artificial intelligence approach for unsupervised fault detection and diagnosis in rotating machinery,’’ Mech. Syst. Signal Process, vol. 163, p. 108105,
+2022.
+[6] Z. Xiao, X. Xu, H. Xing, S. Luo, P. Dai, and D. Zhan, ‘‘Rtfn: A robust
+temporal feature network for time series classification,’’ Inf. Sci., vol. 571,
+pp. 65–86, 2021.
+[7] C.-Y. Hsu and W.-C. Liu, ‘‘Multiple time-series convolutional neural network for fault detection and diagnosis and empirical study in semiconductor manufacturing,’’ J. of Intell. Manuf., vol. 32, pp. 823–836, 2021.
+[8] L. Xi, Y. Liang, X. Huang, H. Liu, and A. Li, ‘‘Unsupervised multimodal
+domain adversarial network for time series classification,’’ Inf. Sci., vol.
+624, pp. 147–164, 2023.
+[9] P. Malhotra, A. Ramakrishnan, G. Anand, L. Vig, P. Agarwal, and
+G. Shroff, ‘‘Lstm-based encoder-decoder for multi-sensor anomaly detection,’’ arXiv preprint arXiv:1607.00148, 2016.
+[10] J. Audibert, P. Michiardi, F. Guyard, S. Marti, and M. A. Zuluaga, ‘‘Usad:
+Unsupervised anomaly detection on multivariate time series,’’ in Proc. of
+the 26th ACM SIGKDD Int. Conf. Knowl. Discov. Data Min., 2020, pp.
+3395–3404.
+[11] A. Geiger, D. Liu, S. Alnegheimish, A. Cuesta-Infante, and K. Veeramachaneni, ‘‘Tadgan: Time series anomaly detection using generative
+adversarial networks,’’ in 2020 IEEE Int. Conf. on Big Data (Big Data).
+IEEE, 2020, pp. 33–43.
+[12] L. Wong, D. Liu, L. Berti-Equille, S. Alnegheimish, and K. Veeramachaneni, ‘‘Aer: Auto-encoder with regression for time series anomaly detection,’’ in 2022 IEEE Int. Conf. on Big Data (Big Data).
+IEEE, 2022, pp.
+1152–1161.
+[13] C.-Y. Hsu, C.-F. Chien, and Y.-C. Lai, ‘‘Main branch decision tree algorithm for yield enhancement with class imbalance,’’ in Intell. Decis.
+Technol.: Proc. of the 4th Int. Conf. on Intelligent Decision Technologies
+(IDT´ 2012)-Volume 1.
+Springer, 2012, pp. 235–244.
+[14] Q. P. He and J. Wang, ‘‘Fault detection using the k-nearest neighbor rule for
+semiconductor manufacturing processes,’’ IEEE Trans. Semicond. Manuf.,
+vol. 20, no. 4, pp. 345–354, 2007.
+[15] H. A. Dau, A. Bagnall, K. Kamgar, C.-C. M. Yeh, Y. Zhu, S. Gharghabi,
+C. A. Ratanamahatana, and E. Keogh, ‘‘The ucr time series archive,’’
+IEEE/CAA J. Autom. Sin., vol. 6, no. 6, pp. 1293–1305, 2019.
+[16] M. Carletti, C. Masiero, A. Beghi, and G. A. Susto, ‘‘Explainable machine
+learning in industry 4.0: Evaluating feature importance in anomaly detection to enable root cause analysis,’’ in 2019 IEEE Int. Conf. on Systems,
+Man and Cybernetics (SMC), 2019, pp. 21–26.
+[17] G. Verdier and A. Ferreira, ‘‘Adaptive mahalanobis distance and k-nearest
+neighbor rule for fault detection in semiconductor manufacturing,’’ IEEE
+Trans. Semicond. Manuf., vol. 24, no. 1, pp. 59–68, 2010.
+[18] K. Choi, J. Yi, C. Park, and S. Yoon, ‘‘Deep learning for anomaly detection
+in time-series data: review, analysis, and guidelines,’’ IEEE Access, vol. 9,
+pp. 120 043–120 065, 2021.
+[19] R. Bellman and R. Kalaba, ‘‘On adaptive control processes,’’ IEEE Trans.
+Automat. Contr., vol. 4, no. 2, pp. 1–9, 1959.
+[20] E. Eldele, M. Ragab, Z. Chen, M. Wu, C. K. Kwoh, X. Li, and C. Guan,
+‘‘Time-series representation learning via temporal and contextual contrasting,’’ arXiv preprint arXiv:2106.14112, 2021.
+[21] G. Zerveas, S. Jayaraman, D. Patel, A. Bhamidipaty, and C. Eickhoff, ‘‘A
+transformer-based framework for multivariate time series representation
+learning,’’ in Proc. of the 27th ACM SIGKDD Int. Conf. Knowl. Discov.
+Data Min., 2021, pp. 2114–2124.
+[22] Z. Yue, Y. Wang, J. Duan, T. Yang, C. Huang, Y. Tong, and B. Xu, ‘‘Ts2vec:
+Towards universal representation of time series,’’ in Proc. of the AAAI Conf.
+on Artif. Intell., vol. 36, no. 8, 2022, pp. 8980–8987.
+[23] D. Erhan, P.-A. Manzagol, Y. Bengio, S. Bengio, and P. Vincent, ‘‘The
+difficulty of training deep architectures and the effect of unsupervised pretraining,’’ in Artif. Intell. and Stat.
+PMLR, 2009, pp. 153–160.
+[24] D. Erhan, A. Courville, Y. Bengio, and P. Vincent, ‘‘Why does unsupervised
+pre-training help deep learning?’’ in Proc. of the thirteenth Int. Conf. on
+Artif. Intell. and Stat.
+JMLR Workshop and Conf. Proceedings, 2010, pp.
+201–208.
+[25] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez,
+Ł. Kaiser, and I. Polosukhin, ‘‘Attention is all you need,’’ Adv. Neural Inf.
+Process. Syst., vol. 30, 2017.
+[26] A. Radford, K. Narasimhan, T. Salimans, I. Sutskever et al., ‘‘Improving
+language understanding by generative pre-training,’’ 2018.
+[27] A. Radford, J. Wu, R. Child, D. Luan, D. Amodei, I. Sutskever et al.,
+‘‘Language models are unsupervised multitask learners,’’ OpenAI blog,
+vol. 1, no. 8, p. 9, 2019.
+[28] T. Brown, B. Mann, N. Ryder, M. Subbiah, J. D. Kaplan, P. Dhariwal,
+A. Neelakantan, P. Shyam, G. Sastry, A. Askell et al., ‘‘Language models
+are few-shot learners,’’ Adv. Neural Inf. Process. Syst., vol. 33, pp. 1877–
+1901, 2020.
+[29] OpenAI, ‘‘Gpt-4 technical report,’’ 2023.
+[30] D. Liu, S. Alnegheimish, A. Zytek, and K. Veeramachaneni, ‘‘Mtv: Visual analytics for detecting, investigating, and annotating anomalies in
+multivariate time series,’’ Proc. ACM. Hum. Comput. Interact., vol. 6, no.
+CSCW1, pp. 1–30, 2022.
+[31] S. Alnegheimish, D. Liu, C. Sala, L. Berti-Equille, and K. Veeramachaneni,
+‘‘Sintel: A machine learning framework to extract insights from signals,’’
+in Proc. of the 2022 Int. Conf. on Manage. of Data, 2022, pp. 1855–1865.
+[32] W. R. Kinney Jr, ‘‘Arima and regression in analytical review: An empirical
+test,’’ Account. Rev., pp. 48–60, 1978.
+[33] S. Hochreiter and J. Schmidhuber, ‘‘Long short-term memory,’’ Neural
+Comput., vol. 9, no. 8, pp. 1735–1780, 1997.
+[34] I. Goodfellow, J. Pouget-Abadie, M. Mirza, B. Xu, D. Warde-Farley,
+S. Ozair, A. Courville, and Y. Bengio, ‘‘Generative adversarial nets,’’ Adv.
+Neural Inf. Process. Syst., vol. 27, 2014.
+[35] T. Schlegl, P. Seeböck, S. M. Waldstein, G. Langs, and U. SchmidtErfurth, ‘‘f-anogan: Fast unsupervised anomaly detection with generative
+adversarial networks,’’ Med Image Anal., vol. 54, pp. 30–44, 2019.
+[36] D. Li, D. Chen, J. Goh, and S.-k. Ng, ‘‘Anomaly detection with generative adversarial networks for multivariate time series,’’ arXiv preprint
+arXiv:1809.04758, 2018.
+[37] J. Yoon, D. Jarrett, and M. Van der Schaar, ‘‘Time-series generative adversarial networks,’’ Adv. Neural Inf. Process. Syst., vol. 32, 2019.
+[38] Z. Tu, ‘‘Learning generative models via discriminative approaches,’’ in
+2007 IEEE Conf. on Comput. Vis. and Pattern Recognit.
+IEEE, 2007,
+pp. 1–8.
+VOLUME 11, 2023
+11
+
+===== Page 12 =====
+
+S. Lee et al.: Generative Pre-Training of Time-Series Data for Unsupervised Fault Detection in Semiconductor Manufacturing
+[39] K. T. Abou-Moustafa, M. Cheriet, and C. Y. Suen, ‘‘Classification of
+time-series data using a generative/discriminative hybrid,’’ in Ninth Int.
+Workshop on Frontiers in Handwriting Recognit.
+IEEE, 2004, pp. 51–
+56.
+[40] J. Xu, H. Wu, J. Wang, and M. Long, ‘‘Anomaly transformer: Time
+series anomaly detection with association discrepancy,’’ arXiv preprint
+arXiv:2110.02642, 2021.
+[41] B.-T. Lin and S.-N. Lee, ‘‘An effective end point detector on oxide cmp
+by motor current,’’ in 10th Annu. SEMI Adv. Semicond. Manuf. Conf. and
+Workshop. ASMC 99 Proc. (Cat. No. 99CH36295).
+IEEE, 1999, pp. 295–
+298.
+[42] D. Karani, ‘‘Introduction to word embedding and word2vec,’’ Towards
+Data Science, vol. 1, 2018.
+[43] N. Kalchbrenner, L. Espeholt, K. Simonyan, A. v. d. Oord, A. Graves,
+and K. Kavukcuoglu, ‘‘Neural machine translation in linear time,’’ arXiv
+preprint arXiv:1610.10099, 2016.
+[44] C. Lea, M. D. Flynn, R. Vidal, A. Reiter, and G. D. Hager, ‘‘Temporal
+convolutional networks for action segmentation and detection,’’ in Proc.
+IEEE Comput. Soc. Conf. Comput. Vis. and Pattern Recognit., 2017, pp.
+156–165.
+[45] J. L. Ba, J. R. Kiros, and G. E. Hinton, ‘‘Layer normalization,’’ arXiv
+preprint arXiv:1607.06450, 2016.
+[46] D. P. Kingma and J. Ba, ‘‘Adam: A method for stochastic optimization,’’
+arXiv preprint arXiv:1412.6980, 2014.
+[47] S. MELLAH, Y. TRARDI, G. GRATON, B. ANANOU, E. El Mostafa,
+and M. OULADSINE, ‘‘Semiconductor multivariate time-series anomaly
+classification based on machine learning ensemble techniques,’’ IFACPapersOnLine, vol. 55, no. 6, pp. 476–481, 2022.
+[48] E. Yan, J. Xu, X. Li, J. Chen, Y. Chen, D. J. Zhao, L. Chan, L. Ji, D. Padhi,
+and B. Zhang, ‘‘Solving arcing issues in cvd processes,’’ ECS Trans.,
+vol. 18, no. 1, p. 581, 2009.
+[49] S. C. Hoo and H. Ibrahim, ‘‘Biometric-based attendance tracking system
+for education sectors: A literature survey on hardware requirements,’’ J. of
+Sensors, vol. 2019, pp. 1–25, 2019.
+[50] V. Hofer, J. Leitner, H. Lewitschnig, and T. Nowak, ‘‘Determination of tolerance limits for the reliability of semiconductor devices using longitudinal
+data,’’ Qual. Reliab. Eng. Int., vol. 33, no. 8, pp. 2673–2683, 2017.
+[51] P. Espadinha-Cruz, R. Godina, and E. Rodrigues, ‘‘A review of data mining
+applications in semiconductor manufacturing. processes 2021, 9, 305,’’
+2021.
+[52] R. T. Olszewski, Generalized feature extraction for structural pattern
+recognition in time-series data.
+Carnegie Mellon University, 2001.
+[53] G. E. Batista, E. J. Keogh, O. M. Tataw, and V. M. De Souza, ‘‘Cid: an
+efficient complexity-invariant distance for time series,’’ Data Min. Knowl.
+Discov., vol. 28, pp. 634–669, 2014.
+[54] R. Wu and E. Keogh, ‘‘Current time series anomaly detection benchmarks
+are flawed and are creating the illusion of progress,’’ IEEE Trans. Knowl.
+Data Eng., 2021.
+[55] A. Guillaume, C. Vrain, and W. Elloumi, ‘‘Random dilated shapelet transform: A new approach for time series shapelets,’’ in Pattern Recognit.
+Artif. Intell.: Third Int. Conf., ICPRAI 2022, Paris, France, June 1–3, 2022,
+Proc., Part I.
+Springer, 2022, pp. 653–664.
+[56] K. Hundman, V. Constantinou, C. Laporte, I. Colwell, and T. Soderstrom,
+‘‘Detecting spacecraft anomalies using lstms and nonparametric dynamic
+thresholding,’’ in Proc. of the 24th ACM SIGKDD Int. Conf. Knowl. Discov.
+Data Min., 2018, pp. 387–395.
+[57] S. Alnegheimish, ‘‘Orion–a machine learning framework for unsupervised
+time series anomaly detection,’’ Ph.D. dissertation, Massachusetts Institute
+of Technology, 2022.
+[58] R. Dwivedi, D. Dave, H. Naik, S. Singhal, R. Omer, P. Patel, B. Qian,
+Z. Wen, T. Shah, G. Morgan et al., ‘‘Explainable ai (xai): Core ideas,
+techniques, and solutions,’’ ACM Comput. Surv., vol. 55, no. 9, pp. 1–33,
+2023.
+[59] E. Kim, S. Cho, B. Lee, and M. Cho, ‘‘Fault detection and diagnosis using
+self-attentive convolutional neural networks for variable-length sensor data
+in semiconductor manufacturing,’’ IEEE Trans. Semicond. Manuf., vol. 32,
+no. 3, pp. 302–309, 2019.
+[60] M. Schuster and K. K. Paliwal, ‘‘Bidirectional recurrent neural networks,’’
+IEEE Trans. on Signal Process., vol. 45, no. 11, pp. 2673–2681, 1997.
+SEWOONG LEE received the B.S. degree in industrial engineering from the Seoul National University, Seoul, Republic of Korea, in 2015 and the
+Master of Computer Science degree from the University of Illinois at Urbana-Champaign (UIUC),
+Urbana, IL, USA, in 2023.
+From 2016, he has been a Software Engineer
+at Mechatronics Research, Samsung Electronics.
+His current research interests include data science
+for the semiconductor manufacturing, time-series
+anomaly detection, and the development and deployment of novel deep
+neural networks models.
+JINKYOU CHOI received the M.S. degree in
+electrical engineering from the Korea University,
+Seoul, Republic of Korea, in 2013.
+From 2002, he has been a Software Engineer at
+Mechatronics Research, Samsung Electronics. His
+current research interests include data science for
+the semiconductor manufacturing.
+MIN SU KIM received the B.S., M.S., and
+Ph.D. degrees in electrical engineering from the
+Pohang University of Science and Technology
+(POSTECH), Pohang, Republic of Korea, in 2014,
+2016 and 2022, respectively.
+From 2022, he has been a Staff Engineer at
+Mechatronics Research, Samsung Electronics. His
+research research interests include the data-based
+fault diagnosis, defect detection, signal processing,
+and deep neural networks.
+12
+VOLUME 11, 2023

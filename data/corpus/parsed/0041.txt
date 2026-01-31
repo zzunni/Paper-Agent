@@ -1,0 +1,791 @@
+
+
+===== Page 1 =====
+
+Wafer-Scale Squeezed-Light Chips
+Shuai Liu1, Kailu Zhou1, Yuheng Zhang1, Abdulkarim
+Hariri1, Nicholas Reynolds1, Bo-Han Wu2 and Zheshen
+Zhang1*
+1Department of Electrical Engineering and Computer Science,
+University of Michigan, Ann Arbor, 48109, Michigan, USA.
+2Department of Electrical and Computer Engineering, University
+of Hawai’i at M¯anoa, Honolulu, 96822, Hawaii, USA.
+*Corresponding author(s). E-mail(s): zszh@umich.edu;
+Squeezed-light generation in photonic integrated circuits (PICs) is essential
+for scalable continuous-variable (CV) quantum information processing. By
+suppressing quantum fluctuations below the shot-noise limit, squeezed states
+enable quantum-enhanced sensing and serve as a standard resource for CV
+quantum information processing. While chip-level squeezed-light sources have
+been demonstrated, extending this capability to the wafer level with reproducible strong squeezing to bolster large-scale quantum-enhanced sensing and
+information processing has been hindered by squeezed light’s extreme susceptibility to device imperfections. Here, we report wafer-scale fabrication,
+generation, and characterization of two-mode squeezed-vacuum states on a
+fully complementary metal-oxide-semiconductor (CMOS)-compatible silicon
+nitride (Si3N4) PIC platform. Across a 4-inch wafer, 8 dies yield 2.9-3.1 dB
+directly measured quadrature squeezing with < 0.2 dB variation, demonstrating excellent uniformity. This performance is enabled by co-integrating
+ultralow-loss, strongly overcoupled high-Q microresonators, cascaded pumprejection filters, and low-loss inverse-tapered edge couplers. The measurements
+agree with a first-principles theoretical model parameterized solely by independently extracted device parameters and experimental settings. The measured
+squeezing level can be further improved by enhancing the efficiencies of off-chip
+detection and chip-to-fiber coupling. These results establish a reproducible,
+wafer-scale route to nonclassical-light generation in integrated photonics and
+lay the groundwork for scalable CV processors, multiplexed entanglement
+sources, and quantum-enhanced sensing.
+1
+arXiv:2509.10445v1  [quant-ph]  12 Sep 2025
+
+===== Page 2 =====
+
+2
+Wafer-Scale Squeezed-Light Chips
+1 Introduction
+Quantum science and technology are emerging as transformative drivers of
+innovation across advanced computing [1, 2], sensing [3, 4], and secure communication [5], promising capabilities beyond the reach of classical systems.
+At the heart of many of these applications lies the ability to generate, manipulate, and detect non-classical states of light. Among them, squeezed light—in
+which quantum fluctuations in one quadrature are suppressed below the
+shot-noise limit (SNL) [6]—offers intrinsic quantum advantages in precision
+measurements and serves as a key resource for CV quantum information processing protocols [7–10]. Since its first experimental demonstration in 1985 [11],
+squeezed light has been extensively explored in bulk optical platforms, achieving record shot-noise suppression exceeding 15 dB [12–14]. Such table-top
+systems have enabled landmark achievements, from enhancing the sensitivity
+of gravitational-wave detectors (e.g., LIGO) [15, 16] to advancing quantum
+imaging of biological structures [17], dual-comb spectroscopy for gas sensing [18, 19], generation of large-scale cluster states [20, 21], and distributed
+entangled sensor networks [22–25].
+Translating these laboratory demonstrations into deployable quantum
+systems requires platforms that maintain high performance while battling
+scalability, stability, robust integration, and cost-effectiveness challenges [26].
+Photonic integrated circuits fabricated in CMOS-compatible processes provide a compelling route: they offer phase-stable operations, environmental
+robustness, and mature process design kits (PDKs) with wafer-scale fabrication control. Recent advances have realized on-chip CV cluster states [27, 28],
+broadband homodyne detection integrated with CMOS electronics [29], and
+antenna arrays for squeezed light [30]. Across these applications, preserving
+strong squeezing is a pivotal requirement to achieve a quantum advantage—
+benchmarks for the amount of needed squeezing commonly cited in the field
+include at least 3 dB for enabling entanglement swapping [10, 31], 4.5 dB for
+two-dimensional cluster-state generation [20], and 10 dB for fault-tolerant CV
+quantum computing [32, 33]. However, squeezed light is extreme vulnerable
+to loss and noise stemming from practical imperfections due to, e.g., propagation loss incurred along the optical path, phase-locking instability, and the
+inefficiencies of optical components such as filters needed to reject the pump.
+Over the past decade, chip-scale squeezed-light sources have been investigated across several material platforms—including thin-film lithium niobate
+(TFLN) [34–37], Si3N4 [38–43], and silica (SiO2) [27, 44]—each offering distinct
+trade-offs in nonlinearity, loss, cost, and process maturity. To deliver reproducible, high-performance squeezing at scale, fully CMOS-compatible PICs
+are especially attractive: they leverage established PDKs and foundry workflows while enabling co-integration of the classical, linear photonic units, such
+as filters, phase shifters, interferometers, and low-loss delay lines, to complement the quantum components, positioning Si3N4 as a leading candidate to
+meet these requirements [45, 46]. A vital, albeit persistently challenging, step
+
+===== Page 3 =====
+
+Wafer-Scale Squeezed-Light Chips
+3
+toward manufacturable quantum PICs has been migrating chip-level demonstrations to a wafer-scale production while preserving strong squeezing, as
+even modest excess loss and noise can rapidly erode the achievable quantum
+advantages in different CV quantum sensing and information processing tasks.
+In particular, achieving > 3 dB of measured squeezing is recognized as a first
+critical milestone, marking the threshold for bona fide quantum advantages in
+CV quantum teleportation [47] and entanglement swapping [31] and deemed
+a transition from marginal noise reduction to operationally useful nonclassical
+resources for quantum-enhanced tasks.
+In this work, we address this challenge by demonstrating wafer-scale fabrication and generation of two-mode squeezed vacuum (TMSV) states on a
+fully CMOS-compatible Si3N4 PIC platform. We achieve > 3 dB of directly
+measured quadrature squeezing uniformly across a 4-inch wafer, with deviceto-device variation < 0.2 dB (2.9-3.1 dB). This reproducible performance is
+enabled by a single subtractive fabrication process that co-integrates, for the
+first time, ultralow-loss (Qi > 107), dispersion-engineered, strongly overcoupled microresonators (escape efficiency > 91% near 1560 nm), high-extinction
+pump-rejection filters (each > 30 dB), and low-loss inverse-tapered edge couplers (chip–fiber coupling > 75%) on the same chip. By reducing insertion
+loss and providing stable thermo-optic control, this system-level integration
+converts squeezed-light generation from a device-level demonstration into a
+wafer-scale, manufacturable resource for CV quantum photonics. Together
+with recent progress in system-level electro-optical co-packaging, our results
+establish a new benchmark for reproducible, wafer-scale nonclassical-light
+generation in integrated photonics and point toward high-volume CMOS
+manufacturing of quantum processing circuits.
+2 Design of quantum photonic integrated
+circuits
+Figure 1a illustrates the schematic of the device architecture for on-chip
+squeezed-light generation. A continuous-wave (CW) pump laser, operated
+below the parametric oscillation threshold, is coupled into a strongly overcoupled Si3N4 microring resonator. Inside the cavity, the enhanced circulating
+pump field drives non-degenerate four-wave mixing (FWM) via the χ(3) nonlinearity of the Si3N4 waveguide, in which two pump photons are annihilated
+and converted into a pair of correlated signal and idler photons occupying
+adjacent resonances, as illustrated in Fig. 1b. The emitted signal-idler mode
+pairs form a TMSV state, exhibiting quadrature noise suppression of ˆpS + ˆpI
+and ˆqS −ˆqI below the shot-noise limit (SNL)—a defining signature of squeezing—while the conjugate quadratures ˆpS −ˆpI and ˆqS + ˆqI display increased
+noise fluctuation, i.e., anti-squeezing.
+Strong squeezing is essential for CV quantum technologies, as the squeezing level directly determines the degree of quantum advantage attainable in
+
+===== Page 4 =====
+
+4
+Wafer-Scale Squeezed-Light Chips
+Fig. 1
+(a) Schematic of the Si3N4 PIC for TMSV generation. The circuit integrates a highQ microring resonator for squeezed-light generation via non-degenerate FWM, two cascaded
+add-drop filters with high extinction ratios for residual pump suppression, and an inversetapered waveguide edge coupler for low-loss fiber collection and off-chip characterization. (b)
+Conceptual illustration of the non-degenerate FWM process in the microring resonator: two
+pump photons are annihilated to generate quantum correlated signal and idler photons in
+adjacent resonances. The output signal and idler modes are in a TMSV state that exhibits
+correlated amplitude quadratures qS and qI and anti-correlated phase quadratures pS and
+pI.
+sensing, communication, and information processing. The maximum achievable squeezing extracted from the resonator is governed by the escape efficiency
+[38, 44], defined as η = 1 −QL/Qi, with 1/QL = 1/Qi + 1/Qc, where Qi,
+Qc, and QL are the intrinsic, coupling, and loaded quality factors. In principle, high Qi—typically limited by nanofabrication imperfections and material
+absorption—together with a moderately low QL is desirable for generating
+strong squeezing. Lowering QL increases the η and thus the potential squeezing level, but it also leads to undesired effects such as a higher parametric
+oscillation threshold and increased susceptibility to photo-refractive noise from
+stronger pump power. In practice, the measured squeezing is limited by all
+losses incurred between the squeezing chip and the off-chip photodetectors,
+which constitute the dominant imperfection that caps the amount of measured
+squeezing level in our experiment. For χ(3)-based nanophotonics squeezed-light
+sources, an additional challenge arises because the pump laser lies spectrally
+close to the squeezed modes, making efficient pump rejection with minimal
+insertion loss a formidable task. To address this, we employ two integrated
+add-drop filters with large free spectral range (FSR) placed after the microring resonator that generates squeezed light, namely, the squeezer. These filters
+provide high extinction ratios, negligible insertion loss, and broadband resonance tunability, thereby efficiently suppressing residual pump light while
+minimizing system loss. Thermo-optic microheaters are integrated on both
+the squeezer and the filters for resonance tuning and long-term stabilization.
+The filtered squeezed light is then collected through an inverse-tapered waveguide coupler, interfered with a bi-tone local oscillator (LO), and characterized
+
+===== Page 5 =====
+
+Wafer-Scale Squeezed-Light Chips
+5
+at a balanced homodyne detector (BHD) to retrieve the noise spectra across
+different quadratures.
+3
+Results
+3.1 Device fabrication and testing
+TEC
+Si3N4 squeezing chip
+Wire-bonding 
+PCB
+Pump laser
+Squeezed 
+light
+c
+d
+200 µm
+…
+…
+Squeezer
+Pump rejection filters
+Low-loss edge coupler
+Microheater
+Thermal isolation trench
+Si3N4 squeezing chip
+Fiber
+Residual pump power monitoring
+2.9 
+3.1 
+2.9 
+3.0 
+3.0
+2.9 
+3.0
+2.9
+Measured squeezing level (dB)
+Die 1:4
+Die 5:8
+Scan time (0.1 s/div)
+-3dB
+a
+b
+Die 1
+Die 2
+Die 3
+Die 4
+4-inch Si3N4 squeezed-light source
+Die 5
+Die 6
+Die 7
+Die 8
+-3dB
+Fig. 2 (a) Optical image of a fabricated 4-inch Si3N4 quantum photonic wafer containing 8
+dies of integrated squeezed-light sources. The directly measured maximum squeezing level of
+each die is labeled at its position, while four additional dies are reserved for other projects.
+A zoom-in image of one die is displayed at the side. Across the whole wafer, all dies exhibit
+measured squeezing levels close to 3 dB, ranging from 2.9 dB to 3.1 dB, with a variation
+of less than 0.2 dB. (b) Measured quadrature noise variances (blue trace) relative to the
+calibrated shot-noise level (gray trace) for the 8 dies. The LO phase is scanned to access
+both squeezed and anti-squeezed quadratures. (c) Photograph of a Si3N4 squeezing chip
+wire-bonded to a PCB for thermo-optic resonance detuning and stabilization. The chip is
+mounted on a temperature-stabilized stage with a PDH-controlled thermoelectric cooler and
+coupled with input and output light via lensed fibers. (d) Optical micrographs of the core
+functional elements of the Si3N4 squeezing chip: a racetrack microring squeezer for TMSV
+generation, add-drop pump-rejection filters to suppress residual pump light, and inversetapered waveguide couplers for efficient squeezed-light collection into optical fibers.
+We fabricate the designed squeezing chips on a 4-inch, 800-nm-thick Si3N4on-SiO2-on-Si wafer (see Methods). Each wafer contains eight dies for TMSV
+generation, with each die integrating four squeezed-light photonic circuits
+implementing different pump-rejection filter parameters, while the remaining
+four dies are reserved for other projects. To benchmark wafer-scale squeezing performance, we generate and characterize TMSV states across all eight
+dies following a similar procedure as previous demonstrations (Ref. [44] and
+
+===== Page 6 =====
+
+6
+Wafer-Scale Squeezed-Light Chips
+Methods). In our experiment, a CW laser boosted by an erbium-doped fiber
+amplifier (EDFA) is used as the pump, with amplified spontaneous emission
+(ASE) noise suppressed by a Pound–Drever–Hall (PDH)-locked, 2 MHzlinewidth free-space mode cleaner. The squeezer’s and filters’ resonances are
+initially red-detuned and then gradually tuned toward the pump wavelength by
+reducing the microheater temperature, thereby stabilizing resonance aligned
+with the pump. The generated TMSV signal is collected at the through port.
+A phase-coherent LO is derived from the same CW pump by driving a fiber
+electro-optic modulator (EOM) to generate an EO comb followed by a programmable filter used to select bi-tone comb teeth frequency-matched to the
+two TMSV modes. Finally, the squeezed light and the LO are interfered on
+a 50:50 beam splitter and detected with a homemade BHD to measure the
+quadrature noise variances.
+Figure 2a shows a photograph of the fabricated 4-inch Si3N4 squeezed-light
+wafer, with insets labeling the directly measured maximum squeezing level
+of each die. The corresponding quadrature noise-variance spectra, normalized
+to the calibrated shot-noise level, are shown in Fig. 2b. Four dies exceed or
+reach 3.0 dB of squeezing, with the highest level measured at 3.1 dB and the
+lowest at 2.9 dB. Across the wafer, the squeezing levels range from 2.9 to 3.1
+dB, yielding an average of 2.96 ± 0.2 dB, demonstrating excellent wafer-scale
+reproducibility and uniformity.
+Fig. 2c shows a photograph of a Si3N4 squeezing die wire-bonded to a customized printed circuit board (PCB) for thermo-optic resonance tuning and
+locking. Low-loss edge coupling is achieved using lensed fibers and inversetapered waveguides. Optical micrographs of the core functional elements of
+the Si3N4 squeezing chip are presented in Fig. 2d. The on-chip squeezer consists of a racetrack microring resonator composed of two modified Euler bends
+connected by straight sections. The resonator is side-coupled to a bus waveguide of identical cross-sectional geometry, which ensures inherent broadband
+phase matching and excitation of the low-loss, fundamental waveguide modes.
+A trade-off between minimizing intrinsic scattering loss (high Qi), achieving strong bus-to-resonator coupling (low Qc and QL), maintaining near-zero
+anomalous dispersion, and suppressing mode coupling is realized with a waveguide cross section of 2600 nm × 800 nm and optimized Euler curvature. The
+total cavity length is approximately 2425 µm, corresponding to an FSR of
+about 59.3 GHz. To reject the strong residual pump, the output is passed
+through two cascaded add-drop microring filters, each of which employs a 1500
+nm × 800 nm waveguide cross section with optimized Euler bends. The two
+bus-to-resonator couplings are optimized such that the coupling loss dominates the intrinsic loss, placing the filters near the critical-coupling regime and
+rendering the extinction ratio robust against nanofabrication-induced variations or input-power–dependent material absorption. Their FSR (∼603 GHz)
+is engineered to minimize the impact on the squeezing modes. The drop ports
+provide power-monitoring signals for active resonance locking via thermo-optic
+detuning. Deep thermal isolation trenches are introduced around the filters to
+
+===== Page 7 =====
+
+Wafer-Scale Squeezed-Light Chips
+7
+suppress thermal crosstalk with the squeezer. Finally, the filtered TMSV light
+is edge-coupled out through a 300 µm-long inverse-tapered waveguide with a
+tip dimension of 220 nm × 800 nm, exhibiting good mode matching with a 5
+µm-diameter lensed fiber to achieve low coupling loss.
+Fig. 3 Optical characterization of the fabricated Si3N4 squeezing chips. (a) A typical measured transmission spectrum of a Si3N4 squeezing chip, showing resonances due to a strongly
+over-coupled squeezer and two cascaded pump rejection filters. To measure the linewidths
+of the resonant modes, the filter resonances are detuned to bypass the squeezing modes,
+whereas both the squeezer pump mode and the filter resonances are tuned into alignment
+with the pump laser during squeezing experiments. (b) Normalized transmission spectra
+of the resonances selected as pump, signal, and idler modes for squeezed-light generation.
+The Qi and QL factors are extracted by Lorentzian fitting, showing large escape efficiencies
+η > 90% while maintaining high QL > 8 × 105. (c)-(e) Statistical distributions of Qi, QL,
+and η for squeezer resonances in the 1550–1580 nm range, corroborating wafer-scale uniformity of the squeezing devices.
+We test the classical performance of the Si3N4 squeezing chip at low input
+power levels (Methods). A typical transmission spectra near the squeezing
+generation wavelength is shown in Fig. 3a. Three resonances at 1559.5 nm
+
+===== Page 8 =====
+
+8
+Wafer-Scale Squeezed-Light Chips
+(signal), 1560.0 nm (pump), and 1560.5 nm (idler) are selected for subsequent
+TMSV generation. Resonance fitting in Fig. 3b reveals a loaded quality factor
+of QL ∼0.83×106 together with a high intrinsic quality factors Qi ∼10.1×106
+that yield a large field escape efficiency exceeding η > 91%, enabling the
+generation of strong on-chip squeezing, while the relatively high QL allows
+operation at moderate pump power levels to mitigate parasitic effects such as
+photorefractive noise. To assess wafer-scale uniformity, we extract the statistical distributions of Qi, QL, and η across resonances in the 1550–1580 nm
+range, as shown in Figs. 3(c–e). The most probable values for the quality factors are Qi = 9.2×106 and QL = 0.9×106, demonstrating uniform low optical
+loss and reliable strong bus-to-resonator coupling across the wafer. Combining
+Qi and QL infers the most probable η ≈91%, corresponding to a maximum
+achievable on-chip squeezing level as high as 10.5 dB. Notably, even the lowest
+η ≈75% in Fig. 3(e) promises an achievable on-chip squeezing level exceeding
+6.0 dB. Moreover, the reduced material absorption and scattering at longer
+wavelengths are expected to yield even higher Qi’s and lower QL’s, leading to
+stronger η.
+We design the pump rejection filters with a relatively broad linewidth
+of ∼26 pm (corresponding to QL ∼6 × 104), which reduces intracavity
+power buildup, mitigates thermo-optic instabilities, and increases tolerance
+to resonance drift. Moreover, because coupling losses dominate over intrinsic
+losses, the high extinction ratios (measured ranging from 30 to 40 dB) remain
+robust during squeezing measurement under high input powers and various
+wavelength range (see Supplemental Information). In addition, the edge couplers provide a reliable waveguide-to-fiber efficiency of ∼75% across the wafer
+(see Supplemental Information), with further improvements possible through
+anti-reflection coatings to suppress facet reflections. Collectively, these classical characterizations validate the key requirements for the measured high
+squeezing across the 4-inch Si3N4 wafer: large escape efficiencies with highQ resonances, efficient and power-stable pump rejection, and low-loss fiber
+interfacing.
+3.2 On-chip squeezing-light generation: Models and
+characterization
+The mechanism of on-chip squeezed-light generation via non-degenerate fourwave mixing (FWM) was established in Refs. [48, 49]. Following this approach,
+we provide a theoretical study of the squeezing performance attainable under
+different dispersion regimes, explicitly incorporating experimentally determined device parameters and losses. The interactions among cavity modes are
+
+===== Page 9 =====
+
+Wafer-Scale Squeezed-Light Chips
+9
+governed by the quantum coupled-mode equations:
+d
+dt
+ˆAl = −
+κ
+2 + i∆
+
+ˆAl −iD2
+2 l2 ˆAl + δl,0
+√κeAin
++ ig0
+X
+m,n,p
+δm+p,n+l ˆAm ˆA†
+n ˆAp
++ √κe ˆVe,l + √κi ˆVi,l
+(1)
+Here, δi,j is the Kronecker delta, ˆAl denotes the annihilation operator of the
+lth cavity mode with l = 0 being the pump mode, Ain is the input field in
+the bus waveguide, and κ = κi + κe is the total linewidth with intrinsic loss
+κi and external coupling loss κe. The pump detuning is represented by ∆,
+D2 is the group velocity dispersion, and the nonlinear coupling coefficient is
+given by g0 = ℏω2
+0n2/n2
+0Veff. The operators ˆVe,l and ˆVi,l account for vacuum
+fluctuations introduced by external and intrinsic losses, respectively. In the
+below-threshold regime, only the pump mode maintains a classical mean field,
+and the intracavity fields can be linearized as
+( ˆA0 = A0 + ˆa0(t)
+ˆAl = ˆal(t), l ̸= 0
+(2)
+where ˆal denotes the quantum fluctuation of the lth mode. Substitution of
+Eq.(2) into Eq.(1) yields the steady-state condition for the pump:
+A0
+
+−κ
+2 + i∆
+
++ √κeAin + ig0|A0|2A0 = 0
+(3)
+along with the fluctuation dynamics for the side modes:
+d
+dtˆal = −
+κ
+2 + i∆
+
+ˆal −iD2
+2 l2ˆal + 2ig0|A0|2ˆal + ig0A2
+0ˆa†
+−l
+(4)
+Equation (4) indicates that each mode l is coupled exclusively with its symmetric partner −l, and different pairs evolve independently. The pump dynamics
+are governed mainly by self-phase modulation, while the side modes are driven
+through cross-phase modulation and FWM. Solving these coupled equations
+provides access to the quadrature variances of the resulting two-mode squeezed
+vacuum states.
+Fig. 4a shows the measured quadrature noise variance of the squeezed light,
+normalized to this shot-noise reference. By periodically scanning the LO phase,
+we access all quadratures of the TMSV state. A raw squeezing level of 3.0 dB
+and an anti-squeezing level of 6.0 dB are directly observed at an on-chip pump
+power of 50 mW. Fig. 4b presents the measured maximum squeezing and antisqueezing levels as a function of on-chip pump power, all remaining below the
+parametric oscillation threshold. As expected, both the squeezing and antisqueezing levels increase with pump power. Beyond the optimal pump power,
+
+===== Page 10 =====
+
+10
+Wafer-Scale Squeezed-Light Chips
+Fig. 4 (a) Direct measurement of the quadrature noise level at 7 MHz as the LO phase
+is scanned. The minimum and maximum correspond to the squeezed and anti-squeezed
+quadratures, showing >3 dB squeezing and 6.0 dB anti-squeezing relative to the shot-noise
+level (gray trace). (b) Measured squeezing (blue) and anti-squeezing (gray) levels as functions
+of on-chip pump power. Dashed curves: theoretical model; Dots: experimental data.
+however, the observed squeezing slightly degrades as excess variance in the
+anti-squeezing quadrature mixes into the squeezing quadrature. The experimental data agree well with theoretical predictions depicted as dashed lines
+in Fig. 4b based on a model that incorporates the measured device parameters (Methods). Given the large escape efficiency of the squeezer (∼91%),
+the observed squeezing is primarily limited by the total collection efficiency
+of ∼60% after generation, comprising a waveguide-to-fiber coupling efficiency
+of 75%, propagation efficiency of 95% through fiber and free-space optics,
+interference visibility of 98%, and photodiode quantum efficiency of 88%. Compared with our previous TMSV demonstration employing off-chip pump filters,
+this integrated design yields an improvement of more than 2 dB in measured
+squeezing by virtue of the ultra-low-loss integrated filters and their enabled
+removal of isolators. Notably, the strong quadrature squeezing is not restricted
+to nearest modes adjacent to the pump as the non-degenerate FWM process supports concurrent generation of broadband squeezing across multiple
+mode pairs known as quantum microcomb [44]. Such broadband squeezing
+modes could be accessed either by cascading EOMs and function generators
+to synthesize matched LOs, or by employing coherent optical soliton microcombs realized on the same 800-nm, anomalous-dispersion Si3N4 platform to
+overcome the bandwidth limitations of EO combs [48].
+4 Discussion and Conclusions
+In summary, we have demonstrated wafer-scale, fully CMOS-compatible Si3N4
+PICs for the generation of TMSV states, achieving a maximum (minimum)
+measured quadrature squeezing of 3.1 dB (2.9 dB) across an entire 4-inch
+wafer, evidencing highly uniform, robust performance. This reproducibility
+arises from the co-integration of ultralow-loss, strongly overcoupled microring
+
+===== Page 11 =====
+
+Wafer-Scale Squeezed-Light Chips
+11
+squeezers, high-extinction pump rejection filters, low-loss edge couplers, and
+thermo-optic tuning on the same chip. The experimental results are in quantitative agreement with theoretical modeling based on independently extracted
+device parameters. The observed squeezing is currently limited by an overall
+off-chip detection efficiency of ∼60%, pointing to a clear pathway toward further improvement through reducing extrinsic losses associated with, e.g., the
+fiber–chip interfaces and photodetector. In addition to the strong squeezing,
+the Si3N4 platform endows additional functionalities that are out of reach in
+a table-top or single integrated component platform, such as reconfigurable
+interferometers [50], long delay lines for time-domain cluster-state generation [20, 21], and co-integration with modulators and detectors [51, 52]. Such
+capabilities point toward a future where entire continuous-variable quantum
+processors can be realized on a single CMOS-compatible photonic chip, bridging the gap between laboratory-scale demonstrations and scalable quantum
+technologies.
+Acknowledgments
+This work was supported by the National Science Foundation under Grant
+No. 2326780, No. 2330310, and No. 2317471 and University of Michigan.
+References
+[1] Arute, F. et al. Quantum supremacy using a programmable superconducting processor. Nature 574 (7779), 505–510 (2019) .
+[2] Madsen, L. S. et al.
+Quantum computational advantage with a programmable photonic processor. Nature 606 (7912), 75–81 (2022) .
+[3] Pirandola, S., Bardhan, B. R., Gehring, T., Weedbrook, C. & Lloyd, S.
+Advances in photonic quantum sensing. Nature Photonics 12 (12), 724–
+733 (2018) .
+[4] Degen, C. L., Reinhard, F. & Cappellaro, P. Quantum sensing. Reviews
+of Modern Physics 89 (3), 035002 (2017) .
+[5] Gisin, N. & Thew, R. Quantum communication. Nature Photonics 1 (3),
+165–171 (2007) .
+[6] Walls, D. F. Squeezed states of light. Nature 306 (5939), 141–146 (1983) .
+[7] Villar, A. d. S., Cruz, L., Cassemiro, K. N., Martinelli, M. & Nussenzveig, P. Generation of bright two-color continuous variable entanglement.
+Physical review letters 95 (24), 243603 (2005) .
+[8] Lawrie, B. J., Lett, P. D., Marino, A. M. & Pooser, R. C.
+Quantum
+sensing with squeezed light. Acs Photonics 6 (6), 1307–1318 (2019) .
+
+===== Page 12 =====
+
+12
+Wafer-Scale Squeezed-Light Chips
+[9] O’brien, J. L., Furusawa, A. & Vuˇckovi´c, J. Photonic quantum technologies. Nature Photonics 3 (12), 687–695 (2009) .
+[10] Masada, G. et al. Continuous-variable entanglement on a chip. Nature
+Photonics 9 (5), 316–319 (2015) .
+[11] Slusher, R., Hollberg, L., Yurke, B., Mertz, J. & Valley, J. Observation
+of squeezed states generated by four-wave mixing in an optical cavity.
+Physical review letters 55 (22), 2409 (1985) .
+[12] Vahlbruch, H. et al. Observation of squeezed light with 10-db quantumnoise reduction. Physical Review Letters 100 (3), 033602 (2008) .
+[13] Sch¨onbeck, A., Thies, F. & Schnabel, R. 13 db squeezed vacuum states
+at 1550 nm from 12 mw external pump power at 775 nm. Optics Letters
+43 (1), 110–113 (2017) .
+[14] Vahlbruch, H., Mehmet, M., Danzmann, K. & Schnabel, R. Detection
+of 15 db squeezed states of light and their application for the absolute
+calibration of photoelectric quantum efficiency. Physical Review Letters
+117 (11), 110801 (2016) .
+[15] Aasi, J. et al. Enhanced sensitivity of the ligo gravitational wave detector
+by using squeezed states of light. Nature Photonics 7 (8), 613–619 (2013) .
+[16] Ganapathy, D. et al. Broadband quantum enhancement of the ligo detectors with frequency-dependent squeezing.
+Physical Review X 13 (4),
+041021 (2023) .
+[17] Casacio, C. A. et al. Quantum-enhanced nonlinear microscopy. Nature
+594 (7862), 201–206 (2021) .
+[18] Herman, D. I. et al.
+Squeezed dual-comb spectroscopy.
+Science
+387 (6734), 653–658 (2025) .
+[19] Hariri, A. et al.
+Entangled dual-comb spectroscopy.
+arXiv preprint
+arXiv:2412.19800 (2024) .
+[20] Asavanant, W. et al.
+Generation of time-domain-multiplexed twodimensional cluster state. Science 366 (6463), 373–376 (2019) .
+[21] Larsen, M. V., Guo, X., Breum, C. R., Neergaard-Nielsen, J. S. & Andersen, U. L. Deterministic generation of a two-dimensional cluster state.
+Science 366 (6463), 369–372 (2019) .
+[22] Xia, Y. et al. Demonstration of a reconfigurable entangled radio-frequency
+photonic sensor network. Physical Review Letters 124 (15), 150502 (2020)
+.
+
+===== Page 13 =====
+
+Wafer-Scale Squeezed-Light Chips
+13
+[23] Guo, X. et al.
+Distributed quantum sensing in a continuous-variable
+entangled network. Nature Physics 16 (3), 281–284 (2020) .
+[24] Xia, Y. et al. Entanglement-enhanced optomechanical sensing. Nature
+Photonics 17 (6), 470–477 (2023) .
+[25] Xia, Y., Li, W., Zhuang, Q. & Zhang, Z. Quantum-enhanced data classification with a variational entangled sensor network. Physical Review X
+11 (2), 021047 (2021) .
+[26] Moody, G. et al. 2022 roadmap on integrated quantum photonics. Journal
+of Physics: Photonics 4 (1), 012501 (2022) .
+[27] Wang, Z. et al. Large-scale cluster quantum microcombs. Light: Science
+& Applications 14 (1), 164 (2025) .
+[28] Jia, X. et al.
+Continuous-variable multipartite entanglement in an
+integrated microcomb. Nature 1–8 (2025) .
+[29] Tasker, J. F. et al. Silicon photonics interfaced with integrated electronics
+for 9 ghz measurement of squeezed light. Nature Photonics 15 (1), 11–15
+(2021) .
+[30] Gurses, V. et al. An on-chip phased array for non-classical light. Nature
+Communications 16 (1), 6849 (2025) .
+[31] Van Loock, P. & Braunstein, S. L.
+Unconditional teleportation of
+continuous-variable entanglement.
+Physical Review A 61 (1), 010302
+(1999) .
+[32] Fukui, K., Tomita, A., Okamoto, A. & Fujii, K. High-threshold faulttolerant quantum computation with analog quantum error correction.
+Physical Review X 8 (2), 021054 (2018) .
+[33] Fukui, K. High-threshold fault-tolerant quantum computation with the
+gottesman-kitaev-preskill qubit under noise in an optical setup. Physical
+Review A 107 (5), 052414 (2023) .
+[34] Chen, P.-K., Briggs, I., Hou, S. & Fan, L. Ultra-broadband quadrature
+squeezing with thin-film lithium niobate nanophotonics. Optics Letters
+47 (6), 1506–1509 (2022) .
+[35] Park, T. et al.
+Single-mode squeezed-light generation and tomography with an integrated optical parametric oscillator. Science Advances
+10 (11), eadl1814 (2024) .
+[36] Arge, T. N. et al.
+Demonstration of a squeezed light source on
+thin-film lithium niobate with modal phase matching.
+arXiv preprint
+
+===== Page 14 =====
+
+14
+Wafer-Scale Squeezed-Light Chips
+arXiv:2406.16516 (2024) .
+[37] Shi, X. et al. Squeezed light generation in periodically poled thin-film
+lithium niobate waveguides. arXiv preprint arXiv:2508.08599 (2025) .
+[38] Dutt, A. et al. On-chip optical squeezing. Physical Review Applied 3 (4),
+044005 (2015) .
+[39] Vaidya, V. D. et al. Broadband quadrature-squeezed vacuum and nonclassical photon number correlations from a nanophotonic device. Science
+Advances 6 (39), eaba9186 (2020) .
+[40] Zhao, Y. et al. Near-degenerate quadrature-squeezed vacuum generation
+on a silicon-nitride chip. Physical Review Letters 124 (19), 193601 (2020)
+.
+[41] Zhang, Y. et al. Squeezed light from a nanophotonic molecule. Nature
+Communications 12 (1), 2233 (2021) .
+[42] Shen, Y. et al. Strong nanophotonic quantum squeezing exceeding 3.5
+db in a foundry-compatible kerr microresonator. Optica 12 (3), 302–308
+(2025) .
+[43] Ulanov, A. E., Ruhnke, B., Wildi, T. & Herr, T. Quadrature squeezing in
+a nanophotonic microresonator. arXiv preprint arXiv:2502.17337 (2025)
+.
+[44] Yang, Z. et al.
+A squeezed quantum microcomb on a chip.
+Nature
+Communications 12 (1), 4781 (2021) .
+[45] Xiang, C., Jin, W. & Bowers, J. E.
+Silicon nitride passive and active
+photonic integrated circuits: trends and prospects.
+Photonics research
+10 (6), A82–A96 (2022) .
+[46] Shekhar, S. et al. Roadmapping the next generation of silicon photonics.
+Nature Communications 15 (1), 751 (2024) .
+[47] Grosshans, F. & Grangier, P. Quantum cloning and teleportation criteria
+for continuous quantum variables.
+Physical Review A 64 (1), 010301
+(2001) .
+[48] Wu, B.-H., Alexander, R. N., Liu, S. & Zhang, Z.
+Quantum computing with multidimensional continuous-variable cluster states in a scalable
+photonic platform. Physical Review Research 2 (2), 023138 (2020) .
+[49] Chembo, Y. K. Quantum dynamics of kerr optical frequency combs below
+and above threshold: Spontaneous four-wave mixing, entanglement, and
+squeezed states of light. Physical Review A 93 (3), 033820 (2016) .
+
+===== Page 15 =====
+
+Wafer-Scale Squeezed-Light Chips
+15
+[50] Taballione, C. et al.
+8× 8 reconfigurable quantum photonic processor
+based on silicon nitride waveguides. Optics Express 27 (19), 26842–26857
+(2019) .
+[51] PsiQuantum. A manufacturable platform for photonic quantum computing. Nature 641, 876–883 (2025) .
+[52] Snigirev, V. et al. Ultrafast tunable lasers using lithium niobate integrated
+photonics. Nature 615 (7952), 411–417 (2023) .
+[53] Liu, S., Zhang, Y., Hariri, A., Al-Hallak, A.-R. & Zhang, Z. Fabrication
+of ultra-low-loss, dispersion-engineered silicon nitride photonic integrated
+circuits via silicon hardmask etching. ACS Photonics 12 (2), 1039–1046
+(2025) .
+Methods
+Device fabrication process.
+The complete wafer-scale fabrication of the
+Si3N4 squeezed-light chips [53] is performed using an amorphous silicon (aSi) hardmask dry etching process in the University of Michigan’s Lurie
+Nanofabrication Facility. A detailed fabrication flow is shown in Supplementary Information. The fabrication begins with the growth of a 3000-nm-thick
+wet thermal SiO2 layer on a 4-inch bare Si substrate, followed by the deposition of a 380-nm low-pressure chemical vapor deposition (LPCVD) Si3N4
+film. Crack-isolation trenches are defined along the wafer boundary using photolithography and inductively coupled plasma reactive ion etching (ICP-RIE),
+etching through both the Si3N4 and the underlying SiO2 layer. After photoresist removal and thorough wafer cleaning, a second 420-nm LPCVD Si3N4
+layer is deposited, resulting in a final Si3N4 thickness of approximately 800 nm.
+The combined bilayer structure is dispersion-engineered to exhibit anomalous
+group velocity dispersion. On-chip structures are defined in eight die regions
+across the wafer using electron-beam lithography (JEOL 6300) with maN-2405
+resist. The patterns are transferred into the a-Si hardmask layer via ICP-RIE
+(LAM 9400) using a HBr/He chemistry. The underlying 800-nm Si3N4 film is
+then fully etched using a separate ICP-RIE system (STS APS DGRIE) with
+a gas mixture of C4F8, CF4, and He. The residual a-Si hardmask is removed
+using isotropic XeF2 etching (Xactix). After completely etching the backside
+Si3N4 layer, the wafer undergoes Piranha and standard RCA cleaning, followed
+by high-temperature annealing in N2 at 1100◦C for 6 hours. To complete the
+waveguide cladding, an 800-nm LPCVD TEOS oxide layer is first deposited,
+followed by a 2200-nm plasma-enhanced chemical vapor deposition (PECVD)
+SiO2 layer and another 6-hour N2 annealing at 1100◦C. Microheaters are fabricated by depositing 5-nm Ti and 250-nm Pt films onto the SiO2 cladding
+surface using UV stepper photolithography (GCA AS200) alignment with
+LOR/S1813 resist, electron-beam evaporation, and a regular lift-off process
+with Remover PG and IPA. To form the edge couplers, taper structures are
+
+===== Page 16 =====
+
+16
+Wafer-Scale Squeezed-Light Chips
+exposed by UV stepper photolithography with AZ 12-XT, followed by full ICPRIE etching of both the PECVD SiO2 cladding and the buried SiO2 layer. For
+chip release, the 250-µm-thick Si substrate is ICP-RIE etched using the Bosch
+deep silicon etching process (STS Pegasus) with alternating cycles of SF6,
+C4F8, and O2 gases. The wafer is then diced into individual chips for classical
+characterization. Finally, each chip is wire-bonded (MPP iBond 5000) to a custom PCB circuit to enable thermal tuning of the on-chip microheater elements
+with external multi-channel current sources for squeezing measurement.
+Classical characterization.
+A tunable CW laser (Santec TSL-770) is
+passed through a fiber polarization controller and coupled into the bus waveguide of the Si3N4 squeezing chip using a lensed fiber. The laser wavelength
+is swept at 20 nm/s and the transmitted light through the squeezer and
+integrated filters is collected by another lensed fiber and detected with a lownoise photodetector (NewFocus 1811). The on-chip optical power is maintained
+below 20 µW to avoid thermal effects. The transmission spectra are recorded
+on an oscilloscope and analyzed using custom Python scripts to extract the
+coupling and intrinsic quality factors (Qc and Qi) of the target resonances via
+Lorentzian fitting.
+Quantum characterization.
+A low-noise tunable CW laser (TLB-6700) is
+amplified by an erbium-doped fiber amplifier (EDFA) and subsequently filtered by a free-space, narrow-linewidth (∼2 MHz) mode cleaner to suppress
+amplified spontaneous emission (ASE) noise. The output light is then split
+into two paths: one serves as pump for the Si3N4 photonic chip to generate
+the TMSV states, while the other is used for preparing the LO for balanced
+homodyne detection of the generated squeezed light.
+In the Si3N4 squeezing chip path, the light passes through two polarization controllers to excite the TE00 bus waveguide mode. To align the target
+squeezing resonance with the pump laser, the microring is first initialized
+at an elevated temperature, shifting its resonance to longer wavelengths. By
+gradually reducing the microheater temperature, the cavity resonance is blueshifted to align with the pump light for efficient squeezing generation. Below
+the parametric oscillation threshold, TMSV states are generated and escape
+the squeezer together with residual pump light. The unwanted pump is filtered by the two filters aligned with the pump wavelength. We monitor the
+power at the two drop ports for actively feedback control of the microheaters.
+Each filter achieves 30-40 dB of filtering efficiency, rendering a single filter
+adequate to reduce the residual pump power below 50 µW in most cases. The
+insertion loss is negligible owing to the straight bus waveguide. The deep thermal isolation trenches effectively eliminate thermal crosstalk, ensuring stable
+and reproducible operation of the filters without affecting the squeezer. The
+squeezed light is subsequently collected by a lensed fiber and launched into a
+free-space path for homodyne measurement.
+In the LO path, the pump light is sent through a fiber EOM (EOspace)
+driven by a radio frequency (RF) function generator. A modulation frequency
+close to fm ∼19.77 GHz is chosen such that the generated third-order sideband
+
+===== Page 17 =====
+
+Wafer-Scale Squeezed-Light Chips
+17
+aligns with the free spectral range of the squeezer (3fm ∼FSR). The desired
+LO sideband tooth is filtered using a programmable waveshaper (Finisar) with
+a specified extinction ratio exceeding 60 dB. During the experiment, fm is fine
+tuned to achieve the maximum amount of squeezing. The LO, with optical
+power of approximately 5 mW, is then combined with the two-mode squeezed
+light on a 50:50 beam splitter, and the outputs are detected with a pair photodiodes operating in a balanced configuration. The difference photocurrent is
+then analyzed on an electrical spectrum analyzer (ESA) at a central frequency
+of 7 MHz, resolution bandwidth (RBW) of 300 kHz, and video bandwidth
+(VBW) of 470 Hz. The common-mode rejection ratio of the balanced detectors is measured to be ∼40 dB, allowing the homodyne detection to operation
+in the shot-noise-limited regime calibrated by injecting only the LO into the
+balanced photodiodes.
+Model for on-chip squeezed-light generation.
+To formulate a quantumoptical model of squeezed-light generation, we start with a semiclassical picture
+prior to canonical quantization. The classical coupled-mode relation is
+dAl
+dt = −
+κ
+2 + i∆
+
+Al−iD2
+2 l2Al+δ(l, 0)√κeAin+ig0
+X
+m,n,p
+δm+p,n+lAmA∗
+nAp.
+(5)
+Here, Al is the amplitude of the l-th mode with respect to the pump, normalized so that |Al|2 represents photon flux. The resonance linewidth κ captures
+both the intrinsic loss κi and coupling loss κe. The pump detuning is ∆, the
+dispersion is quantified by D2, and the nonlinear coefficient g0 gives the perphoton frequency shift from four-wave mixing. We assume perfect overlap of
+the azimuthal modes. Eq. (5) therefore models the dynamics and coupling of
+cavity modes, laying the groundwork for analyzing two-mode squeezing. Following Ref. [49], canonical quantization is carried out by promoting A and A∗
+to operators ˆA and ˆA†, in conjuction with adding vacuum noise operators ˆV
+for each loss channel to ensure the commutation relation persists, giving rise
+to the quantum version of the coupled-mode equations:
+d
+dt
+ˆAl = −
+κ
+2 + i∆
+
+ˆAl −iD2
+2 l2 ˆAl + δl,0
+√κeAin
++ ig0
+X
+m,n,p
+δm+p,n+l ˆAm ˆA†
+n ˆAp
++ √κe ˆVe,l + √κi ˆVi,l.
+(6)
+Operating below the optical parametric oscillation threshold, only the pumped
+mode acquires a mean field, while all other modes only exhibit quantum
+fluctuations. Thus, the operators can be linearized as
+( ˆ
+A0 = A0 + ˆa0(t)
+ˆAl = ˆal(t), l ̸= 0.
+(7)
+
+===== Page 18 =====
+
+18
+Wafer-Scale Squeezed-Light Chips
+Substituting Eq.(7) into Eq.(6) gives the steady-state condition
+A0
+
+−κ
+2 + i∆
+
++ √κeAin + ig0|A0|2A0 = 0,
+(8)
+which determines the classical amplitude A0. The quantum fluctuation dynamics of other modes follow as
+d
+dtˆal = −
+κ
+2 + i∆
+
+ˆal −iD2
+2 l2ˆal + 2ig0|A0|2ˆal + ig0A2
+0ˆa†
+−l.
+(9)
+These equations can equivalently be obtained from the Hamiltonian in the
+Heisenberg picture [49]. Nonlinear terms show that the pump is only governed
+by self-phase modulation, while sideband fluctuations arise through both crossphase modulation and four-wave mixing. Importantly, each pair of l and −l
+modes is coupled but independent of other pairs.
+We now transform into the frequency domain. The output operator for
+mode l reads
+ˆ˜Aout,l(ω) = √κe ˆ˜Al(ω) −ˆ˜Ve,l(ω),
+(10)
+with the vacuum operators obeying the following correlations:
+⟨ˆ˜Vt,l(ω) ˆ˜V †
+t′,l′(ω′)⟩= δt,t′δl,l′δ(ω −ω′)
+⟨ˆ˜V †
+t,l(ω) ˆ˜Vt′,l′(ω′)⟩= 0
+⟨ˆ˜Vt,l(ω) ˆ˜Vt′,l′(ω′)⟩= ⟨ˆ˜V †
+t,l(ω) ˆ˜V †
+t′,l′(ω′)⟩= 0; t = i, e.
+(11)
+Solving Eq. (9) allows one to extract the fluctuation spectra and thereby the
+squeezing spectrum for the l and −l modes.
+To account for detection, all losses are combined into an overall quantum
+efficiency ηtotal, so the measured operator is
+ˆ˜Ameas,l = √ηtotal ˆ˜Aout,l +
+p
+1 −ηtotal ˆ˜Vη
+(12)
+where ˆ˜Ameas,l is the detected operator, and ˆVη represents additional vacuum
+noise.
+Finally, in balanced homodyne detection, the LO carries components at
+±l. Introducing rotated quadratures for LO with phase θ:
+ˆ˜ql(ω; θ) = ˆ˜ql(ω) cos θ −ˆ˜pl(ω) sin θ,
+ˆ˜pl(ω; θ) = ˆ˜ql(ω) sin θ + ˆ˜pl(ω) cos θ,
+(13)
+
+===== Page 19 =====
+
+Wafer-Scale Squeezed-Light Chips
+19
+with definitions
+ˆ˜ql(ω) = 1
+2( ˆ˜Ameas,l(ω) + ˆ˜A†
+meas,l(−ω))
+ˆ˜pl(ω) = 1
+2i( ˆ˜Ameas,l(ω) −ˆ˜A†
+meas,l(−ω)),
+(14)
+the detector output is found proportional to
+ˆ˜Xθ(ω) = [ˆ˜ql(ω; θ) + ˆ˜q−l(ω; θ)] cos θ + [ˆ˜pl(ω; θ) + ˆ˜p−l(ω; θ)] sin θ,
+(15)
+providing direct access to the squeezing and anti-squeezing levels.

@@ -1,0 +1,718 @@
+
+
+===== Page 1 =====
+
+1 
+ 
+Inert gas as electronic impurity in semiconductors: The case for 
+active infrared absorption in silicon 
+Nian-Ke Chen1,#, Yu-Chen Gao1,#, Ji-Hong Zhao1,*, Chun-Hao Li1, Qi-Dai Chen1, 
+Hong-Bo Sun2,*, Shengbai Zhang3,*, and Xian-Bin Li1,* 
+ 
+1State Key Laboratory of Integrated Optoelectronics, College of Electronic Science and 
+Engineering, Jilin University, Changchun 130012, China 
+2State Key Lab of Precision Measurement Technology and Instruments, Department of 
+Precision Instrument, Tsinghua University, Beijing 100084, China 
+3Department of Physics, Applied Physics, and Astronomy, Rensselaer Polytechnic 
+Institute, Troy, New York 12180, USA 
+Corresponding 
+authors: 
+lixianbin@jlu.edu.cn, 
+or 
+zhaojihong@jlu.edu.cn, 
+hbsun@tsinghua.edu.cn, or zhangs9@rpi.edu  
+ 
+Abstract 
+Inert (noble gas) elements are extremely inactive to surrounding chemical environment 
+and are frequently employed as protective gas in various semiconductor fabrication 
+processes. In this work, we surprisingly discover that high doses of argon up to 10171020 cm-3 can be measured in silicon exposed by laser pulses even after 1300 days. Firstprinciples calculations and molecular dynamics identify a unique argon-lockingvacancy (ALV) defect atomic model in silicon. The ALV defect is dynamically robust 
+in contrast to the frequently moving pure Si vacancy. While argon is chemically inert, 
+it readily modulates defect states of the occupied vacancy via steric repulsion and 
+rattling motions, leading to significant band splitting within bandgap and thus strong 
+infrared absorptions. Moreover, the repulsion between substitutional argon and 
+dangling bonds results in shallow donors which explains the confusion of enhanced ntype carriers in experiments. The work paves a way of using noble gas element to 
+produce active infrared absorption source for the non-heteroepitaxy photonic detectors 
+directly on silicon wafer at infrared communication wavelength. 
+
+===== Page 2 =====
+
+2 
+ 
+Silicon (Si) based optoelectronic devices is at the heart of optoelectronic industry owing 
+to their ability for Si integration. Among them, photodetectors working at infrared (IR) 
+communication wavelength (λ) of 1.31/1.55 μm are indispensable. However, due to the 
+well-known problem of low absorption at λ ≥ 1.1 μm, corresponding to the Si bandgap, 
+Si is powerless in communication applications. Often, a different semiconductor with a 
+suitable bandgap is heterogeneously grown on Si. However, issues with heteroepitaxy 
+such as lattice mismatch can reduce or even degrade the performance of the detectors 
+[1]. Another way is to introduce IR absorption sources in Si. For example, gap states 
+can be created inside Si by chalcogenide dopants with the help of ultrafast laser pulses 
+to result in doped black silicon [2-6]. It has a strong IR absorption at λ = 1.31/1.55 μm. 
+However, such IR sources are often not stable enough for applications. For example, 
+the IR absorption at 1.31/1.55 μm in black silicon can be significantly reduced by 
+annealing at 775 K for half an hour [4]. 
+ 
+In 2018, Zhao et al. reported a form of black Si, which was fabricated by nanosecond 
+laser pulses without any intentional element dopant except for a protective Ar gas [7,8]. 
+It was quite unexpected that the photodiode fabricated based on such a black Si has a 
+high and stable photoresponsivity of 260 mA/W at 5 V at λ  =  1.31 μm [8], which paves 
+the way for practical sensing by a Si detector at the IR communication wavelength. 
+Argon is a noble gas widely used as a protective gas in the electronic industry.  As a 
+matter of fact, the name of argon is derived from a Greek word that means lazy or 
+inactive. Due to its fully occupied valence band electronic shell with eight electrons, 
+there is little chemical reaction between argon and other elements. As such, it is also 
+expected that the Ar gas has no effect on the property of semiconductors. 
+ 
+In this work, we report the observation of very high concentration of Ar (1017-1020 cm3) in ultrafast laser-modified Si using the secondary-ion mass spectrometry (SIMS) 
+measurement. First-principles calculations and molecular dynamic studies reveal the 
+unique atomic and electronic properties of the Ar-doped Si to result in an unexpected 
+and strong IR absorptions. While the pure Si vacancy can produce dangling-bond state 
+
+===== Page 3 =====
+
+3 
+ 
+within bandgap, it is movable and unstable. In contrast, Ar atom can lock the Si vacancy 
+to form a dynamically stable defect complex even up to 900 K. Thanks to its full 
+electronic shell, Ar protects the dangling electrons of vacancy and retains its gap states. 
+Moreover, rattling motion and Coulomb repulsion of Ar atoms can lead to an enhanced 
+structural distortion and the further splitting of defect energy levels within the bandgap. 
+Unexpectedly, the repulsion between substitutional Ar and dangling electrons makes 
+the defect a shallow donor, which explains the confusion of laser irradiation induced ntype doping effect. As a result, the inert Ar atom in fact acts as an electronic impurity 
+and offers active and robust sub-bandgap IR absorption source for Si photodetector. 
+This solves the long-term difficulty of high photoresponsivity of Si based detectors at 
+IR communication wavelength. The physics behind shed new light on a general strategy 
+of employing inert elements to raise performances of semiconductor devices. 
+ 
+The concentrations of Ar atoms are measured by dynamic secondary ion mass 
+spectrometer (D-SIMS) in laser modified Si samples in argon protecting atmosphere.  
+The fabrication of such samples were reported in our previous work [8]. The D-SIMS 
+instrument is equipped with a Cameca IMS-4F device using 8 keV Cs+ primary beam. 
+Density-functional theory (DFT) calculations are performed using the VASP code 
+[9,10], where the projector-augmented wave (PAW) pseudo potential and generalizedgradient approximation (GGA) exchange-correlation functional developed by Perdew, 
+Burke and Ernzerh are adopted [11-13]. A Si supercell that contains 216 atoms are used 
+to describe defect effects. The energy cutoff for plane-wave expansion is 380 eV. The 
+3×3×3 Monkhorst-Pack grids are used as Brillouin-zone sampling for static energy and 
+property calculations, while the Γ point is used for structural relaxation and molecular 
+dynamic (MD) simulations. The band structures of supercells are unfolded by the 
+modified VaspBandUnfolding package [14]. Energy barriers are calculated using the 
+climbing image nudged elastic band (c-NEB) method [15,16]. The structures and 
+charge density are visualized by the VESTA code [17]. The positions of vacancy defect 
+are determined by the Wigner-Seitz method in the OVITO code [18]. 
+ 
+
+===== Page 4 =====
+
+4 
+ 
+To figure out the actual role of Ar atoms in laser modified Si, we carefully analyze the 
+dose of Ar by SIMS measurements in this work. Figure 1(a) displays Ar concentration 
+for such a typical Si sample, which was fabricated previously by nanosecond laser in 
+Ar atmosphere [8]. It is unexpected that even the sample has been made over 1300 days, 
+a very high dose of Ar atoms can be detected as from ~ 4×1021 cm-3 at the surface to ~ 
+4×1017 cm-3 at 2 µm below the surface. We reevaluate the specific detectivity (D*) of 
+the photodetector based on the Si sample [8] and compare it to those of non-silicon 
+photodetectors at the IR wavelength of λ = 1.31 μm [19].  The 1.31-µm wavelength, 
+whose photonic energy is below the bandgap of Si, is out of the detecting scope of 
+detectors based on intrinsic Si. A higher D* reflects a higher signal-to-noise ratio of 
+detectors. For example, Fig. 1(b) shows that the D* of the laser modified Si in Ar 
+atmosphere here working at 295 K (1011 cmHz1/2W-1) is not only higher than those of 
+PbSe and InAs working at the same temperature but also higher than or close to those 
+of InAs and InSb working at a much lower temperature of 193 K or 77 K. All of these 
+indicate the inclusion of Ar in Si could potentially offer a highly effective IR absorption 
+source for detectors. 
+ 
+To uncover the microscopic picture and critical role of Ar in Si samples, we carry out 
+first-principles calculations. In fact, the formation energies (ΔHf) of Ar defects in 
+crystalline Si are very large. Table S1 in Supplemental Material summarizes the 
+calculated ΔHf of several defects in Si, which agrees with previous reports [20,21]. 
+The calculated ΔHf of interstitial and substitutional Ar defects are as large as 6.05-7.19 
+eV while the ΔHf of a silicon vacancy (VSi) is about 3.67 eV. Despite of the high ΔHf, 
+the Ar-related defects can still be formed under laser irradiations. A key reason is that 
+the ΔHf can be substantially reduced when Si is melted by laser irradiations, see Fig. 
+1(c). Also, compared with interstitial Ar defects, substitutional Ar defects should be 
+dominate because an interstitial Ar and a VSi will be annihilated into a substitutional Ar 
+once they encounter during the annealing process. This annihilation is obviously energy 
+favorable. Moreover, the ΔHf of substitutional Ar defects can further be lowered by 
+their accumulation [see Fig. 1(d)] because such an accumulation reduces the number of 
+
+===== Page 5 =====
+
+5 
+ 
+dangling bonds. 
+ 
+   
+FIG. 1. (a) Concentration of Ar in the nanosecond-laser modified silicon sample 
+measured by the secondary ion mass spectroscopy. (b) Comparison of specific 
+detectivity (D*) between the black silicon detector [8] and other reported infrared 
+detectors at 1.31 µm [19]. (c) Formation energies of a substitutional Ar defect (ArSi) at 
+various temperatures. The energy of a high-temperature state is calculated by the 
+average free energy of the last 10 ps frames of a 20-ps NVT MD simulation. (d) 
+Formation energies of the accumulated substitutional Ar defects in Si. The formation 
+energies of the multi-substitutional defects are averaged by the number of Ar atoms. 
+ 
+Figure 2 elucidates atomic and electronic structures after an Ar atom is introduced into 
+Si. In order to study Ar induced defect states in Si, a large supercell with 216 atoms is 
+employed. Due to Brillouin Zone folding in the supercell, band structures are calculated 
+and further reanalyzed by the effective band unfolding method [22]. The unfolded band 
+structure in Fig. 2(d) reproduces the correct E-k dispersion for the intrinsic Si despite 
+of underestimating the bandgap by the GGA-DFT method. 
+ 
+Naturally, an Ar atom filling in a Si lattice vacancy (VSi) could be an ideal candidate 
+for the IR absorption. Because an intrinsic vacancy has the ability of offering defect 
+
+===== Page 6 =====
+
+6 
+ 
+states within the bandgap. Fig. 2(a) displays the local tetrahedral motif in intrinsic Si. 
+When a Si atom is removed to form a VSi, four dangling bonds are produced, see Fig. 
+2(b). Here, the four atoms around the vacancy are noted as atoms 1, 2, 3, 4 (Si1, Si2, Si3, 
+Si4), respectively. Li,j is the distance between any two of them. If no any atomic 
+relaxation, the vacancy with all the same Li,j = 3.87 Å holds an ideal Td local symmetry. 
+However, due to the well-known Jahn-Teller distortion effect, the four atoms are 
+relaxed closer to the center of the vacancy with L1,2 (3.03 Å) ≈ L3,4 (3.12 Å) and other 
+Li,j = 3.54 Å. The symmetry is thus lowered to a near D2d symmetry (~D2d) shown in 
+Fig. 2(b), which is consistent with a previous result [23]. Accordingly, the energy levels 
+of defect states can split into two parts: two occupied levels in the lower part within the 
+bandgap while two unoccupied levels in the upper part within the bandgap, see Fig. 2(e) 
+of the band structure and its schematic drawing [Fig. 2(h)] for Si with a ~D2d vacancy. 
+ 
+After Ar atoms are introduced into Si which is confirmed by our SIMS measurement, 
+the local structures of VSi will be changed. For example, as shown in Fig. 2(c), the 
+atomic distortion of VSi can be further enhanced to hold a C2v symmetry due to a Ar 
+atom substitutionally filled in VSi (ArSi). In this case, the Ar atom is closer to Si3 and 
+Si4, which makes Si3 and Si4 move away from each other. Meanwhile, Si1 and Si2 move 
+closer to each other. Therefore, L1,2 and L3,4 are changed to 3.46 Å and 5.40 Å, 
+respectively. The ~120°bond angles of Si3 and Si4 indicate the bonding type is changed 
+to be sp2-hybridization like while the sp3-hybridization like bonding still remains for 
+Si1 and Si2. Our calculations found that the filling of Ar into VSi costs about 2.56-eV 
+extra energy. Such large an interaction energy and the large structural distortion suggest 
+that Ar should have a significant repulsive interaction with surrounding dangling bonds 
+of Si atoms, i.e., the steric repulsion effect. The steric-repulsive induced distortion 
+(SRD) also leads to a larger bonding hierarchy and changes the defect states of VSi. 
+Accordingly, comparing to the case of VSi, defect levels of ArSi are further splitted, see 
+Figs. 2(f) and (i): the energies of highest occupied defect orbital (HODO), lowest 
+unoccupied defect orbital (LUDO) and LUDO+1 is raised and closer to conduction 
+band while the energy of HODO-1 lowers into the valence band. 
+
+===== Page 7 =====
+
+7 
+ 
+ 
+FIG. 2. Local atomic structures of (a) Si, (b) VSi and (c) ArSi with the steric-repulsive 
+distortion (SRD) holding a C2v symmetry . The arrows indicate the directions of atomic 
+relaxation referred to their original positions. (d)-(f) correspondingly show the unfolded 
+band structures of the three supercell models. The size of the scatters represents the 
+atomic weight. The weights of Si1,2,3,4 (green and red scatters) are amplified by a factor 
+of 10. The green and red scatters indicate the contributions from Si1,2 and Si3,4, 
+respectively. (g)-(i) show corresponding schematic band structures. Ef is set as 0 eV. 
+ 
+In fact, the local atomic configuration of ArSi defect with SRD is not unique. It can also 
+have other structures with a C3v or ~Td symmetry, see Figs. S1(e) and (f) in 
+Supplemental Material. In both cases, the four dangling Si atoms (Si1,2,3,4)  are repulsed 
+by the Ar and thus tend to have a sp2-like bonding characteristic due to the bond angle 
+of ~120°. In the two cases, not only the defect levels but also the spin states are splitted, 
+see Figs. S2 and S3 in Supplemental Material. Three of the four electrons from dangling 
+bonds occupy three spin-up levels while one occupies a spin-down level. 
+
+===== Page 8 =====
+
+8 
+ 
+ 
+In fact, the three configurations of ArSi with C2v, C3v and ~Td SRDs almost have the 
+same formation energy with little differnece of 0.01-0.03 eV (see Table S1 in 
+Supplemental Material). The energy barrier of the tansition between C2v and C3v (C3v 
+and ~Td) configurations calculated by the NEB method is also as small as 0.015 (0.013) 
+eV, indicating readily transitions to each other. Defect levels always preserve inside the 
+bandgap after inert Ar doping in VSi, despite of these different Ar configurations with 
+close eneriges. Moreover, the SRD effect still stands in the accumulated substitutional 
+Ar defects (3Ar3Si and 4Ar4Si) and thus the splitted defect states also exist (see Fig. S4 
+in Supplemental Material). In addition, a bond-centered (B-C.) site interstitial Ar defect 
+also has two dangling bonds while the tetrahedral/hexagonal-site interstitial Ar defects 
+have no dangling bonds, see Figs. S1(a)-(c) in Supplemental Material. As such, the BC. interstitial Ar also has two defect levels inside the bandgap, see Fig. S5 in 
+Supplemental Material. All these defect states no doubt will benefit a robust subbandgap IR absorption in Si. 
+ 
+Next, electronic bonding mechanisms of ArSi are analyzed to figure out the mechanism 
+of the Ar doping induced change of defect states. Taking the C2v configuration as an 
+example, the charge density difference (CDD) analyses [24] in Figs. 3(a)-(c) show no 
+transferred or shared electrons between Ar and its surrounding Si due to the chemical 
+inertia of Ar. Therefor, the interaction between Ar and the dangling Si atoms should be 
+Coulomb repulsion effect which agrees with the SRD of the local structure. In fact, 
+although Ar atom does not offer any defect levels but indirectly modulate defect states 
+of a Si vacancy via the repulsion. Figures 3(d)-(h) elucidate the spatial distributions of 
+defect states. The updated sp2-like configuration of Si3,4 [see the bond angles of 121° in 
+Fig. 3(a)] may release a dangling pz orbital from the orginal  sp3 orbital. Obviously, the 
+LUDO+1 and the HODO are the unoccupied  and occupied pz-like orbitals of Si3,4, 
+respectively, see Figs. 3(e) and (g). Figure 3(f) shows the LUDO corresponding to the 
+unoccupied sp3-like orbital of Si1,2. Since Si1 and Si2 has also a certain interaction due 
+to a charge accumulation between them shown in Fig. 3(b), their occupied sp3-like state 
+
+===== Page 9 =====
+
+9 
+ 
+further moves below the valence band maximum. We indeed find the state by projecting 
+the orbital-decomposed partial charge density inside valence band [see Fig. 3(h)]. Such 
+a defect state will move back into bandgap in the case of C3v and ~Td SRDs due to the 
+absence of such interaction between dangling Si atoms (see Figs. S2 and S3 in 
+Supplemental Material). 
+ 
+ 
+FIG. 3. (a) The charge density difference (CDD) of ArSi with the C2v SRD. The value 
+of isosurface is 0.015 e/a03, a0 is the Bohr radius. (b) and (c) show the respective (11̅0) 
+and (110) slices of the CDD. The unit of the color bar is e/a03. (d) Schematic defect 
+levels of ArSi with C2v SRD. (e)-(h) The corresponding orbital-decomposed partial 
+charge density projected to real space. The values of isosurface are 0.005 e/a03 for (e)-
+(g) and 0.0015 e/a03 for (h). 
+ 
+To directly demonstrate the influence of the Ar-related defect on the IR absorption at λ 
+= 1.31/1.55 μm, the aobsorption coefficients are calculated [see Fig. 4(a)]. Here, the 
+meta-GGA method using the modified Becke-Johnson (MBJ) exchange potential 
+[25,26] is adopted to correct the bandgap underestimated by the traditional PBE 
+functional (see Fig. S6 in Supplemental Material for the effect of correction). Obviously, 
+
+===== Page 10 =====
+
+10 
+ 
+a substantial enhancement of the sub-bandgap IR absorption is achieved by ArSi in great 
+contrast to the case without defect (Si) that displays almost no absoprtion. Moreover, 
+the substitutioanl defects also have stronger abosorptions compared with the interstitial 
+Ar and VSi, owing to the repulsion induced splitting of defect levels. 
+ 
+ 
+FIG. 4. (a) Calculated absorption coefficient of Si, VSi, B-C. interstitial Ar and ArSi with 
+the C2v and C3v SRDs. (b)-(d) The ΔHf of neutral and charged states of the ArSi with 
+C2v SRD, the ArSi with C3v SRD and the B-C. interstitial Ar defect, respectively. 
+ 
+In fact, the repulsion effect of Ar on dangling electrons not only changes the atomic 
+structure and the position of defect levels but also significantly affects the ionization 
+process. When the Ar is filled into the vacancy, the strong repulsive interaction between 
+Ar and dangling electrons should make the electrons be ionized easily. Figures 4(b)-(d) 
+show the calculated chemical potential dependent ΔHf of neutral and charged states of 
+the Ar defects [27,28]. According to the position of transition levels (where the ΔHf of 
+neutral and charged states equal), it is surprising that the substitutional Ar defects are 
+shallow donors but deep acceptors. In contrast, the B-C. interstitial Ar still has deep 
+donor and acceptor levels. The shallow donor effect of ArSi defects can explain the 
+
+===== Page 11 =====
+
+11 
+ 
+confusion that the fabricated sample shows a substantially enhanced n-type carrier 
+concentration [8]. In other words, the substitutional Ar can act as an electronic impurity 
+despite of its inert chemical property. 
+ 
+  
+ 
+FIG. 5. The projected trajectories of the local structure of (a) ArSi and (b) VSi during 60ps MD simulations at 500 K. The colored dots represent positions of ArSi and Vsi while 
+the grey dots indicate the ones of Si atoms with time evolution. The energy barriers for 
+a diffusion of (c) ArSi and (d) VSi calculated by c-NEB method. (e) The MSD of the VSi 
+during the MD simulation. Inset in (e) shows the schematic trajectory of diffusion of a 
+pure VSi in the simulation. 
+ 
+It worth noting that VSi has the lowest ΔHf (3.67 eV) among the defects in Si and it 
+can also offer a significant sub-bandgap IR absorption. As mentioned above, the 
+absorption of ArSi is in fact originated from defect states of dangling bonds around the 
+Ar filled vacancy. However, for practical device applications, IR absorption sources 
+should be reliable enough. Therefore, two ab initio MD simulations of 60 ps at 500 K, 
+
+===== Page 12 =====
+
+12 
+ 
+which is significantly higher than room temperature at which detector devices work, 
+are performed to compare the structural stability between ArSi and pure VSi. Figures 5(a) 
+and (b) show the projected atomic trajectories with time for the local structures of ArSi 
+and the VSi, respectively. During the MD simulations, the instant sites of the vacancy 
+are determined by the Wigner-Seitz method as implemented in the OVITO code [18]. 
+It is clear that the Ar atom in ArSi is in form of a kind of rattling motion and moves 
+much more intensely than normal Si atoms behave in lattices. The result is consistent 
+with the negligible energy barriers among different SRD configurations of a ArSi. 
+Despite of such intense motions, ArSi stays in a same lattice firmly during the whole 
+MD simulation. Note that the multi-substitutional Ar defects (e.g., 4Ar4Si) also stable 
+during a 500 K MD simulation (see Fig. S7 in Supplemental Material). In a great 
+contrast, the pure VSi shows an easy diffusion among different lattices. Next, the c-NEB 
+analyses further evaluate barriers of atomic diffusions in Si. First, the energy barrier of 
+a single VSi diffusion can be as low as 0.26 eV, see Fig. 5(d). The probability of its 
+diffusion behavior at 500 K could be simply estimated by Arrhenius equation: 𝑃= 𝑣∙
+exp (−
+𝐸𝑎
+𝑘𝐵𝑇), where kB is the Boltzmann constant, T is the temperature, Ea is the energy 
+barrier of diffusion and v can be regarded as atomic vibration frequency. Using the 
+frequency of highest optical phonon of crystalline Si, i.e., ~15 THz [29], the estimated 
+characteristic time for one diffusion event is 𝜏=
+1
+𝑃≈30 ps for the VSi. Figure 5(e) 
+shows the mean square displacement (MSD) of VSi during the 500-K MD simulations. 
+The pure VSi can move in different lattices as many as 8 times within 60 ps, which is 
+close to the estimated characteristic time. That indicates in a practical Si sample the 
+pure VSi can readily diffuses among the lattices at the raised temperature and will be 
+eliminated when it gets to a grain boundary or a surface by an annealing process. As 
+such, the significant sub-bandgap absorption by VSi as shown in Fig. 4(f) cannot readily 
+happens. Second, in a great contrast, the energy barrier for an Ar diffusion out of a 
+vacancy (i.e., an Ar exchanges its site with an adjacent Si atom) is as high as 1.8 eV, 
+see Fig. 5(c). We have performed c-NEB calculations with other two different paths for 
+Ar diffusions and the barriers are almost the same (~1.8 eV), see Fig. S8 in 
+
+===== Page 13 =====
+
+13 
+ 
+Supplemental Material. The atomic pictures of the ArSi diffusions are presented in Figs. 
+S9-S11 in Supplemental Material. According to the Arrhenius equation, the 
+characteristic time for the Ar diffusion is at least ~ 70000 s, indicating a robust stability 
+of ArSi. Moreover, in another 60-ps MD in Fig. S12 of Supplemental Material, the 
+diffusion of ArSi is still absent at a much higher temperature of 900 K, which is usually 
+as an annealing temperature for fabrications of black Si detectors. Therefore, ArSi can 
+be regarded as a kind of Ar locking vacancy (ALV) defect. 
+ 
+Finally, we discuss benefits of the ArSi or ALV doping for IR absorptions in Si detectors. 
+Firstly, the steric repulsion induced band splitting makes the ArSi defect readily 
+contribute multi defect states and thus offer effective sub-bandgap IR sources, which is 
+impossible for intrinsic Si. Secondly, due to Coulomb repulsion of the fully occupuied 
+shell of Ar, local configurations of the ALV can be dynamically adjusted by the Ar atom 
+at a raised temperature or even room temperature, see Fig. S13 in Supplemental 
+Material, which leads to a broad IR absorption band. Thirdly, Ar acts like an electronic 
+impurity with shallow donor defect levels. Then, the N+ layer can be formed which is 
+the key to construct the N+-N- junction in the device of IR detector [8]. 
+ 
+Conclusion 
+In summary, we detect an unexpected high dose of inert Ar (with 1017-1020 cm-3) by 
+SIMS measurements in laser modified Si samples at Ar protective gas even after more 
+than 1300 days from when it was fabricated. First-principles calculations and molecular 
+dynamics simulations demonstrate a mechanism of Ar locking vacancy (ALV or ArSi) 
+happening in Ar doped silicon. While the pure vacancy in silicon can readily diffuse at 
+500 K, the ALV defect is dynamically robust at the same condition even no direct 
+chemical bonding connection between Ar and its neighboring Si atoms. Despite of the 
+chemical inert property of Ar, it can still act as an electronic impurity via strong 
+Coulomb repulsion effect which leads to significant splitting of defect levels within 
+bandgap, and thus have a strong sub-bandgap IR absorption in Si. It is an impossible 
+task for intrinsic Si. Moreover, the repulsion between Ar and dangling electrons leads 
+
+===== Page 14 =====
+
+14 
+ 
+to a shallow donor effect, which explains the confusion of n-type doping effect of laser 
+irradiation observed in previous experiments. It is reasonable to expect that such an 
+inert element induced IR absorption mechanism may also happen in other 
+semiconductors. Our work opens up a new door of using inert element doping 
+engineering to develop high performance IR Si detector, which is urgently required in 
+current Si based integrated optoelectronics. 
+  
+Acknowledgements 
+Work in China was supported by the National Natural Science Foundation of China 
+(Grants No. 62275098, No. 12274180, No. 12274172) and the Fundamental Research 
+Funds for the Central Universities.  S.Z. was supported by the US Department of Energy 
+under Award No. DE-SC0002623. We sincerely thank Prof. Q.Z. at USTC for his 
+supports on band-unfolding analyses. The High-Performance Computing Center 
+(HPCC) at Jilin University for computational resources is also acknowledged. 
+ 
+References 
+[1] A. Rogalski, Infrared detectors: an overview, Infrared Phys. Techn. 43, 187 (2002). 
+[2] J. E. Carey, C. H. Crouch, M. Shen, and E. Mazur, Visible and near-infrared 
+responsivity of femtosecond-laser microstructured silicon photodiodes, Opt. Lett. 
+30, 1773 (2005). 
+[3] M. Tabbal, T. Kim, D. N. Woolf, B. Shin, and M. J. Aziz, Fabrication and subband-gap absorption of single-crystal Si supersaturated with Se by pulsed laser 
+mixing, Appl. Phys. A 98, 589 (2009). 
+[4] B. R. Tull, M. T. Winkler, and E. Mazur, The role of diffusion in broadband 
+infrared absorption in chalcogen-doped silicon, Appl. Phys. A 96, 327 (2009). 
+[5] T. Baldacchini, J. E. Carey, M. Zhou, and E. Mazur, Superhydrophobic surfaces 
+prepared by microstructuring of silicon using a femtosecond laser, Langmuir 22, 
+4917 (2006). 
+[6] C.-H. Li, J.-H. Zhao, X.-Y. Yu, Q.-D. Chen, J. Feng, P.-D. Han, and H.-B. Sun, 
+Sulfur-Doped Silicon Photodiode by Ion Implantation and Femtosecond Laser 
+
+===== Page 15 =====
+
+15 
+ 
+Annealing, IEEE Sens. J. 17, 2367 (2017). 
+[7] C. H. Li, J. H. Zhao, Q. D. Chen, J. Feng, and H. B. Sun, Sub-bandgap photoresponse of non-doped black-silicon fabricated by nanosecond laser irradiation, 
+Opt. Lett. 43, 1710 (2018). 
+[8] J.-H. Zhao, C.-H. Li, X.-B. Li, Q.-D. Chen, Z.-G. Chen, and H.-B. Sun, NIR 
+Photodetector Based on Nanosecond Laser-Modified Silicon, IEEE T. Electron 
+Dev. 65, 4905 (2018). 
+[9] G. Kresse and J. Furthmuller, Efficiency of ab-initio total energy calculations for 
+metals and semiconductors using a plane-wave basis set, Comput. Mater. Sci. 6, 
+15 (1996). 
+[10] G. Kresse and J. Furthmuller, Efficient iterative schemes for ab initio total-energy 
+calculations using a plane-wave basis set, Phys. Rev. B Condens. Matter 54, 11169 
+(1996). 
+[11] P. E. Blochl, Projector augmented-wave method, Phys. Rev. B Condens. Matter 
+50, 17953 (1994). 
+[12] G. Kresse and D. Joubert, From ultrasoft pseudopotentials to the projector 
+augmented-wave method, Phys. Rev. B 59, 1758 (1999). 
+[13] J. P. Perdew, K. Burke, and M. Ernzerhof, Generalized gradient approximation 
+made simple, Phys. Rev. Lett. 77, 3865 (1996). 
+[14] https://github.com/QijingZheng/VaspBandUnfolding,  (Accessed 2022.11.22). 
+[15] S. A. Trygubenko and D. J. Wales, A doubly nudged elastic band method for 
+finding transition states, J. Chem. Phys. 120, 2082 (2004). 
+[16] N. A. Zarkevich and D. D. Johnson, Nudged-elastic band method with two 
+climbing images: finding transition states in complex energy landscapes, J. Chem. 
+Phys. 142, 024106 (2015). 
+[17] K. Momma and F. Izumi, VESTA 3 for three-dimensional visualization of crystal, 
+volumetric and morphology data, J.  Appl. Cryst. 44, 1272 (2011). 
+[18] A. Stukowski, Visualization and analysis of atomistic simulation data with 
+OVITO–the Open Visualization Tool, Modelling Simul. Mater. Sci. Eng. 18, 
+015012 (2010). 
+
+===== Page 16 =====
+
+16 
+ 
+[19] A. Rogalski, in Electro-Optical and Infrared Systems: Technology and 
+Applications XIV (Proc. SPIE, Warsaw, POLAND, 2017), p. 104330L. 
+[20] F. Corsetti and A. A. Mostofi, System-size convergence of point defect properties: 
+The case of the silicon vacancy, Phys. Rev. B 84, 035209 (2011). 
+[21] L. Pizzagalli, A. Charaf-Eddin, and S. Brochard, Numerical simulations and 
+modeling of the stability of noble gas atoms in interaction with vacancies in silicon, 
+Comput. Mater. Sci. 95, 149 (2014). 
+[22] V. Popescu and A. Zunger, Extracting E versus k effective band structure from 
+supercell calculations on alloys and impurities, Phys. Rev. B 85, 085201 (2012). 
+[23] M. J. Puska, S. Pöykkö, M. Pesola, and R. M. Nieminen, Convergence of supercell 
+calculations for point defects in semiconductors: Vacancy in silicon, Phys. Rev. B 
+58, 1318 (1998). 
+[24] N.-K. Chen, X.-B. Li, X.-P. Wang, M.-J. Xia, S.-Y. Xie, H.-Y. Wang, Z. Song, S. 
+Zhang, and H.-B. Sun, Origin of high thermal stability of amorphous Ge1Cu2Te3 
+alloy: A significant Cu-bonding reconfiguration modulated by Te lone-pair 
+electrons for crystallization, Acta Mater. 90, 88 (2015). 
+[25] A. D. Becke and E. R. Johnson, A simple effective potential for exchange, J. Chem. 
+Phys. 124, 221101 (2006). 
+[26] F. Tran and P. Blaha, Accurate band gaps of semiconductors and insulators with a 
+semilocal exchange-correlation potential, Phys. Rev. Lett. 102, 226401 (2009). 
+[27] D. Wang, D. Han, X.-B. Li, S.-Y. Xie, N.-K. Chen, W. Q. Tian, D. West, H.-B. Sun, 
+and S. B. Zhang, Determination of formation and ionization energies of charged 
+defects in two-dimensional materials, Phys. Rev. Lett. 114, 196801 (2015). 
+[28] S. B. Zhang and J. E. Northrup, Chemical potential dependence of defect 
+formation energies in GaAs: Application to Ga self-diffusion, Phys Rev Lett 67, 
+2339 (1991). 
+[29] B. L. Davis and M. I. Hussein, Thermal characterization of nanoscale phononic 
+crystals using supercell lattice dynamics, AIP Adv. 1, 041701 (2011). 
+ 
+
+===== Page 17 =====
+
+1 
+ 
+Supplemental Material for 
+“Inert gas as electronic impurity in semiconductors: 
+The case for active infrared absorption in silicon” 
+ 
+Nian-Ke Chen1,#, Yu-Chen Gao1,#, Ji-Hong Zhao1,*, Chun-Hao Li1, Qi-Dai Chen1, 
+Hong-Bo Sun2,*, Shengbai Zhang3,*, and Xian-Bin Li1,* 
+ 
+1State Key Laboratory of Integrated Optoelectronics, College of Electronic Science 
+and Engineering, Jilin University, Changchun 130012, China 
+2State Key Lab of Precision Measurement Technology and Instruments, Department of 
+Precision Instrument, Tsinghua University, Beijing 100084, China 
+3Department of Physics, Applied Physics, and Astronomy, Rensselaer Polytechnic 
+Institute, Troy, New York 12180, USA 
+ 
+Corresponding 
+authors: 
+lixianbin@jlu.edu.cn, 
+or 
+zhaojihong@jlu.edu.cn, 
+hbsun@tsinghua.edu.cn, or zhangs9@rpi.edu 
+ 
+
+===== Page 18 =====
+
+2 
+ 
+CONTENTS: 
+Table S1. Formation energies of different defects in crystalline Si. 
+Fig. S1. Atomic structures of different Ar defects in crystalline Si. 
+Fig. S2. Band structure of ArSi defect with the configuration of C3v symmetry. 
+Fig. S3. Band structure of ArSi defect with the configuration of ~Td symmetry. 
+Fig. S4. Band structures of the 3Ar3Si and 4Ar4Si defects. 
+Fig. S5. Band structures of the interstitial Ar defects. 
+Fig. S6 Comparison of the density of states calculated by traditional PBE functional 
+and the meta-GGA method. 
+Fig. S7. A transient structure of 4Ar4Si and the projected trajectories of the local 
+structure of the 4Ar4Si during the 60-ps MD simulations at 500 K. 
+Fig. S8. Energy barriers for the diffusion of ArSi defect calculated by c-NEB method. 
+Fig.S9-S11. Atomic pictures of ArSi diffusion corresponding to the c-NEB calculations 
+in Fig. 5(c), Fig. S8(a) and Fig. S8(b), respectively. 
+Fig. S12-S13. The projected trajectories of the local structure of ArSi during the 60-ps 
+MD simulations at 900 K and 300 K, respectively. 
+ 
+
+===== Page 19 =====
+
+3 
+ 
+TABLE S1. Formation energies of the defects in crystalline Si. The unit is eV. VSi is a 
+silicon vacancy. Tetrahedral (Tetra.), hexagonal (Hex.) and bond-centered (B-C.) 
+represent three different sites of the interstitial Ar defects [see Fig. S1(a)-(c) for the 
+atomic pictures]. C2v, C3v and ~Td represent three different configurations of the 
+substitutional Ar defects as described in the main text [see Fig. S1(d)-(f) for the 
+atomic 
+pictures]. 
+2Ar2Si, 
+3Ar3Si 
+and 
+4Ar4Si 
+represent 
+the 
+accumulated 
+multi-substitutional Ar defects [see Fig. S1(g)-(i) for the atomic pictures]. The 
+formation energies of multi-substitutional Ar defects are averaged by the number of 
+Ar atoms. Under the jellium approximation, the formation energy of defect w with 
+charge q can be calculated by the following equation: 
+𝛥𝐻𝑓(𝑞, 𝑤) = 𝐸𝑡𝑜𝑡(𝑞, 𝑤) −𝐸𝑡𝑜𝑡(ℎ𝑜𝑠𝑡) + ∑𝑛𝑖𝜇𝑖
+𝑖
++ 𝑞(𝜀𝑉𝐵𝑀+ 𝜀𝐹) 
+where 𝐸𝑡𝑜𝑡(𝑞, 𝑤) is the total energy of the supercell with defects, 𝐸𝑡𝑜𝑡(ℎ𝑜𝑠𝑡) is the 
+energy without the defect (i.e., bulk Si), 𝑛𝑖 is the number of atoms being exchanged 
+during the formation of the defect, 𝜇𝑖 is the atomic chemical potential of an element 
+(here we use the 𝜇𝑖 of bulk and isolated atom for Si and Ar, respectively), and 𝜀𝐹 is 
+the Fermi energy relative to the valence band maximum, 𝜀𝑉𝐵𝑀. 
+VSi 
+Interstitial 
+Substitutional 
+Multi-substitutional 
+Tetra. 
+Hex. 
+B-C. 
+C2v 
+C3v 
+~Td 
+2Ar2Si 3Ar3Si 4Ar4Si 
+3.69 
+6.05 
+7.19 
+6.10 
+6.25 
+6.24 
+6.27 
+4.97 
+4.52 
+4.28 
+ 
+ 
+
+===== Page 20 =====
+
+4 
+ 
+ 
+FIG. S1. (a)-(c) Local atomic structures of three interstitial Ar defects. (d)-(f) Local 
+atomic structures of ArSi with the steric-repulsive distortion (SRD) of C2v, C3v and ~Td 
+symmetry. (g)-(i) The atomic structures of accumulated multi-Ar doping defects 
+including two-Ar-atoms substitution (2Ar2Si), three-Ar-atoms substitution (3Ar3Si) and 
+the four-Ar-atoms substitution (4Ar4Si). 
+ 
+ 
+
+===== Page 21 =====
+
+5 
+ 
+ 
+FIG. S2. Unfolded band structures of ArSi with the SRD-C3v configuration [see Fig. 
+S1(e) for the atomic structure] holding (a) spin-up and (b) spin-down polarizations. 
+The green and red scatters indicate the contributions from Si1 and Si2,3,4, respectively. 
+Lower panels show corresponding schematic band structures. Ef is set as 0 eV. 
+ 
+ 
+
+===== Page 22 =====
+
+6 
+ 
+ 
+FIG. S3. The unfolded band structure of the ArSi with the ~Td configuration [see Fig. 
+S1(f) for the atomic structure], which is very similar to the ArSi SRD-C3v 
+configuration. The states contributed by the defective atoms are highlighted by red 
+color. 
+ 
+ 
+FIG. S4. The unfolded band structures of the (a) 3Ar3Si [see Fig. S1(h) for the atomic 
+structure] and (b) 4Ar4Si [see Fig. S1(i) for the atomic structure], respectively. The 
+states contributed by the defective atoms are highlighted by red color. 
+
+===== Page 23 =====
+
+7 
+ 
+ 
+ 
+FIG. S5. The unfolded band structure of the (a) Tetra.-site [see Fig. S1(a) for the 
+atomic picture] and (b) B-C.-site [see Fig. S1(c) for the atomic picture] interstitial Ar 
+defects. The states contributed by the defective atoms are highlighted by red color. 
+The defect states exist in the supercell with a B-C. interstitial Ar defect because the Ar 
+atom in this case breaks a Si-Si bond. 
+ 
+ 
+FIG. S6. Comparison of the density of states (DOS) of calculated by traditional PBE 
+functional and the meta-GGA method using the modified Becke-Johnson (MBJ) 
+exchange potential. The bandgap underestimated by PBE is corrected by the 
+meta-GGA method while the defect states still retain. 
+ 
+
+===== Page 24 =====
+
+8 
+ 
+ 
+FIG. S7. (a) A snapshot of the atomic structure of the 4Ar4Si after the 60-ps MD 
+simulations at 500 K. (b) The projected trajectories of the local structure of the 4Ar4Si 
+during the 60-ps MD simulations at 500 K. The color coding is the same with that in 
+the main text. 
+ 
+ 
+ 
+FIG. S8. The energy barriers for diffusion of ArSi calculated by c-NEB method along 
+different paths. The atomic pictures of different paths are shown in Figs. S9-S11 
+below. 
+ 
+
+===== Page 25 =====
+
+9 
+ 
+ 
+FIG. S9. The picture of ArSi diffusion corresponding to the c-NEB calculation of the 
+path in Fig. 5(c) of the main text. The color coding is the same with that in the main 
+text. The yellow label indicates the Si atom who exchanged its position with Ar atom 
+during the diffusion. (a) and (b) show the views along [010] and [100] directions, 
+respectively. 
+ 
+ 
+FIG. S10. The picture of ArSi diffusion corresponding to the c-NEB calculation of the 
+path in Fig. S8(a). The color coding is the same with that in the main text. The yellow 
+label indicates the Si atom who exchanged its position with Ar atom during the 
+diffusion. (a) and (b) show the views along [010] and [100] directions, respectively. 
+
+===== Page 26 =====
+
+10 
+ 
+ 
+ 
+FIG. S11. The picture of ArSi diffusion corresponding to the c-NEB calculation of the 
+path in Fig. S8(b). The color coding is the same with that in the main text. The yellow 
+label indicates the Si atom who exchanged its position with Ar atom during the 
+diffusion. (a) and (b) show the views along [010] and [100] directions, respectively. 
+ 
+ 
+FIG. S12. The projected trajectories of the local structure of ArSi during the 60-ps MD 
+simulations at 900 K. The color coding is the same with that in the main text.  
+
+===== Page 27 =====
+
+11 
+ 
+ 
+ 
+FIG. S13. The projected trajectories of the local structure of ArSi during the 60-ps MD 
+simulations at 300 K. The color coding is the same with that in the main text. 
+ 
+ 

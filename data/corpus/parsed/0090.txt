@@ -1,0 +1,1064 @@
+
+
+===== Page 1 =====
+
+EVHA: Explainable Vision System for Hardware Testing and
+Assurance - An Overview
+MD MAHFUZ AL HASAN, MOHAMMAD TAHSIN MOSTAFIZ, THOMAS AN LE, JAKE
+JULIA, NIDISH VASHISTHA, SHAYAN TAHERI, and NAVID ASADIZANJANI,
+Florida Institute for Cybersecurity Research, University of Florida, USA
+Due to the ever-growing demands for electronic chips in different sectors the semiconductor companies
+have been mandated to offshore their manufacturing processes. This unwanted matter has made security
+and trustworthiness of their fabricated chips concerning and caused creation of hardware attacks. In this
+condition, different entities in the semiconductor supply chain can act maliciously and execute an attack
+on the design computing layers, from devices to systems. Our attack is a hardware Trojan that is inserted
+during mask generation/fabrication in an untrusted foundry. The Trojan leaves a footprint in the fabricated
+through addition, deletion, or change of design cells. In order to tackle this problem, we propose Explainable
+Vision System for Hardware Testing and Assurance (EVHA) in this work that can detect the smallest possible
+change to a design in a low-cost, accurate, and fast manner. The inputs to this system are Scanning Electron
+Microscopy (SEM) images acquired from the Integrated Circuits (ICs) under examination. The system output
+is determination of IC status in terms of having any defect and/or hardware Trojan through addition, deletion,
+or change in the design cells at the cell-level. This article provides an overview on the design, development,
+implementation, and analysis of our defense system.
+CCS Concepts: • Hardware →Layout-versus-schematics; • Security and privacy →Hardware reverse
+engineering.
+Additional Key Words and Phrases: Artificial Intelligence; Computer Vision; Hardware Security and Trust;
+Hardware Trojan; Integrated Circuit; Intelligent Defense System; Physical Inspection and Assurance; Scanning
+Electron Microscopy; Synthetic Image Generation.
+ACM Reference Format:
+Md Mahfuz Al Hasan, Mohammad Tahsin Mostafiz, Thomas An Le, Jake Julia, Nidish Vashistha, Shayan Taheri,
+and Navid Asadizanjani. 2022. EVHA: Explainable Vision System for Hardware Testing and Assurance - An
+Overview. J. ACM 1, 1 (July 2022), 25 pages. https://doi.org/XXXXXXX.XXXXXXX
+1
+INTRODUCTION
+The globalization of the semiconductor design, fabrication, assembly, and test has increased concerns
+over the trustworthiness of Integrated Circuits (ICs) and systems and they have become vulnerable
+to malicious activities and alterations. There are a number of entities in the semiconductor supply
+chain, including third party intellectual property vendor, system integrator, foundry, assembly
+and packaging, test facility, and end-user, that can act as malicious actor. These entities can be
+Authors’ address: Md Mahfuz Al Hasan, mdmahfuzalhasan@ufl.edu; Mohammad Tahsin Mostafiz, m.tahsinmostafiz@ufl.edu;
+Thomas An Le, thomas.le@ufl.edu; Jake Julia, jake.julia@ufl.edu; Nidish Vashistha, nidish@ufl.edu; Shayan Taheri,
+shayan.taheri@ufl.edu; Navid Asadizanjani, nasadi@ece.ufl.edu
+, Florida Institute for Cybersecurity Research, University of Florida, 300 SW 13TH ST, P.O. Box 113150, Gainesville, Florida,
+USA, 32601.
+Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee
+provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and
+the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored.
+Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires
+prior specific permission and/or a fee. Request permissions from permissions@acm.org.
+© 2022 Association for Computing Machinery.
+0004-5411/2022/7-ART $15.00
+https://doi.org/XXXXXXX.XXXXXXX
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.
+arXiv:2207.09627v1  [cs.CR]  20 Jul 2022
+
+===== Page 2 =====
+
+2
+Al Hasan et al.
+engaged in the provision of attack mechanisms at any computing layer, from devices to systems.
+Hence, establishing assurance and trust in ICs has become of utmost importance [F. Chen and
+Liu 2017; Hasegawa et al. 2017; Nozawa et al. 2021; Rostami, Koushanfar, and Karri 2014; Rostami,
+Koushanfar, Rajendran, et al. 2013; Q. Shi et al. 2019; Yasaei et al. 2021; Yu et al. 2017; Zhao and
+Liu 2019]. Among these entities, however, “untrusted foundries” has received significant attention
+over the past decade or so, as they have complete access to the design file and can maliciously
+manipulate the circuit.
+The significant attentions toward this entity in the IC supply chain are due to: (a) existence of
+few advanced foundries around the globe according to which majority of them are considered as
+untrusted; and (b) provision of complete access into design details to foundries that makes them
+capable of maliciously changing the circuit in a manner that would be very difficult to detect. In
+our threat model, the adversary injects a hardware Trojan (i.e., small malicious modifications on IC)
+into the design circuit (i.e., gate/cell-level Trojan) during mask generation/fabrication (in foundry)
+through addition, deletion, or change of design cells. The inserted Trojan leaves a footprint in
+the fabricated chip. Meanwhile, the design file known as Graphic Design System for Information
+Interchange (GDSII) is considered to be trusted in this scenario.
+Although there is a flurry of investments and activities to address the untrusted foundry problem
+and bring semiconductor manufacturing on-shore, the problem still remains. Example initiatives
+include the Creating Helpful Incentives to Produce Semiconductors (CHIPS) for America Act
+legislation from U.S. with $52 billion investment [Corporation 2021], the China Integrated Circuit
+Investment Industry Fund (CICIIF) from China with $150 billion investment [Sutter 2021], KSemiconductor Belt from South Korea with $450 billion investment [Alam et al. 2021], along
+with TSMC’s new initiatives in Arizona [Company 2021] and Intel’s new fabrication initiatives
+[Corporation 2021]. Although increasing the number of fabrication facilities (Integrated Device
+Manufacturers (IDM) and pure play foundries) around the globe will help address the supply chain
+issues and silicon shortage problem exacerbated by COVID-19 [Pitkin 2021], the trust concerns
+will remain as chip fabrication is going to remain a global effort with electronic systems built using
+ICs of different companies fabricated by different foundries. Making it worse, as the number of
+transistors per chip continues to grow, attacks have shown that adversary can design ever more
+intelligent hardware Trojans with fewer and fewer gates, making them extremely difficult to detect
+using traditional test and side channel techniques [H. Li et al. 2016].
+Hardware Trojans can seriously degrade the functionality, performance, and reliability of electronic systems. They can cause loss of profit for electronic devices to life-threatening payloads for
+all types of applications including transportation, healthcare, and military systems. The detection
+approaches for hardware Trojans are categorized as [Bao et al. 2014]: (a) Test-Time, in which postsilicon tests are applied. It is generally divided into Functional/Structural Test and Side-Channel
+Fingerprinting. These methods have serious shortcomings with respect to their detection effectiveness as Trojans are hard to model and could be designed to stay dormant during chip operation.
+(b) Run-Time, in which a circuitry is added for monitoring the behavior/state of a chip after it
+has been deployed into the field. The major disadvantages include high area overhead and that
+the run-time detection circuitry is Trojan-free. Both of the mentioned categories require a golden
+model (intended functionality and behavior) to compare with. (c) Reverse-Engineering, in which
+the reverse engineering process is applied to the ICs in order to detect the Trojans. The recovered
+design is compared to a golden netlist to determine its trustworthiness. The major shortcomings
+include very high cost, fully destructive operation, requires large samples of ICs, and that it is a
+very time-consuming process that could take months for a successful effort.
+Unfortunately, majority of these techniques are only applicable to digital circuits but none could
+be used for analog and mixed signal devices. Currently, there is a lack of efficient techniques to
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.
+
+===== Page 3 =====
+
+EVHA: Explainable Vision System for Hardware Testing and Assurance - An Overview
+3
+detect malicious implants (digital or analog, with or without payload, noisy or dormant, small
+or large, etc.) in different types of integrated circuits (analog/mixed-signal, digital, memory, etc.).
+Among the many techniques investigated thus far, it is believed that non-invasive or semi-invasive
+physical inspection is the most promising for rapid detection of malicious change to an IC, even
+as small as a single transistor, at a lower cost, by an untrusted foundry when GDSII is available.
+There are limitations for developing efficient physical inspection-based detection such as (1) Rapid
+increase in the number of transistors in the chip; (2) smaller Trojan sizes inserted in the chip; (3)
+increasingly stealthy Trojans; (4) unique and unexplored nature of IC Scanning Electron Microscopy
+(SEM) images due to strong repetitive features, process variation effects, and the lack of sufficient
+images in different technology nodes and vendors.
+Recent advancements in deep learning from Artificial Intelligence (AI) and computational resources for object detection and segmentation/recognition in different domains, particularly in
+medical area, have shown promising results in terms of accuracy and execution time for detecting
+anatomical structures on common imaging modalities. Thanks to advancements in computer hardware (graphical processing unit and tensor processing unit), it is now easier to implement highly
+complex deep learning and reinforcement learning computing systems. The progress in AI and
+computational power can reduce the analysis time for modern ICs from months down to only a
+few hours. The object detection and segmentation/recognition computations for IC images share
+some similarities with medical images (in terms of having benign and malignant data). The features
+from the IC images can help in detection and analysis hardware Trojan attacks. However, there
+are unique challenges for feature detection and extraction in IC images obtained from scanning
+electron microscopes for usage in hardware security applications that should be carefully studied
+and addressed.
+In order to make contributions in overcoming the discussed issues, we propose Explainable
+Vision System for Hardware Testing and Assurance (EVHA) that is a low-cost, accurate, and fast
+system to detect the smallest possible change to a design. We will engage the state-of-the-art
+techniques from various fields including, but not limited to hardware security, circuit design and
+testing, data science, computational imaging, artificial intelligence, and computer vision to develop
+physical inspection and assurance systems fit for the existing and the emerging failures and threats
+in the respective industry. The inputs to EVHA are IC SEM images and the output is determination
+of IC status in terms of having any defect and/or hardware Trojan through addition, deletion, or
+change in the design cells at the gate/cell-level.
+The main part of EVHA utilizes advanced object detection and segmentation/recognition techniques to localize and validate images upon collection by microscope. EVHA needs to be trained
+on a trusted dataset that includes all types of standard cells on the chip. Such data are usually
+not available for training and synthetic images for training should be created using generative
+adversarial networks [Du and Z. Shi 2020]. This system requires a reasonable number of original
+and synthetic SEM images from each cell type to extract their features and train itself. The system
+should be able to understand geometrical details and process variations belonging to the same
+design. This process needs to be done only once for each technology node and chip manufacturer.
+The innovative concept of golden gate/circuit (GGC) introduced here is an integral part of EVHA
+where only unused spaces on the chip are employed to design a circuit that includes all types of
+standard cells while they are fully testable. Since the circuit is designed separately, each cell can be
+logically, but exhaustively, tested in a very short amount of time (in seconds) in a self-test approach
+with no area overhead added to the original design [Xiao et al. 2014]. Once cells in GGC are verified
+logically, their physical structure will be imaged and used as an input for training. In the next phase,
+all other cells on the chip will be authenticated by comparing their physical structure with golden
+gates. The framework of EVHA determines the exact location of features for comparison with the
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.
+
+===== Page 4 =====
+
+4
+Al Hasan et al.
+GDSII file using combined information from the SEM stage coordinates and the extracted image
+features and compensates for image noise or other imperfections.
+This paper provides an overview of tasks included in the EVHA framework: Intelligent Microscopy for Imaging/Delayering (Task 1); Explainable Block/Object Detection and Recognition of
+IC SEM Image (Task 2); Golden Gate/Circuits Design and Fabrication (Task 3); and Validation and
+Security Assessment (Task 4). In summary, the overall objectives of EVHA are stated as: (a) ensuring
+a 4mm×4mm 22nm IC can be scanned in less than a day; this would be an order-of-magnitude
+faster compared to existing technologies [Vashistha, Lu, Q. Shi, M. T. Rahman, et al. 2018]; (b)
+providing very high-confidence detection of Trojans as long as they have a footprint on the chip
+layout (note interconnect reliability type Trojans are not supported by EVHA); (c) developing
+intelligent approach to recognize all design cells (genuine and malicious) with perfect accuracy,
+considering the manufacturing aspects such as process variations; (d) automating the detection
+process to minimize human subject matter expert (SME) involvement and reducing the overall cost
+of trust verification; and (e) ensuring attack resiliency against intelligent adversaries. Meeting these
+objectives will require an interdisciplinary collaboration among multiple fields.
+The rest of this review paper is organized as follows: We discuss the related works in Section 2. A
+brief overview of the system tasks is provided in Section 3. In Section 4, the Explainable Block/Object
+Detection and Recognition task is discussed in more detail. Section 5 presents description of
+experiments, achieved results, and their evaluations. Our plans for improvement and completion of
+system development are given in Section 6. The paper is concluded in Section 7.
+2
+RELATED WORKS
+In this section, the related published works in the area of hardware security based on the proposed
+attacks and defenses are discussed.
+2.1
+Hardware Security - Attacks
+As IC production operations are increasingly outsourced to external foundries to reduce manufacturing costs, there has also been a much larger question of trust between design companies
+and the foundries, as there is the potential for introducing hardware Trojans during this process
+[Varshney et al. 2020; Vashistha, M. Rahman, et al. 2018]. These Trojans consist of malicious changes
+performed on an IC’s design and are inserted during manufacturing in order to implement a variety
+of attacks. Such attacks include sending information to outside sources, allowing an outside source
+to take control, or even disabling the functionality of a device using the infected IC. Obviously,
+hardware Trojans pose a potential security threat to their users, which can range from civilian to
+military applications, where security is absolutely essential for proper functionality. This potential
+risk has led to an interest in a rapid and accurate hardware Trojan detection system, which ideally
+would be able to identify the presence of a Trojan before an IC is put into use and can pose a greater
+risk.
+3
+SYSTEM OVERVIEW
+We study the four major tasks within the framework of EVHA in this section. In the first task, an
+auto-delayering tool removes the rest of the silicon, once a backside-thinned IC is loaded into a SEM
+stage, to expose the doping regions using Monte Carlo simulation for estimation of the remaining
+thickness of silicon. To the best of our knowledge, it is the first of its kind to perform real-time
+thickness measurements with no end-point detection probe. Images are intelligently acquired,
+processed, and analyzed with the GDSII file in consideration. Task 2 focuses on development of
+novel image analysis algorithms and deep learning architectures to compare SEM images with the
+original layout, detect Trojans, and assess the results with the highest confidence level. The task
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.
+
+===== Page 5 =====
+
+EVHA: Explainable Vision System for Hardware Testing and Assurance - An Overview
+5
+also includes an enhancement to the data augmentation and data recognition computations using
+explainable AI for improving their performance, reliability, and safety. The third task serves in
+increasing confidence according to which our innovative on-chip circuit with golden reference
+gates performs self-reference with the chip under imaging. GGC will ensure the obtained training
+data represents the process variations and structure/features from the chip itself. In Task 4, we
+validate the EVHA framework by implementing it on industrial-strength test chips fabricated at a
+28nm technology node (with golden gates and several stealthy Trojans) while analyzing different
+attack scenarios against the defense system. Figure 1 shows the EVHA framework and its described
+tasks. These tasks are presented in more detail in the rest of this section.
+T1.2: Rapid Nanoscale Imaging
+T1.3: Intelligent Microscopy Plaorm
+EVHA Results and Chip Status
+T1. Intelligent Microscopy for
+Imaging/Delayering
+T4. Validaon and Security Assessment
+T1.1: Automated In-Situ Delayering
+System Validaon by Analyzing Execuon Time, Defense Strength, 
+Accuracy, Reliability, etc. Parameters for Industrial Chips
+T3. Golden Gate/Circuits (GGC)
+Design and Fabricaon
+T3.1: GGC Architecture and Test Infrastructure
+T3.2: GGC Inseron Flow
+T3.3: Trojan Design in the Test Arcle
+IC Layouts
+IC Designs (with GGC)
+T2.1: Image Processing
+T2. Explainable Block/Object Detecon
+and Recognion of IC Image
+T2.3: Block Recognion
+T2.5: Decision Making
+T2.2: Block Detecon
+T2.4: Block Analysis
+Explainable
+Arﬁcial Intelligence
+Fig. 1. The EVHA framework and its computing tasks.
+3.1
+Task 1: Sample Preparation and Intelligent Microscopy
+In this subsection, the process of preparing chips based on reducing silicon thickness as well as the
+process of acquiring IC SEM images are explained.
+3.1.1
+Sample Preparation: Backside Polishing of Silicon. Imaging in EVHA requires capturing the
+active layers of transistors from thick silicon dies sliced from a thick fabricated wafer. Silicon wafers
+are thick due to a thick substrate, which is typically in the range of hundreds of 𝑢𝑚. The active
+regions, metal layers, and other device layers are typically in the range of 𝑛𝑚thickness. Sample
+preparation of the silicon die requires removal of silicon to less than one 𝑢𝑚of Remaining Silicon
+Thickness (RST). Due to the constraints from the sample preparation tools, the RST is typically in
+the range of 1-2 𝑢𝑚. Hence, a silicon die can be more precisely polished to its active layer from the
+Front End Of the Line (FEOL), which means the backside of the IC. The silicon substrate can be
+removed faster by milling silicon die and further the die can be polished to remove RST, very near
+to the active layer. Milling is comparatively faster than polishing and leaves scratches on the silicon
+die with RST of 10 −20𝑢𝑚. Milling is followed by polishing which is comparatively very slower
+than milling but restores a shiny silicon surface, which is required for backside nano-imaging.
+3.1.2
+Intelligent Microscopy: Silicon Plasma Delayering and SEM Imaging of Active Layers. The
+objective of dual beam nano-level scanning electron microscopy is to capture active regions of
+the transistor from the backside polished IC or silicon die. After backside silicon removal, the
+remaining silicon is still opaque to the SEM beam. When imaging a large sample area using highresolution scanning electron microscopy, the amount of data generated can be overwhelming
+and the acquisition time can be prohibitive. Furthermore, the capture speed (often referred to as
+Dwelling Time or DT) can be lengthened in order to ensure higher quality images. Fortunately,
+an experimenter interested in active layer imaging will often find that only a portion of the data
+collected is valuable. The image acquisition can then be re-organized into two sequential scans:
+(1) a large-area scan with resolution adjusted to allow reliable detection of the targets of interest
+(i.e., primary scan); and (2) a higher-resolution scan with fields of views selectively centered on the
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.
+
+===== Page 6 =====
+
+6
+Al Hasan et al.
+targets of interest (i.e., secondary scan). Researchers have named this feedback driven microscopic
+approach as Intelligent Microscopy. The workflow of this task is displayed in Figure 2.
+Fig. 2. The workflow for auto-delayering and auto-imaging for data acquisition.
+3.2
+Task 2: Explainable Block/Object Detection and Recognition of IC SEM Image
+The overall objective of this task is extraction of all of the cells available in an IC SEM image in
+order to analyze them for detection of any possible malicious modifications. The IC SEM images
+(1024 × 1024 × 1) acquired in Section 3.1.2 are passed as the input to the "Image Processing" unit.
+The computations in this unit are normalization/scaling, denoising, enhancement, and binarization.
+The type, physical characteristics, and arrangement of cells in the IC SEM image are shown in
+Figure 3.
+(a) An IC SEM Image. 𝑅𝑘represents a row of cells.
+(b) The highlighted (green) portion of 3a. Single
+(blue) and composite (red) cells are marked.
+Fig. 3. An IC SEM image and its cell structure.
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.
+
+===== Page 7 =====
+
+EVHA: Explainable Vision System for Hardware Testing and Assurance - An Overview
+7
+The "Block Detection" unit extracts logic cells from the processed images, according to which
+the cells can consist of either single primary gate (e.g., an inverter) or multiple primary gates
+(e.g., composite cells such as flip-flops), see Figure 3b. According to the unit computations, the
+boundaries between consecutive cells (both single and composite) are determined and then the cells
+are extracted from the entire image. The extracted cells are classified in the "Block Recognition"
+unit to determine their registration and identify their type. Besides, anomaly level in the images are
+also measured here. On the other side, a matching analysis is executed by the "Block Analysis"
+unit on the extracted cells and the Design Exchange Format (DEF) file of the corresponding chip
+to evaluate their status. The recognition output along with the analysis output are given to the
+"Decision Making" in order to determine the presence of any defect and/or malicious entity inside
+the chip under examination. An general view of Task 2 is shown in Figure 4
+Fig. 4. The general view of Task 2: The inputs to the task are the SEM and layout images of IC. The "Image
+Processing" unit performs normalization/scaling, denoising, enhancement, and binarization on the data. Next,
+"Block Detection" executes connected component detection on them in order to extract their available cells.
+The extracted cells are sent to "Block Recognition" and "Block Analysis" units simultaneously. These units
+evaluate the received data based on the image features and the cell attributes (e.g., the number of cells)
+respectively. The outputs from them are provided to the "Decision Making" unit in order to determine the
+chip status. If there is no confidence in the correctness and quality of results, then the "Image Acquisition
+Setup" is informed and the respective processes are adjusted.
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.
+
+===== Page 8 =====
+
+8
+Al Hasan et al.
+3.3
+Task 3: Golden Gate/Circuits Design and Fabrication
+Due to the lack/insufficiency of reference samples for "training" as well as the need for all samples
+acquired from the chip(s) belonging to the unknown/untrusted foundry for "testing", we insert
+golden gate/circuit (which includes the same types of cells as the ones in the original circuit) into
+the unused space(s) of the original design. This component interacts with a test server through a
+serial test bus. The test server communicates with an automatic test equipment via a bidirectional
+test access port. The interface of GGC receives certain data from the test server and it sends
+corresponding seeds to the test pattern generators. The generators produce data patterns and
+forward them to the GGC trees. A response compactor collects the information from trees and
+provides the corresponding responses to the GGC interface that delivers them to the test server
+and the automatic test equipment. The illustration of described computations is shown in Figure 5
+[Q. Shi et al. 2019; Vashistha, Lu, Q. Shi, Woodard, et al. 2021].
+Test Server
+Automatic Test 
+Equipment (ATE)
+Golden Gates Circuitry (GGC)
+One copy of GGC trees (all gate types)
+Test Pattern 
+Generator
+Test Pattern 
+Generator
+Test Pattern 
+Generator
+Tree #1
+Tree #2
+Tree #n
+Test Pattern 
+Generator
+Test Pattern 
+Generator
+Test Pattern 
+Generator
+Tree #1
+Tree #2
+Tree #n
+Response Compactor
+Responses
+Interface
+Seeds
+Serial test bus
+...
+n copies
+Test Access Port
+Fig. 5. The architecture of a typical GGC in an on-chip testing structure.
+We also need to have example infected versions of the integrated circuit for examining the
+assurance strength of EVHA. In this regard, the benchmarks from the "Trust-Hub" repository,
+specifically those that affect the front-end-of-line features of the design, are employed in which
+most of the known and hard-to-detect hardware Trojans are included. In addition, design-specific
+hardware Trojans are designed for measuring EVHA ability in visual assessment of the IC SEM
+images, with considering a wide range of Kilovolt (KV) levels and different physical profiles. The
+Trojan-free/golden layout along with the Trojan-inserted/infected layouts are fabricated to validate
+functionality of the system and assess its security strength.
+3.4
+Task 4: Validation and Security Assessment
+Once EVHA is fully developed, it is tested on the fabricated golden and infected chips in order
+to check its performance, efficiency, speed, and defense potency. There can be two attacks to
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.
+
+===== Page 9 =====
+
+EVHA: Explainable Vision System for Hardware Testing and Assurance - An Overview
+9
+circumvent the EVHA operations: (a) attacking the GGC authentication by modifying the GGC
+trees with the purpose of altering the responses. The attack can be properly detected by the
+computations of Task 2 due to the changes applied on the design cells. (b) insertion of a hardware
+Trojan with very small overhead that does not cause a noticeable change on the design footprint,
+leading to inability of system in detecting the malicious modifications. This attack can be prevented
+through considering redundant logic in the design or creating a power-to-ground short fault in the
+IC operations. All these experimental processes are run using our in-house devices, instruments,
+equipment, tools, and software.
+4
+BLOCK DETECTION AND RECOGNITION OF IC SEM IMAGES
+A brief overview of the Image Processing, Block Detection, Block Recognition, Block Analysis, and
+Decision Making units from the second task of EVHA framework are provided in the following.
+4.1
+Image Processing Unit
+The defined processes for this unit to be applied on the IC SEM images are stated as normalization/scaling, denoising, enhancement, and binarization. According to our established methodology
+in [Al Hasan et al. 2021], the denoising and the binarization computations are described as: (a)
+Denoising: The images are denoised by the non-local means method. The parameter set-up for
+the task is followed as described in [Karnati et al. 2009], and a denoised image 𝐼𝐷is obtained, refer
+to Figure 7b. (b) Binarization: A binarized Image 𝐼𝐵is obtained by applying global thresholding
+on the image to convert all pixels to pure white or pure black based on a certain threshold. [Otsu
+1979] on 𝐼𝐷, refer to Figure 7c.
+Improved Denoising. Images captured with a lower dwelling time (DT) contains higher level of
+noise. For the successful execution of later computational unit like cell separation (discussed in 4.2,
+a function was learned to denoise higher noisy images by mapping those to corresponding lower
+noisy version (captured with higher dwelling time). We followed the Noise2Noise [Lehtinen et al.
+2018] setup to execute this denoising task. An encoder maps noisy input images (DT4/DT5 SEM
+images) into a compressed representation. Using the representation, a decoder generates cleaner
+images (DT6 SEM images that are less noisy). We have used DT4/DT5 SEM images as the input
+data and corresponding DT6 SEM image as the ground-truth data for this algorithm. The system
+architecture of this algorithm is shown in Figure 6.
+Fig. 6. The denoising process of IC SEM images.
+Synthetic Image Generation. Due to the necessity of possessing a dataset with diverse and
+sufficient image samples, another computing process is specified for this unit. In order to achieve a
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.
+
+===== Page 10 =====
+
+10
+Al Hasan et al.
+high-performance recognition and evaluation of cell SEM images, it is required to have enough
+number of diverse samples to perform a strong and comprehensive training for the trainable
+elements in the recognition and the analysis units. Creating this form of dataset using the existing
+instruments solely is extremely costly, labor-intensive, and difficult to accomplish. This problem is
+tackled through applying our methodology for synthetic data generation [Al Hasan et al. 2021] on
+the original cell SEM images. We have employed Mode-Seeking Generative Adversarial Network
+(MSGAN) [Mao et al. 2019] for the process.
+4.2
+Block Detection Unit
+In this unit, the connected components of IC SEM images are identified and then the cells are
+extracted from the images. The process of Component Identification is described as: the foreground pixels of an image (which represent white color, i.e., 𝐼(𝑥,𝑦) = 255) are grouped together
+by scanning 𝐼𝐵from top to bottom and left to right. Eight-connectivity organization of pixels
+is considered for grouping of pixels with the same intensity value, shown in Figure 7f. A set of
+distinctively labelled connected components, defined as𝐶= 𝑐0,𝑐1, ......,𝑐𝑇−1, illustrated in Figure 7d,
+is obtained in which each 𝑐𝑖represents a component with a top-left (𝑥𝑖−1,𝑦𝑖−1) and a bottom-right
+(𝑥𝑖+1,𝑦𝑖+1) point, see Figure 7e. In 𝐶definition, 𝑇represents the total number of components in
+the image 𝐼. All elements of 𝐶’s can be sorted vertically by one of the image columns, such as 𝑦1. In
+Figure 7a, DT5 refers to the dwelling time of five (i.e., 10 𝜇s/pixel) in SEM imaging.
+(a) A DT6 IC SEM Image.
+(b) Denoised Version.
+(c) Binarized Version.
+(d) Image cell components.
+(e) Identified component.
+(f) Eight-connectivity.
+Fig. 7. The computations of image processing and block detection units.
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.
+
+===== Page 11 =====
+
+EVHA: Explainable Vision System for Hardware Testing and Assurance - An Overview
+11
+The Cell Extraction process includes two major steps and is expressed as [Al Hasan et al. 2021]:
+(a) Component Listing, in which components from each row are listed entirely. An illustration of
+this computation is shown in Figure 3a. (b) Cell Separation, in which single and composite cells are
+separated out from the component list of each row.
+In the first major step, the beginning of a new component row is marked by making comparison
+between the y-coordinates of successive components. While traversing the vertically sorted components, a component 𝐶𝑖is assumed to be a part of a new row if it starts from a higher position
+than its previous components, which means 𝐶𝑖.𝑦1 >= 𝐶𝑖−1.𝑦2. This concept is depicted in Figure
+8a. This comparison works based on the assumption that the connected components are calculated
+accurately and the images are not significantly tilted. The components of each separated row are
+then sorted according to their top-left coordinates (𝑥1). The formulation of procedure is presented
+in Algorithm 1.
+Algorithm 1 The component listing procedure.
+Input: Connected Components, 𝐶[𝐶0,𝐶1, ......,𝐶𝑇−1] where each 𝐶𝑖= [𝑥1,𝑦1,𝑥2,𝑦2]
+Output: Component list 𝐶𝑅from each row 𝑅𝑘
+1: procedure Row-WiseComponentList
+2:
+𝐶𝑅←𝐿𝑖𝑠𝑡()
+3:
+𝐶𝑜𝑚𝑝𝑜𝑛𝑒𝑛𝑡𝑠←𝐿𝑖𝑠𝑡()
+4:
+for 𝑖←1 to 𝐶.𝑙𝑒𝑛𝑔𝑡ℎ−1 do
+5:
+Components.append(𝐶𝑖−1)
+6:
+if 𝐶𝑖.𝑦1 ≥𝐶𝑖−1.𝑦2 then
+7:
+𝐶𝑅.𝑎𝑝𝑝𝑒𝑛𝑑(𝐶𝑜𝑚𝑝𝑜𝑛𝑒𝑛𝑡𝑠)
+8:
+𝐶𝑜𝑚𝑝𝑜𝑛𝑒𝑛𝑡𝑠←𝐿𝑖𝑠𝑡()
+9:
+end if
+10:
+end for
+11: end procedure
+With respect to the second major step, the components of each row are scanned to separate
+out single and multiple component cells. In most of the cases, each row(𝑅𝑘) is composed of two
+symmetric parts, such as 𝑃0 and 𝑃1 shown in Figure 8b(i). The separation computations can be
+performed on either 𝑃0 or 𝑃1 as shown in Figure 8b. Whether two components belong to the same
+or different cells is decided based on the distances between the consecutive components, which
+can be observed in Figure 8b(ii)-(iii). Cell margins are determined according to new components
+and the cells are extracted according to the new format, as the processes are displayed in Figure
+8b(iv)-(v). This procedure is demonstrated mathematically in Algorithm 2.
+The above computations are not effective in certain image conditions, such as images with high
+levels noise or severe rotation(s). This methodology serves as a proof of concept and introduces a
+research direction for comprehensive studies with stronger outcomes. In this regard, our future
+plan for improving the discussed algorithms and the overall functionality of block detection unit
+are provided in Section 6.
+4.3
+Block Recognition Unit
+The block recognition unit works as a filter on what to pass to the rest of the process. The unit
+receives cells extracted from the SEM image. The task of the unit is two-fold.
+(1) Identify type of the input cells
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.
+
+===== Page 12 =====
+
+12
+Al Hasan et al.
+(a) Applying row decider on IC SEM
+images: 𝑅𝑘represents a component
+row (bounded by two yellow lines).
+White marked components show the
+beginning of a new row from a vertically sorted component list.
+(b) Applying cell separator on a marked row of components: (i)
+shows two parts of a decided row. In (ii)-(iii), consecutive components are merged based on the lateral distances. Cases (iv)-(v)
+display that the cell boundaries are determined based on the new
+marked components and then the cells are extracted accordingly.
+Fig. 8. The operations of row decider and cell separator in the image processing unit.
+Algorithm 2 Cell Separation
+Input: List of Components for each row, 𝐶𝑅[𝐶𝑅0,𝐶𝑅1, ......,𝐶𝑅𝑁−1] where N is the total number
+of Rows and each 𝐶𝑅𝑖= [𝐶0,𝐶1,𝐶2, ......,𝐶𝑚−1]; here each 𝐶𝑖= [𝑥1,𝑦1,𝑥2,𝑦2] and m varies from
+row-to-row.
+Output: Merged Component List 𝐶𝑅
+1: procedure CellSeparation
+2:
+𝑖←0
+3:
+𝑡ℎ𝑟𝑒𝑠ℎ𝑜𝑙𝑑←P
+4:
+𝐶𝑜𝑚𝑝𝑜𝑛𝑒𝑛𝑡𝑠←𝐿𝑖𝑠𝑡()
+5:
+while 𝑖< 𝐶𝑅.𝑙𝑒𝑛𝑔𝑡ℎ−1 do
+6:
+𝐶←𝐶𝑅𝑖
+7:
+for 𝑗←1 to 𝐶.𝑙𝑒𝑛𝑔𝑡ℎ−1 do
+8:
+if |𝐶𝑗.𝑥1 −𝐶𝑗−1.𝑥2|2 < 𝑡ℎ𝑟𝑒𝑠ℎ𝑜𝑙𝑑then
+9:
+𝐶𝑗←𝑚𝑒𝑟𝑔𝑒(𝐶𝑗−1,𝐶𝑗)
+10:
+𝐶𝑅𝑖𝑗←𝐶𝑗
+11:
+end if
+12:
+end for
+13:
+𝑖←𝑖+ 1
+14:
+end while
+15: end procedure
+(2) Filter out anomalous cell image
+The classifier of the unit outputs a probability distribution corresponding to the number of
+types/classes of IC cells and uses it to determine the appropriate class for a cell (which is specified
+based on the highest probability in the class vector). The registration of the reference cells is
+done during the training process using the image format of DEF layout file. The classifier output
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.
+
+===== Page 13 =====
+
+EVHA: Explainable Vision System for Hardware Testing and Assurance - An Overview
+13
+determines the validity of a cell in terms of the presence of its type in the original design.
+On the other hand, the anomaly detection branch determines whether a cell image was present
+during the registration process or the image of a registered cell is changed sufficiently. If it does,
+then the cell status is set as "unknown" that means presence of an abnormal entity (malicious or
+non-malicious) in the design. The overall computational flow of block recognition unit is depicted
+in Figure 9. A report containing the class probabilities and anomaly status is generated from the
+recognition unit and is delivered to the decision-making unit.
+Fig. 9. The overall computational flow of block recognition unit.
+Identification of Cells. For classification task, unlike previous studies [Vashistha, M. Rahman,
+et al. 2018], We have adopted a Convolutional Neural Network (CNN)-based architecture to classify
+the extracted cells, which require large amounts of data for training. The training data is developed
+through imaging (i.e., original data acquisition) and synthetic data generation as mentioned in 4.1.
+The extracted and synthesized images of cells, along with their labels, are fed into the classifier for
+training. Input image(𝑥) is passed through the classifier and softmax ([Bridle 1989]) is applied on
+the computed logit to get the probability distribution. Finally, cross-entropy loss is applied between
+predicted probability and available ground-truth label of the corresponding input. The classifier
+training is depicted in Figure 10.
+Fig. 10. Training of the classifier.
+Anomalous Cell Prediction. For our training dataset 𝐷𝑡= {𝑥𝑛}𝑁
+𝑛=1, which consists of anomaly
+free images, the target is to train the system such that it can detect anomalous/trojan cells during
+test time. We adopted the simple siamese self-supervised learning (SSL) framework [X. Chen and
+He 2021] that was originally intended for unsupervised representation learning. Training of the
+task is depicted in Figure 11.
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.
+
+===== Page 14 =====
+
+14
+Al Hasan et al.
+Unlike conventional learning system, the loss function runs over pairs of samples during
+training the system. Our architecture (Figure 11) takes input as augmented view 𝑥𝑎𝑢𝑔and anomalous
+view 𝑥𝑎𝑛𝑚of the original image 𝑥along with the image itself. Input 𝑥is transformed by a stochastic
+data augmentation module to produce the correlated view 𝑥𝑎𝑢𝑔. Anomalous view 𝑥𝑎𝑛𝑚is produced
+by randomly cropping a part of input image 𝑥and paste it elsewhere on the image as described in
+[C.-L. Li et al. 2021].
+These inputs are processed by an encoder 𝑓consisting of a backbone (ResNet-18 [He et al.
+2016]) and a projection head as shown in Figure 11. The prediction head ℎtransforms the output of
+one view and calculate similarity with other view. Denoting two output vectors 𝑝= ℎ(𝑓(𝑥)) and
+𝑧𝑎𝑢𝑔= 𝑓(𝑥𝑎𝑢𝑔), the negative cosine similarity is minimized over the training:
+𝐷(𝑝,𝑧𝑎𝑢𝑔) = −
+𝑝
+∥𝑝∥2
+·
+𝑧𝑎𝑢𝑔
+∥𝑧𝑎𝑢𝑔∥2
+(1)
+where ∥.∥is 𝑙2 norm. The symmetrized loss between 𝑥and 𝑥𝑎𝑢𝑔is written as in Equation 2
+𝐿𝑐𝑙𝑒𝑎𝑛= 1
+2𝐷(𝑝,𝑠𝑡𝑜𝑝𝑔𝑟𝑎𝑑(𝑧𝑎𝑢𝑔)) + 1
+2𝐷(𝑝𝑎𝑢𝑔,𝑠𝑡𝑜𝑝𝑔𝑟𝑎𝑑(𝑧))
+(2)
+The stopgrad operation kind of simulates the expectation-maximization like algorithm as hypothesised in [X. Chen and He 2021] and it’s an imperative part for better convergence of SSL.
+Similarly,
+The symmetrized loss between 𝑥and 𝑥𝑎𝑛𝑚can be written as in Equation 4.
+𝐿𝑎𝑛𝑜𝑚𝑎𝑙𝑦= 1
+2𝐷(𝑝,𝑠𝑡𝑜𝑝𝑔𝑟𝑎𝑑(𝑧𝑎𝑛𝑚)) + 1
+2𝐷(𝑝𝑎𝑛𝑚,𝑠𝑡𝑜𝑝𝑔𝑟𝑎𝑑(𝑧))
+(3)
+As the target is to maximize similarity of original view of input 𝑥with augmented view 𝑥𝑎𝑢𝑔
+while minimizing similarity with anomalous view 𝑥𝑎𝑛𝑚, the final objective function can be written
+as the following.
+𝐿= 𝜆1𝐿𝑐𝑙𝑒𝑎𝑛−𝜆2𝐿𝑎𝑛𝑜𝑚𝑎𝑙𝑦
+(4)
+where 𝜆1,𝜆2 ∈[0, 1] are hyper-parameters.
+During inference, we passed an extracted cell image (𝑥𝑡𝑒𝑠𝑡) through the network and calculate
+the prediction vector 𝑝𝑥𝑡𝑒𝑠𝑡. To identify the malicious label, first mean clean prediction vector 𝑝𝑐is
+determined beforehand using prediction vectors from original training images. Then based on the
+similarity between 𝑝𝑥𝑡𝑒𝑠𝑡and 𝑝𝑐, the anomaly level of 𝑥𝑡𝑒𝑠𝑡is decided. If the similarity falls below a
+threshold, then the sample status is set as "malicious" and a possible trojan signal is triggered (see
+Fig. 9)
+𝑆= cos(𝑝𝑐, 𝑝𝑥𝑡𝑒𝑠𝑡)
+(5)
+Training Details. All of the cell SEM images have been distributed into training and validation
+following a 80/20 split. The images are then resized to a resolution of 96 × 96 pixels before being
+advanced through the network.
+For classification task, pre-processing techniques like Gaussian blurring, Gaussian noise addition,
+rotation, vertical flip etc. are applied to the input image to create augmented pair and to mimic
+certain real-world scenarios of SEM imaging.
+For anomaly detection task, random-crop, horizontal flip, Gaussian blurring and color jittering
+have been used to produce the augmented view of the original image. As mentioned earlier, for
+anomalous view 𝑥𝑎𝑛𝑚, we followed the method as described in [C.-L. Li et al. 2021]. We have
+experimented with different batch sizes (128, 256, 512) for the training of anomaly detector but in
+our case, batch size of 128 gives the best outcome. The network is trained only with positive pairs
+(𝑥and 𝑥𝑎𝑢𝑔) for some initial warm-up epoch (15) and later we incorporated the negative pairs (𝑥
+and 𝑥𝑎𝑛𝑚).
+A learning rate of 0.0001 and as optimizer SGD [Ruder 2016] is used throughout the training of
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.
+
+===== Page 15 =====
+
+EVHA: Explainable Vision System for Hardware Testing and Assurance - An Overview
+15
+Fig. 11. Training of the anomaly detector is depicted. Original view of the image (𝑋) and its augmented
+(𝑋𝑎𝑢𝑔) and anomalous (𝑋𝑎𝑛𝑚) view are passed through the network. The similarity is calculated between
+the projection of one view (like 𝑧) and prediction output of another view (like 𝑝𝑎𝑢𝑔). Stopgrad is applied for
+better convergence of the task (× marked path in the figure). The encoder and predictor are shared among
+the inputs. For better understanding the network is drawn twice here.
+both methods.
+Decision Evaluation. To evaluate and visualize the classifier performance, heatmaps of results are
+generated using the Gradient-weighted Class Activation Mapping (Grad-CAM) algorithm [Selvaraju
+et al. 2017]. The heatmap is used to demonstrate the regions activated by the model.
+For anomaly detection, the similarity score between mean prediction from clean training images
+and test image prediction is calculated. A qualitative analysis on the decisions is presented in
+section 5.
+4.4
+Block Analysis Unit
+Cells identified as "non-malicious" in 4.3 are passed to a block analysis unit for further verification
+by a subtle structure level analysis. Here dopant regions of each cell are compared against corresponding regions in the golden layout image in order to find the dis-similarities. So, the amount
+of similarities and differences between the pairs of elements (components from SEM image cell
+and layout image) is used to identify abnormal modifications and determine presence of defect
+and/or hardware Trojan in the chip under test. Finally, a report is produced depicting the status of
+examined cells and is provided to the decision-making unit.
+Characteristics like number of cells, cell area (i.e., height and width), location, and deformity-level
+are considered during analysis. Block analysis includes two major steps: (a) counting all the cells,
+and (b) performing cell-level analysis. cells in every row of the IC SEM image and the golden layout
+images are enumerated. If there’s a mismatch in the number of cells, then a warning flag is raised
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.
+
+===== Page 16 =====
+
+16
+Al Hasan et al.
+and the status of the corresponding row is included in the output report. Otherwise, we proceed
+with cell level analysis. The workflow of this stage is shown in Figure 12a.
+In cell level analysis, we closely followed the work described in [Vashistha, Al Hasan, et al. 2022]
+for cell level validation. Components of a cell are calculated for the test and reference layout and
+then they are compared. First, bounding boxes enclosing dopant regions are determined for both
+the test and the reference cell. Centroid values are calculated from each box. In order to establish
+a one-to-one correspondence between the cells, the SEM image (test data) is binarized and laid
+over the layout image (reference data). Then distances between the bounding box centroids are
+calculated according to Equation 6, and K-Means clustering [Jin and Han 2010] is applied on the
+total number of centroids (N) to create 𝑁
+2 clusters, where each cluster corresponds to a layout
+centroid and its corresponding SEM centroid. In this equation, j=[1,M] and M is the number of
+centroids in the SEM image cell under consideration. The three stages are illustrated in Figure 12b.
+𝑑𝑖𝑗= |𝐶𝑒𝑛𝑡𝑟𝑜𝑖𝑑𝐿𝑎𝑦𝑜𝑢𝑡𝑖−𝐶𝑒𝑛𝑡𝑟𝑜𝑖𝑑𝑆𝐸𝑀𝑗|2
+2
+(6)
+In order to measure the deformity-level in the test images, the overlap between test and reference
+cell components is measured. To measure overlap, we opt to use the Jaccard Similarity Index, also
+known as Intersection-Over-Union (IOU), which is measured as the ratio of the area of a shared
+region over the total region (refer to Equation 8). The bounding boxes calculated in the matching
+process earlier are used again for this operation, and are denoted as "A" for the SEM box and "B"
+for the layout box (see Figure 13). For each pair of corresponding boxes, the shared and the total
+regions are calculated as in Equation 7, and the IOU score is calculated according to Equation 8.
+If the IOU is below a certain threshold for any of the boxes within a cell, then the whole cell is
+marked as abnormal/malicious. All of the measurements are reported to the decision-making unit.
+𝐿𝑒𝑓𝑡𝑀𝑜𝑠𝑡= 𝑚𝑎𝑥(𝐴.𝑥1, 𝐵.𝑥1)
+𝑇𝑜𝑝𝑀𝑜𝑠𝑡= 𝑚𝑎𝑥(𝐴.𝑦1, 𝐵.𝑦1)
+𝑅𝑖𝑔ℎ𝑡𝑀𝑜𝑠𝑡= 𝑚𝑖𝑛(𝐴.𝑥2, 𝐵.𝑥2)
+𝐵𝑜𝑡𝑡𝑜𝑚𝑀𝑜𝑠𝑡= 𝑚𝑖𝑛(𝐴.𝑦2, 𝐵.𝑦2)
+|𝐴∩𝐵| = (𝑅𝑖𝑔ℎ𝑡𝑀𝑜𝑠𝑡−𝐿𝑒𝑓𝑡𝑀𝑜𝑠𝑡) × (𝐵𝑜𝑡𝑡𝑜𝑚𝑀𝑜𝑠𝑡−𝑇𝑜𝑝𝑀𝑜𝑠𝑡)
+|𝐴∪𝐵| = 𝐴𝑟𝑒𝑎(𝐴) + 𝐴𝑟𝑒𝑎(𝐵) −|𝐴∩𝐵|
+(7)
+𝐼𝑂𝑈(𝐴, 𝐵) = |𝐴∩𝐵|
+|𝐴∪𝐵|
+(8)
+4.5
+Decision Making Unit
+The decision-making unit of EVHA has the duty of determining the IC status in terms of having
+any defect and/or hardware Trojan through addition, deletion, or change in the design cells at
+the gate/cell-level. It performs an automated textual analysis on the received reports from the
+recognition and the analysis units. The parameters in its computations are probability scores for
+cell images, number of cells, cell area (i.e., height and width), location, and deformity-level. Having
+reference data for these parameters is extremely critical in order to achieve a comprehensive,
+reliable, and trustworthy system results.
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.
+
+===== Page 17 =====
+
+EVHA: Explainable Vision System for Hardware Testing and Assurance - An Overview
+17
+(a) Counting the number of cells for the SEM and the layout images.
+(b) Correspondence finding between the polygons of SEM and layout
+cell images. The cell regions of SEM and layout images are marked in
+pink and blue colors respectively.
+Fig. 12. The two major steps in the block analysis unit.
+5
+RESULTS AND DISCUSSION
+We have conducted experiments on each subsystem separately with its specific technical conditions
+and using limited amount of data (due to in-progress data acquisition and synthetic data generation tasks). With developing a fully diverse and sufficient dataset, our future work will present
+comprehensive and detailed results, analyses, and interpretations. In the following, the achieved
+results and related discussions for the discussed computations are provided.
+Image Denoising. Our SEM imaging setup includes three dwelling times that are 32 𝜇s/pixel
+(DT6), 10 𝜇s/pixel (DT5), and 3.2 𝜇s/pixel (DT4). We have in total 112 sets of SEM images capturing
+logical regions of a 28nm node technology. Each set contains three images from a particular position
+of an IC with three different dwelling time mentioned above.
+To train the denoising task, we have used all noisy DT4 and DT5 images as input and corresponding
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.
+
+===== Page 18 =====
+
+18
+Al Hasan et al.
+Fig. 13. The Intersection Over Union (IOU) accuracy measure applied between the polygon bounding boxes
+from cell SEM image (A) and its corresponding cell layout image (B).
+DT6 images as ground-truth. We used 85% images (190) as training and rest (34) as validation.
+𝐿0 = 1
+𝑁
+𝑁
+∑︁
+𝑛=1
+(|𝑓(𝑥𝑖;𝜃) −𝑦𝑖| + 𝜖)𝛾
+𝐿1 = 1
+𝑁
+𝑁
+∑︁
+𝑛=1
+|𝑓(𝑥𝑖;𝜃) −𝑦𝑖|
+𝐿2 = 1
+𝑁
+𝑁
+∑︁
+𝑛=1
+(𝑓(𝑥𝑖;𝜃) −𝑦𝑖)2
+(9)
+where N is the total number of sample, CNN(f) is parameterized by 𝜃, 𝑥𝑖is an input, and 𝑦𝑖is a
+target. For 𝐿0 loss, 𝜖and 𝛾have been used to diminish effect of zero gradient and increase focus on
+foreground area respectively.
+Following [Lehtinen et al. 2018], we also considered the peak signal-to-noise ratio (PSNR) as the
+metric for quantitative evaluation. We experimented with three objective functions for the task -
+𝐿0, 𝐿1 and 𝐿2 loss (see Equation 9). For 𝐿0 loss, throughout the training, 𝜖was set to 10−8 and 𝛾
+was annealed from 2 to 0.
+With 𝐿0 loss we achieved average PSNR of 22.92 dB whereas with 𝐿2 loss we achieved 24.93 dB
+(see Fig. 14). The outcome was not satisfactory with 𝐿1 loss.
+The number of available training sample (224) is too insufficient for the successful execution for
+the task. We are hopeful to conduct more experiments in future towards this line of work with
+more data in hand.
+Block Detection. Getting accurate outcome from the cell extraction in the block detection unit
+appears to largely depend on the connected components identified in the images. As mentioned
+earlier, noise, poor lighting conditions, and excessive rotation all affect the binarization of the
+images, which results in poor connected component findings. Possible idea for improving the cell
+extraction procedure is detailed in Section 6.
+Our SEM imaging setup includes three dwelling times that are 32 𝜇s/pixel (DT6), 10 𝜇s/pixel
+(DT5), and 3.2 𝜇s/pixel (DT4). Out of 140 number of IC SEM images used in our experiments, half
+of them belong to DT5 and the other portion to DT6. The cell extraction process was successful on
+116 number of images (82.86% success rate). The algorithm was not able to operate satisfactory
+on the images with improper illumination or higher noise level, see Figure 15). The specifications
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.
+
+===== Page 19 =====
+
+EVHA: Explainable Vision System for Hardware Testing and Assurance - An Overview
+19
+(a) Noisy input (DT5 Image)
+(b) Ground truth (DT6 image)
+(c) Denoised using 𝐿0 loss. PSNR: 22.92 dB
+(d) Denoised using 𝐿2 loss. PSNR: 24.93 dB
+Fig. 14. Outcome of denoising task.
+of mentioned images are provided in Table 1. We have plans to overcome these problems in our
+future work.
+Image Acquisition Setting
+Acquired Images
+Successful Cell Extraction
+DT5
+70
+58
+DT6
+70
+58
+Table 1. The specifications of output images from cell extraction.
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.
+
+===== Page 20 =====
+
+20
+Al Hasan et al.
+(a) An IC SEM image with improper illumination.
+(b) Incorrect binarization.
+(c) Failed identification of connected component.
+Fig. 15. Unsuccessful operations in component findings.
+Synthetic Data Generation. The extracted cells from the IC SEM images could be used to make
+an insufficient dataset for the block recognition unit based on its training requirements. Lack of
+proper diversity among the data samples leads to the inability of the classifier to capture the wide
+distribution of cell SEM images. To tackle this problem, the synthetic versions of the original cell
+SEM images are generated using an MSGAN model [Al Hasan et al. 2021]. Due to considering a
+certain balance and usability among the image samples, seven out of thirteen classes (i.e., types
+of gates) have been considered in our experiments. In order to find the difference between the
+original and the synthetic samples and to provide an analytical evaluation, the standard Jensen
+Shannon Divergence (JSD) metric [Sinn and Rawat 2018] has been employed. The JSD score for our
+synthetic data was found to be 0.06 while with random generated noise the JSD score was 0.42. The
+low JSD value signifies that the generated data was found to be fairly authentic and they were not
+produced based on a random distribution. The extracted original cell images have been combined
+with the synthetic images to create a more comprehensive dataset.
+Block Recognition. The CNN classifier in the block recognition unit has been trained on seven
+classes of cell SEM images. The model was able to detect samples with 98% accuracy score. Our
+results from this unit along with the block analysis unit are withheld for presentation and they will
+be shown in a future comprehensive publication on EVHA. In here, our study is focused on the
+classifier and anomaly detector results on in-class and out-of-class images.
+To analyze the classifier decisions, a heatmap plot is produced that represents the image locations
+in which the model predictions have caused the most levels of activation, which is shown in Figure
+17. It can be seen from the figure that region structures as well as the spacing between diffusion
+regions are important factors in determination of the cell class/type.
+In order to examine and observe how the recognition unit operates on anomalous/trojan cells,
+few modified cell images are fed to the model. Figure 18 shows the predictions and similarity score
+from classifier and anomaly detector module respectively. The classifier predicts false positives
+for anomalous cells with very high confidence. On the other hand, the similarity score from
+anomaly detector remains slightly higher for clean images than corresponding anomalous ones.
+The similarity becomes closer when the anomaly is closer to real-word scenario(left pair in figure
+18). The model is not learning enough pattern because we have insufficient and less diverse training
+data. We are hoping to achieve better result in future with sufficient amount of data.
+We still haven’t been able to figure out a threshold point to filter out trojan cells. One of the
+main reason is that we have anomalous sample from multiple clusters/classes of samples. So,
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.
+
+===== Page 21 =====
+
+EVHA: Explainable Vision System for Hardware Testing and Assurance - An Overview
+21
+Fig. 16. The generated synthetic cell SEM images.
+Fig. 17. The heatmap plot showing the locations activated by the model predictions. The leftmost column
+contains the actual images of cells.
+intrinsically, we need to solve two problems: image clustering and anomalous sample filtration.
+This is a comparatively harder problem because threshold levels for anomaly might be different
+for different clusters of images, and two different kinds of discriminative pattern (class level and
+anomaly level) need to be learned from same underlying feature.
+To the best of our knowledge, this is the first work focused on the self-supervised learning of
+trojan cells. We believe that this result paves the way for further work in this arena. We have
+discussed further plan on this research direction in section 6.
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.
+
+===== Page 22 =====
+
+22
+Al Hasan et al.
+Fig. 18. The heatmap plot displaying the locations that activate the classifier predictions for a number of
+out-of-distribution cell SEM image samples. The similarity score has been attained from the anomaly detector.
+The confidence score is shown on top of each image.
+6
+FUTURE WORK
+Our future work will focus on full development and realization of EVHA and presentation of
+comprehensive and detailed results, analyses, and interpretations. This section introduces few plans
+for completion and improvement of the system.
+Block Detection Unit - Cell Extraction. One of the main challenges for cell extraction are
+the separation of single and composite cells based on the distances between consecutive components. Building an intelligent mechanism for analyzing the gaps between components and making
+differentiation between single and composite cells is a possible solution, but its effectiveness would
+vary drastically from image to image. So, its system performance can be changed noticeably for
+different manufacturing technology nodes. As an alternative approach, leveraging prior knowledge
+as a basis to avoid false negatives can be a more practical and feasible solution, which is in our
+interest. If a composite cell is extracted incorrectly, then EVHA will classify it as an unknown gate.
+However, before labelling the composite cell as "malicious", a similarity score will be calculated by
+comparing each component of the composite cell to the already detected cell classes/types. If a high
+similarity score is found for each of these components, the composite cell will be decomposed into
+its singular cells. Next, the DEF file entry will be matched with each decomposed cell. A schematic
+diagram of this approach is displayed in Figure 19.
+Fig. 19. The correction mechanism for cell separator that works based on leveraging prior knowledge.
+Cell library for the corresponding node technology (e.g. 28nm cell library) can be used to label
+cell types at the primary stage. Later based on the already extracted cells, self-correction can be
+deployed in the cell extraction system.
+Block Recognition Unit - Anomaly Detection. Detection of out-of-class/anomaly/trojan
+cell images (belonging to defect and/or hardware Trojan) is imperative for the system. Data
+insufficiency is one of the main challenges for our current system as learning both clean and
+anomalous representation needs enormous amount of data.
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.
+
+===== Page 23 =====
+
+EVHA: Explainable Vision System for Hardware Testing and Assurance - An Overview
+23
+The unified framework for clustering and anomalous/trojan cell presence can be a more concrete
+approach towards the problem. A probable solution towards this problem is depicted in Figure
+20. A logical cell image (𝑥0) and its augmented or anomalous view (𝑥1) will be fed to the network
+consists of a feature extractor F and a classification as well as an anomaly detection branch.
+Features extracted by F for both 𝑥0 and 𝑥1 will be passed through the anomaly detection branch.
+Embedding from image pair (𝐺(𝑥0) and 𝐺(𝑥1)) will be pushed closer if they are just different views
+of same image (𝑦= 0) or further if they are anomalous pair(𝑦= 1 if 𝑥1 is anomalous version of 𝑥0).
+The contrastive loss 𝐿𝑐𝑜𝑛serves this purpose (see Figure 20). The classification branch will only
+act on features from clean image(𝐹(𝑥0)). The whole network will be trained jointly on losses from
+classifier (𝐿𝑐𝑙𝑠) and anomaly detector (𝐿𝑐𝑜𝑛). We are hoping to show outcome for this multi-task
+problem in the future.
+Fig. 20. Training of the unified cell recognizer. Original view of the image (𝑋) and its augmented or anomalous
+view (𝑋1) are passed through the network. The classification branch predicts the class label from the clean
+image feature 𝐹(𝑋0). On the other hand, malicious cell detection branch pushes embeddings from image
+pairs further if 𝑋1 is anomalous (𝑦= 1) otherwise, closer (𝑦= 0). The network is trained on both classification
+(𝐿𝑐𝑙𝑠) and contrastive anomaly loss (𝐿𝑎𝑛𝑚).
+7
+CONCLUSION
+We have reviewed the framework of the Explainable Vision System for Hardware Testing and
+Assurance, which is a novel system in the area of physical assurance for the security problem of
+hardware Trojan detection. It is considered one of the few works in the literature that introduces the
+concepts and methods from computer vision into the domain of hardware security, specifically for
+hardware Trojan detection. EVHA intensively leverages advanced object detection and recognition
+concepts and methods for identifying trojans from cell images and validating cell images upon
+their collection by a scanning electron microscope. In terms of the number of samples, diversity,
+quality, and inclusion of both real and synthetic data, the used data stands out from similar works.
+This review paper studies four major tasks in the framework, including Intelligent Microscopy
+for Imaging/Delayering (Task 1); Explainable Block/Object Detection and Recognition of IC SEM
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.
+
+===== Page 24 =====
+
+24
+Al Hasan et al.
+Images (Task 2); Golden Gate/Circuits Design and Fabrication (Task 3); and Validation and Security Assessment (Task 4). The second task is discussed in more depth through a comprehensive
+introduction, technical evaluation, and conclusive discussion of its five computing units, namely
+Image Processing, Block Detection, Block Recognition, Block Analysis, and Decision-Making. It
+also encompasses our ideas and plans for the full development and realization of EVHA. This work
+and the proposed EVHA outline will guide the researchers to better understand the SEM imaging
+domain and the corresponding trojan analysis issues.
+REFERENCES
+Md Mahfuz Al Hasan, Nidish Vashistha, Shayan Taheri, Mark Tehranipoor, and Navid Asadizanjani. 2021. “Generative
+Adversarial Network for Integrated Circuits Physical Assurance Using Scanning Electron Microscopy.” In: 2021 IEEE
+International Symposium on the Physical and Failure Analysis of Integrated Circuits (IPFA), 1–12. doi: 10.1109/IPFA53173.2
+021.9617416.
+Syed Alam, Timothy Chu, Jolie LeBlanc, Arjun Krishnan, and Alsheik Shaden. 2021. “Harnessing the power of the semiconductor value chain.” https://www.accenture.com/_acnmedia/PDF-169/Accenture-Semiconductor-Value-Chain-Reportzo
+om.pdf.
+Chongxi Bao, Domenic Forte, and Ankur Srivastava. 2014. “On application of one-class SVM to reverse engineering-based
+hardware Trojan detection.” In: Fifteenth International Symposium on Quality Electronic Design. IEEE, 47–54.
+John S. Bridle. 1989. “Training Stochastic Model Recognition Algorithms as Networks Can Lead to Maximum Mutual
+Information Estimation of Parameters.” In: Proceedings of the 2nd International Conference on Neural Information Processing
+Systems (NIPS’89). MIT Press, Cambridge, MA, USA, 211–217.
+Fuqiang Chen and Qiang Liu. 2017. “Single-triggered hardware Trojan identification based on gate-level circuit structural
+characteristics.” In: 2017 IEEE International Symposium on Circuits and Systems (ISCAS). IEEE, 1–4.
+Xinlei Chen and Kaiming He. 2021. “Exploring Simple Siamese Representation Learning.” 2021 IEEE/CVF Conference on
+Computer Vision and Pattern Recognition (CVPR), 15745–15753.
+Taiwan Semiconductor Manufacturing Company. 2021. “Taiwan Semiconductor Manufacturing Company Limited and
+Subsidiaries.” https://investor.tsmc.com/sites/ir/financial-report/2021/TSMC%202021Q3%20Consolidated%20Financial
+%20Statements_E.pdf.
+Intel Corporation. 2021. “Funding the CHIPS for America Act: A Matter of Economic and National Security.” https://www.in
+tel.com/content/dam/www/central-libraries/us/en/documents/full-funding-chips-oct-2021.pdf.
+Huqiang Du and Zheng Shi. 2020. “Wafer SEM Image Generation with Conditional Generative Adversarial Network.” In:
+Journal of Physics: Conference Series 2. Vol. 1486. IOP Publishing, 022041.
+Kento Hasegawa, Masao Yanagisawa, and Nozomu Togawa. 2017. “Trojan-feature extraction at gate-level netlists and
+its application to hardware-Trojan detection using random forest classifier.” In: 2017 IEEE International Symposium on
+Circuits and Systems (ISCAS). IEEE, 1–4.
+Kaiming He, X. Zhang, Shaoqing Ren, and Jian Sun. 2016. “Deep Residual Learning for Image Recognition.” 2016 IEEE
+Conference on Computer Vision and Pattern Recognition (CVPR), 770–778.
+Ed. by Claude Sammut and Geoffrey I. Webb. “K-Means Clustering.” Encyclopedia of Machine Learning. Springer US, Boston,
+MA, 563–564. isbn: 978-0-387-30164-8. doi: 10.1007/978-0-387-30164-8_425.
+Venkateswarlu Karnati, Mithun Uliyar, and Sumit Dey. 2009. “Fast Non-Local algorithm for image denoising.” In: 2009 16th
+IEEE International Conference on Image Processing (ICIP), 3873–3876. doi: 10.1109/ICIP.2009.5414044.
+Jaakko Lehtinen, Jacob Munkberg, Jon Hasselgren, Samuli Laine, Tero Karras, Miika Aittala, and Timo Aila. 2018. “Noise2Noise:
+Learning Image Restoration without Clean Data.” CoRR, abs/1803.04189. http://arxiv.org/abs/1803.04189 arXiv: 1803.04189.
+Chun-Liang Li, Kihyuk Sohn, Jinsung Yoon, and Tomas Pfister. 2021. “CutPaste: Self-Supervised Learning for Anomaly
+Detection and Localization.” 2021 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 9659–9669.
+He Li, Qiang Liu, and Jiliang Zhang. 2016. “A survey of hardware Trojan threat and defense.” Integration, 55, 426–437.
+Qi Mao, Hsin-Ying Lee, Hung-Yu Tseng, Siwei Ma, and Ming-Hsuan Yang. 2019. “Mode seeking generative adversarial
+networks for diverse image synthesis.” In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern
+Recognition, 1429–1437.
+Kohei Nozawa, Kento Hasegawa, Seira Hidano, Shinsaku Kiyomoto, Kazuo Hashimoto, and Nozomu Togawa. 2021. “Generating Adversarial Examples for Hardware-Trojan Detection at Gate-Level Netlists.” Journal of Information Processing, 29,
+236–246.
+Nobuyuki Otsu. 1979. “A Threshold Selection Method from Gray-Level Histograms.” IEEE Transactions on Systems, Man, and
+Cybernetics, 9, 1, 62–66. doi: 10.1109/TSMC.1979.4310076.
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.
+
+===== Page 25 =====
+
+EVHA: Explainable Vision System for Hardware Testing and Assurance - An Overview
+25
+William W. Pitkin Jr.. 2021. “Chip Shortages: Created by Demand, Geopolitics, Pandemic and Mother Nature.” https://www.s
+sga.com/library-content/pdfs/ic/Insight/chip-shortages-created-by-demand.pdf.
+Masoud Rostami, Farinaz Koushanfar, and Ramesh Karri. 2014. “A primer on hardware security: Models, methods, and
+metrics.” Proceedings of the IEEE, 102, 8, 1283–1295.
+Masoud Rostami, Farinaz Koushanfar, Jeyavijayan Rajendran, and Ramesh Karri. 2013. “Hardware security: Threat models
+and metrics.” In: 2013 IEEE/ACM International Conference on Computer-Aided Design (ICCAD). IEEE, 819–823.
+Sebastian Ruder. 2016. “An overview of gradient descent optimization algorithms.” ArXiv, abs/1609.04747.
+Ramprasaath R. Selvaraju, Michael Cogswell, Abhishek Das, Ramakrishna Vedantam, Devi Parikh, and Dhruv Batra. Oct.
+2017. “Grad-CAM: Visual Explanations From Deep Networks via Gradient-Based Localization.” In: Proceedings of the
+IEEE International Conference on Computer Vision (ICCV). (Oct. 2017).
+Qihang Shi, Nidish Vashistha, Hangwei Lu, Haoting Shen, Bahar Tehranipoor, Damon L Woodard, and Navid Asadizanjani.
+2019. “Golden gates: A new hybrid approach for rapid hardware Trojan detection using testing and imaging.” In: 2019
+IEEE International Symposium on Hardware Oriented Security and Trust (HOST). IEEE, 61–71.
+Mathieu Sinn and Ambrish Rawat. 2018. “Non-parametric estimation of jensen-shannon divergence in generative adversarial
+network training.” In: International Conference on Artificial Intelligence and Statistics. PMLR, 642–651.
+Karen M Sutter. 2021. “China’s New Semiconductor Policies: Issues for Congress.” https://crsreports.congress.gov/product/p
+df/R/R46767.
+Nitin Varshney, Haoting Shen, Olivia Paradis, and Navid Asadizanjani. 2020. “He-ion beam imaging for accurate hardware
+Trojan detection.” Microscopy and Microanalysis, 26, S2, 188–190.
+Nidish Vashistha, Md Mahfuz Al Hasan, Navid Asadizanjani, Fahim Rahman, and Mark Tehranipoor. 2022. “Trust Validation
+of Chiplets using a Physical Inspection based Certification Authority.” In: 2022 IEEE 72nd Electronic Components and
+Technology Conference (ECTC), 2311–2320. doi: 10.1109/ECTC51906.2022.00365.
+Nidish Vashistha, Hangwei Lu, Qihang Shi, M Tanjidur Rahman, Haoting Shen, Damon L Woodard, Navid Asadizanjani,
+and Mark Tehranipoor. 2018. “Trojan scanner: Detecting hardware trojans with rapid sem imaging combined with image
+processing and machine learning.” In: ISTFA 2018: Proceedings from the 44th International Symposium for Testing and
+Failure Analysis. ASM International, 256.
+Nidish Vashistha, Hangwei Lu, Qihang Shi, Damon L Woodard, Navid Asadizanjani, and Mark M Tehranipoor. 2021.
+“Detecting Hardware Trojans Using Combined Self-Testing and Imaging.” IEEE Transactions on Computer-Aided Design of
+Integrated Circuits and Systems, 41, 6, 1730–1743.
+Nidish Vashistha, Mir Rahman, Haoting Shen, Damon Woodard, Navid Asadizanjani, and Mark Tehranipoor. 2018. “Detecting
+Hardware Trojans Inserted by Untrusted Foundry Using Physical Inspection and Advanced Image Processing.” Journal of
+Hardware and Systems Security. doi: 10.1007/s41635-018-0055-0.
+Kan Xiao, Domenic Forte, and Mohammed Tehranipoor. 2014. “A novel built-in self-authentication technique to prevent
+inserting hardware trojans.” IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems, 33, 12,
+1778–1791.
+Rozhin Yasaei, Shih-Yuan Yu, and Mohammad Abdullah Al Faruque. 2021. “Gnn4tj: Graph neural networks for hardware
+trojan detection at register transfer level.” In: 2021 Design, Automation & Test in Europe Conference & Exhibition (DATE).
+IEEE, 1504–1509.
+Qiaoyan Yu, Jaya Dofe, and Zhiming Zhang. 2017. “Exploiting hardware obfuscation methods to prevent and detect hardware
+trojans.” In: 2017 IEEE 60th International Midwest Symposium on Circuits and Systems (MWSCAS). IEEE, 819–822.
+Pengyong Zhao and Qiang Liu. 2019. “Density-based Clustering Method for Hardware Trojan Detection Based on Gate-level
+Structural Features.” In: 2019 Asian Hardware Oriented Security and Trust Symposium (AsianHOST). IEEE, 1–4.
+J. ACM, Vol. 1, No. 1, Article . Publication date: July 2022.

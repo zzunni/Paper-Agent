@@ -1,0 +1,634 @@
+
+
+===== Page 1 =====
+
+Scaffold-Assisted Window Junctions for Superconducting Qubit Fabrication
+Chung-Ting Ke*,1, 2 Jun-Yi Tsai*,1 Yen-Chun Chen*,2 Zhen-Wei, Xu,2 Elam Blackwell,3 Matthew A. Snyder,3
+Spencer Weeden,3 Peng-Sheng Chen,4 Chih-Ming Lai,4 Shyh-Shyuan Sheu,4 Zihao Yang,5 Cen-Shawn Wu,6, 2
+Alan Ho,7 R. McDermott,7, 3, a) John Martinis,7, 8, b) and Chii-Dong Chen1, 2, c)
+1)Institute of Physics, Academia Sinica, Taiwan
+2)Center for Critical Issues, Academia Sinica, Taiwan
+3)Department of Physics, University of Wisconsin-Madison, WI, USA
+4)Industrial Technology Research Institute, Taiwan
+5)Applied Materials, USA
+6)Department of Physics, National Changhua University of Education, Taiwan
+7)Qolab, WI, USA
+8)Department of Physics, University of California Santa Barbara, USA
+(Dated: 17 March 2025)
+The superconducting qubit is one of the promising directions in realizing fault-tolerant quantum computing (FTQC),
+which requires many high-quality qubits. To achieve this, it is desirable to leverage modern semiconductor industry
+technology to ensure quality, uniformity, and reproducibility. However, conventional Josephson junction fabrication
+relies mainly on resist-assistant double-angle evaporation, posing integration challenges. Here, we demonstrate a liftoff-free qubit fabrication that integrates seamlessly with existing industrial technologies. This method employs a silicon
+oxide (SiO2) scaffold to define an etched window with a well-controlled size to form a Josephson junction. The SiO2,
+which has a large dielectric loss, is etched away in the final step using vapor HF leaving little residue. This Window
+junction (WJ) process mitigates the degradation of qubit quality during fabrication and allows clean removal of the
+scaffold. The WJ process is validated by inspection and Josephson junction measurement. The scaffold removal
+process is verified by measuring the quality factor of the resonators. Furthermore, compared to scaffolds fabricated by
+plasma-enhanced chemical vapor deposition (PECVD), qubits made by WJ through physical vapor deposition (PVD)
+achieve relaxation time up to 57µs. Our results pave the way for a lift-off-free qubit fabrication process, designed to be
+compatible with modern foundry tools and capable of minimizing damage to the substrate and material surfaces.
+I.
+INTRODUCTION
+Realizing fault-tolerant quantum computation (FTQC) requires a large number of high-quality qubits that allow efficient quantum error correction algorithms1–4. Among various qubit platforms, superconducting qubits are particularly
+promising because of their scalability and relatively simple
+material requirements5,6.
+Recent demonstrations of breakeven threshold with surface codes underscore the critical role
+of qubit quality in advancing the fidelity of the quantum processing unit (QPU)7.
+The contributions to qubit decoherence include two-level systems (TLS) defects8–12, quasiparticle poisoning13,14, and charge noise15,16. While quasiparticle poisoning can be mitigated by improved shielding and
+gap engineering13,14 and qubit sensitivity to charge noise can
+be suppressed by appropriate choice of circuit parameters15,
+qubit energy relaxation induced by TLS remains a roadblock
+to realizing FTQC. The key component in the construction
+of superconducting qubits is the Josephson junction, which
+provides the nonlinearity needed to implement a qubit but is
+highly susceptible to TLS-induced degradation4,17–22. Given
+the growing demand for both the quality and quantity of
+qubits, it is critical to develop a Josephson junction fabrication process that minimizes TLS associated with amorphous
+a)Electronic mail: robert@qolab.ai
+b)Electronic mail: john@qolab.ai
+c)Electronic mail: chiidong@gate.sinica.edu.tw
+interfaces and polymer residues and that is compatible with
+industrial-standard wafer-scale technology19,20.
+The canonical method for fabricating Josephson junctions
+involves a double-angle evaporation process, where a polymer resist mask is used and subsequently lifted off after metal
+deposition4,22.
+However, neither double-angle evaporation
+nor the lift-off process is compatible with industrial microfabrication due to the requirements of cleanness and high
+yield. More advanced fabrication methods including trilayer21
+and overlap junction processes20,23 are among the attempts
+to replace the double-angle evaporation technique.
+A recent demonstration of qubits incorporating overlap Josephson junctions utilized state-of-the-art 300 mm semiconductor
+tooling20,24. Here, Josephson junction formation involves etch
+of the base electrode followed by a separate vacuum step including in situ clean of the base metal and oxidation prior to
+counterelectrode deposition. While the uniformity of the junction resistances was excellent, the global argon plasma cleaning step can damage the exposed metal-air and substrate-air
+interfaces, leading to the formation of TLSs. The inevitable
+large area of oxidation creates unwanted oxide layers between
+the superconducting metals. Therefore, developing an alternative process flow to prevent surface damage and unwanted
+oxidation layers on the superconducting circuit may further
+improve qubit quality.
+Here, we demonstrate a window junction (WJ) process using a SiO2 scaffold that can be removed in the final stage. The
+junction is defined by etching a sub-micron window via into
+SiO2 scaffold, which is a well-developed process with good
+reproducibility. The WJ process has several advantages over
+arXiv:2503.11010v1  [physics.app-ph]  14 Mar 2025
+
+===== Page 2 =====
+
+2
+previous approaches. First, when the junction via is defined
+using state-of-the-art DUV lithography, the WJ process provides excellent control over the junction area. In addition,
+cleaning of the native oxide of the base electrode is restricted
+to the area of the junction window, whereas in an overlap junction process the cleaning step can amorphize the substrate in
+the vicinity of the junction, leading to enhanced loss. For the
+devices studied here, the area of the chip exposed to the junction plasma clean is a small fraction of order 5×10−6 of the
+total 1cm × 1cm chip area, greatly reducing the potential for
+damage from the cleaning step. In order to avoid dielectric
+loss from the SiO2 scaffold, it is necessary to remove the scaffold layer as a final step in device fabrication. Here, we use a
+vapor hydrogen fluoride (vHF) etch process to remove the sacrificial SiO2 layer, leaving a suspended airbridge to connect
+the junction counterelectrode to ground25,26. For optimized
+SiO2 deposition and etch processes, we find no difference in
+internal quality factor (Qi)27 for resonators fabricated with and
+without the sacrificial oxide.
+In the WJ process, it is necessary to clean the metal surface in the via prior to oxidation. Although there is concern
+that cleaning might damage the metal surface, e.g., particularly involving Ar ion milling, previous experiments on liftoff
+junctions have not shown significant degradation20,24. Our
+proposed method mitigates the risks associated with waferscale Ar bombarding that may cause more TLSs on the surface. In addition, it is possible for SiO2 resputtering inside
+the window or leave SiO2 residue during the Ar milling step.
+We overcome the concerns by showing good Josephson junction properties with a low sub-gap leakage current. We further
+show a good reproducibility of the junction resistance, which
+has the potential to be improved by tuning the fabrication parameters. Lastly, the qubit relaxation time T1 is up to 57µs, potentially limited by surface loss arising from the capacitance
+between the top and bottom Al electrodes. The comparison
+of different SiO2 reveals the effect of the capacitance to T1.
+One may expect to improve T1 time by further reducing the
+parasitic capacitance of the counter electrode regarding the
+ground. Nevertheless, our results provide a pathway to realize
+a qubit fabrication technique using a SiO2 scaffold-assisted
+window to form the Josephson junction, which is compatible
+with current foundry fabrication sets with minimum damage
+to the superconductor and silicon wafer surface. Therefore,
+the WJ architecture offers a promising approach in quantum
+process science to produce high-quality and scalable superconducting qubits for future quantum computers.
+II.
+METHODS
+A.
+Fabrication flow
+The fabrication process is illustrated in Figure1 and is
+described in the following steps.
+First, a high-resistance
+(20kΩ·cm) 8-inch silicon substrate is processed with
+standard piranha solution (sulfuric acid:
+30% hydrogen
+peroxide=3:1) followed by diluted HF (2%) in spin rinsing
+to remove native SiOx before metal deposition. The wafer
+is transferred to the deposition system within five minutes
+to reduce the regrowth of oxide. A 100nm aluminum (Al)
+is deposited in an ultra-high vacuum (UHV) sputtering system (< 10 × 10−7 mTorr) for the base layer. The base Al is
+then patterned using standard deep ultraviolet (DUV) photolithography as shown in Fig.1 (a).
+The wafer is coated
+with DUV photoresist and processed with standard lithography techniques.
+After the development, we conducted a
+2.38% TMAH wet etch process in a spin etcher to construct
+the base structures, including the resonators, coupling capacitors, and other microstructures required for the qubit chip.
+The etch process is terminated by a deionized water rinse and
+then dried in the same spin etcher system.
+Next, the 200nm SiO2 scaffold layer is deposited on the
+base electrode, as shown in Fig.1(b). This scaffold layer deposition is either using the Plasma-enhanced chemical vapor
+deposition (PECVD) method at 250 ◦C or the Physical vapor
+deposition (PVD) method by sputtering below 150◦C. For
+both types of SiO2, it not only forms the scaffold for junction
+fabrication but also protects the surface of Al and substrate
+during fabrication. Another DUV lithography step defines the
+junction via and a 10 by 10µm contact window on the base
+Al, followed by a fluorine-based dry etching of the SiO2, as
+depicted by Fig.1(c).
+For junction fabrication, the native AlOx is removed in
+both the junction via and the contact window using an argonbased inductively coupled plasma (ICP) etch step (450W
+main power and 300W bias power for 40s under Ar pressure 5mTorr). After removing the native AlOx, a high-purity
+oxygen gas (5N) is introduced to form a controlled AlOx barrier with a dynamical oxidation process for a time based on
+the designed junction resistance4,22. Note that the area ratio between the contact window and the junction via exceeds
+250. Hence, the inductance of the parasitic junction at the
+contact window is negligible. A 100nm Al layer is deposited
+in-situ immediately after the oxidation process, serving as the
+counter electrode layer. The Al bridge is again defined by
+DUV lithography and the TMAH wet etch process, as shown
+in Fig.1(d). In this work, the Al top electrode process is conducted in both 4-inch and 8-inch deposition systems showing
+no significant difference. However, as discussed below, the
+uniformity of junction oxidation is superior in the 4-inch system. Finally, the SiO2 scaffold is removed by the vHF process
+prior to bonding and low-temperature characterization.
+B.
+Window Junction characterization
+We implement several checkpoints to monitor the quality of
+our via structure and ensure control of our fabrication. These
+include: (a) the cleanness of the via after the etching step, (b)
+step coverage of the top Al electrode on the via, (c) variation
+of the via sizes, and (d) junction resistance uniformity with
+and without the oxidation process. These checkpoints collectively provide a comprehensive verification of the quality of
+the WJ fabrication process.
+Figure 2(a) shows a typical tilted-angle scanning electron
+microscope (SEM) image of a junction window. After re-
+
+===== Page 3 =====
+
+3
+FIG. 1. Illustration of the fabrication process on a high-resistance silicon substrate. (a) The base electrode of 100nm Al is first deposited,
+patterned and etched. (b) Next, a 200nm SiO2 scaffold is deposited on the Al. (c) The junction and contact window are then patterned using
+DUV lithography, followed by a dry etch to remove the exposed SiO2. Moving the wafer back to the deposition system, a gentle Ar ion
+cleaning refreshes the surface, followed by an in-situ oxidation process and deposition of Al. (d) The top electrode is then patterned. (e) After
+dicing, the SiO2 scaffold is removed by a vapor HF process.
+moving the photoresist, a well-defined SiO2 via is observed
+with a clean and damage-free Al base electrode at its bottom,
+even revealing clean Al grains. We verified good etching for
+four different via sizes (275, 300, 325, and 350nm) with 20
+devices for each size. The via diameter, which corresponds
+to the junction diameter, has variation less than 2% (see SI
+section VI A). From the ECDF (integrated histogram) curves,
+when the via size is reduced to 275nm a step feature in the
+diameters are observed, which becomes sharper at 350nm.
+Therefore, the junction size is designed for 300nm to 350nm
+in the following qubit fabrication.
+To ensure the cleaning process can properly remove the native oxides and does not produce etching residues, we process the junction device for the metallic contact test.
+The
+averaged resistance for 325nm test junctions is 5.2Ωwith a
+standard deviation of 0.39Ω, which agrees with the calculated
+value based on the sheet resistance of Al (SI section VI B for
+other junction dimensions). Both etching quality and dimension control support the feasibility of the WJ for future scaling
+purposes.
+With a clean via process, we study the junction oxidation
+next. We first studied the oxidized junction structure using
+transmission electron microscopy (TEM). Figure2(b) shows
+the TEM image with a cross-section view of an oxidized WJ
+before removing the SiO2 scaffold. One important observation is that the top Al electrode has sufficient coverage to fill
+the via without formation of voids between the two metal layers (see SI VI C for EDX analysis). Figure2(c) further focuses
+on AlOx, a well-defined oxidized barrier of around 1 nm is observed between two Al layers in the via.
+Our study uses two different systems to fabricate the top Al
+electrodes. One is an 8-inch system; therefore, the qubit devices are fully made with an 8-inch process and then diced before vHF. In the 8-inch system, the oxygen gas inlet is located
+next to the chamber pump-out valve. As it is not possible to
+throttle the vacuum pump, we can only access low oxidation
+pressure below ∼4.3mTorr. Moreover, oxygen pressure is
+not uniform in this system, leading to a large spread of oxygen exposure and junction specific resistance across the wafer.
+Straightforward modifications to the junction growth chamber
+will correct this limitation in the future. Another is a 4-inch
+system, where we found a better oxidation condition because
+of a proper system design. For the 4-inch case, the 8-inch
+wafer is diced before the top-electrode process.
+Figure2(d) shows the empirical cumulative distribution
+function (ECDF) of the normalized junction resistance of 5
+test chips with 14 junctions per chip for 300 nm, 325 nm,
+and 350 nm via, for the 4-inch process case. A sharp slope
+in the ECDF plot indicates a small resistance spread around
+5.9 % for the 350 nm via.
+To further verify the quality of
+the oxidized junction, we measured the I-V characteristics of
+the junction in a dilution refrigerator showing a typical I-V
+curve as presented in Fig.3(e) indicating the critical current,
+Ic = 17.1nA, and superconducting gap 2∆= 0.38mV, and the
+resistance Rn = 6.1Ω. Based on the Ambegaokare-Baratoff
+relation, the IcRn product is 104µV, consistent with the previous study of the Josephson junction based on aluminum28.
+Moreover, no excessive leakage current is observed in the
+subgap, indicating that a high-quality AlOx barrier can be
+achieved by via junction using a gentle ion-cleaned Al surface.
+FIG. 2. Characterization of the window junction process. (a) A tilted
+SEM image of the junction via shows a clean Al surface in the window. The Al grains are undamaged after the etching step. (b) Transmission electron microscopy (TEM) image of the window before removing the SiO2 scaffold. (c) TEM image of the junction interface
+with two aluminum layers and the aluminum oxide tunnel barrier. (d)
+The room-temperature junction resistance, measured with 4 probes,
+is plotted as an empirical cumulative distribution function (ECDF).
+The average resistance(variation) of 300, 325, and 350nm junction is
+15.3 kΩ(15 %), 14.7 kΩ(7.7 %), and 13.8 kΩ(5.9 %), respectively.
+Each stepped line is from 14 test junctions on the same chip. (e) The
+current-voltage relation of the single test junction at 100 mK and the
+energy gap 2∆= 0.38mV and Ic = 17.1nA. As V > 0.5mV, a linear
+fit (red dashed line) gives Rn = 6.1Ω.
+
+===== Page 4 =====
+
+4
+III.
+RESULTS AND DISCUSSION
+A.
+Device quality verification
+One of the essential steps in WJ fabrication is the complete
+removal of the SiO2 scaffold. Here, we measure the residue of
+the SiO2 after vHF etch by checking resonator quality factors
+Qi before SiO2 deposition and after its removal25,27. We fabricated six λ/4 coplanar resonators with central line widths
+of 100, 50, 20, 10, 5, and 2µm, maintaining a fixed gap-tocenter line width ratio of 0.6 on a single chip. Scaling of Qi
+with width and its power dependence is used to confirm surface loss from TLS. We deposited 200nm SiO2 using PVD on
+top of the resonator structures, which is subsequently removed
+using a precisely calibrated vHF process.
+In Figure3(a), we show dependence of the resonator quality factor Qi versus the excitation photon number, along with
+different widths. The process without and with SiO2 coverage
+process is labeled with dot and cross markers, respectively,
+and show little difference. The power and width dependence
+is typical for high-quality Al29. Notice that Qi reaches 1M
+with a 20µm central-line resonator at the single photon region.
+The high Qi shows a low TLS density even when processed
+with SiO2 deposition and vHF removal, therefore providing
+strong evidence that removing SiO2 using vHF can realize a
+high-quality window junction qubit. We can further understand this result based on previous studies in TLS theory that
+the loss tangent is substantial for the substrate-to-metal interface, which remains intact during this step29. For the 50 and
+100 µm samples, Qi fluctuates more due to trapped magnetic
+field, so the data is not shown. Using SEM, we observed no
+damage on the Al film after removing the SiO2. The SEM images reveal Al grains that typically observed in the pristine Al
+film. Atomic force microscopy(AFM) shows an RMS roughness around 1.5 nm, which is comparable to that of the pristine
+Al film after deposition with roughness around 1.2 nm(The
+detailed discussion see SI VI E). However, we note that the
+roughness may be influenced by residual SiO2 which may not
+affect the Qi due to the small loss tangent of the metal-air interface.
+We check qubit devices manufactured using the WJ process by examining the surface morphology of the junction
+structure using a SEM. In Fig.4(a), a tilted angle SEM image
+shows a well-defined Al pillar from the window junction. A
+clean surface is observed after the removal of the SiO2 scaffold. In addition, the Al counter electrode is designed and
+fabricated so that Al remains intact after removing the SiO2
+scaffold [Fig.4(b)]. The top electrode is suspended well without collapsing, where the gap between the electrode and the
+silicon substrate is around 200nm corresponding to the thickness of the SiO2 scaffold. We also compare the SEM image
+of the SiO2 scaffold using PECVD or PVD, as shown in Fig.4
+(c) and (d), respectively. This clearly indicates that removal
+of PECVD SiO2 is a problem compared to the PVD process.
+FIG. 3. Power dependence of the internal quality factor Qi of coplanar resonators with widths of the central line S and gaps W; (S, W)
+= (2, 1.2), (5, 3), (10, 6), (20, 12)µm, colored in red, yellow, green,
+blue, respectively. The dot marker shows data for a typical Al process, as shown in Fig.1, whereas the cross shows after SiO2 deposition and etch. This data indicates little residue after vHF.
+FIG. 4. (a) Tilted-angle scanning electron microscope (SEM) image of the window junction (WJ). (b) Magnified view of the junction structure, corresponding to the yellow square in (a); the arrow indicates the junction location.
+(c) and (d) SEM images of
+the edge-suspended top electrode fabricated using PVD and PECVD
+processes, respectively. Residue from the PECVD process remains
+after the vHF treatment.
+B.
+Qubit Characterization
+We characterize the qubit devices in a dilution refrigerator with a base temperature of 10mK, with its measurement
+setup detailed in SI VI D. In Table I we compare the results for
+SiO2 using PECVD (Q0) and PVD (Q1, Q2). The qubit devices using the PECVD is found to have a short energy decay
+time T1 = 2µs, consistent with its large residue. As shown in
+Fig.5(a), Q1 has much longer coherence T1 = 57µs. Note this
+device comes from the 8-inch process, demonstrating com-
+
+===== Page 5 =====
+
+5
+patibility with current semiconductor industry flow. We also
+fabricated qubit devices (Q2) using the 4-inch process, which
+yields a T1 = 40µs, indicating the WJ process can be used in
+a laboratory cleanroom.
+Figure5(b) shows the envelope for Ramsey T ∗
+2 and Spinecho T2 measurements.
+The measured T2 echo is around
+63µs. For the frequency tunable qubit Q2, we conducted timedependent T1 swap spectroscopy (TSS) to extract qubit energy
+relaxation time as a function of both the qubit operating frequency and time. Such a scan provides information about the
+spectral density of strongly coupled TLS and about their fluctuation in time. This information may help us improve qubit
+quality in the future. (See SI VI F for more details).
+To understand the low T1 results from Sample Q0
+(PECVD), we compute the influence of residual SiO2 that remains under the Al counterelectrode of the junction bridge
+following incomplete removal of the sacrificial oxide, as seen
+in Fig.4(d). We treat the lossy SiO2 as a parallel plate capacitor in series with the lossless capacitance from vacuum. The
+contribution to qubit loss from the residual SiO2 is given by
+Q−1 = Cpp
+Ct
+dox
+dpp
+δSiO2
+εSiO2
+.
+(1)
+Here Cpp = ε0 App/dpp ≃0.7fF is the parallel-plate capacitance of the window junction crossover to ground, using an
+effective area App ≃16µm2 and a height dpp = 0.2µm of the
+suspended airbridge. The transmon capacitance is Ct = 80fF.
+For SiO2, we take the relative permittivity εSiO2 = 3.8, the
+loss tangent δSiO2 = 0.005 and an effective thickness of dox =
+20nm. These parameters give Q ∼1M, or T1 ≃30µs. We
+believe the extreme roughness of the SiO2 residue produces
+shorter coherence times. Clearly, clean removal of the SiO2 is
+a key process factor.
+TABLE I. Transmon qubit parameters.
+Qubit Property
+Q0
+Q1
+Q2
+Type of SiOx
+PECVD
+PVD
+PVD
+Dry etch SiOx removal
+Yes
+No
+No
+Qubit frequency
+Tunable
+Fixed
+Tunable
+Qubit type
+Circmon Floating Circmon
+Capacitor gap [µm]
+20
+5
+5
+Qubit best relaxation (T1) [µs]
+2
+57
+40
+Qubit frequency (fq) [GHz]
+5.23
+4.34
+4.57
+Dispersive shift (χ) [MHz]
+1.67
+0.25
+1.92
+Anharmonicity (α) [MHz]
+220
+310
+200
+So far, we have demonstrated fabrication using window
+junctions that has the potential to integrate with industrylevel processes. The experiments were performed on a limited number of lots, and we have not yet drawn conclusions
+on qubit yield or the maximum coherence that this fabrication
+process can achieve. We aim to improve the fabrication yield
+by optimizing the oxidation condition in the 8-inch system.
+Additionally, qubit characterization remains crucial; by utilizing time-dependent T1 SWAP spectroscopy, we can investigate coherence loss mechanisms. Clearly, the parallel-plate
+capacitance can be reduced by shortening the overlap. Lastly,
+FIG. 5. Characterizing qubit performance. (a) Relaxation time T1
+measurement for qubit chips without (blue, Q0) and with (green, Q1)
+the optimal SiO2 process. The curve is the best fitting associated
+with the deviation in shadow, where we repeated the measurement 50
+times and each data point is averaged 500 times. (b) Measurement
+of the Ramsey dephasing T2*= 21.2µs and spin-echo T2 = 63.3µs
+for qubit chip Q1. The Ramsey dephasing only shows the oscillation
+envelope.
+reducing the SiO2 residues through optimzation may be important. We are planning to perform more experiments to understand yield, maximum coherence, center-to-edge variation,
+and lot-to-lot variations.
+IV.
+CONCLUSION
+Using a removable scaffold, we demonstrated a lift-off-free
+WJ fabrication process for superconducting qubits. This approach addresses critical challenges in conventional tilted angle deposition for Josephson junction fabrication by mitigating contamination and reducing surface defects. The SiO2
+scaffold protects the surface throughout fabrication and can
+be cleanly removed using vHF process, resulting in minimal
+surface damage and eliminating the potential issues due to
+wafer-scale cleaning and oxidation. The results show Josephson junctions with low resistance variation and robust superconducting properties. Resonators with the PVD scaffold process reach an internal quality factor Qi of 1M for a 12µm gap,
+and qubits devices achieve coherence times T1 up to 57µs for
+a 5µm gap. In contrast, WJ samples using PECVD scaffolds
+without being fully removed reveal significant degradation in
+relaxation times, which can be understood using a simple parallel plane capacitor model.
+This WJ process integrates seamlessly with industrial fabrication technologies and offers scalability for large-scale qubit
+manufacturing. These advancements contribute to quantum
+process science, bridging research innovation and large-scale
+implementation. By further optimizing the process parameters to address the potential losses associated with residual dielectric materials, the WJ method may pave the way for faulttolerant quantum computing.
+
+===== Page 6 =====
+
+6
+ACKNOWLEDGMENTS
+The authors gratefully thank Eric Kao and Britton L. T.
+Plourde for the fruitful discussion. The authors of Academia
+Sinica would like to acknowledge funding support from the
+Academia Sinica Grand Challenge project with project code
+AS-GCP-112-M01, National Quantum Initiative with project
+code AS-KPQ-111-TQRB, and NSTC with project code 1132119-M-001-008. The authors acknowledge Applied Materials for the help on the PVD deposition and ITRI for fabrication support. The authors also acknowledge the fabrication
+facilities and instrumentation at the Institute of Physics and
+UW-Madison Wisconsin Centers for Nanoscale Technology.
+V.
+AUTHOR CONTRIBUTIONS
+R.M. and J.M. designed and simulated the structure of the
+device. C.T.K., J.Y.T., Y.C.C., P.S.C., C.M.L., A.H., R.M.,
+J.M., and C.D.C. participated in the device’s fabrication discussion. E.B., M.A.S., S.W., P.S.C., C.M.L., S.S.S., and Z.Y.
+conducted the device fabrication. Z.W.X., E.B., M.A.S., and
+S.W. conducted sample characterizations. C.T.K. and J.Y.T.
+wrote the first draft of the manuscript, and A.H., R.M., J.M.,
+and C.D.C. provided input and revision. J.Y.T and Y.C.C. coordinated the process integration and data analysis. C.T.K.,
+S.S.S., R.M., J.M., and C.D.C. supervised the project. All authors contributed to the discussion and interpretation of the
+results.
+1Mohseni, M. et al. How to build a quantum supercomputer: scaling challenges and opportunities. arXiv prepr. arXiv:2411,10406 (2024).
+2Bravyi, S., Dial, O., Gambetta, J. M., Gil, D. & Nazario, Z. The future
+of quantum computing with superconducting qubits. J. Appl. Phys. 132,
+160902 (2022).
+3Shor, P. Fault-tolerant quantum computation. In Proceedings of 37th Conference on Foundations of Computer Science, 56–65 (IEEE Comput. Soc.
+Press, Burlington, VT, USA, 1996).
+4Muthusubramanian, N. et al. Wafer-scale uniformity of dolan-bridge and
+bridgeless manhattan-style josephson junctions for superconducting quantum processors. Quantum Sci. Technol. 9, 25006 (2024).
+5Ezratty, O. Perspective on superconducting qubit quantum computing. Eur.
+Phys. J. A 59 (2023).
+6Arute, F. et al. Quantum supremacy using a programmable superconducting
+processor. Nature 574, 505–510 (2019).
+7Google Quantum AI and Collaborators et al. Quantum error correction
+below the surface code threshold. Nature (2024).
+8McDermott, R. Materials origins of decoherence in superconducting qubits.
+IEEE Trans. Appl. Supercond. 19, 2–13 (2009).
+9B´ejanin, J. H., Earnest, C. T., Sharafeldin, A. S. & Mariantoni, M. Interacting defects generate stochastic fluctuations in superconducting qubits.
+Phys. Rev. B 104, 94106 (2021).
+10Li-Chung Ku, C. C. Y. Decoherence of a josephson qubit due to coupling
+to two-level systems. Phys. Rev. B 72 (2005).
+11de Graaf, S. E. et al. Two-level systems in superconducting quantum devices due to trapped quasiparticles. Sci. Adv. 6 (2020).
+12Martinis, J. M. et al. Decoherence in josephson qubits from dielectric loss.
+Phys. Rev. Lett. 95 (2005).
+13Catelani, G. et al. Quasiparticle relaxation of superconducting qubits in the
+presence of flux. Phys, Rev, Lett, 106, 77002 (2011).
+14Liu, C. H. et al. Quasiparticle poisoning of superconducting qubits from
+resonant absorption of pair-breaking photons. Phys, Rev, Lett, 132, 17001
+(2024).
+15Schreier, J. A. et al. Suppressing charge noise decoherence in superconducting charge qubits. Phys, Rev, B 77, 180502 (2008).
+16Wilen, C. et al. Correlated charge noise and relaxation errors in superconducting qubits. Nature 594, 369–373 (2021).
+17Osman, A. et al. Simplified josephson-junction fabrication process for reproducibly high-performance superconducting qubits. Appl. Phys. Lett. 118
+(2021).
+18Wu, X. et al. Overlap junctions for high coherence superconducting qubits.
+Appl. Phys. Lett. 111 (2017).
+19Anferov, A., Lee, K.-H., Zhao, F., Simon, J. & Schuster, D. I. Improved
+coherence in optically defined niobium trilayer-junction qubits. Phys. Rev.
+Appl. 21, 24047 (2024).
+20Damme, J. V. et al. Advanced CMOS manufacturing of superconducting
+qubits on 300 mm wafers. Nature 634, 74–79 (2024).
+21Wan, D. et al. Fabrication and room temperature characterization of trilayer
+junctions for the development of superconducting qubits on 300 mm wafers.
+Jpn. J. Appl. Phys. 60, SBBI04 (2021).
+22Bilmes, A., H¨andel, A. K., Volosheniuk, S., Ustinov, A. V. & Lisenfeld, J.
+In-situ bandaged josephson junctions for superconducting quantum processors. Supercond. Sci. Technol. 34, 125011 (2021).
+23Verjauw, J. et al. Path toward manufacturable superconducting qubits with
+relaxation times exceeding 0.1 ms. npj Quantum Inf. 8, 93 (2022).
+24Damme, J. V. et al. Argon-milling-induced decoherence mechanisms in
+superconducting quantum circuits. Phys. Rev. Appl. 20 (2023).
+25Dunsworth, A. et al. A method for building low loss multi-layer wiring for
+superconducting microwave devices. Appl. Phys. Lett. 112 (2018).
+26Ritala, H., Kiiham¨aki, J. & Heikkil¨a, M. Studies on aluminium corrosion
+during and after HF vapour treatment. Microelectron. Eng. 87, 501–504
+(2010).
+27McRae, C. R. H. et al. Materials loss measurements using superconducting
+microwave resonators. Rev. Sci. Instrum. 91 (2020).
+28Ambegaokar, V. & Baratoff, A. Tunneling between superconductors. Phys.
+Rev. Lett. 10, 486–489 (1963).
+29Wenner, J. et al.
+Surface loss simulations of superconducting coplanar
+waveguide resonators. Appl. Phys. Lett. 99, 113513 (2011).
+30Klimov, P. V. et al. Fluctuations of energy-relaxation times in superconducting qubits. Phys, Rev, Lett, 121, 90502 (2018).
+31Niu, M. Y. et al.
+Learning non-markovian quantum noise from Moir´eenhanced swap spectroscopy with deep evolutionary algorithm. arXiv.org
+abs/1912.4368 (2019).
+
+===== Page 7 =====
+
+7
+VI.
+SUPPLEMENTARY INFORMATION
+A.
+Via Fabrication Uniformity
+To check the uniformity of the via size, we leverage image analysis using Python code to extract the diameter of the
+via. Two chips with 24 junctions are studied with four designed via sizes, including 275, 300, 325, and 350nm in diameter. Fig.S1 (a), we first take the SEM top view image of the
+via, finding the edge with the standard edge finding analysis.
+Next, we fit the edge of the via image with an ellipse function and average the long and short axes as the diameter of
+the via. The failed fitting outliers are manually excluded due
+to particle contamination or low image contrast. The ECDF
+in Fig.S1 (b) shows the cumulative diameter of 161 successfully analyzed devices with variation under 3.2 %. This process demonstrated a way to make a well-defined via size for
+the junction region.
+FIG. S1. Verification of the via size uniformity. (a) Typical SEM
+image of a via with diameter 300 nm, measuured from a Python image process. The circle is the best ellipse fitting from the image edge
+detection data, from which we calculate the averaged diameter of
+the via. (b) The ECDF of the via with the diameter D of 275, 300,
+325 and 350 nm. The corresponding weighted average of the via size
+non-uniformity for each size is 3.2 %, 2.1 %, 1.6 %, 1.1 %, respectively.
+B.
+Aluminum Sheet Resistance Calculation and Metallic
+Contact Testing
+To optimize and debug fabrication failures in the window
+junction process, we designed a test junction layout for the
+four probe measurement, as shown in Fig.S2(a). For the test
+junction structure, a window junction can be fabricated at the
+center of the base electrode, as depicted in Fig.S2(b) allowing
+us to conduct the four-probe measurement. The four arms are
+started from the upper-left corner and count clockwise as V+,
+V-, I-, and I+, respectively. Here, we process a wafer with
+the test junction structure using the window junction fabrication flow and skip the oxidation and vHF process as mentioned in the main context [Fig.1 (a)]. In Fig.S2 (c), the ECDF
+shows the 300 Josephson junctions measured at room temperature with the average resistance 5.7 Ωand the standard deviation 0.4 Ω(approximately 7 % variation). Theoretically, we
+can calculate a 100 nm Al with the resistivity 2.7×10−8 Ωm,
+FIG. S2. Sheet resistance calculation from the Al film square resistance. (a) A SEM image of the window junction allows us to estimate 9 squares from the top Al electrode. (b) Schematic plot of the
+4 probe measurements, where we can calculate a single arm for the
+resistance consists 11 squares. (c) The ECDF plot for different via
+sizes of junctions. The contact quality for 300 and 325 nm is similar
+and 275 nm shows much higher resistance values.
+where the resistance per square can be simply calculated from
+the formula Rs = ρ
+t ≈0.27Ω/□, where ρ is the resistivity
+of Al and t is the thickness of Al, 100 nm From Fig.S2 (a)
+and (b), we count the number of squares in the geometry:
+the bridge consists of approximately 9 squares and the total
+length covers approximately 11 squares, resulting in a total of
+20 squares. Therefore, the resistance calculated from this geometry design is 5.6 Ω. Notice that we ignore the contact area
+of the pillar for the calculation.
+C.
+Transmission Electron Microscopy cross-section study
+on Window junction
+To examine the oxidation process and identify residual elements such as fluorine and argon during fabrication, we
+conducted a semi-quantitative Transmission Electron Microscopy with Energy-Dispersive X-ray Spectroscopy (TEMEDS) analysis. Fig.S3 (a) and (b) show cross-sectional images for the top row without oxidation and the bottom row
+with oxidation.
+The atomic weight percentage line scans
+across the AlOx barrier were captured with and without oxidation, as shown in the rightmost figures of Fig.S3 (a) and (b).
+The line scan and element mapping for the non-oxidized window junction in Fig.S3 (a) reveals no silicon (Si) or oxygen
+(O) contamination at the Al interface. Additionally, the crosssectional TEM confirms that the mild Ar ion milling process
+effectively removes native AlOx and post-etching residues
+without causing damage to the aluminum surface. For the oxidized window junction, the cross-sectional TEM image shows
+a flat Al-AlOx-Al structure with a thin (≈1 nm) aluminum
+oxide layer sandwiched between two Al layers. Here we note
+that to create a clear contrast the WJ for the TEM sample is
+fabricated on SiO2/Si substrate, hence, there are Si and O signals below the base Al electrode.
+
+===== Page 8 =====
+
+8
+FIG. S3. TEM-EDS analysis corresponding to Fig.2(c). The TEM
+images are paired with element density maps (Al, Si, and O) and
+atomic weight percentage line scans for the non-oxidized (a) and oxidized (b) window junctions. In both cases, fluorine and argon signals are at noise levels and are therefore not shown. The arrow on the
+oxygen (O) map indicates the direction of the atomic weight (AT%)
+line scan across the AlOx barrier. The line scan confirms the successful formation of the aluminum oxide layer, even within the small via
+region. The scale bar in (a) is 100 nm and applies to all images in
+Fig.S3.
+D.
+Microwave Measurement Setup
+This section presents the microwave setup of our cryogenic
+system.
+FigureS4 illustrates the measurement wiring diagram. All samples were measured using a similar amount of
+attenuation. In the read-out chain, we have two stages of amplification. An LNF HEMT amplifier is on the 4 K plate with
+an amplification of 44 dB. Another stage of amplification is
+at room temperature, an LNF amplifier with an amplification
+of 40 dB. The room temperature instrument is not included in
+the diagram.
+FIG. S4. We sketch the low-temperature microwave setup for the
+qubit chip characterization. The room temperature RF electrics are
+not presented. The labeled numbers next to the component indicate
+the amount of attenuation in dB.
+E.
+Aluminum Surface Analysis
+This section shows studies of the Al surface before and after
+vHF treatment. The top row in Fig.S5(a) and (b) are SEM and
+AFM images on the Al surface, as deposited. One can clearly
+observe the grain of Al. In Fig.S5(b), the AFM image reveals
+an RMS roughness of 1.2 nm. Here we note that all four images share the same scale bar e.g. the same area size of 1 µm
+by 1 µm. After vHF treatment to remove the SiO2 scaffold,
+we verify the Al surface as presented in Fig.5S(c) and (d) for
+SEM and AFM images, respectively. The Al surface remains
+intact and shows the Al grain without damage under the SEM
+image. From Fig.5S(d), we extracted a similar surface RMS
+roughness of 1.5 nm indicating that the surface roughness is
+comparable with pristine Al. However, the reduced grain size
+in AFM image suggested that there may be a thin layer of SiO2
+remaining resulting in a smaller grain feature. This thin layer
+of SiO2 may be transparent in SEM and therefore could not be
+seen properly using an electron beam. This suggests that we
+may need to improve the vHF process and could potentially
+yield a better T1 in the future.
+FIG. S5. Measurement of the Al surface roughness from a blanket
+Al film grown on the silicon substrate. (a) SEM of the Al surface as
+deposited, and (b) corresponding AFM data. (c) and (d) SEM and
+AFM data of the Al surface after SiO2 deposition and vHF removal.
+F.
+SWAP spectroscopy
+Here, we conduct a time-dependent T1 spectroscopy (TSS)
+as a function of the qubit frequency. TSS shows the T1 behavior of the WJ qubit to the surrounding energy relaxation30,31.
+The strong T1 relaxation regions could be ascribed to TLS
+or telegraphic modes that interact with qubits as shown in
+Fig.6S(c). A sliced TSS at t=0 and 7 h plotted as a function of
+the relaxation time T1 identifies several of the local minimum
+T1 labeled with a black arrow. Previous results show such behavior could correlate to the qubit-TLS coupling.30; therefore,
+the T1 is shorter than 1 µs providing information of the TLS.
+
+===== Page 9 =====
+
+9
+Using the TSS can help us identify the possible TLSs during
+the WJ process aiming further to improve the T1 of the WJ
+qubits.
+FIG. S6.
+Time-dependent swap spectroscopy(TSS) of Q2 (Table
+I.). (a) The time-dependent swap spectroscopy (TSS). (b) Sliced T1
+spectroscopy at t=0 hours and t=7 hours from (a).

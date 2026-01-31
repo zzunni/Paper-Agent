@@ -1,0 +1,1047 @@
+
+
+===== Page 1 =====
+
+Utilizing (Al,Ga)2O3/Ga2O3 superlattices to measure cation vacancy
+diffusion and vacancy-concentration-dependent diffusion of Al, Sn, and Fe
+in β-Ga2O3
+Nathan D. Rock,1 Haobo Yang,1 Brian Eisner,1 Aviva Levin,1 Arkka Bhattacharyya,2, 3 Sriram Krishnamoorthy,2, 3
+Praneeth Ranga,2 Michael A Walker,4 Larry Wang,5 Ming Kit Cheng,5 Wei Zhao,5 and Michael A. Scarpulla1, 2
+1)Department of Materials Science and Engineering, University of Utah, Salt Lake City, UT 84112,
+USA
+2)Department of Electrical and Computer Engineering, University of Utah, Salt Lake City, UT 84112,
+USA
+3)Materials Department, University of California, Santa Barbara, Santa Barbara, CA 93106,
+USA
+4)Department of Metallurgical and Materials Engineering, Colorado School of Mines,Golden CO, 80401,
+USA
+5)Eurofins EAG Material Science, Sunnyvale, CA, 94086, USA
+(*Electronic mail: mike.scarpulla@utah.edu)
+(Dated: 27 March 2024)
+Diffusion of native defects such as vacancies and their interactions with impurities are fundamental in semiconductor
+crystal growth, device processing, and long-term aging of equilibration and transient diffusion of vacancies are rarely
+investigated. We used (AlxGa1−x)2O3/Ga2O3 superlattices (SLs) to detect and analyze transient diffusion of cation
+vacancies during annealing in O2 at 1000−1100◦C. Using a novel finite difference scheme for the diffusion equation
+with time- and space-varying diffusion constant, we extract diffusion constants for Al, Fe, and cation vacancies under
+the given conditions, including the vacancy concentration dependence for Al. In the case of SLs grown on Sn-doped
+β −Ga2O3 (010) substrates, gradients observed in the extent of Al diffusion indicate that vacancies present in the
+substrate transiently diffuse through the SLs, interacting with Sn as it also diffuses. In the case of SLs grown on
+(010) Fe-doped substrates, the Al diffusion is uniform through the SLs, indicating a depth-uniform concentration of
+vacancies. We find no evidence in either case for the introduction of VGa from the free surface at rates sufficient to affect
+Al diffusion down to ppm concentrations, which has important bearing on the validity of typically-made assumptions
+of vacancy equilibration. Additionally, we show that unintentional impurities in Sn-doped Ga2O3 such as Fe, Ni, Mn,
+Cu, and Li also diffuse towards the surface and accumulate. Many of these likely have fast interstitial diffusion modes
+capable of destabilizing devices over time, thus highlighting the importance of controlling unintentional impurities in
+β −Ga2O3 wafers.
+I.
+INTRODUCTION
+β-Ga2O3 is an ultra-wide band gap (UWBG) semiconductor with potential for superior performance in power electronics as well as in solar blind UV photodetectors and in transparent contacts for photovoltaics.1–3. To further advance this
+technology, a thorough understanding of the defects present
+and their transport is needed including during single crystal
+growth, epitaxial thin film growth, and during other fabrication steps.
+Many groups have observed an increase in resistivity of
+n-type β-Ga2O3 after O2 annealing4. This formation of an
+insulating surface layer allows facile formation of UV photodetectors.
+This phenomenon was originally attributed to
+the elimination of VO which were presumed to act as shallow donors, before refined DFT calculations indicated that VO
+was a deep donor and thus could not contribute directly to
+n-type conductivity5. Oshima, et al. documented the √t kinetics of the insulating layer thickness formed during O2 annealing and demonstrated that an SiO2 cap could prevent it6.
+This indicates that direct exposure of the Ga2O3 surface to
+oxygen does control the compensation of n-type conductivity
+in some way. Meanwhile positron annihilation experiments
+have demonstrated the presence of VGa in both bulk crystals
+and thin films7,8, and that increases in their numbers and or
+charge states accompany O2 annealing , which makes them a
+strong candidate for n-type compensation9,10. Many mechanisms, involving oxygen, VGa, VO, and n-type dopants (Sn and
+Si) have been proposed, including those which involve defect
+complexes instead of bare VGa and VO11–14. Studying the diffusion of VGa should elucidate what mechanisms were at play,
+however vacancies are much more difficult to observe directly
+than e.g. impurity atoms.
+With the exception of the direct interstitial impurity mechanism, self- and tracer-diffusion is mediated by native defects such as vacancies or interstitials.3,15–19. Modern computation and experiment have established Ga vacancies and
+their complexes as the most plentiful native defects in n-type
+β-Ga2O3. Substitutional isovalent alloying cations in oxides
+having ionic radii not significantly less than the host atom –
+e.g. Al in Ga2O3 – should exhibit primarily vacancy-mediated
+mechanisms under oxygen-rich conditions favoring cation vacancies and suppressing cation interstitials. Interstitial mediated mechanisms may be possible under metal-rich conditions favoring cation interstitials.
+The local diffusion constant of isotopic or chemical tracers is proportional to the local
+concentration of mediating native defects. Thus for vacancyarXiv:2403.17298v1  [cond-mat.mtrl-sci]  26 Mar 2024
+
+===== Page 2 =====
+
+2
+hopping the tracer diffusion “constant” can vary in space and
+time with the concentration of mediating vacancies and different crystals may exhibit different diffusion constants by
+virtue of their vacancy content. This in turn is affected by
+dopant impurities through Fermi level effects and their thermal and chemical history. For dopant ions that control the local Fermi level, local equilibrium of native defects can result
+in that dopant’s diffusion constant being dependent on its own
+concentration20–23. The most general microscopic formulation of tracer diffusion problems is coupled reaction-diffusion
+of defects and complexes wherein the different tracer-native
+defect complexes have different diffusion coefficients than
+the isolated species24,25. The fraction of time, or population
+fraction, of complexes relates to the binding energy and connects to the correlation coefficient of random walk theory19.
+Interestingly, our assumption that the Al impurity diffusion
+constant in Fick’s laws is proportional to vacancy concentration is not on its face identical to introducing non-zero but
+constant off-diagonal coefficients within Onsager’s transport
+formalism26.
+Herein, isothermally anneal superlattices of isovalent Al
+tracer concentration spikes in β-Ga2O3 to investigate the interdiffusion of Al, diffusion of cation vacancies, and diffusion of Fe or Sn impurities. Commonly it is assumed (and
+in careful experiments, ensured) that diffusion-mediating native defects equilibriate with local impurity concentrations
+rapidly compared to the experimental timescale. Rapid equilibration can be assumed in samples containing dense sources
+and sinks, however in high-perfection crystals like those in
+this study, equilibration may be much slower and limited by
+injection at or transport from remote surfaces. Experiments
+in which native defect processes occur on similar timescales
+to tracer or impurity diffusion translate to time- and spacevarying vacancy concentrations and thus impurity diffusion
+constants.
+Herein, Al diffusion in superlattices (SLs) epitaxially
+grown on Fe substrates occurs with at least spatially-uniform
+vacancy density, while in samples grown on Sn-doped wafers
+we show strong evidence for transient diffusion of cation vacancies out of the substrate. Using a novel modification of the
+Crank-Nicholsen finite differences scheme, we infer the diffusion of the vacancies mediating Al diffusion. The final Al
+profiles in this work record a weighted time average of [VGa] at
+each depth and the DVGa we extract should also be understood
+as a time-averaged value in the presence of certain Sn (donor)
+or Fe (acceptor) concentrations and small amounts of Al. Our
+experiments thus set lower bounds on the true DVGa and Ga
+self-diffusion constant for single crystalline β-Ga2O3. We
+determine the diffusion constants for Al including its dependence on local VGa concentration, for VGa (likely in the form
+of SnGa −VGa complexes), and for Fe under conditions of low
+vacancy concentration and low electron density. Finally, we
+surreptitiously discovered that many other cation species such
+as Fe, Mn, Ni, Li, and Cu also diffused from the Sn-doped
+substrates and accumulated near the free surface.
+II.
+EXPERIMENTAL AND NUMERICAL METHODS
+Superlattices (SLs) consisting of 6 or 9 alternating layers
+of 200 nm unintentionally doped (UID) β-Ga2O3 and 10-15
+nm Al2xGa2(1−x)O3 (AlGO) where x ∼= 0.05. were epitaxially
+grown using organometallic vapor phase epitaxy (OMVPE)
+in an Agnitron Agilis 100 system on (010) Sn or Fe doped
+β-Ga2O3 substrates obtained from Novel Crystal Technology
+(NCT). The vendor reports Fe or Sn concentrations in the mid
+1018cm−3, and etch pits from nanovoids and dislocations are
+< 105/cm2. The lowest practical Al concentration of ≈5 at.%
+was used and layers below the critical thickness were used in
+order to prevent introduction of misfit dislocations. SLs always began and ended with 200 nm Ga2O3 spacers. UID layers grown under the same conditions exhibit n-type doping in
+the low 1016/cm3 range. Annealing was carried out for times
+between 2 and 80 hours with samples face up in a quartz tube
+furnace in 1 atm flowing O2 after acid cleaning the tube and
+the quartz or sapphire plates on which samples sat. During annealing, temperature was ramped at 10◦C/min and then held
+constant for the indicated time, after which, it was allowed to
+freely return to room temperature.
+Dynamic secondary ion mass spectroscopy (d-SIMS) profiles were collected before and after annealing on each individual sample by EAG Eurofins.
+Depth was calibrated
+by measured crater depths and concentrations using ion implanted composition standards.
+Comparing multiple SIMS
+profiles from each sample and between samples as well as
+x-ray diffraction Pendellosung fringes allowed us to quantify the uncertainty in depth scales, resulting primarily from
+growth rate variation, of at most ∆x = ±6%. This translates
+to relative uncertainty in extracted diffusion constants of order (∆x)2=0.4%, which we expect is much smaller than uncertainties from sample to sample variations in doping and
+defects. The annealing temperature accuracy at the location
+of the samples was measured to be within a few degrees of
+nominal.
+Isovalent aluminum and gallium have similar ionic radii,
+therefore we assume a substitutional, vacancy mediated diffusion mechanism for Al. Somewhat surprisingly, numerical
+treatment of the case of non-steady-state vacancy-mediated
+diffusion, which amounts to assuming that the tracer diffusion “constant” varies in space and time, is not widely considered. Thus, a novel numerical approach based on the CrankNicholson scheme (2nd order centered finite differences in
+space, forward and linear in time) was developed. The local Al diffusion constant DAl is assumed to be Arrhenius activated and proportional to the local concentration of cation
+vacancies (shorthanded as [VGa] in #/cm3 acknowledging the
+small Al content) and thus takes the form
+DAl = Do ·exp
+
+−Ea
+kBT
+
+= D∗·[VGa]·exp
+
+−Ea
+kBT
+
+= Doo(T)·[VGa]
+(1)
+in
+which
+Do(cm2/s)
+is
+the
+conventional
+prefactor,
+D∗(cm5/s) is a constant for all temperatures, Ea is the
+Al hopping activation energy given a neighboring vacancy,
+
+===== Page 3 =====
+
+3
+kB is Boltzmann’s constant, T is absolute temperature, and
+Doo(T) = D∗exp
+
+−Ea
+kBT
+
+is a constant at each temperature.
+Fick’s 2nd law for isothermal tracer Al diffusion becomes
+∂[Al]
+∂t
+= ∂
+∂x
+
+DAl
+∂[Al]
+∂x
+
+= ∂DAl
+∂x
+∂[Al]
+∂x +DAl
+∂2[Al]
+∂x2
+= Doo
+
+∂[VGa]
+∂x
+∂[Al]
+∂x +[VGa] ∂2[Al]
+∂x2
+
+(2)
+Not assuming spatial uniformity of the diffusion constant introduces the cross-derivative term involving gradients of both
+[Al] and [VGa]. The 2nd order space central difference, first order forward time discretization of this equation on a uniform
+grid of spacing ∆x is
+uj+1
+N
+−uj
+N
+∆t
+=
+1
+8∆x2 [uj
+N−1(Dj
+N−1 +4D j
+N −D j
+N+1)
++uj+1
+N−1(Dj+1
+N−1 +4D j+1
+N
+−Dj+1
+N+1)
+−8(uj
+ND j
+N +uj+1
+N
+D j+1
+N
+)
++uj
+N+1(−D j
+N−1 +4D j
+N +D j
+N+1)
++uj+1
+N+1(−D j+1
+N−1 +4D j+1
+N
++D j+1
+N+1)]
+(3)
+in which the space and time grids are indexed respectively
+by the subscript (j) and superscript (N) and ∆x and ∆t are the
+x and t intervals. Dirichlet and von-Neuman boundary conditions were applied for Al at the deepest points in the substrate and surface respectively. To simplify simulation, which
+we implemented in Matlab27, we used analytical solutions for
+diffusion of [VGa] which is tantamount to assuming vacancy
+diffusion does not depend on Al concentration. This assumption was justified by the chemical similarity of Al and Ga and
+the small maximum Al concentration. We find the best balance of assumptions and distinguishable differences in modeled profiles by assuming depth-constant (but distinct) initial
+[VGa] conditions in the OMVPE grown layers and the substrates. Because of the high dynamic range of the SIMS data
+with low uncertainty (meaning that both the peaks and valleys of the Al profiles are measured with good signal to noise
+ratios), we chose to use the square difference of log10([Al])
+between measured and simulated profiles (summed over the J
+points in each profile) as our goodness of fit (GOF) parameter:
+GOF =
+1
+J −3
+J
+∑
+j=0
+
+log10
+
+Almodel(j)
+
+−log10
+
+AlSIMS(j)
+2
+(4)
+DVGa,
+the
+product[VGa]subs · Doo
+and
+the
+ratio
+[VGa]epilayer/[VGa]subs are the 3 free parameters (degrees
+of freedom) of each scenario directly-extractable from the
+simulation/fitting and robustly determined at each temperature. Rather narrow ranges of parameter values reproduce the
+Al profiles especially for the samples grown on Sn substrates.
+If we assume a value for [VGa] in the substrates (discussed
+below), minimizing the GOF across many diffusion simulations allows us to extract [VGa] in the epilayer, Doo for the Al
+at each Tanneal, and DVGa at each T. Any difference between
+actual and assumed [VGa]subs will affect [VGa]epilayer and Doo;
+if the actual concentration is later found to be 10x higher
+than assumed in our analysis, then Doo would actually be
+10x lower but [VGa]epilayer also 10x higher.. Uncertainties in
+the final extracted parameter values were estimated from the
+curvature of the GOF with respect to each parameter. Further
+discussion of numerical methods and error propagation are in
+the Supplemental Materials.
+III.
+EXPECTATIONS OF VACANCY INITIAL
+CONDITIONS AND INITIAL OBSERVATIONS ON AL
+DIFFUSION
+First we discuss expectations for the initial conditions of
+concentrations of VGa in the substrates and superlattices and
+then present and initially assess the SIMS data.
+Intuition
+for a completely ionic crystal suggests VGa should exist only
+in the 3−charge state and thus have concentration scaling
+∝( n
+ni )3 or ∝exp
+ −3Ef
+kBT
+
+28. Modern density functional theory
+(DFT) with hybrid functionals accurately predicts that defect
+chargestates may change if Ef moves above or below charge
+transition levels and can account for complexation with other
+defects5,29. At equilibrium with all other factors held constant, the concentration of VGa should be proportional to the
+n-type doping concentration, however differences in chemical
+potentials (e.g. pO2) and temperatures during bulk crystal and
+OMVPE growth will modify this ratio.
+A number of experiments have7,8,10,12,30,31 detected and
+studied cation vacancies, however the most credible quantification of VGa or its complexes in Sn-doped wafers comes
+from the Ec-2.0 eV signal measured by deep level optical spectrscopy (DLOS). DLOS measurements on different
+but very similar OMVPE layers report a concentration of
+≈1015/cm3 for the Ec-2.0 eV defects32, while DLOS measurements of Ec −2.0 eV defects in NCT Sn-doped bulk crystals are reported at 0.8 −1.2x1016/cm3 for wafers matching
+the nominal concentration of those used herein, [Sn] = 3.5 −
+5x1018/cm333. For analysis we assume [VGa] = 1016/cm3 vacancies in the Sn-doped substrates.
+While it is possible that DLOS may not detect some vacancies bound in complexes, the near-unity doping efficiency
+measured for Sn in bulk substrates in the 1018/cm3 range
+indicates that [VGa] can not be much larger. Unfortunately,
+junction capacitance based defect spectroscopies like DLTS
+or DLOS can not be performed on insulating samples e.g.
+Fe-doped wafers or oxygen annealed ones.
+All substrates
+were grown at Tmelt(kBT ≈0.18eV) by EFG in reduced pO2
+conditions34,35. In Fe-doped Ga2O3, the Fermi level is pinned
+at the Fe3+/2+ charge transition level corresponding to the 0/-
+transition of the FeGa acceptor located very near Ec-0.8 eV
+by DLTS and related techniques36,37. Sn-doped substrates are
+degenerately doped or very close to it, thus Ef ≈Ec. For both
+of these Ef values, isolated VGa should be in the q = 3−charge
+state; thus [V 3−
+Ga ] in the Sn-doped substrates should be higher
+than in the Fe-doped by a factor of exp
+  3×0.8eV
+0.18eV
+
+≈106 if [VGa]
+
+===== Page 4 =====
+
+4
+FIG. 1. Pre- and post- annealing quantified Al, Sn, and Fe SIMS profiles for superlattices grown on (a) Sn-doped and (b) Fe-doped substrates
+and annealed 20 hrs in 1 atm flowing O2 at 1050◦C. (c) 3D render of ToF SIMS of SL after annealing at 1100◦C for 20 hours (see Fig 2)
+in both substrate types equilibriate at T1=Tmelt. If VGa stay
+equilibrated to a T1 temperature lower than the freezing temperature, this ratio would increase, while if most of the VGa
+are in (SnGa −VGa)2−complexes or (VGa −VO)−divacancy
+complexes, this ratio would be approximately 104 or 100 respectively. While the unintentional doping in our OMVPE
+layers grown at 800◦C is in the low 1016, it is very difficult
+to predict the ratio of [VGa] in the SLs to those in the substrates because of the very different growth conditions. Also,
+in separate experiments we have carried out, we find that annealing Sn-doped wafers in 1 atm O2 at 1050◦C requires approximately two weeks for full equilibration; thus [VGa] will
+not equilibrate in the full wafer during OMVPE growth. Thus,
+we consider ratio of [VGa] in the SL to that in the substrate to
+be an unknown parameter to be determined in the fitting. Note
+that the substrate may not equilibrate its [VGa] during OMVPE
+growth, so the ratio between substrate and SL may not have
+this value. Despite the nominally-identical growth of the superlattices, the initial conditions for the VGa or complexes mediating Al diffusion may be different from run to run, for those
+grown on Fe or Sn doped substrates, and from individual substrate to substrate.
+Figure 1a,b shows Al and dopant SIMS profiles before and
+after annealing for 20 hours in 1 atm O2 at 1050◦C for two
+identical superlattices grown on Sn- or Fe-doped substrates.
+For the SLs on Fe-doped substrates, Al diffuses without any
+detectable gradient in the extent of diffusion of the AlGa2O3
+layers in the superlattices. Meanwhile, for SLs on Sn-doped
+substrates the extent of Al diffusion is greater for AlGaO layers closer to the substrate than the surface, and overall the
+Al diffusion is much faster. This is consistent with a larger
+[VGa] in the Sn-doped substrates compared to the SLs and
+to that in the Fe-doped substrates which diffuses through the
+SLs towards the surface on a non-negligible timescale compared to the annealing time. For both types of samples, we
+find no evidence for vacancy creation or in-diffusion from the
+free surface at concentrations sufficient to affect Al diffusion
+from about 5 at.% down to 1018/cm3. Such an effect could
+be taking place, but apparently at concentrations significantly
+lower than the estimated 1016/cm3 from the Sn-doped substrates. In the case of Fe-doped substrates, VGa diffusion could
+be much faster than the time required for Al diffusion at the
+given VGa concentration such that it does equilibrate quickly
+compared to the experimental time. As discussed later, SnGa
+donors form complexes with acceptor-like VGa but acceptorlike FeGa do not; therefore we should expect isolated VGa to
+diffuse faster through SLs grown on Fe-doped substrates.
+IV.
+ANALYSIS OF AL AND FE DIFFUSION FOR SLS ON
+FE-DOPED SUBSTRATES
+For SLs on Fe-doped substrates, uniform [VGa] in the SL
+and substrate eliminates the cross-derivative term in Eq. 2
+for the Al diffusion, reducing it to the usual form of Fick’s
+2nd law. We tried many scenarios of different [VGa] in SL
+and substrate but the best agreement with experiments was
+found for the case of the same, low concentrations. Evolving the initial to final Al SIMS profiles for the sample annealed at 1050◦C allows us to extract a value of DAl = Doo(T)·
+[VGa] = 3.5x10−18cm2/s, assuming [VGa] = 1014/cm3, i.e.,
+≈100 times less than the substrate value used for Sn doped
+substrates.
+The diffusion of Fe itself appears to be complex, probably involving at least two modes such as both interstitial
+and substitutional. The difference between the integrated Fe
+concentration in the epi-layer, before and after annealing, is
+≈8.4x1013/cm2. Of this, 8.0x1013/cm2 accumulated near the
+surface, which we have shown to be neither a SIMS artifact or
+a result of vapor transport during annealing (See supplemental
+for details). This effect was reproduced via dynamic and Time
+of Flight (TOF) SIMS, across multiple samples, and is also
+reproduced on Sn doped substrates where [Fe] is initially considerably lower in the substrate. The remaining 4x1012/cm2
+
+===== Page 5 =====
+
+5
+Fe that diffused only short distances into the SL region apparently diffuses via a second mode. Assuming this corresponds
+to diffusion of Fe into a long half-space without complexation
+yields the analytical solution to Fick’s 2nd law38:
+C(x,t) = Csubs −CSL
+2
+
+1+er f
+x−xL
+√
+Dt
+
+(5)
+in which Csubs,CSL are the initial [Fe] concentrations in
+the substrate and SL respectively, xL is the depth of the
+SL/substrate interface, and D is the diffusion constant for free
+Fe. The best fit of this equation, excluding the [Fe] near the
+surface, yields a diffusion constant of DFe = 6x10−16cm2/s.
+The diffusion of Fe in Ga2O3 certainly warrants additional
+experimental and theoretical scrutiny, including Fermi level
+effects. Fe is present at appreciable concentrations in most if
+not all Ga2O3 bulk crystals as an impurity introduced from
+raw materials or Ir crucibles and dies39.
+V.
+DIFFUSION OF AL IN ALGA2O3/GA2O3 SLS ON
+SN-DOPED SUBSTRATES
+Figure 2 a-c) present initial and final SIMS profiles for [Al]
+for samples annealed at 1000, 1050, and 1100◦C for 20 hours.
+The extent of Al diffusion within each SL is greater near the
+substrate than near the surface indicating that the local concentration of [VGa] was non-uniform and greater near the substrate for a significant portion of the annealing time. Samples
+A and B were grown in the same OMVPE growth run, while C
+was grown in a different run; this is important for understanding the apparently lesser degree of Al diffusion despite this
+sample’s higher annealing temperature, as discussed in more
+detail below. Figure 2 d and e reproduce the data from a)
+but also overlay simulated Al concentration profiles at 2 hour
+intervals (red solid) for the best-fit parameters within two assumptions for VGa diffusion (green dashed) described in the
+following.
+Diffusion parameter estimation from each experiment was
+accomplished by evolving the measured initial Al SIMS profile forward in time under many scenarios and fitting the final
+SIMS profiles. Each tested scenario is defined by Eqs. 1-2, assumed initial [VGa] in SL and substrate, [VGa] diffusion behavior explained below, and values for Doo for Al and DVGa. It is
+clear for all Sn-doped samples that the initial [VGa] in the SLs
+must be at least 10 times lower than in the substrates which
+agrees with intuition given the higher substrate n-type doping.
+The effects of DVGa and the initial [VGa] ratio on the broadening and peak-to-valley [Al] ratio for each Al-containing layer
+in the SLs are sufficiently distinct that we can determine their
+values with low uncertainty within each scenario. As shown
+in Figure 2 d), we first tested the hypotheses that a) VGa are
+conserved and b) that they diffuse freely without interactions
+from the Sn-doped substrate through the SLs according to Eq.
+538:
+C(x,t) =
+
+
+
+
+
+
+
+
+
+
+
+Csubs
+if C(x,t) > Csubs
+Cepi
+if C(x,t) < Cepi
+Cmax
+2
+
+1+ x−xL
+√
+Dt
+
+if Cepi ≥C(x,t)..
+and C(x,t) ≥Csubs
+(6)
+in which Csubs,CSL are the initial vacancy concentrations
+in the substrate and SL respectively, xL is the depth of the
+SL/substrate interface, D is the diffusion constant for free vacancies, and t is the isothermal annealing time. In the supplemental materials we explore the issue of VGa conservation
+and implications for assumptions that vacancies equilibrate in
+other single crystal diffusion experiments. Our simulations
+reproduced the Al SIMS data fairly well indicating that these
+two assumptions capture the gross features of VGa diffusion in
+our experiments; no generation of VGa in the SLs or introduction from the free surface are indicated at levels detectable in
+these experiments.
+However, theoretical and experimental evidence21,29 suggest that VGa in Sn doped substrates dynamically complex
+with a small fraction of the available Sn ([VGa]«[SnGa]). Complexed VGa diffuse slower than free VGa, while SnGa diffuse only while complexed or correlated with a vacancy19 .
+Critically for assessing how this will affect Al diffusion, the
+SnGa −VGa complexation reaction’s equilibrium rate constant
+was determined to be small. [Sn] is roughly 100-1000 times
+higher than [VGa] in the substrate, which ensures that the majority of VGa is on average bound in SnGa −VGa complexes.
+However, the small equilibrium rate constant ensures that individual SnGa−VGa complexes are constantly dissociating and
+reforming. Therefore, VGa in the vicinity of Al has a high
+likelihood of assisting in Al diffusion even when the VGa is
+diffusing as a complex. Because any ionized donor will have
+Coulomb attraction to cation vacancies, the effective diffusion
+constant for VGa and thus for cation self-diffusion in the presence of donors such as Sn should be smaller the value in intrinsic or acceptor-doped β-Ga2O3 (e.g. Fe-doped). The degree
+of retardation of cation vacancy diffusion will depend on the
+concentrations of donors and vacancies and thus be variable
+from experiment to experiment and vs depth and time within
+any diffusion experiment.
+Figure 2 e) shows fitting of one data set using a modified assumption for the evolution of [VGa](x,t), taking into account
+its complexation with SnGa. Frodason et al.21 studied the diffusion of Sn from (001) Sn-doped substrates into UID HVPEgrown Ga2O3 for temperatures 1050 to 1250◦C and fit them
+with a diffusion-reaction model. A key assumption of their
+work was that [VGa] equilibrated quickly by unspecified generation or transport mechanisms with the local Fermi level set
+by the local doping – i.e. that
+R [VGa]dx was not conserved.
+In Ref.21 (and in some similar intermediate Sn d-SIMS profiles obtained in this work but not shown herein) Sn appears
+on a log scale to diffuse as a nearly-rigid step with maximum
+slope set by the temperature but not time. In the Supplemental Materials we develop an analytical approximation for the
+x and t evolution of both [SnGa] and [VGa] within for this RD process during isothermal annealing. Remarkably, this is
+
+===== Page 6 =====
+
+6
+FIG. 2. (A-C) SIMS profiles of Al before (blue) and after (red) annealing for 20 hours at the indicated temperatures. (D-E) initial and final
+SIMS data from 1000◦C sample with results of finite differences simulation shown in red for 2 hour increments under the assumption that VGa
+diffuses as er f(x,t) (D) or as piece-wise linear solution to the SnGa −VGa complex reaction-diffusion (E) A and B were grown in the same
+OMVPE growth, while (C) was grown in a different run. The initial SIMS Al profiles were used as initial conditions for the finite differences
+code with space- and time-varying diffusion constants and evolved to the final time; computed profiles are shown in red for increments of 2
+hours. Goodness of fit values were computed for the final profiles sweeping a large range of the model parameter space in order to determine
+the best values of VGa initial step-function profiles, VGa diffusion constant, and proportionality constant between [VGa] and DAl. The assumed
+initial VGa step function profile is evolved using either the er f() assumption or the piece-wise-linear approximation to the reaction diffusion
+of complexes, as shown in dashed green. The apparent decrease in the extent of Al diffusion between B) grown at 1050◦C and C) grown at
+1100◦C is accounted for by a difference in the initial [VGa] in the substrate, as explained in Sec. V
+simply a piece-wise-linear function which is initially a step
+function but in which the initially vertical section pivots vs.
+time such that its intercepts with the max and min values far
+away front the interface move as
+√
+Dt (see Eq. 6). This piecewise-linear function accurately captures most of the dynamic
+range of the SnGa −VGa steps from Ref.21 and our re-analysis
+of those data. It only fails to capture some curvature at low
+concentrations at the diffusion front leading edge and at high
+concentrations in the substrate. Since Al diffusion scales with
+[VGa], the details of the leading edge are not dominant. The
+difference between the classical er f() solution may be seen
+by comparing the dashed green lines in Fig. 2 d) and e). Essentially the best-fit model for Al diffusion assuming er f()
+diffusion for [VGa] suggests a significant gradient of [VGa] (and
+thus SnGa) should remain at the end of our experiments, while
+the RD model and our approximation predict the [VGa] and
+[Sn] should be closer to uniform at the end of the experiment.
+The later is in agreement with the measured, nearly-uniform
+final [Sn] profiles as exemplified by Fig. 1b). Additionally,
+using the piecewise-linear RD approximation yields an order
+of magnitude better GOF values and allows us to recover Arrhenius diffusion behavior for both Al and VGa. We take these
+
+===== Page 7 =====
+
+7
+TABLE I. Effective Al diffusion coefficient (Doo) and gallium vacancy diffusion coefficient for error function model and reaction-diffusion
+(R-D) linear model for SLs grown on Sn and Fe doped (010) β-Ga203 and annealed at 1000, 1050 and 1100◦C. In the Fe a uniform initial VGa
+profile is assumed so now value for DV Ga is reported. Doo is given assuming indicated initial values for [VGa] in SL and substrate as explained
+in Sec. V.
+Sample
+Dopant
+Diffusion
+Model
+Anneal
+Temp (◦C)
+Doo(cm5/s)
+DVGa(cm2/s)
+Initial [VGa] in
+SL (cm−3)
+Initial [VGa] in
+Substrate (cm−3)
+GoF
+SnA
+Sn
+Erf
+1000
+7.0±0.5x10−31
+6±1x10−14
+0
+1016
+0.01185
+SnA
+Sn
+Linear
+1000
+6.0±0.5x10−31
+4±1x10−13
+0
+1016
+0.01542
+SnB
+Sn
+Erf
+1050
+2.7±0.1x10−30
+6±1x10−14
+0
+1016
+0.00956
+SnB
+Sn
+Linear
+1050
+2.7±0.2x10−30
+4±0.3x10−13
+0
+1016
+0.00528
+SnC
+Sn
+Erf
+1100
+8.0±1.0x10−30
+4±1x10−14
+2.0x1013
+2x1015
+0.01244
+SnC
+Sn
+Linear
+1100
+8.0±1.0x10−30
+1.4±0.2x10−12
+0
+2x1015
+0.01953
+Fe
+Fe
+NA
+1050
+3.5±0.5x10−32
+N/A
+0
+1016
+0.05188
+facts to be strong indicators that the piecewise RD approximation for VGa diffusion more accurately reflects the actual
+VGa diffusion in these SLs. The magnitude of of DVGa extracted from under the RD model show remarkable agreement
+with DSn in21 despite DVGa being extracted from our [Al] profiles and DSn in theirs from [Sn] profiles, indicating that in
+both cases the diffusivity of SnGaVGa complexes or at least the
+interactions between SnGa and VGa determine the is the rate
+limiting step(s).
+The lack of evidence for [VGa] in-diffusion from the free
+surface in our [Al] data herein raises a question for future
+investigations: what sources, sinks, and transport processes
+for [VGa] operate in order to establish equilibration with local Fermi levels and pO2 during annealing and growth? The
+creation and transport of vacancies bears further examination
+in Ga2O3 and in other single crystal diffusion experiments.
+However, for the immediate purpose of analyzing our Al diffusion data, this question is immaterial since the RD models
+predict the free [VGa] able to facilitate Al diffusion to have
+functional shape closely mimicking the Sn profile.
+The Supplemental Materials contain a thorough discussion
+of whether or not VGa formation in the bulk or transport from
+the free surface (where formation presumably has lower activation barrier) is detectable in our experiments and those of
+Ref.21. Succinctly, the lower extent of diffusion of Al close
+to the free surface appears to rule out large concentrations of
+[VGa] being injected from that surface (“large” here being relative to at% concentrations of Al). Also, our models account
+for the Al diffusion without requiring generation of VGa in
+the SLs, only the diffusion of those initially present in the
+substrate. In Ref.21 such mechanisms are implicit requirements of the assumption that [VGa] equilibrates with the local Fermi level. Since Sn in21 concentrations range from 1014
+to 1018/cm3, these experiments are sensitive to much lower
+concentrations of VGa. Thus we can only conclude that any
+bulk generation or injection of VGa from the free surface must
+be below the capability of the present experiments with Al to
+resolve and further experiments with smaller tracer concentrations, longer times, or higher temperatures should be used to
+elucidate the kinetics of VGa introduction.
+From a visual comparison alone, the sample annealed at
+1050◦C (Fig 2b)) shows a greater extent of diffusion than the
+one annealed at 1100◦C (Fig 2c)), counter to what would be
+expected for Arrhenius activation if the two samples had identical initial concentrations of [VGa].
+This was initially a source of great consternation until we
+realized that the sample annealed at 1100◦C (Fig 2c) ) was
+grown in an earlier growth run using a different substrate,
+while the samples annealed at 1000 and 1050◦C (Fig 2a,b) )
+were grown at a later date on pieces of a new Sn-doped (010)
+β-Ga2O3 wafer different than the one for the 1100◦C one.
+[VGa] is likely to vary spatially within EFG-grown bulk crystals, thus variation from wafer to wafer may occur. Likewise,
+despite using nominally the same growth recipe for all three
+samples, some variation is reasonably likely in [VGa] within
+the SL between growth runs. The finite difference model in
+Sec. II ultimately depends on DAl(x,t) as defined in Eq. 1;
+thus fitting via simulation does not directly measure [VGa].
+Thus in our final analysis, we assumed [VGa] = 1016/cm3 in
+the substrates for the 1000 and 1050◦C annealed samples, but
+explored possibilities that the substrate for the 1000◦C sample
+had a different [VGa]. In all cases, the value of [VGa] in the SL
+was determined independently for each sample through the
+fitting process. After testing a wide range of scenarios, the
+smaller value of DAl = Doo · [VGa] for the sample annealed at
+1100◦C is best explained by lower initial [VGa] in that sample’s
+substrate compared to the samples (from a different OMVPE
+growth and cut from a different wafer) annealed at 1000 and
+1050◦C. After accounting for this difference in [VGa], and
+rerunning simulations with initial [VGa] in the substrate reduced from 1016/cm3 to 2x1015/cm3, more sensible behavior for Doo(T) compatible with an Arrhenius law with activation energy 3.9 ± 0.3 eV is obtained. This emphasizes the
+extreme sensitivity to the local [VGa] concentration for selfand impurity-diffusion, whilst also demonstrating the efficacy
+of our modeling at extracting physically-reasonable behavior
+even from samples having heterogeneous initial conditions.
+The 3.9 eV activation energy for Doo(T) is comparable to the
+value of 4.2 eV obtained for AlGa diffusion in (-201) β-Ga2O3
+in ref40. Table I summarizes all of the parameters from bestfit scenarios under both the er f() and piece-wise-linear RD
+models for the VGa diffusion (our final analysis concludes that
+the later is the correct model).
+In Fig.
+1a,b) we compare two SLs annealed at 1050◦C
+
+===== Page 8 =====
+
+8
+on Fe and Sn doped substrates. On the Sn doped substrate,
+the best-fit scenario within the piece-wise-linear model of VGa
+diffusion yields Doo = 2.7x10−30cm5/s at an initial value of
+[VGa] = 1016/cm3 in the substrate. Doo for Al in the absence
+of VGa complexing with Sn would be expected to be the same
+or larger, depending on how significantly the presence of Sn
+limits the ability of VGa to mediate Al diffusion. If we do
+assume that Doo is the same for samples grown on both Feor Sn-doped substrates, we estimate the initial [VGa] in the
+substrate for samples grown on Fe-doped substrates would be
+1014/cm3, o r ≈100 times lower that for the Sn-doped substrates. This is on the lower end of the range of estimated
+ratios based on expected Fermi level positions, but given the
+lack of direct comparison data and uncertainty regarding the
+effects of Sn and Fe co-diffusing with VGa, considered reasonable.
+Returning to the issue of vacancy conservation, our data
+and analyses point to these experiments lasting on the order
+of a day or more at 1000 −1100◦C VGa diffusion occurring
+over a distance of 1.5-2.5 um within a transient, not equilibrated regime. The data show no indication for in-diffusion
+from the surface, the density of vacancy sources like dislocations is small (104 −105/cm2), spontaneous vacancy pair
+formation has a large activation energy. These are interesting and impactful results as most analyses of similar diffusion
+experiments assume that mediating native defects equilibrate
+quickly compared to impurity or tracer diffusion timescales.
+Herein, our evidence indicates cation vacancies remaining in
+a transient diffusion regime over the 1.5-2.5 µm SL thickness
+for most or all of experiments at 1000−1100◦C typically lasting about a full day (at least for concentrations necessary for
+diffusion of Al at 1018 −1021/cm3 concentrations). This may
+be a unique experimental case in that the homoepitaxial samples have low densities of vacancy sources/sinks (c.f. grain
+boundaries or dislocations) and our diffusing species were
+not introduced as reactive surface layers nor were they ion
+implanted (both of which can introduce or consume mediating native defects). Higher temperatures and different chemical boundary conditions at free surfaces may change this, but
+these experiments provide a valuable existence proof of cases
+where this typically foundational assumption of analysis of
+native defect-mediated diffusion is not fulfilled.
+VI.
+DIFFUSION OF UNINTENTIONAL IMPURITIES
+In addition to the d-SIMS of Al, Fe, and Sn presented so
+far, we also used TOF-SIMS 3D reconstructions and survey
+d-SIMS detecting all elements present (at lower spatial and
+concentration resolutions). The revealed that many other elements besides Fe or Sn diffused out of a Sn-doped substrate
+and through the SLs. Figure 3 shows concentration-calibrated
+SIMS profiles for five illustrative metals present in the SL
+shown in Fig. 2b), annealed at 1000◦C. After collecting the 20
+hour anneal SIMS profile shown in Fig. 2b), the sample was
+immersed in aqua regia for 10 minutes to remove any possibility of metal contamination at the surface, and then annealed
+in O2 for an additional 10 hours (total 30 hours) as part of efFIG. 3. Low spatial and concentration resolution “survey” SIMS
+profiles of five species which show high concentration and nonhomogenous behavior for SL on Sn doped substrate annealed at
+1000◦C for 30 hours in oxygen. Each survey is fit with a univariate spline function (solid line).
+forts to eliminate possibilities of Fe contamination depositing
+on the surface and then diffusing into the SL while annealing
+inside the tube furnace (Supplemental Materials). Given the
+known presence of many of these elements in wafers grown
+from melts held in Ir crucibles- e.g. EFG35,39 and the high
+purity of OMVPE-grown layers, we infer that these elements
+diffused into the SLs from the substrate.
+Mn, Fe and Ni accumulate at the surface at concentrations,
+and to depths, which are unlikely to be due to artifacts. [Cu]
+exhibits a concentration peak around the middle of the superlattice structure, perhaps indicating interactions between its
+charge states and the Fermi level within a space charge region.
+All of these transition metals are likely capable of multiple interstitial and substitutional diffusion modes in multiple charge
+states. Ti was also detected at 1016/cm3 uniform in depth
+through the d-SIMS survey scan, while Si and Na were also
+detected in TOF SIMS. Li being extremely small is suspected
+to be capable of fast interstitial diffusion and is depleted rather
+than enriched close to the surface. These different behaviors
+are consistent with an electro-chemical potential gradient affecting different elements and charge states differently near
+the surface. A depletion width and built-in potential φ(x) induced by surface Fermi-level pinning is the simplest example
+
+===== Page 9 =====
+
+9
+and defects with different relative charges q would accumulate or deplete as exp
+
+qφ(x)
+kBT
+
+self-consistently following the
+Poisson-Boltzmann equation. However, it has been frequently
+observed that β-Ga2O3 surfaces, especially in the presence
+of additional impurities, can change to the different γ-Ga2O3
+phase which would of course change the chemical potential
+for each impurity, perhaps causing them to accumulate. Further analysis of these profiles is beyond the scope of this work,
+but the diffusion of these impurities, some like Cu and Li being notoriously fast diffusers in semiconductors, calls for further quantification of impurities and their diffusion in multiple
+phases of Ga2O3 and in devices from fabrication to long-term
+degradation under high fields and temperatures.
+VII.
+CONTEXTUALIZING RESULTS
+Figure 4 compares measured and computed diffusivities in
+Ga2O3 from this work and that from literature. Red pentagons
+and triangles give the diffusivities inferred in this work for VGa
+assuming no interaction with Sn (erf) and coupled reactiondiffusion with Sn (piece-wise linear). DVGa extracted from
+our Al diffusion data over the investigated temperature range
+assuming only the piece-wise linear shape of the [VGa](x,t)
+evolution (making no assumptions of diffusion constant) have
+remarkable agreement with the diffusion of SnGa −VGa complexes reported by Frodason21 and follow a sensible Arrhenius trend with activation energy 1.86±1.13eV The values extracted from best-fits at different temperatures assuming free
+diffusion (er f(x,t)) are an order of magnitude lower and deviate from Arrhenius behavior. Blue rhombuses plot the modeled values of free diffusion of uncomplexed DVGa from Ref21.
+It is clear that interactions of acceptor-like VGa especially with
+donor-like defects significantly slows their diffusion.
+Since Al diffusion is proportional to [VGa] and this varies
+with depth and time in the SLs on Sn-doped substrates, we
+present DAl extracted for each temperature, assuming a uniform concentration local [VGa] = 1016/cm3.
+To emphasize
+the dependence of DAl on local [VGa] we also give a second
+dataset for DAl assuming a uniform local [VGa] = 1014/cm3.
+This latter set gives good agreement in magnitude with DAl
+derived from the interdiffusion of a thin Al2O3 layer on Ga2O3
+during oxygen annealing40. The data shown as an inverted
+brown triangle is the value for the extracted diffusion constants for the slow diffusion channel of Fe out of an Fe-doped
+substrate. This value is similar to those experienced by Al, so
+we speculate may be vacancy- mediated but modified by the
+expected Coulomb repulsion between VGa and FeGa acceptors compared to the case of Al. Further detailed studies will
+be needed to understand the diffusion of Fe and other metals
+prone to charge state changes and possibly diffusing by multiple mechanisms simultaneously.
+Oshima et al., used capacitance methods to measure the expansion of an insulating layer on the surface of n-type samples
+up to a few µm thickness during O2 annealing. The kinetics of
+layer thickening were consistent with a diffusion-limited process, thus we plot their equivalent diffusion constant as blue
+circles. It is very interesting to note that these extracted diffusion constants are much closer to the values for impurities
+like Al or Fe diffusing to the surface in our samples than they
+are to any of the cation vacancy diffusion constants or oxygen
+tracer diffusion constants recently reported. Thus, we speculate that at least part of the phenomenology of insulating layers forming on the surface of n-type Ga2O3 crystals may be
+caused by out-diffusion of unintentional cation impurities towards the O-rich boundary condition, possible surface band
+bending, and possibly phase changes to g-Ga2O3 with impurity pile-up, rather than directly by in-diffusion of O or Ga
+native defects as the simplest models might assume. Clearly,
+there are many questions to be explored with direct experiment and theory in the diffusion and annealing behavior of
+native defects and impurities in Ga2O3. Our results point out
+many places where unchallenged assumptions regarding native defect processes in diffusion experiments should be revisited and directly tested.
+VIII.
+CONCLUSIONS
+While many papers have shown a correlation between gallium vacancies and n-type carrier concentration after oxygen
+annealing, the exact dynamics of this process have not previously been explored. We have shown via Al tracer diffusion, that VGa are available in great numbers in Sn doped substrates, diffusing outward towards the epi-layers in our SL experiments. However, the rate of diffusion is much faster than
+that indicated for the formation of the semi-insulating layer
+measured by Oshima. We developed a modified finite difference scheme in which the diffusion of impurities such as Al
+is dependent on the concentration of VGa, which is also diffusing. The finite differences model herein developed shows
+no evidence of Ga vacancies being introduced from the surface, though these may be introduced at lower concentrations.
+The measured diffusion rates extracted for VGa are far lower
+than those predicted for free vacancies based on DFT calculations. Instead they agree well with the measured rates of Sn
+diffusion, indicating that the formation and diffusion of defect
+complexes is the primary rate controlling step in the diffusion
+of the charge-neutral Al defects. The study of unintentionally introduced impurities like Fe, Mn, Cu must be explored
+further, and may yet play an important role in elucidating the
+formation of the semi-insulating layer. The accumulation of
+transition metals at the surface suggests that the effect of the
+surface potential must be taken into account in future work.
+ACKNOWLEDGMENTS
+This work was funded by the Air Force Office of Scientific
+Research – Multidisciplinary Research Program of the University Research Initiative (MURI) – AFOSR award number
+FA9550-18-1-0507. We thank EAG Eurofins for their assistance in SIMS analysis. We also thank Northrop GrummanSynoptics for the supply of β-Ga2O3 boule pieces. We thank
+Dr. Klaus Magnus Johansen and Dr. Ymir K. Frodason for
+
+===== Page 10 =====
+
+10
+FIG. 4. Arrhenius plot for the extent of formation of semi-insulating layer by Oshima et al.6 (blue circle), the assumed DVGa and DSnGaVGa
+extracted from best fit in work by Frodason et al21 (blue rhombus and triangle respectively), and from this work: DVGa extracted from the Al
+tracer diffusion under free, error function diffusion model and linear reaction diffusion model (red pentagons and red triangles respectively).
+Based on our extracted values of Doo(T) for Al, we present DAl for two concentrations of VGa (see Eq. 1): [VGa] = 1016cm−3 appropriate
+for Al in Sn-doped wafers (solid purple squares) and [VGa] = 1014cm−3 appropriate for semi-insulating or oxygen annealed samples (half
+filled purple square). The later agrees well with recently published data by Uhlendorf and Schmitt40, further strengthening the case for validity
+of our values. DFe extracted from the slow-diffusing component in Fig 1a, is shown as inverted orange triangles. In addition, D0
+Si from41 is
+shown as brown crossed-circles; this follows a similar activation energy but is apparently slightly slower than the diffusion of (SnGa −VGa)
+complexes.
+the use of their data and modeling of SnGa and VGa reactiondiffusion. We thank Prof. Danny Feezell and his group at
+UNM for high-resolution Xray diffraction scans on early samples to help characterize the growth rate variations.
+DATA AVAILABILITY STATEMENT
+The data that support the findings of this study are available
+within the article [and its supplementary material].
+1S. J. Pearton, J. Yang, P. H. Cary, F. Ren, J. Kim, M. J. Tadjer, and M. A.
+Mastro, “A review of ga2o3 materials, processing, and devices,” 5, 011301,
+publisher: American Institute of Physics.
+2A. J. Green, J. Speck, G. Xing, P. Moens, F. Allerstam, K. Gumaelius,
+T. Neyer, A. Arias-Purdue, V. Mehrotra, A. Kuramata, K. Sasaki, S. Watanabe, K. Koshi, J. Blevins, O. Bierwagen, S. Krishnamoorthy, K. Leedy,
+A. R. Arehart, A. T. Neal, S. Mou, S. A. Ringel, A. Kumar, A. Sharma,
+K. Ghosh, U. Singisetti, W. Li, K. Chabak, K. Liddy, A. Islam, S. Rajan,
+S. Graham, S. Choi, Z. Cheng,
+and M. Higashiwaki, “β-gallium oxide
+power electronics,” 10, 029201.
+3J. Y. Tsao, S. Chowdhury, M. A. Hollis, D. Jena, N. M. Johnson, K. A.
+Jones, R. J. Kaplar, S. Rajan, C. G. Van de Walle, E. Bellotti, C. L. Chua,
+R. Collazo, M. E. Coltrin, J. A. Cooper, K. R. Evans, S. Graham, T. A.
+Grotjohn, E. R. Heller, M. Higashiwaki, M. S. Islam, P. W. Juodawlkis,
+M. A. Khan, A. D. Koehler, J. H. Leach, U. K. Mishra, R. J. Nemanich,
+R. C. N. Pilawa-Podgurski, J. B. Shealy, Z. Sitar, M. J. Tadjer, A. F.
+Witulski, M. Wraback,
+and J. A. Simmons, “Ultrawide-bandgap semiconductors: Research opportunities and challenges,” 4, 1600501, _eprint:
+https://onlinelibrary.wiley.com/doi/pdf/10.1002/aelm.201600501.
+4T. Oshima, T. Okuno, N. Arai, N. Suzuki, S. Ohira, and S. Fujita, “Vertical
+solar-blind deep-ultraviolet schottky photodetectors based on β-ga 2 o 3
+substrates,” 1, 011202 ().
+5J. B. Varley, J. R. Weber, A. Janotti, and C. G. Van de Walle, “Oxygen
+vacancies and donor impurities in β-ga2o3,” 97, 142106, publisher: American Institute of Physics.
+6T. Oshima, K. Kaminaga, A. Mukai, K. Sasaki, T. Masui, A. Kuramata,
+S. Yamakoshi, S. Fujita, and A. Ohtomo, “Formation of semi-insulating
+layers on semiconducting β-ga 2 o 3 single crystals by thermal oxidation,”
+52, 051101 ().
+7F. Tuomisto and I. Makkonen, “Defect identification in semiconductors
+with positron annihilation: Experiment and theory,” 85, 1583–1631, publisher: American Physical Society.
+8E. Korhonen, F. Tuomisto, D. Gogova, G. Wagner, M. Baldini, Z. Galazka,
+R. Schewski, and M. Albrecht, “Electrical compensation by ga vacancies in
+ga2o3 thin films,” 106, 242103, publisher: American Institute of Physics.
+9M. E. Ingebrigtsen, A. Y. Kuznetsov, B. G. Svensson, G. Alfieri, A. Mihaila,
+U. Badstübner, A. Perron, L. Vines, and J. B. Varley, “Impact of proton
+irradiation on conductivity and deep level defects in β-ga2o3,” 7, 022510
+(), publisher: American Institute of Physics.
+10J. Jesenovec, M. H. Weber, C. Pansegrau, M. D. McCluskey, K. G. Lynn,
+and J. S. McCloy, “Gallium vacancy formation in oxygen annealed βga2o3,” 129, 245701.
+11Y. K. Frodason, C. Zimmermann, E. F. Verhoeven, P. M. Weiser, L. Vines,
+and J. B. Varley, “Multistability of isolated and hydrogenated ga–o divacancies in β - ga 2 o 3,” 5, 025402 ().
+
+===== Page 11 =====
+
+11
+12A. Karjalainen, P. M. Weiser, I. Makkonen, V. M. Reinertsen, L. Vines,
+and F. Tuomisto, “Interplay of vacancies, hydrogen, and electrical compensation in irradiated and annealed n -type β -ga 2 o 3,” 129, 165702.
+13A. Kyrtsos, M. Matsubara, and E. Bellotti, “Migration mechanisms and
+diffusion barriers of vacancies in ga 2 o 3,” 95, 245202.
+14R. Sun, Y. K. Ooi, P. Ranga, A. Bhattacharyya, S. Krishnamoorthy, and
+M. A. Scarpulla, “Oxygen annealing induced changes in defects within
+β-ga2o3 epitaxial films measured using photoluminescence,” 54, 174004,
+publisher: IOP Publishing.
+15R.
+A.
+De
+Souza
+and
+J.
+A.
+Kilner,
+“Oxygen
+transport
+in
+la1-xSrxMn1-yCoyO3±δ perovskites: Part i. oxygen tracer diffusion,”
+106, 175–187.
+16J. Töpfer, S. Aggarwal, and R. Dieckmann, “Point defects and cation tracer
+diffusion in (CrxFe1 - x)3 - δo4 spinels,” 81, 251–266.
+17R. E. Howard, “Random-walk method for calculating correlation factors:
+Tracer diffusion by divacancy and impurity-vacancy pairs in cubic crystals,”
+144, 650–661, publisher: American Physical Society.
+18P.
+Klugkist
+and
+C.
+Herzig,
+“Tracer
+diffusion
+of
+titanium
+in
+α-iron,”
+148,
+413–421,
+_eprint:
+https://onlinelibrary.wiley.com/doi/pdf/10.1002/pssa.2211480209.
+19H. Mehrer, Diffusion in Solids:
+Fundamentals, Methods, Materials,
+Diffusion-Controlled Processes (Springer Science & Business Media)
+google-Books-ID: IUZVffQLFKQC.
+20K. Johansen, L. Vines, T. Bjørheim, R. Schifano, and B. Svensson, “Aluminum migration and intrinsic defect interaction in single-crystal zinc oxide,” 3, 024003, publisher: American Physical Society.
+21Y. K. Frodason, P. P. Krzyzaniak, L. Vines, J. B. Varley, C. G. Van de Walle,
+and K. M. H. Johansen, “Diffusion of sn donors in β-ga2o3,” 11, 041121
+().
+22H. Bracht, “Diffusion mechanisms and intrinsic point-defect properties in
+silicon,” 25, 22–27.
+23U. M. Gösele and T. Y. Tan, “Point defects and diffusion in semiconductors,” 16, 42–46.
+24B. Hobbs and A. Ord, “Chapter 9 - visco-plastic flow,” in Structural Geology, edited by B. Hobbs and A. Ord (Elsevier) pp. 287–326.
+25D. Krasikov and I. Sankin, “Beyond thermodynamic defect models: A
+kinetic simulation of arsenic activation in CdTe,” 2, 103803, publisher:
+American Physical Society.
+26L. Onsager, “Reciprocal relations in irreversible processes. i.” 37, 405–426,
+publisher: American Physical Society.
+27“MATLAB version: 9.13.0 (r2022b),” .
+28K. Jacobs, “F. a. kröger. the chemistry of imperfect crystals. 2nd revised
+edition, volume 1: Preparation, purification, crystal growth and phase theory. north-holland publishing company - amsterdam/london 1973 american
+elsevier publishing company, inc. - new york 313 seiten, zahlreiche abbildungen und tabellen, kunstleder preis dfl. 70.00,” 9, K67–K68, _eprint:
+https://onlinelibrary.wiley.com/doi/pdf/10.1002/crat.19740090719.
+29J. B. Varley, “First-principles calculations 2,” in Gallium Oxide: Materials Properties, Crystal Growth, and Devices, Springer Series in Materials
+Science, edited by M. Higashiwaki and S. Fujita (Springer International
+Publishing) pp. 329–348.
+30H. J. von Bardeleben, G. He, Y. Wu, and S. Ding, “High temperature annealing of n-type bulk β-ga2o3: Electrical compensation and defect analysis—the role of gallium vacancies,” 134, 165702.
+31F. Tuomisto, “Identification of point defects in multielement compounds
+and alloys with positron annihilation spectroscopy: Challenges and opportunities,” 15, 2100177.
+32H. Ghadi, J. F. McGlone, C. M. Jackson, E. Farzana, Z. Feng, A. F. M.
+A. U. Bhuiyan, H. Zhao, A. R. Arehart, and S. A. Ringel, “Full bandgap
+defect state characterization of β-ga2o3 grown by metal organic chemical
+vapor deposition,” 8, 021111, publisher: American Institute of Physics.
+33J. M. Johnson, Z. Chen, J. B. Varley, C. M. Jackson, E. Farzana,
+Z. Zhang, A. R. Arehart, H.-L. Huang, A. Genc, S. A. Ringel,
+C.
+G.
+Van
+de
+Walle,
+D.
+A.
+Muller,
+and
+J.
+Hwang,
+“Unusual
+formation
+of
+point-defect
+complexes
+in
+the
+ultrawideband-gap
+semiconductor
+$\ensuremath{\beta}\text{\ensuremath{-
+}}{\mathrm{Ga}}_{2}{\mathrm{O}}_{3}$,”
+9,
+041027,
+publisher:
+American Physical Society.
+34Z. Galazka, R. Uecker, K. Irmscher, M. Albrecht, D. Klimm, M. Pietsch,
+M. Brützam, R. Bertram, S. Ganschow,
+and R. Fornari, “Czochralski
+growth and characterization of β-ga2o3 single crystals,” 45, 1229–1236,
+_eprint: https://onlinelibrary.wiley.com/doi/pdf/10.1002/crat.201000341.
+35A. Kuramata, K. Koshi, S. Watanabe, Y. Yamaoka, T. Masui, and S. Yamakoshi, “High-quality β-ga2o3 single crystals grown by edge-defined
+film-fed growth,” 55, 1202A2, publisher: IOP Publishing.
+36Z. Zhang, E. Farzana, A. R. Arehart, and S. A. Ringel, “Deep level defects
+throughout the bandgap of (010) β-ga2o3 detected by optically and thermally stimulated defect spectroscopy,” 108, 052105, publisher: American
+Institute of Physics.
+37M. E. Ingebrigtsen, J. B. Varley, A. Y. Kuznetsov, B. G. Svensson, G. Alfieri, A. Mihaila, U. Badstübner, and L. Vines, “Iron and intrinsic deep
+level states in ga2o3,” 112, 042104 ().
+38J. Crank, “The mathematics of diffusion,”.
+39J. S. McCloy, J. Jesenovec, B. Dutton, C. Pansegrau, C. Remple, M. H. Weber, S. Swain, M. McCluskey, and M. Scarpulla, “Growth and defect characterization of doped and undoped β-ga2o3 crystals,” in Oxide-based Materials and Devices XIII, edited by F. H. Teherani and D. J. Rogers (SPIE)
+p. 10.
+40J. Uhlendorf and H. Schmidt, “Oxygen and aluminum tracer diffusion in
+$(\ensuremath{-}201)$ oriented $\ensuremath{\beta}\text{\ensuremath{-
+}}\mathrm{G}{\mathrm{a}}_{2}{\mathrm{O}}_{3}$ single crystals,” 7,
+093402, publisher: American Physical Society.
+41A. Azarov, V. Venkatachalapathy, L. Vines, E. Monakhov, I.-H. Lee, and
+A. Kuznetsov, “Activation energy of silicon diffusion in gallium oxide:
+Roles of the mediating defects charge states and phase modification,” 119,
+182103, publisher: American Institute of Physics.

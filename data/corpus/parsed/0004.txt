@@ -1,0 +1,617 @@
+
+
+===== Page 1 =====
+
+One-Class Classiﬁcation for Wafer Map using
+Adversarial Autoencoder with DSVDD Prior
+Ha Young Jo and Seong-Whan Lee
+Department of Artiﬁcial intelligence
+Korea University, Seoul 02841, Republic of Korea
+{hayoungjo,sw.lee}@korea.ac.kr
+Abstract. Recently, semiconductors’ demand has exploded in virtual
+reality, smartphones, wearable devices, the internet of things, robotics,
+and automobiles. Semiconductor manufacturers want to make semiconductors with high yields. To do this, manufacturers conduct many quality assurance activities. Wafer map pattern classiﬁcation is a typical way
+of quality assurance. The defect pattern on the wafer map can tell us
+which process has a problem. Most of the existing wafer map classiﬁcation methods are based on supervised methods. The supervised methods
+tend to have high performance, but they require extensive labor and expert knowledge to produce labeled datasets with a balanced distribution
+in mind. In the semiconductor manufacturing process, it is challenging
+to get defect data with balanced distribution. In this paper, we propose a
+one-class classiﬁcation method using an Adversarial Autoencoder (AAE)
+with Deep Support Vector Data Description (DSVDD) prior, which generates random vectors within the hypersphere of DSVDD. We use the
+WM-811k dataset, which consists of a real-world wafer map. We compare
+the F1 score performance of our model with DSVDD and AAE.
+Keywords: Wafer map classiﬁcation · One class classiﬁcation · DSVDD
+· AAE.
+1
+Introduction
+The semiconductor market has been growing rapidly with the fourth industrial
+revolution [1,2,3]. Semiconductors have been required in many areas such as virtual reality, smartphones, wearable devices, the internet of things (IoT), robotics,
+and automobiles [4,5,6]. A lot of types of semiconductors are demanded at diverse products in many areas. According to this demand, semiconductor manufacturing lines have more diversity, and the manufacturing process becomes more
+complicated. Semiconductor manufacturers want to make semiconductors with
+high yields for reinforcing or, at least, maintaining market competitiveness. To
+do this, semiconductor manufacturers do quality assurance activities like facility
+diagnosis, process control, stabilization of yield rate, etc. [7,8,9,10].
+After the fabrication process, wafers are tested to check their electrical characteristics at the die on the wafer [11]. After the test, the results are represented
+arXiv:2107.08823v1  [cs.LG]  15 Jul 2021
+
+===== Page 2 =====
+
+2
+H. Jo et al.
+as an image with information about dies that are malfunctioned and where the
+defect dies are located. We call this image a wafer map. The defects on the
+wafer map can be categorized into some classes with spatial defect similarity:
+Loc, Edge-Loc, Edge-Ring, Center, Scratch, Random, Near-full, Donut, None.
+Some defect classes can help engineers in the manufacturer to recognize speciﬁc problems in the process [12,13]. For example, inappropriate wafer handling
+manipulation may arise to a scratch pattern, layer misalignment during the storage node process can cause edge-ring pattern, and a uniformity problem at the
+chemical-mechanical planarization may make center pattern [13].
+The basic method for classiﬁcation of wafer map is statistical methods. This
+method uses a statistical model with features extracted manually. However, traditional statistical methods have a limitation on scalability and nonlinearity.
+Recently, the deep neural methods of diverse architecture are being successfully
+applied in various area [14,15,16,17,18]. In accordance with this trend, deep neural networks are applied in semiconductor manufacturing.
+Traditionally, supervised methods are used for wafer map classiﬁcation. These
+methods require a lot of labels made by visual check from skillful engineers with
+their experience, knowledge, and intuition[19]. However, Annotating label to a
+large number of wafer maps manually is expensive and takes a lot of time[20].
+Furthermore, when the engineers work long hours, they may feel fatigued, and
+it can cause miss classiﬁcation. [21]. Therefore there are a lot of requirements
+for automated wafer map pattern classiﬁcation.
+There are two types of problems for wafer map classiﬁcation that are actively
+researched. First problem is to handle the imbalanced dataset. After the process
+has stabilized, defect wafers hardly occur. For this reason, it is hard to get defect
+data. Furthermore, it is almost impossible to get balanced defect data over defect
+type. To overcome this problem, one common way is to generate artiﬁcial data
+containing defective images using generative models before the training stage.
+For example, in [22], researchers used a deep convolutional generative model
+for generating faulty images. And, in [23], researchers used auxiliary classiﬁer
+generative adversarial network with focal loss at discriminator and generated
+images for learning.
+Second problem is the diﬃculty of getting a labeled data. Many semiconductor manufacturers try to apply the latest technology like deep learning, artiﬁcial
+intelligence. However, data that manufacturers already have is not preferred to
+apply the technology. Moreover, most of these data are without the label; thus,
+it needs additional labor for assigning the label. There are several ways to get
+over this problem. The ﬁrst one is using active learning. Active learning is the
+way to use small labeled data and a lot of unlabeled data. This model learns
+with small labeled data and selects the most ambiguous data in the unlabeled
+dataset. Engineers or something called Oracle are then asked to label the selected
+ambiguous data. Then repeat the process by adding data labeled by Oracle until
+certain conditions are satisﬁed. In [24], researchers select the most ambiguous
+data using uncertainty and Density-based Spatial Clustering of Application with
+Noise (DBSCAN). The other one is using clustering methods.
+
+===== Page 3 =====
+
+Title Suppressed Due to Excessive Length
+3
+In this paper, we proposed an adversarial autoencoder-based one-class classiﬁcation method. One-class classiﬁcation learns a normal data distribution at
+the training stage and determines whether the input is similar to trained data
+or not. To do this, we use an adversarial autoencoder with DSVDD prior, which
+generates a random vector within the hypersphere. We use the public dataset
+of wafer map, called WM-811K [25], for performance evaluations and compare
+our model with AAE and DSVDD with identical architecture.
+2
+Related works
+2.1
+Wafer map classiﬁcation
+Many researchers have studied automated wafer map classiﬁcation. In many
+studies, they use the raw wafer map as an input to classify the wafer defect.
+However, using the raw wafer map directly as an input is inappropriate because
+the raw wafer map does not have an eﬀective characteristic for classiﬁcation.
+There are two approaches for extracting eﬀective features: the manual feature
+extraction approach and the deep learning-based approach.
+Manual feature extraction approaches change wafer map images to characteristic vectors to eﬀectively represent the discriminative features. It is already
+used in a real-world manufacturer. In [25], researchers conducted classiﬁcation
+using geometry and radon-base features with a support vector machine (SVM).
+In [26], researchers conducted multi-label classiﬁcation using the “ordering point
+to identify the cluster structure” and density- and geometry-based features with
+SVM. In [27], the authors used an ensemble technique with radon-based features.
+In [28], researchers suggested an ensemble classiﬁer with various features such
+as density-, geometry-, and radon-based features.
+Due to the success of deep learning in many areas, deep learning methods
+have been applied to wafer map classiﬁcation tasks. These approaches use the
+raw wafer map as an input and automatically extract features. In [29], researchers
+used CNN for wafer classiﬁcation ﬁrst time and generated a synthetic wafer map
+using the Poisson point process. In [30], the authors used a convolutional autoencoder for detecting and segmenting defect patterns. [31] used a stacked convolutional sparse denoising autoencoder for extracting robust features. In [32],
+researchers used the Ladder Network and semi-supervised classiﬁcation framework for using labeled and unlabeled datasets. In [33], the authors used outof-distribution data, which is undeﬁned in the training dataset, for improving
+classiﬁcation performance.
+2.2
+Deep Support Vector Data Description
+One-class support vector machine (OC-SVM) is the classic one-class classiﬁcation method. It is a special type of SVM that holds labels at the training stage.
+Support Vector Data Description (SVDD) [34] is advanced version of one-class
+SVM. SVDD maps all the training data consisting of only normal into kernel
+
+===== Page 4 =====
+
+4
+H. Jo et al.
+space and ﬁnds the hypersphere containing all the data points in the kernel space
+with the smallest volume. After the training stage, the model ﬁnds the hypersphere’s center and radius, satisfying the condition, and we can detect anomalies
+when the data is outside of the hypersphere.
+Deep SVDD [35] is inspired SVDD and changes the kernel in SVDD to a deep
+neural network. The neural network is trained to have the smallest hypersphere
+that contains the latent vector of data in the latent space, with loss, Equation 1.
+min
+R,W R2 + 1
+νn
+n
+X
+i=1
+max{0, ||φ(xi; W) −c||2 −R2} + λ
+2
+L
+X
+l=1
+||Wl||2
+F
+(1)
+where, R is the radius of the hypersphere, c is the center of the hypersphere,
+Wl is the weights at the layer l, W is the set of weights, W = {W1, · · · , WL},
+xi is the ith input data, and ν, λ are hyperparameters. The second term is zero
+when the latent vector is within the hypersphere; therefore, it forces to be inside
+the hypersphere.
+2.3
+Generative adversarial network
+Generative adversarial network (GAN) is the generative model that uses generator and discriminator. Discriminator determines whether the input is the real
+data or generated from the generator. The generator is encouraged to fool the
+discriminator by generating fake data that is as close to the real data as possible.
+At the training stage, The network is optimized by Equation 2.
+max
+D min
+G (θG, θD) = Ex∼Pdata(x)[logD(X)] + Ex∼Pz(X)[1 −log(D(G(z)))]
+(2)
+where D, G represent discriminator and generator, respectively, θ is the parameter of generator or discriminator network, z is the random noise vector that is
+used as an input to the generator. We use the Adversarial autoencoder (AAE)
+for experiments. AAE is a network that combines autoencoder with adversarial
+learning. A discriminator in AAE determines whether the latent vector is from
+the real data or not, making the encoder acts as a generator in the GAN. The
+diﬀerence between GAN and AAE loss is adding an L1 loss for reconstruction.
+The total loss of AAE is the Equation 3
+max
+D min
+e,d (θe, θd, θD) =Ex∼Pdata(x)[logD(e(X))] + Ex∼Pz(X)[1 −log(D(z))]
++ L1(X, d(e(x)))
+(3)
+where e, d is encoder and decoder, L1 is L1 loss.
+
+===== Page 5 =====
+
+Title Suppressed Due to Excessive Length
+5
+3
+Methods
+3.1
+DSVDD prior
+We want the distribution of the latent vector of the data to be within the DSVDD
+hypersphere. A vector extracted from the prior must be within the hypersphere
+or close to the boundary of the distribution to satisfy such a condition. Such a
+prior is then a DSVDD prior. DSVDD prior is considered DSVDD distribution
+as prior. DSVDD distribution is the distribution that sampled random vector is
+about hypersphere of DSVDD. Latent vectors of data are forced by DSVDD to
+be concentrated at the center of the hypersphere of DSVDD. The hypersphere is
+a sphere without distortion. Therefore we can assume that DSVDD distribution
+is isotropic Gaussian distribution with the mean at the center of the hypersphere.
+We can formulate the random vector as Equation 4.
+zi ∼N(ci, σ2) = ci + N(0, σ2)
+(4)
+where zi is ith latent vector component, ci is the ith center vector of the hypersphere, and σ is the standard deviation for Gaussian distribution.
+When a random vector is extracted from Equation 4, it cannot guarantee the
+distance between vector and the center of the hypersphere is less than the radius
+of the hypersphere, or at least close to the radius. To overcome this problem,
+we need to handle the standard deviation in the Gaussian distribution. The
+expectation of the square distance can be calculated using Equation 5
+E(Z2) =
+N
+X
+i=1
+E(z2
+i ) =
+N
+X
+i=1
+(µ2 + σ2) = Nσ2
+(5)
+where Z is the random vector, N is the dimension of the latent space, µ, σ are
+mean and variance of the Gaussian distribution. We use the fact that mean is 0
+at ﬁnal term.
+We want the expected distance to be the radius of the hypersphere. Like Equation 6, the variance become the value R2/N
+E(Z2) = Nσ2 = R2
+σ2 = R2
+N
+(6)
+where R is the radius of hypersphere.
+Than total distribution of DSVDD is Equation 7
+Z ∼C + N(0, R2/Nν2)
+(7)
+where Z is the random vector, C is the center of the hypersphere, and ν is hyper
+parameter for handling the expectation distance.
+
+===== Page 6 =====
+
+6
+H. Jo et al.
+3.2
+Assign label of random vector
+In ordinary generative models like GANs, the random vectors are labeled as being
+normal when the discriminator is learned since every random vector is generated
+by prior. In our model’s prior, we expect all random vectors are within the
+hypersphere. However, in actuality, all random vectors extracted from Equation 7
+are not always in the hypersphere. Therefore we need to assign the label to the
+random vectors.
+To assign the label, we use the DSVDD classiﬁcation methods. If the random
+vector is out of the hypersphere, then the Real label is assigned during the
+learning stage of the discriminator. If the random vector is in the hypersphere,
+then the Fake label is assigned.
+l(Z, C) =
+nFake
+if
+dist(Z, C) ≤R
+Real
+if
+dist(Z, C) > R
+(8)
+3.3
+Architecture
+The network architecture used in experiments is based on adversarial autoencoder. The network has encoder and decoder like variational autoencoder, and
+discriminator for adversarial learning.
+All parts of the network are consist of linear layers. The encoder has separated
+two linear layers at the ﬁnal layer to generate mean and variance vectors used for
+variational inference. The input images are consist of 3 channels; each channel
+represents margin, normal, and defect. At the pixel in the input image, only one
+of the channels has value 1 and others have 0. Due to the characteristics of input
+images, we added a softmax layer to the last layer of the decoder. And other
+components of the network are identical to the adversarial autoencoder. The
+model needs to map the training data inside the hypersphere. To do this, we use
+AAE loss, Equation 3 with a DSVDD loss, Equation 1. On the other hand, we
+use the loss as an anomaly score for classiﬁcation.
+4
+Experiments
+4.1
+Data Description
+For experiments, we used WM-811K dataset, which is real-world trace data
+obtained from a semiconductor manufacturer
+[25]. It contains about 800,000
+images with both labeled and unlabeled data. Around 630,000 of the data is
+without the label, and 170,000 of the data is with the label. There are nine
+distinctive labels with uneven distribution. You can see the details in Table 1.
+Engineers can infer the root cause of the device by defect pattern class. In
+this class, None pattern is a normal pattern, and others are defect pattern. You
+can see the example of label of Wafer Bin Map of each type in Fig 1.
+In this experiment, we used only normal data at the training stage, like other
+one-class classiﬁcation frameworks. Then the data with defects are used at the
+
+===== Page 7 =====
+
+Title Suppressed Due to Excessive Length
+7
+Table 1: Description of WM-811K dataset
+Unlabeled
+638,570
+Labeled
+172,950
+None
+147,431
+Loc
+3,593
+Edge-Loc
+5,1589
+Edge-Ring
+9,680
+Center
+4,294
+Scratch
+1,193
+Random
+866
+Near-full
+149
+Donut
+555
+Total
+811,520
+validation and test stage. We re-labeled all defects patterns into one class since
+our task is only to classify normal data and defect data.
+We split the data into training, validation, and test data. There is only none
+type data in the training set and 80% of all none type data. There is 10% of all
+none type data in the validation set, and there are other patterns with 50% of
+all each pattern. The rest of the datasets were used as test sets. You can show
+the detail in the Table 2.
+Table 2: Number of experiment data.
+Failure Type
+Train
+Validation Test
+None
+117,944
+14,743
+14,744
+Loc
+0
+1,796
+1,797
+Edge-Loc
+0
+2,594
+2,595
+Edge-Ring
+0
+4,840
+4,840
+Center
+0
+2,147
+2,147
+Scratch
+0
+596
+597
+Random
+0
+433
+433
+Near-full
+0
+74
+75
+Donut
+0
+277
+278
+Total
+117,944
+27500
+27506
+4.2
+Data processing
+The WM-811K dataset we used in this experiment has wafer images that represent whether dies on the wafer are defective or not. Each pixel on the images has
+only three types of value. If the pixel has 0 value, the pixel is out of the wafer. If
+
+===== Page 8 =====
+
+8
+H. Jo et al.
+(a) Loc
+(b) Edge Loc
+(c) Edge Ring
+(d) Center
+(e) Scratch
+(f) Random
+(g) Near Full
+(h) Donut
+(i) None
+Fig. 1: Example of WM-811k dataset
+
+===== Page 9 =====
+
+Title Suppressed Due to Excessive Length
+9
+the pixel has one value, the pixel represents a normal die. If the pixel has 2, the
+pixel represents defect die. These values that pixels have are categorical variables. Therefore we change the number of channels in images to 3, each channel
+represents out of the wafer, normal die, and defect die, like one-hot encoding.
+We also need to match the size of the images since the images in the dataset
+have various sizes. We change the image size to 64 by 64.
+4.3
+Comparing methods
+We selected DSVDD and AAE for comparing our model. Since our goal is to
+study the performance comparison between our loss function and other losses
+with the same architecture, we tried to maintain the model architecture as much
+as we can. The baseline architecture is selected based on the best-performing
+architecture of the AAE model. In the DSVDD, we used the encoder in the
+AAE model that outputs only the mean vector. In the AAE, we used the same
+architecture with our model without the SVDD loss and without assigning a
+label to the random vector.
+To classify the data, whether it is normal or not, we used the loss of each model
+as an anomaly score. When the loss of DSVDD is more than 0, we assign the label
+defect. Unlike the DSVDD case, the AAE model and our model are challenging
+to ﬁnd an appropriate threshold. So we ﬁnd the threshold as follows. First, we
+calculate the mean and standard deviation of the training set. We assumed that
+the threshold is close to the mean. After that, we ﬁnd the upper limit of the
+anomaly score when the recall is 1 by increasing anomaly score by 0.1 time the
+standard deviation, from the mean. Then, we ﬁnd appropriate threshold until
+the F1 score has highest value, by decreasing the anomaly score by 0.1 time the
+standard deviation, from the upper limit.
+We used the threshold that have best performance at the validation dataset,
+to evaluate the test dataset. As an evaluation metric, we use accuracy, precision, recall, and F1 score. We input the label and inference result to functions
+of ‘metric’ module in ‘sklearn’ python package, accuracy score, precision score,
+recall score, f1 score.
+5
+Results
+Table 3 shows the results of the performance on the validation and test datasets.
+There is no signiﬁcant diﬀerence between validation and test datasets. It might
+be the fact that the two datasets have the same ratio of the classes. Looking
+at each model, DSVDD showed the lowest performance except recall, accuracy,
+and precision are low under 0.5. It means that DSVDD can’t map many normal
+data within the hypersphere. AAE has a similar recall with DSVDD but has
+high accuracy and precision score than DSVDD. This suggests that AAE maps
+normal data well to the center of the posterior rather than DSVDD mapping
+data to the center of the hypersphere. Our model has highest F1 score rather
+
+===== Page 10 =====
+
+10
+H. Jo et al.
+Table 3: Results of experiments
+DSVDD
+AAE
+AAE
++DSVDD
+/ν = 1
+AAE
++DSVDD
+/ν = 0.8
+AAE
++DSVDD
+/ν = 1.2
+Threshold
+0
+0.049
+0.017
+-0.674
+0.165
+Valid Accuracy 0.481855 0.640582
+0.683564
+0.469127
+0.673345
+Precision 0.468658 0.575095
+0.621808
+0.466259
+0.623430
+Recall
+0.874422 0.86235
+0.811319
+0.997648
+0.747119
+F1
+0.610246 0.690021
+0.704034
+0.635508
+0.679693
+Test Accuracy 0.477678 0.635716
+0.679693
+0.469243
+0.679125
+Precision 0.466719 0.570801
+0.613425
+0.466374
+0.631060
+Recall
+0.881837 0.866087
+0.822755
+0.998198
+0.742517
+F1
+0.610386 0.688103
+0.702835
+0.635726
+0.682267
+than others, but recall decrease. It might be the evidence that the DSVDD prior
+acts as constraint to get more none data.
+As we showed in Section 3.1, we will compare the results of three cases. The
+ﬁrst case is when the random vector is generated from Equation 7 with ν = 0.8. In
+this case, the most random vectors should be inside the hypersphere in DSVDD.
+The second case is when ν = 1 with which the random vector is generated near
+the hypersphere boundary. The last case is when ν = 1.2 with which the random
+vector is generated outside the hypersphere. Throughout the experiments, the
+values 0.8, 1.2 are empirically chosen. These values are the smallest values to
+generate the random vector inside and outside of the hypersphere.
+In the ﬁrst case, recall becomes nearly 1, and other metrics drop under 0.5. It
+means that almost all none data is widely spread out from the center. The third
+case maintains the metrics except for recall. It means that more data is classiﬁed
+as normal because of the boundary expansion.
+6
+Conclusion
+In this paper, we represented the way to integrate DSVDD and AAE by generating a random vector close to the hypersphere of DSVDD. Due to the random
+vector can be generated out of hypersphere, we assigned the label of the random
+vector when the discriminator is learned. And we conﬁrmed that the F1 score
+has the highest value when some random vectors are generated in the hypersphere and other vectors are out of the hypersphere, comparing the case that all
+random vectors are in or out of the hypersphere.
+We show that the DSVDD prior has more F1 score performance than AAE with
+the Gaussian prior when the network has the same architecture, but recall decrease. This fact tells us that the DSVDD prior acts as a constraint to get more
+none data.
+The future works of this paper are as follows. First, it needs to compare other
+
+===== Page 11 =====
+
+Title Suppressed Due to Excessive Length
+11
+one-class classiﬁcation models. In this paper, we use AAE for one class classiﬁcation based on a generative model, and DSVDD which is well known for anomaly
+detection. However, one-class classiﬁcation is the research area studied in various
+ﬁelds, and there are many other recent models for one-class classiﬁcation. Also,
+one class classiﬁcation model based on a generative adversarial network is actively researched. Therefore, we need to check the performance of other models
+and chance to apply the idea to other adversarial models.
+Second, we need to check the performance of each defect pattern. We want this
+model to apply real world, but it has low performance at the whole criterion. To
+improve the model’s performance, we need to analyze miss classiﬁcation. For the
+same reason, we should check the change of performance as a varying threshold. Threshold has an essential role in anomaly detection, and it is crucial to
+characterize performance as the threshold changes.
+References
+1. Jelinek, L.: Global semiconductor market trends. IHS Markit, May (2018)
+2. Batra, G., Jacobson, Z., Madhav, S., Queirolo, A., Santhanam, N.: Artiﬁcialintelligence hardware: New opportunities for semiconductor companies. McKinsey
+& Company, New York, NY, USA, Tech. Rep (2018)
+3. Shin, N., Kraemer, K.L., Dedrick, J.: R&d and ﬁrm performance in the semiconductor industry. Industry and Innovation 24(3), 280–297 (2017)
+4. M¨onch, L., Uzsoy, R., Fowler, J.W.: A survey of semiconductor supply chain models
+part i: semiconductor supply chains, strategic network design, and supply chain
+simulation. International Journal of Production Research 56(13), 4524–4545 (2018)
+5. Uzsoy, R., Fowler, J.W., M¨onch, L.: A survey of semiconductor supply chain models
+part ii: demand planning, inventory management, and capacity planning. International Journal of Production Research 56(13), 4546–4564 (2018)
+6. M¨onch, L., Uzsoy, R., Fowler, J.W.: A survey of semiconductor supply chain models part iii: master planning, production planning, and demand fulﬁlment. International Journal of Production Research 56(13), 4565–4584 (2018)
+7. Hsieh, C.C., Liu, C.Y., Wu, P.Y., Jeng, A.P., Wang, R.G., Chou, C.C.: Building
+information modeling services reuse for facility management for semiconductor
+fabrication plants. Automation in Construction 102, 270–287 (2019)
+8. Kao, Y.T., Dauz`ere-P´er`es, S., Blue, J., Chang, S.C.: Impact of integrating equipment health in production scheduling for semiconductor fabrication. Computers &
+Industrial Engineering 120, 450–459 (2018)
+9. Mohn, J.D., Te Nijenhuis, H., Hamilton, S.M., Madrigal, K., Lingampalli, R.R.:
+System and apparatus for ﬂowable deposition in semiconductor fabrication (Aug 1
+2017), uS Patent 9,719,169
+10. Shon, H.S., Batbaatar, E., Cho, W.S., Choi, S.G.: Unsupervised pre-training of
+imbalanced data for identiﬁcation of wafer map defect patterns. IEEE Access 9,
+52352–52363 (2021)
+11. Mann, W.R., Taber, F.L., Seitzer, P.W., Broz, J.J.: The leading edge of production
+wafer probe test technology. In: 2004 International Conferce on Test. pp. 1168–
+1195. IEEE (2004)
+12. Hansen, M.H., Nair, V.N., Friedman, D.J.: Monitoring wafer map data from integrated circuit fabrication processes for spatially clustered defects. Technometrics
+39(3), 241–253 (1997)
+
+===== Page 12 =====
+
+12
+H. Jo et al.
+13. Yuan, T., Kuo, W., Bae, S.J.: Detection of spatial defect patterns generated in
+semiconductor fabrication processes. IEEE Transactions on Semiconductor Manufacturing 24(3), 392–403 (2011)
+14. Yang, H.D., Lee, S.W.: Reconstruction of 3d human body pose from stereo image
+sequences based on top-down learning. Pattern Recognition 40(11), 3120–3131
+(2007)
+15. Roh, M.C., Kim, T.Y., Park, J., Lee, S.W.: Accurate object contour tracking based
+on boundary edge selection. Pattern Recognition 40(3), 931–943 (2007)
+16. Bulthoﬀ, H.H., Lee, S.W., Poggio, T., Wallraven, C.: Biologically motivated computer vision. Springer-Verlag (2003)
+17. Ahmad, M., Lee, S.W.: Human action recognition using multi-view image sequences. In: 7th International Conference on Automatic Face and Gesture Recognition (FGR06). pp. 523–528. IEEE (2006)
+18. Lee, S.W., Song, H.H.: A new recurrent neural-network architecture for visual
+pattern recognition. IEEE transactions on neural networks 8(2), 331–340 (1997)
+19. Shankar, N., Zhong, Z.: Defect detection on semiconductor wafer surfaces. Microelectronic engineering 77(3-4), 337–346 (2005)
+20. Baly, R., Hajj, H.: Wafer classiﬁcation using support vector machines. IEEE Transactions on Semiconductor Manufacturing 25(3), 373–383 (2012)
+21. Tan, C.M., Lau, K.T.: Automated wafer defect map generation for process yield
+improvement. In: 2011 International Symposium on Integrated Circuits. pp. 313–
+316. IEEE (2011)
+22. Ji, Y., Lee, J.H.: Using gan to improve cnn performance of wafer map defect type
+classiﬁcation: Yield enhancement. In: 2020 31st Annual SEMI Advanced Semiconductor Manufacturing Conference (ASMC). pp. 1–6. IEEE (2020)
+23. Liu, J., Zhang, F., Yang, B., Zhang, F., Gao, Y., Wang, H.: Focal auxiliary classiﬁer generative adversarial network for defective wafer pattern recognition with
+imbalanced data. In: 2021 5th IEEE Electron Devices Technology & Manufacturing
+Conference (EDTM). pp. 1–3. IEEE (2021)
+24. Koutroulis, G., Santos, T., Wiedemann, M., Faistauer, C., Kern, R., Thalmann,
+S.: Enhanced active learning of convolutional neural networks: A case study for
+defect classiﬁcation in the semiconductor industry. In: KDIR. pp. 269–276 (2020)
+25. Wu, M.J., Jang, J.S.R., Chen, J.L.: Wafer map failure pattern recognition and
+similarity ranking for large-scale data sets. IEEE Transactions on Semiconductor
+Manufacturing 28(1), 1–12 (2014)
+26. Fan, M., Wang, Q., van der Waal, B.: Wafer defect patterns recognition based on
+optics and multi-label classiﬁcation. In: 2016 IEEE Advanced Information Management, Communicates, Electronic and Automation Control Conference (IMCEC).
+pp. 912–915. IEEE (2016)
+27. Piao, M., Jin, C.H., Lee, J.Y., Byun, J.Y.: Decision tree ensemble-based wafer
+map failure pattern recognition based on radon transform-based features. IEEE
+Transactions on Semiconductor Manufacturing 31(2), 250–257 (2018)
+28. Saqlain, M., Jargalsaikhan, B., Lee, J.Y.: A voting ensemble classiﬁer for wafer map
+defect patterns identiﬁcation in semiconductor manufacturing. IEEE Transactions
+on Semiconductor Manufacturing 32(2), 171–182 (2019)
+29. Nakazawa, T., Kulkarni, D.V.: Wafer map defect pattern classiﬁcation and image
+retrieval using convolutional neural network. IEEE Transactions on Semiconductor
+Manufacturing 31(2), 309–314 (2018)
+30. Nakazawa, T., Kulkarni, D.V.: Anomaly detection and segmentation for wafer
+defect patterns using deep convolutional encoder–decoder neural network archi-
+
+===== Page 13 =====
+
+Title Suppressed Due to Excessive Length
+13
+tectures in semiconductor manufacturing. IEEE Transactions on Semiconductor
+Manufacturing 32(2), 250–256 (2019)
+31. Yu, J., Zheng, X., Liu, J.: Stacked convolutional sparse denoising auto-encoder
+for identiﬁcation of defect patterns in semiconductor wafer map. Computers in
+Industry 109, 121–133 (2019)
+32. Kong, Y., Ni, D.: A semi-supervised and incremental modeling framework for wafer
+map classiﬁcation. IEEE Transactions on Semiconductor Manufacturing 33(1), 62–
+71 (2020)
+33. Kim, Y., Cho, D., Lee, J.H.: Wafer defect pattern classiﬁcation with detecting
+out-of-distribution. Microelectronics Reliability 122, 114157 (2021)
+34. Tax, D.M., Duin, R.P.: Support vector data description. Machine learning 54(1),
+45–66 (2004)
+35. Ruﬀ, L., Vandermeulen, R., Goernitz, N., Deecke, L., Siddiqui, S.A., Binder, A.,
+M¨uller, E., Kloft, M.: Deep one-class classiﬁcation. In: International conference on
+machine learning. pp. 4393–4402. PMLR (2018)

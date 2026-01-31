@@ -1,0 +1,966 @@
+
+
+===== Page 1 =====
+
+arXiv:2506.03689v1  [quant-ph]  4 Jun 2025
+Quantum-on-chip
+Quantum photonics on a chip
+A. Katiyi1 and A. Karabchevsky1, 2
+1)School of Electrical and Computer Engineering, Ben-Gurion University of the Negev, Beer-Sheva 8410501,
+Israel
+2)Department of Physics, Lancaster University, LA1 4YB, United Kingdom
+(*Electronic mail: alinak@bgu.ac.il)
+(Dated: 11 June 2025)
+Optical chips for quantum photonics are cutting-edge technology, merging photonics and quantum mechanics to manipulate light at the quantum level. These chips are crucial for advancing quantum computing, secure communication,
+and precision sensing by integrating photonic components like waveguides, beam splitters, and detectors to manipulate
+single photons, the fundamental carriers of quantum information.
+Key advancements in optical chips include low-loss waveguides, efficient single-photon sources, and high-fidelity
+quantum gates, all essential for scalable quantum circuits. Integrating these circuits on a chip offers significant advantages in miniaturization, stability, and reproducibility over traditional bulk optics setups.
+Recent breakthroughs in materials science and nanofabrication have propelled the field forward, enabling the production of chips with higher precision and lower defect rates. Silicon photonics, in particular, has become a prominent
+platform due to its compatibility with existing semiconductor manufacturing processes, facilitating the integration of
+quantum photonic circuits with classical electronic systems.
+Here, we share our vision of the future of optical chips for quantum photonics, which hold promise for various
+applications. In quantum computing, they enable the development of compact and scalable quantum processors. In
+communication, they provide the foundation for ultra-secure quantum networks through quantum key distribution. In
+sensing, they allow for high-precision measurements that surpass classical limits. As research progresses, optical chips
+are expected to play a critical role in realizing the full potential of quantum technologies.
+I.
+INTRODUCTION
+Optical chips for quantum photonics are emerging as a
+transformative technology at the intersection of photonics
+and quantum mechanics. These integrated platforms are designed to manipulate and control light at the quantum level,
+offering unprecedented capabilities for a wide range of applications, including quantum computing, secure communication, and precision sensing. By integrating various photonic components-such as waveguides, beam splitters, and
+detectors-onto a single chip, these devices enable the efficient
+manipulation of single photons, which are essential carriers of
+quantum information.
+The development of optical chips for quantum photonics
+addresses several critical challenges in the field of quantum
+technologies. Key advancements include the fabrication of
+low-loss waveguides, the creation of efficient single-photon
+sources, and the realization of high-fidelity quantum gates.
+These components are crucial for constructing scalable quantum circuits, which are fundamental for practical and reliable
+quantum computing systems. Additionally, integrating quantum photonic circuits on a chip offers significant advantages
+in terms of miniaturization, stability, and reproducibility, surpassing the capabilities of traditional bulk optics setups.
+Recent breakthroughs in materials science and nanofabrication techniques have significantly advanced the field, enabling
+the production of chips with higher precision and lower defect rates. Silicon photonics, in particular, has emerged as
+a prominent platform due to its compatibility with existing
+semiconductor manufacturing processes. This compatibility
+facilitates the integration of quantum photonic circuits with
+classical electronic systems. This compatibility paves the way
+for more complex and efficient hybrid systems essential for
+advancing quantum technologies.
+Optical chips for quantum photonics hold promise for a
+multitude of applications. They offer a pathway to building
+compact and scalable quantum processors in quantum computing. They lay the foundation for ultra-secure quantum networks through quantum key distribution in communication.
+Moreover, in sensing, they enable high-precision measurements that surpass classical limits. As research and development in this field continue to progress, optical chips are
+expected to play a crucial role in realizing the full potential
+of quantum technologies, driving innovation and opening new
+frontiers in science and technology.
+Quantum mechanics, derived from the Latin term ’quantum’ meaning ’quantity’, is a fundamental physics theory that
+describes particle behavior at atomic and subatomic scales. It
+has been pivotal in explaining phenomena in various fields,
+such as atomic structure and superconductivity.
+This perspective provides a forward-looking view of optical chips
+for quantum photonics, presenting unique insights, innovative
+ideas, and emerging trends within a particular field.
+II.
+QUANTUM MECHANICS HISTORY
+In the late 19th century, several unresolved questions
+emerged, challenging the foundations of classical physics.
+One major issue was the stability of atoms.
+According
+to Maxwell’s theory and Hertz’s experiments, accelerating
+charges emit radiation.
+Consequently, orbiting electrons
+should continuously lose energy and spiral into the nucleus,
+yet atoms were observed to be stable.
+Another significant
+
+===== Page 2 =====
+
+Quantum-on-chip
+2
+problem was understanding the emission of specific spectral lines in gas spectroscopy.
+Although experiments confirmed these lines, their underlying mechanism remained unexplained. The photoelectric effect, discovered by Heinrich
+Hertz in 1887, further complicated the classical understanding. Hertz observed that ultraviolet (UV) light increased the
+conductivity of a material, but this effect was independent of
+the light’s intensity below a specific frequency.
+This contradicted classical predictions that intensity should influence
+conductivity.
+Additionally, the black body radiation problem, addressed by Lord Rayleigh and James Jeans in 1900,
+revealed discrepancies between theoretical models and observed behaviors at shorter wavelengths, leading to what was
+known as the ’UV catastrophe.’
+Addressing these problems through several key discoveries led to the formulation of the ’old quantum theory,’ which
+paved the way for the development of modern quantum mechanics.
+The first fundamental discovery was the quantization of
+energy and light. In 1900, Max Planck developed a theory
+of blackbody radiation that matched experimental results by
+proposing that the oscillations producing the waves are discrete and that the radiation is quantized into distinct units
+of energy1. In 1905, Albert Einstein showed that the photoelectric effect, which was observed by Hertz, can be explained
+via the quantization hypothesis presented by Plank2.
+It is
+worth noting that Einstein was describing photon, the term
+’photon’ was only first introduced in 1916 by Leonard T.
+Troland as ’A photon is that intensity of illumination upon
+the retina of the eye.’3. Later in 1926, Gilbert N. Lewis used
+the term photon as the unit of radiant energy - ’I, therefore,
+take the liberty of proposing for this hypothetical new atom,
+which is not light but plays an essential part in every process
+of radiation, the name photon’4. This photon definition differs
+from Einstein’s, which described it as light quantum (quanta).
+Ernest Rutherford and Niels Bohr solved the big problem of
+the stability of atoms. In 1911, Ernest Rutherford experimentally showed by bombarding thin gold foil with alpha particles
+that atoms have a tiny nucleus with electrons cloud around it5.
+In 1913 by adopting Rutherford’s nuclear structure to Max
+Planck’s quantum theory, Niels Bohr presented his model of
+the atom6 according to which electrons are around the nucleus
+in a discrete set of orbits. The emission or the absorption of
+light occurs when an electron jumps between the orbits.
+The work of Plank, Einstein and Bohr (known as the ’old
+quantum theory’) was the key to developing the theory of
+quantum mechanics, known as the ’new quantum theory’.
+In 1924, Louis De Broglie extended the theory of waveparticle duality from light to matter7, which became the base
+of wave mechanics. He proposed that each moving particle
+has an associated wave with a wavenumber proportional to
+the particle’s momentum which he called a ’phase wave’. In
+1927, his theory was confirmed by Davisson-Germer experiments, showing a diffraction pattern of reflected electrons
+by crystals8–10.
+In 1925, a new quantum theory was developed/presented. In 1925, Schrodinger described a quantum system by wave mechanics when the state of the quantum system is quantified by the wave function11. The square
+of the wave function gives the probability density of finding a particle at a specific place at a specific time. In parallel to Schrodinger’s theory, Werner Heisenberg, with Max
+Born and Pascual Jordan, presented matrix mechanics for describing quantum systems12–14.
+The first consistent quantum mechanics unifying both contradicting views was developed by Paul Dirac. In 1925 after seeing Heisenberg’s paper,
+Dirac developed a theory for non-commuting observables described by linear operators on Hilbert spaces and the bra-ket
+notation, which is still used these days15. In 1928, he presented the Dirac equation16, a relativistic generalization of the
+Schrodinger equation, adding the new variable spin, presented
+by Wolfgang Pauli in 1924. These discoveries were the foundations of the modern quantum physics.
+III.
+FROM FREE-SPACE TO CHIP
+Quantum optics is a branch of quantum physics that studies light-matter interactions on the level of individual photons. Photons are excellent candidates for quantum information processing due to their high mobility and low interaction with the environment. Various applications are based on
+quantum effects. Conventional quantum optical systems are
+performed in free space on an optical setup with bulky and discrete optical components. Complex setups often require hundreds of components, necessitating a large optical table and
+challenging system deployment. Additionally, these setups
+require precise alignment and strict control over noise factors such as temperature and vibrations. Integrated photonics
+provides a solution to these problems for quantum technologies. Integrated quantum photonics uses photonic integrated
+circuits on a chip to control photonic quantum states for applications in quantum technologies. As such, integrated quantum photonics offers the only viable approach to the miniaturization and scaling up of optical quantum circuits. Figure 1 compares quantum circuits implemented in a free space
+setup and a chip. It shows that a conventional quantum circuit
+setup (Fig. 1a) requires a bulky and robust optical table while
+a quantum circuit on a chip (Fig. 1b) can have a length of a
+few millimeters.
+Optical waveguides can control the light in microscale dimensions. The basic structure of an optical waveguide is a
+substrate and a guiding layer19. The light is guided by total internal reflection and propagating in the guiding medium.
+The first presentation of an optical guided wave structure was
+in 1966 when a cylindrical fiber was proposed for guiding
+light20. Since then, optical waveguides have been used for
+a variety of applications21, from passive components (such as
+directional couplers and sensors) to active components (such
+as light sources and modulators). Optical waveguides offer
+several advantages over bulk optics for quantum technology,
+including miniaturization, integrability, scalability, stability,
+and cost-effective production. Fabricating quantum devices
+on a chip makes them smaller and more stable. Optical waveguides can be made from various materials, both active and passive, to suit specific quantum components and applications.
+All necessary optical components can be integrated into a sin-
+
+===== Page 3 =====
+
+Quantum-on-chip
+3
+FIG. 1. Optical logic gates circuits. (a) Optical Fredkin quantum gate (reproduced from17). (b) Quantum logic gates on a chip (reproduced
+from18).
+gle chip, creating a robust circuit that reduces errors caused
+by vibrations or temperature fluctuations. Additionally, this
+approach lowers the cost of mass production.
+IV.
+QUANTUM TECHNOLOGY DEVICES
+A.
+Materials platforms for quantum technology
+Materials for on-chip nanophotonics are critical to the performance and functionality of photonic circuits22. Silicon has
+long been the foundation of on-chip photonics, thanks to its
+compatibility with semiconductor manufacturing23,24 and its
+ability to form high-quality, low-loss waveguides25.
+However, its limitations, such as an indirect bandgap, have led
+to exploring alternative materials. Silicon nitride (Si3N4) is
+notable for its lower propagation losses and effectiveness in
+the visible and near-infrared spectra26–29. III-V semiconductors, like gallium arsenide (GaAs)30,31 and indium phosphide
+(InP)32,33, are known for their direct bandgap properties, allowing efficient light emission and detection, making them
+ideal for active devices such as lasers and modulators. Emerging materials, including lithium niobate (LiNbO3)34–37 and
+two-dimensional materials like graphene38–41 and transition
+metal dichalcogenides (TMDs)42–44, bring unique electrooptic, nonlinear, and plasmonic properties, enhancing the capabilities of on-chip photonic systems.
+Research into hybrid platforms that integrate these diverse materials aims to
+combine their strengths, enabling more versatile and highperformance nanophotonic devices.
+Advances in materials science and nanofabrication are driving this field forward, opening up new possibilities for quantum computing,
+telecommunications, and other cutting-edge applications.
+Quantum photonic circuits comprise several key building
+blocks, as previously mentioned. Quantum-integrated photonics combines different components, such as light sources
+and detectors, onto a single chip. Optical waveguides can be
+fabricated from monolithic or hybrid materials, making them
+ideal configurations for quantum technologies. Table I lists
+standard materials used in quantum devices, each with unique
+properties suited to various quantum applications.
+Different components may require different materials depending on
+their specific function. For instance, the silicon-on-insulator
+is CMOS-compatible and can be used for photon-pair generation via four-wave mixing45,46 but is most efficient for singlephoton detection at 1550 nm. Monolithic circuits, made from
+a single material, such as III-V semiconductors like gallium
+arsenide (GaAs) and indium phosphide (InP), enable the integration of multiple components, including light sources and
+detectors, on one chip.
+B.
+Single-photon sources
+The concept of a single-photon source was first introduced
+by Planck in 1900. A single-photon source emits one photon
+at a time with a known and identical mode, such as frequency
+or temporal mode, which is crucial for quantum technologies.
+However, an ideal single-photon source does not yet exist, and
+ongoing efforts aim to create sources that closely approximate
+this ideal. Two primary methods for generating single-photon
+sources are isolated quantum systems (also known as singleemitter systems) and photon pair sources, as shown in Fig. 2a.
+Another method for creating single-photon sources is by multiplexing one or more photon pair sources, as illustrated in
+Fig. 2b.
+Isolated quantum systems are deterministic sources that
+emit one photon at a fixed time but with an efficiency of less
+than 100%. For example, quantum dots55–57, single ions58–60
+and single atoms. Notably, quantum dots can be used in both
+isolated quantum systems and photon pair sources. The second method, photon pair sources, generates pairs of correlated
+photons, where the detection of one photon (’twin’) indicates
+the presence of the other. Unlike isolated quantum systems,
+photon pair sources guarantee photon emission.
+However,
+since they rely on nonlinear processes, they are probabilistic in nature. Photon pair sources are typically based on two
+nonlinear effects: spontaneous parametric down-conversion
+(SPDC) and four-wave mixing (FWM). Parametric downconversion is related to the second order susceptibility χ(2)
+
+===== Page 4 =====
+
+Quantum-on-chip
+4
+TABLE I. Common materials for quantum devices.
+Material
+Transparency
+Non-linear index
+Refractive index
+Waveguide losses
+(λ = 1.55 µm)
+Silica
+VIS-IR
+Weak χ(3)
+1.44
+Ultralow
+Silicon on insulator
+IR
+Strong χ(3)
+3.44
+Moderate linear loss,
+(SOI)
+> 1,000 nm
+χ(3) = 6.5E −14
+high two-photon absorption
+Silicon nitride
+VIS-IR
+Strong χ(3)
+1.99
+Low linear loss,
+(Si3N4)
+400-2400 nm
+χ(3) = 2.5E −15
+low two-photon absorption
+Gallium arsenide
+IR
+Strong χ(2)
+2.9-3.4
+Moderate
+(AlGaAs)
+> 900 nm
+d(1/2· χ(2)) = 119
+Lithium niobate
+VIS-IR
+Strong χ(2)
+2.2
+Moderate
+(LNOI)
+400-5000 nm
+d(1/2· χ(2)) = 27
+Indium phosphide
+IR
+Strong χ(2)
+3.15
+Moderate
+(InP)
+900-2000 nm
+Aluminium nitride
+UV-IR
+Moderate χ(2)
+2.12
+Moderate
+(AlN)
+210-4000 nm
+χ(2) = 4.7
+FIG. 2. Single photon sources. (a) Illustration of the emission process of (left) single photon source and (right) photon pair source. (b)
+Illustration of probabilistic source multiplexing of many photon pair sources and multiplexing a single-photon source (reproduced from47). (c)
+Schematic of the first free-space single photon source (reproduced from48). (d) A quantum dot single-photon source embedded in a photonic
+crystal waveguide (reproduced from49). (e) Single-photon source of gallium selenide crystals on a silicon nitride rib waveguide (reproduced
+from50). (f) Single-photon source of III-V semiconductor GaAs with Self-assembled InAs/GaAs QD heterogeneous fabricated on a silicon
+nitride waveguide (reproduced from51). (g) Illustration of the periodically poling process of a nonlinear crystal waveguide (reproduced from52).
+(h) Periodically poled lithium niobate single photon source waveguide at a wavelength of 1550 nm (reproduced from53). (i) Periodically poled
+Rb:KTP single photon source waveguide at a wavelength of 800 nm (reproduced from54).
+
+===== Page 5 =====
+
+Quantum-on-chip
+5
+and can occur in crystals such as lithium niobate (LiNbO3)
+and gallium arsenide (GaAs). In the SPDC process, one pump
+photon is split into signal and idler photons. Four-wave mixing is related to the third order susceptibility χ(3) and is based
+on the atomic structure of centrosymmetric materials such as
+silicon oxide (SiO2) and silicon nitride (Si3N4). In the FWM
+process, two pump photons are converted into a pair of signal
+and idler photons.
+In 1974, the first source of entangled photons was created48.
+By splitting the first and second atoms of an atomic cascade in mercury atoms, as shown in Fig. 2c, they observed
+one photon per pulse. One limitation of free-space singlephoton sources is their bulkiness. Integrated photonics allows
+the fabrication of small single-photon sources with chip-scale
+dimensions. Integrated quantum photonics can create highbrightness sources because of the high confinement in optical waveguides. Due to the high power confinement in optical waveguides, the non-linear effects, such as spontaneous
+parametric down-conversion (SPDC) and four-wave mixing
+(FWM), are enhanced.
+In addition, it decreases insertion
+losses that occur in the fiber/chip interface. A single photon source can be created using quantum dots and periodically poled nonlinear crystals (quasi-phase matching). Quantum dots are a good candidate for photon sources due to the
+near-ideal single-photon emission and entangled photon-pair
+generation. Quantum dot can be embedded in a photonic crystal waveguide49,61 as shown in Fig. 2d. The photonic crystal waveguide can achieve a near-unity probability for a single exciton (β = ∼98%) that can be utilized for highly efficient single-photon source49. Quantum dot can also be integrated on a waveguide by layered semiconductor50 as shown
+in Fig. 2e. A layer of gallium selenide (GaSe) single crystal
+with a thickness of 90 nm was placed on Si3N4 rib waveguide
+for coupling a single-photon source to a waveguide. The integration can be improved by III-V semiconductor GaAs with
+Self-assembled InAs/GaAs QD heterogeneous fabricated on
+a silicon nitride51 as shown in Fig. 2f. The advantage of using GaAs is its well-established fabrication processes, which
+facilitate the fabrication of desired applications. For example,
+in the integrated silicon nitride waveguide, the GaAs layer can
+be designed and fabricated as a tapered waveguide for better
+mode conversion and as a photonic crystal reflector for high
+efficiency.
+Another method for generating single-photon sources on
+a waveguide is quasi-phase-matching (QPM) nonlinear frequency conversion, achieved by periodically poling a nonlinear crystal62. By applying an electric field on a material with
+ferroelectric properties, as illustrated in Fig. 2g, the signs of
+the elements in χ(2) tensor are switched, which can be manipulated in the required configuration for QPM. One of the materials that can be periodically poled is lithium niobate (LN -
+LiNbO3)63. Lithium niobate is an artificial ferroelectric crystal with strong χ(2) nonlinearity. A quasi-phase matching is
+obtained by periodic poling along the propagation direction
+of the LN waveguide, which offsets the mismatch between
+the interacting waves as shown in Fig. 2g. The phase matching can be used for efficient nonlinear effects on a waveguide,
+such as second-harmonic generation52. This method was first
+introduced in 1993 for developing a blue laser using secondharmonic generation64. Figure 2h shows a periodically poled
+lithium niobate microring waveguide for a photon pair source
+at a wavelength of 1.55 µm53. Other materials for periodically
+poled waveguides are Potassium titanyl phosphate (KTiOPO4,
+KTP) and its isomorphs (KTP family). Figure 2i shows a photon pair source in periodically poled rubidium (Rb) exchanged
+Potassium Titanyl Phosphate (Rb:KTP) waveguide around
+800 nm54. It achieved a high nonlinear conversion efficiency
+(2%/W · cm2) and low-temperature sensitivity (39 pm/K),
+demonstrating excellent potential for sources in the visible
+spectrum. KTP presents unique advantages that could surpass
+LN in various high-power and visible-light applications. Notably, KTP’s lower photorefractive damage threshold and reduced coercivity fields make it a promising candidate for periodically poled waveguides. These properties open avenues for
+KTP’s use in high-power environments and support the fabrication of dense quasi-phase-matching (QPM) gratings suitable for visible wavelengths—applications where lithium niobate (LN) faces limitations. However, challenges remain in
+optimizing KTP’s crystal growth, which currently requires
+more costly techniques and yields smaller crystal sizes. Overcoming these hurdles could significantly expand KTP’s role
+in photonic device innovation.
+As mentioned, a significant drawback of photon pair
+sources is that their generation process is probabilistic, which
+poses a problem for quantum applications. A way to overcome this drawback is to convert a probabilistic source into a
+deterministic source by multiplexing, as illustrated in Fig. 2b.
+In 2001, Clausen proposed the concept of multiplexing using an optical feedback loop65.
+In 2002, Pittman showed
+the first experimental demonstration of multiplexing with a
+periodic time interval using a storage loop and an optical
+switch66. One method for multiplexing is multiplexing many
+photon pair sources to create a deterministic single-photon
+source67,68. The important component of sources multiplexing is the optical switch. The optical switch, such as optoceramic switches69 and electro-optic switches70, gets feedback from the heralding detector and switches the herald photon to the output. Another method is multiplexing a singlephoton source in time or frequency47,71.
+A probabilistic
+source generates photons at random times, and the heralding
+detector collects the timing. The herald photons are introduced into a delay system, while the switch adjusts the repetition rate according to the recorded timing.
+While single-photon sources can be integrated on a chip, efficient coupling of the high-power pump source to the waveguide remains essential to ensure sufficient excitation.
+The
+common method for enhancing the coupling efficiency is buttcoupling using a lensed fiber. Lensed fibers can focus the light
+to a spot size of 1 µm, which reduces the large mismatch
+between the waveguide dimensions and light spot size, increasing the coupling efficiency. Butt-coupling using a lensed
+fiber offers a straightforward and broadband-compatible approach, providing higher coupling efficiency than standard
+single-mode fibers. This method has been widely employed
+for interfacing various waveguide-integrated single-photon
+sources.51,53,72. For achieving a higher coupling efficiency,
+
+===== Page 6 =====
+
+Quantum-on-chip
+6
+a grating coupler can be fabricated on the waveguide, enhancing the coupling efficiency of the needed wavelength. Grating
+couplers operate based on the Bragg condition, making them
+inherently wavelength-selective and suitable only for a specific, pre-designed wavelength. It can achieve a coupling efficiency of ∼80%73,74. The grating can be in a tapered shape,
+focusing the light into the waveguide50,75. Implementing a
+tapered grating coupler in a single-photon source waveguide
+can be seen in Fig. 2e. It is worth noting that lensed fiber
+can be used for focusing the incident light into the grating in
+a small spot size, making the grating more compact. The coupler can be designed as a gradient grating or a metasurface,
+introducing distinctive propagation characteristics within the
+waveguide76–79. Another method that can be used is an edge
+coupler. It can achieve 90% coupling efficiency and can support broadband operation80.
+C.
+Single photon detectors
+Detecting a single photon is a complex yet crucial task for
+advancing quantum technology. Integrating single-photon detectors onto waveguides enables miniaturization and reduces
+optical coupling losses when interfacing with fibers, paving
+the way for more efficient and compact quantum devices.
+Several requirements must be met to achieve an ideal singlephoton detector. First, it must be susceptible and capable of
+detecting a single photon at 100% efficiency. Second, a few
+crucial parameters of the detectors must equal zero: the dark
+count rate, the dead time (or recovery time), and the timing
+jitter. Another essential attribute of a single-photon detector is its ability to resolve the number of photons in a pulse.
+Single-photon detectors are divided into non-photon-numberresolving detectors and photon-number-resolving detectors.
+The vast majority of single-photon detectors today are nonphoton-number-resolving, distinguishing only between the
+presence and absence of photons rather than counting individual photons. Since the first demonstration of single-photon
+detection using the photomultiplier tube (PMT) in 1949, the
+quest for effective photon detection has continued to evolve.
+The PMT, though able to amplify the signal up to 106 electrons, operates with limited efficiency (10–14%) and requires
+a vacuum tube, impacting its reliability, longevity, and size.
+Today, the single-photon avalanche diode (SPAD) or Geigermode avalanche photodiode (G-APD), conceived by Jun-ichi
+Nishizawa in 1952, has emerged as a highly practical alternative. By applying a high reverse bias just above the breakdown voltage in the p-n junction, SPADs utilize impact ionization, also known as the avalanche effect, to generate a
+self-sustaining current upon photon absorption. This Geigermode operation, introduced in the 1960s, presents a streamlined pathway for single-photon detection in compact, scalable designs, positioning SPADs as a cornerstone for advancing quantum technology and integrated photonics86,87. SPADs
+are fast and have low noise, but have low quantum efficiency
+(nd ≈65%). The advantage of SPAD is that it can operate at
+room temperature or slightly below it. In 2017, a lateral germanium (Ge) avalanche photodiode operating in Geiger mode
+was integrated on a silicon waveguide as a single-photon
+detector82 as shown in Fig. 3c. It achieved single-photon detection with an efficiency of 5.27% at an operation temperature of 80K.
+The emergence of superconducting nanowire single-photon
+detectors (SNSPDs) marks a significant advancement in photon detection technology. These innovative devices have the
+potential to transform the landscape of quantum optics and
+photonics, offering enhanced sensitivity and efficiency that
+could pave the way for new applications and breakthroughs
+in quantum information science81,88. SNPADs can achieve
+higher efficiency (> 90%), low dark count rate (< 0.01 cps)
+and high count rate from visible to near-infrared. Currently, a
+superconducting nanowire is applied close to the critical current. When even a single photon is absorbed, it contributes
+to the average resistivity. It greatly enhances the detection efficiency but requires a cryogenic temperature to operate. It
+was first presented in 2001 by a microbridge from niobium
+nitride films on sapphire substrate81. At a wavelength of 0.81
+µm, they achieved quantum efficiency of 20% for 0.81 µm
+photons, negligible dark counts and response time of ∼100
+ps. A few years later, the efficiency increased to 67%88 while
+reaching above 90% efficiency89. In 2011, the first superconducting nanowire single photon detector on a waveguide was
+presented83 as shown in Fig. 3d. Niobium nitride nanowires
+were fabricated on a GaAs ridge waveguide for sensing the
+evanescent field, achieving ∼20% efficiency at the telecommunication range.
+A key property of single-photon detectors is their photonnumber-resolving (PNR) capability. It is essential when photon number counting is important in quantum protocols such
+as quantum computing and quantum communication.
+A
+transition-edge sensor (TES) can achieve PNR and be utilized for quantum applications90. It acts as a bolometer for
+single-photon detection. The temperature of a metallic detecting area is maintained at a superconducting state close to the
+ohmic state. The absorption of a photon causes a small rise
+in the temperature, which increases the resistance at a linear
+response, assuming that not too many photons are absorbed.
+The resistance is measured by an integrating circuit and the
+number of photons is calculated. TES was integrated on a
+lithium niobate waveguide, as shown in Fig. 3e, achieving a
+resolution of up to 6 photons at 1550 nm84. The main drawback of TES is a slow operation, two orders of magnitude
+higher than the needed speed for quantum computing91,92.
+Another solution is modifying an SNSPD for PNR quantum
+applications. By fabricating four niobium nitride (NbN) superconducting nanowires on a GaAs waveguide, as shown in
+Fig. 3f, a four-photon resolution was achieved85. The main
+drawback is that both TES and SNSPD require cryogenic temperatures to operate, limiting their applications.
+D.
+Photon manipulation components
+At the heart of quantum technology lies the manipulation of photons, which possess various degrees of freedom
+-polarization, phase, spatial, spectral, and temporal- that can
+
+===== Page 7 =====
+
+Quantum-on-chip
+7
+FIG. 3. Single photon detectors. (a) Illustration of the concept of a single-photon avalanche photodiode (SPAD). (b) Illustration of the concept
+of superconducting nanowire single-photon detector (SNSPD) (reproduced from81). (c) Ge-on-Si lateral avalanche photodiode waveguide
+(reproduced from82). (d) Superconducting nanowire single-photon detector waveguide (reproduced from83). (e) Photon-number-resolving
+transition edge sensor integrated on a lithium niobate waveguide (reproduced from84). (f) Photon-number-resolving four niobium nitride
+(NbN) superconducting nanowires integrated on a GaAs waveguide (reproduced from85).
+be controlled. Each dimension opens up unique avenues for
+encoding and processing quantum information. For instance,
+the polarization states of photons in a waveguide can be harnessed for polarization-encoded qubits, providing a robust
+framework for quantum computation and communication. To
+achieve this level of control, a diverse array of structures can
+be employed to manipulate these degrees of freedom. The
+efficacy of such manipulations is significantly enhanced by
+optical elements, such as polarization splitter-rotators93,94, directional couplers95, phase shifters96,97 and Mach-Zehnder interferometers, which can be integrated into optical waveguides, facilitating intricate photon management and fostering
+advancements in quantum technologies. The Pockels electrooptic effect or thermo-optic effect can be used to perform
+phase modulation. The Pockels effect, on the one hand, can
+be utilized for high-speed applications98, but is limited to noncentrosymmetric materials, such as lithium niobate (LiNbO3)
+and gallium arsenide (GaAs).
+The thermo-optic effect, on
+the other hand, can be utilized for slow-speed applications97
+and is readily achievable in silicon. Integrated photonics can
+achieve polarization modulation more effectively than free
+space. While free space requires bulky optical components,
+an optical waveguide can achieve polarization manipulation
+by a laser-written twisted waveguide99,100.
+V.
+APPLICATIONS AND THE FUTURE DIRECTIONS
+Optical chips are revolutionizing quantum photonics by
+providing compact, scalable, and highly efficient platforms
+for manipulating the quantum states of light. Unlike conventional bulk optical systems, these chips integrate intricate optical circuits onto a single chip, allowing precise photon control
+while significantly reducing noise and environmental interferences. This breakthrough has catalyzed a wide array of applications, including quantum communication, cryptography,
+ultra-sensitive sensing, and quantum computing.
+As the technology evolves, optical chips are emerging as
+pivotal components for next-generation quantum technologies. This chapter explores the transformative applications of
+optical chips in quantum photonics, highlighting innovations
+in integrated photonic circuits, single-photon sources, and
+quantum gate operations. By enabling scalable, reliable, and
+commercially viable solutions, optical chips are unlocking
+new possibilities for advancing quantum systems and reshaping the technological landscape.
+Figure 4 shows a few quantum technologies implemented
+on a chip.
+A.
+Quantum computing and simulators
+Quantum computing holds great potential to enhance classical computing and can be leveraged to solve complex problems, including those in data science and quantum chemistry. It exploits quantum phenomena such as entanglement
+and superposition to achieve higher computational capabilities. Mathematician Yuri Manin first proposed quantum computing in 1980105, and a year later, Richard Feynman pro-
+
+===== Page 8 =====
+
+Quantum-on-chip
+8
+FIG. 4. Quantum technology on a chip. (a) Programmable two-qubit quantum processor for quantum information processing on a chip
+(reproduced from101). (b) Programmable four-photon graph states on a silicon-on-insulator chip (reproduced from102). (c) Quantum key
+distribution (QKD) with low error rate on integrated indium phosphide chip (reproduced from103). (d) Integrated hybrid quantum random
+number generator (QRNG) with a high generation rate on a silicon-on-insulator chip (reproduced from104).
+posed it106. Feynman declared that quantum system couldn’t
+be simulated with the classical system; ’Nature isn’t classical, dammit, and if you want to make a simulation of nature,
+you’d better make it quantum mechanical, and by golly, it’s a
+wonderful problem because it doesn’t look so easy’.
+Photons are light particles that can be manipulated and
+controlled to carry and process quantum information.
+In
+photonics-based quantum computing, qubits are encoded in
+the quantum states of photons and serve as the basic components of quantum computing. As opposed to binary codebased machines where a bit can only have values of 0 and 1,
+a quantum bit (or qubit) can store information in the superposition of states; |ψ⟩= α|0⟩+ β|1⟩where α and β are complex numbers (|α|2 + |β|2=1). Superposition enables quantum computing to tackle problems with high computational
+complexity. Each additional qubit doubles the computational
+space, resulting in an exponential increase that reaches 2n
+states. In classical computing, achieving the same computational space requires doubling the number of bits, resulting in
+significantly slower growth in capacity. The two most widely
+used methods for encoding qubits in photons are polarization
+encoding and path encoding. Quantum logic gates, such as the
+Controlled-NOT (CNOT), Hadamard (H), and Toffoli gates,
+are crucial for manipulating quantum information. The first
+quantum logic gate integrated on a chip was introduced in
+2008, marking a key milestone in the development of quantum photonics on integrated platforms107.
+Quantum simulators are an important application of quantum computers.
+Quantum simulators simulate and solve
+complex computational problems by using entanglement and
+many-particle quantum phenomena. The first quantum simulator was in 2002. A Rb Bose-Einstein condensate was used
+to observe a quantum phase transition108.
+B.
+Quantum sensing and metrology
+Quantum sensing and metrology are among the most
+promising fields within quantum information science.
+It
+is the measurement of physical quantities using quantum
+mechanical laws for sensitivity beyond the classical limit,
+such as atomic clocks109, nuclear magnetic and paramagnetic
+resonances110,111, and electron microscopes.
+For example,
+classical measurements with a clock can achieve time resolution of femtoseconds (10−15 seconds) to attoseconds (10−18
+seconds).
+Modern atomic clocks, particularly optical lattice clocks and ion-based atomic clocks, achieve resolutions
+far beyond those of classical clocks. State-of-the-art atomic
+clocks, such as those based on strontium or ytterbium in optical lattice setups, can achieve timing resolution on the order
+of attoseconds. This is achieved by exploiting atomic transitions in the optical range, where higher frequencies allow for
+finer time division. Quantum sensing can probe temperature,
+electric and magnetic fields, forces, etc. Various research areas can benefit from the enhanced sensitivity of quantum sensing, including biological systems, spectroscopy and frequency
+measurements, gravitational wave detection, and magnetometry.
+Phase estimation allows quantum systems to achieve measurement precisions that surpass the standard quantum limit
+(SQL), which bounds classical measurement accuracy due to
+quantum noise. Therefore, phase estimation is highly preferable and widely used in quantum metrology. This technique
+is foundational for achieving high precision in measurements
+
+===== Page 9 =====
+
+Quantum-on-chip
+9
+at the quantum level, as it enables the detection of extremely
+small changes in physical quantities.
+The super-resolution
+for phase estimation is more accessible and less demanding.
+The most common method to estimate the phase shift between two optical paths is the Mach-Zehnder interferometer
+(MZI)112,113.
+Integrated circuits enable scalable experimental platforms,
+providing control over noise effects such as temperature and
+vibrations, which facilitates precise phase control that is challenging to achieve in bulk optical setups. A promising platform for quantum sensing is the photonic crystal, which can
+be engineered with a photonic bandgap114,115. Solid dielectric
+high-Q cavities, such as disk resonators116, ring resonators117,
+and Mie nanoparticle resonators118,119, offer another viable
+platform. These structures can be used to implement singlephoton-controlled gates.
+Quantum atomic clocks have enabled timekeeping to reach
+the attosecond range, achieving resolutions and stabilities far
+beyond classical limitations.
+Their accuracy, measured in
+parts per quintillion, is foundational to advancing fields like
+navigation, telecommunications, and fundamental physics.
+C.
+Quantum cryptography
+Quantum cryptography utilizes quantum mechanics for
+cryptographic tasks such as quantum key distribution (QKD),
+quantum money and random number generator (RNG) to
+name a few. Photons have less interaction with the environment, saving the coded information. The fundamental concept behind Quantum cryptography is the no-cloning theorem.
+Quantum cryptography utilizes photons in quantum entanglement, where two photons are linked to each other. In 1982,
+Wootters and Zurek demonstrated that it is impossible to clone
+a quantum system or state120. When one attempts to measure
+a single photon, a change occurs in the other photon, preventing the information from being cloned or read.
+1.
+Quantum key distribution - private key and public key
+In the 1960s, the idea of Quantum cryptography (private
+key) was first proposed by Stephen Wiesner.
+He wrote a
+paper in 1968 but didn’t publish it till 1982121.
+Later in
+1984, building upon Stephen Wiesner’s pioneering concept
+of quantum money and conjugate coding, Charles Bennett
+and Gilles Brassard introduced a groundbreaking protocol for
+quantum key distribution (QKD), known as BB84. This protocol leveraged the fundamental principles of quantum mechanics—such as the no-cloning theorem and the Heisenberg uncertainty principle—to enable two parties to securely generate
+a shared cryptographic key while ensuring that any eavesdropping attempt would be detectable. By encoding information
+in the polarization states of single photons, BB84 established
+the foundation for modern quantum cryptography, laying the
+groundwork for secure communication resistant to computational attacks.
+Security relies on the use of an unpredictable key, which is
+generated by quantum random number generators (QRNGs).
+Unlike pseudo-random number generators, which follow deterministic patterns, quantum random number generators
+(QRNGs) produce genuinely random numbers. The integration of quantum photonics technology significantly reduces
+device size, making QRNGs more compact and practical for
+secure applications.
+In summary, optical chips for quantum photonics represent a transformative technology that integrates photonics and
+quantum mechanics to manipulate light at the quantum level.
+These chips are essential for advancing quantum computing, secure communication, and precision sensing by enabling
+the controlled manipulation of single photons. Key developments, including low-loss waveguides, efficient single-photon
+sources, and high-fidelity quantum gates, have significantly
+enhanced scalability and performance. Recent advances in
+materials science and nanofabrication, particularly in silicon
+photonics, have further enhanced chip precision and integration with classical electronics. As research progresses, optical
+chips are poised to revolutionize quantum technologies, enabling compact quantum processors, ultra-secure communication networks, and highly precise measurement systems.
+DATA AVAILABILITY STATEMENT
+Data sharing is not applicable to this article as no new data
+were created or analyzed in this study.
+AUTHOR DECLARATIONS
+Conflict of Interest
+The authors have no conflicts to disclose.
+1M. Planck, “On the law of distribution of energy in the normal spectrum,”
+Annalen der physik 4, 1 (1901).
+2A. Einstein, “Über einem die erzeugung und verwandlung des lichtes betreffenden heuristischen gesichtspunkt,” Annalen der physik 4 (1905).
+3L. T. Troland, “On the measurement of visual stimulation intensities.”
+Journal of experimental Psychology 2, 1 (1917).
+4G. N. Lewis, “The conservation of photons,” Nature 118, 874–875 (1926).
+5E. Rutherford, “The scattering of α and β particles by matter and the structure of the atom,” The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science 21, 669–688 (1911).
+6N. Bohr, “On the constitution of atoms and molecules. part ii: Systems
+containing only a single nucleus,” Philosophical Magazine 26 (1913).
+7L. De Broglie, “Waves and quanta,” Nature 112, 540–540 (1923).
+8C. Davisson and L. H. Germer, “The scattering of electrons by a single
+crystal of nickel,” Nature 119, 558–560 (1927).
+9C. Davisson and L. H. Germer, “Diffraction of electrons by a crystal of
+nickel,” Physical review 30, 705 (1927).
+10C. J. Davisson and L. H. Germer, “Reflection of electrons by a crystal of
+nickel,” Proceedings of the National Academy of Sciences 14, 317–322
+(1928).
+11E. Schrödinger, “Quantisierung als eigenwertproblem,” Annalen der
+physik 385, 437–490 (1926).
+12W. Heisenberg, “Über quantentheoretische umdeutung kinematischer und
+mechanischer beziehungen,” Z. Phys 33, 879–893 (1925).
+13M. Born and P. Jordan, “Zur quantenmechanik,” Zeitschrift für Physik 34,
+858–888 (1925).
+
+===== Page 10 =====
+
+Quantum-on-chip
+10
+14M. Born, W. Heisenberg,
+and P. Jordan, “Zur quantenmechanik. ii.”
+Zeitschrift für Physik 35, 557–615 (1926).
+15P. A. M. Dirac, “On the theory of quantum mechanics,” Proceedings of the
+Royal Society of London. Series A, Containing Papers of a Mathematical
+and Physical Character 112, 661–677 (1926).
+16P. A. M. Dirac, “The quantum theory of the electron,” Proceedings of the
+Royal Society of London. Series A, Containing Papers of a Mathematical
+and Physical Character 117, 610–624 (1928).
+17R. B. Patel, J. Ho, F. Ferreyrol, T. C. Ralph, and G. J. Pryde, “A quantum
+fredkin gate,” Science advances 2, e1501531 (2016).
+18Y. Li, L. Wan, H. Zhang, H. Zhu, Y. Shi, L. K. Chin, X. Zhou, L. C.
+Kwek, and A. Q. Liu, “Quantum fredkin and toffoli gates on a versatile
+programmable silicon photonic chip,” npj Quantum Information 8, 112
+(2022).
+19A. Katiyi and A. Karabchevsky, “Figure of merit of all-dielectric waveguide structures for absorption overtone spectroscopy,” Journal of Lightwave Technology 35, 2902–2908 (2017).
+20K. C. Kao and G. A. Hockham, “Dielectric-fibre surface waveguides for
+optical frequencies,” in Proceedings of the Institution of Electrical Engineers, Vol. 113 (IET, 1966) pp. 1151–1158.
+21A. Karabchevsky, A. Katiyi, A. S. Ang, and A. Hazan, “On-chip nanophotonics and future challenges,” Nanophotonics 9, 3733–3753 (2020).
+22A. Katiyi and A. Karabchevsky, “Passive and active materials for advanced
+photonic integrated circuitry in visible and near-infrared,” in Encyclopedia
+of Materials: Electronics (Elsevier, 2023) pp. V2–193.
+23J. S. Orcutt, B. Moss, C. Sun, J. Leu, M. Georgas, J. Shainline,
+E. Zgraggen, H. Li, J. Sun, M. Weaver, et al., “Open foundry platform
+for high-performance electronic-photonic integration,” Optics express 20,
+12222–12232 (2012).
+24D. M. Kita, B. Miranda, D. Favela, D. Bono, J. Michon, H. Lin, T. Gu, and
+J. Hu, “High-performance and scalable on-chip digital fourier transform
+spectroscopy,” Nature communications 9, 4405 (2018).
+25J. Cardenas, C. B. Poitras, J. T. Robinson, K. Preston, L. Chen,
+and
+M. Lipson, “Low loss etchless silicon photonic waveguides,” Optics express 17, 4752–4757 (2009).
+26D. Bose, M. W. Harrington, A. Isichenko, K. Liu, J. Wang, N. Chauhan,
+Z. L. Newman, and D. J. Blumenthal, “Anneal-free ultra-low loss silicon nitride integrated photonics,” Light: Science & Applications 13, 156
+(2024).
+27X. Ji, Y. Okawachi, A. Gil-Molina, M. Corato-Zanarella, S. Roberts, A. L.
+Gaeta, and M. Lipson, “Ultra-low-loss silicon nitride photonics based on
+deposited films compatible with foundries,” Laser & Photonics Reviews
+17, 2200544 (2023).
+28A. Subramanian, P. Neutens, A. Dhakal, R. Jansen, T. Claes, X. Rottenberg, F. Peyskens, S. Selvaraja, P. Helin, B. Du Bois, et al., “Low-loss singlemode pecvd silicon nitride photonic wire waveguides for 532–900 nm
+wavelength window fabricated within a cmos pilot line,” IEEE Photonics
+Journal 5, 2202809–2202809 (2013).
+29W. D. Sacher, X. Luo, Y. Yang, F.-D. Chen, T. Lordello, J. C. Mak, X. Liu,
+T. Hu, T. Xue, P. Guo-Qiang Lo, et al., “Visible-light silicon nitride waveguide devices and implantable neurophotonic probes on thinned 200 mm
+silicon wafers,” Optics express 27, 37400–37418 (2019).
+30P. A. Verrinder, L. Wang, J. Fridlander, F. Sang, V. Rosborough, M. Nickerson, G. Yang, M. Stephen, L. Coldren, and J. Klamkin, “Gallium arsenide
+photonic integrated circuit platform for tunable laser applications,” IEEE
+Journal of Selected Topics in Quantum Electronics 28, 1–9 (2021).
+31L. Chang, A. Boes, X. Guo, D. T. Spencer, M. Kennedy, J. D. Peters,
+N. Volet, J. Chiles, A. Kowligy, N. Nader, et al., “Heterogeneously integrated gaas waveguides on insulator for efficient frequency conversion,”
+Laser & Photonics Reviews 12, 1800149 (2018).
+32Y. Wang, Y. Jiao, and K. Williams, “Scaling photonic integrated circuits
+with inp technology: A perspective,” APL Photonics 9 (2024).
+33M. Smit, K. Williams, and J. Van Der Tol, “Past, present, and future of
+inp-based photonic integration,” Apl Photonics 4 (2019).
+34Y. Qi and Y. Li, “Integrated lithium niobate photonics,” Nanophotonics 9,
+1287–1320 (2020).
+35M. Yu, B. Desiatov, Y. Okawachi, A. L. Gaeta,
+and M. Lonˇcar, “Coherent two-octave-spanning supercontinuum generation in lithium-niobate
+waveguides,” Optics letters 44, 1222–1225 (2019).
+36L. Cai, A. Mahmoud, M. Khan, M. Mahmoud, T. Mukherjee, J. Bain,
+and G. Piazza, “Acousto-optical modulation of thin film lithium niobate
+waveguide devices,” Photonics Research 7, 1003–1013 (2019).
+37C. Wang, M. Zhang, X. Chen, M. Bertrand, A. Shams-Ansari, S. Chandrasekhar, P. Winzer, and M. Lonˇcar, “Integrated lithium niobate electrooptic modulators operating at cmos-compatible voltages,” Nature 562,
+101–104 (2018).
+38F. Xia, T. Mueller, Y.-m. Lin, A. Valdes-Garcia, and P. Avouris, “Ultrafast
+graphene photodetector,” Nature nanotechnology 4, 839–843 (2009).
+39G. Kovacevic, C. Phare, S. Y. Set, M. Lipson, and S. Yamashita, “Ultrahigh-speed graphene optical modulator design based on tight field confinement in a slot waveguide,” Applied Physics Express 11, 065102 (2018).
+40Y. Ding, X. Guan, X. Zhu, H. Hu, S. I. Bozhevolnyi, L. K. Oxenløwe,
+K. Jin, N. A. Mortensen, and S. Xiao, “Efficient electro-optic modulation
+in low-loss graphene-plasmonic slot waveguides,” Nanoscale 9, 15576–
+15581 (2017).
+41J. Guo, J. Li, C. Liu, Y. Yin, W. Wang, Z. Ni, Z. Fu, H. Yu, Y. Xu, Y. Shi,
+et al., “High-performance silicon- graphene hybrid plasmonic waveguide
+photodetectors beyond 1.55 µm,” Light: Science & Applications 9, 29
+(2020).
+42Z. Liu and H. N. Alshareef, “Mxenes for optoelectronic devices,” Advanced electronic materials 7, 2100295 (2021).
+43D. Zhang, D. Shah, A. Boltasseva, and Y. Gogotsi, “Mxenes for photonics,” ACS photonics 9, 1108–1116 (2022).
+44Y. Wang, Y. Wang,
+and J. He, “2d transition metal carbides (mxenes)
+for third order nonlinear optics: status and prospects,” Laser & Photonics
+Reviews 17, 2200733 (2023).
+45N. Matsuda, H. Le Jeannic, H. Fukuda, T. Tsuchizawa, W. J. Munro,
+K. Shimizu, K. Yamada, Y. Tokura, and H. Takesue, “A monolithically
+integrated polarization entangled photon pair source on a silicon chip,”
+Scientific reports 2, 817 (2012).
+46J. W. Silverstone, D. Bonneau, K. Ohira, N. Suzuki, H. Yoshida, N. Iizuka,
+M. Ezaki, C. M. Natarajan, M. G. Tanner, R. H. Hadfield, et al., “Onchip quantum interference between silicon photon-pair sources,” Nature
+Photonics 8, 104–108 (2014).
+47A. L. Migdall, D. Branning, and S. Castelletto, “Tailoring single-photon
+and multiphoton probabilities of a single-photon on-demand source,”
+Physical Review A 66, 053805 (2002).
+48J. F. Clauser, “Experimental distinction between the quantum and classical
+field-theoretic predictions for the photoelectric effect,” Physical Review D
+9, 853 (1974).
+49M. Arcari, I. Söllner, A. Javadi, S. Lindskov Hansen, S. Mahmoodian,
+J. Liu, H. Thyrrestrup, E. H. Lee, J. D. Song, S. Stobbe, et al., “Near-unity
+coupling efficiency of a quantum emitter to a photonic crystal waveguide,”
+Physical review letters 113, 093603 (2014).
+50P. Tonndorf, O. Del Pozo-Zamudio, N. Gruhler, J. Kern, R. Schmidt, A. I.
+Dmitriev, A. P. Bakhtinov, A. I. Tartakovskii, W. Pernice, S. Michaelis de
+Vasconcellos, et al., “On-chip waveguide coupling of a layered semiconductor single-photon source,” Nano letters 17, 5446–5451 (2017).
+51M. Davanco, J. Liu, L. Sapienza, C.-Z. Zhang, J. V. De Miranda Cardoso,
+V. Verma, R. Mirin, S. W. Nam, L. Liu, and K. Srinivasan, “Heterogeneous
+integration for on-chip quantum photonic circuits with single quantum dot
+devices,” Nature communications 8, 889 (2017).
+52C. Wang, C. Langrock, A. Marandi, M. Jankowski, M. Zhang, B. Desiatov,
+M. M. Fejer, and M. Lonˇcar, “Ultrahigh-efficiency wavelength conversion
+in nanophotonic periodically poled lithium niobate waveguides,” Optica 5,
+1438–1441 (2018).
+53Z. Ma, J.-Y. Chen, Z. Li, C. Tang, Y. M. Sua, H. Fan, and Y.-P. Huang,
+“Ultrabright quantum photon sources on chip,” Physical Review Letters
+125, 263602 (2020).
+54C. Eigner, L. Padberg, M. Santandrea, H. Herrmann, B. Brecht, and C. Silberhorn, “Spatially single mode photon pair source at 800 nm in periodically poled rubidium exchanged ktp waveguides,” Optics Express 28,
+32925–32935 (2020).
+55T. Flissikowski, A. Hundt, M. Lowisch, M. Rabe, and F. Henneberger,
+“Photon beats from a single semiconductor quantum dot,” Physical Review
+Letters 86, 3172 (2001).
+56S. Buckley, K. Rivoire, and J. Vuˇckovi´c, “Engineered quantum dot singlephoton sources,” Reports on Progress in Physics 75, 126503 (2012).
+
+===== Page 11 =====
+
+Quantum-on-chip
+11
+57Y.-M. He, Y. He, Y.-J. Wei, D. Wu, M. Atatüre, C. Schneider, S. Höfling,
+M. Kamp, C.-Y. Lu, and J.-W. Pan, “On-demand semiconductor singlephoton source with near-unity indistinguishability,” Nature nanotechnology 8, 213–217 (2013).
+58M. Keller, B. Lange, K. Hayasaka, W. Lange, and H. Walther, “A calcium ion in a cavity as a controlled single-photon source,” New Journal of
+Physics 6, 95 (2004).
+59H. Barros, A. Stute, T. Northup, C. Russo, P. Schmidt,
+and R. Blatt,
+“Deterministic single-photon source from a single ion,” New Journal of
+Physics 11, 103004 (2009).
+60A. Müller, S. Schippers, J. Hellhund, K. Holste, A. Kilcoyne, R. Phaneuf,
+C. Ballance, and B. McLaughlin, “Single-photon single ionization of w+
+ions: experiment and theory,” Journal of Physics B: Atomic, Molecular
+and Optical Physics 48, 235203 (2015).
+61A. Laucht, S. Pütz, T. Günthner, N. Hauke, R. Saive, S. Frédérick,
+M. Bichler, M.-C. Amann, A. Holleitner, M. Kaniber, et al., “A
+waveguide-coupled on-chip single-photon source,” Physical Review X 2,
+011014 (2012).
+62D. S. Hum and M. M. Fejer, “Quasi-phasematching,” Comptes Rendus
+Physique 8, 180–198 (2007).
+63V. Y. Shur, A. Akhmatkhanov, and I. Baturin, “Micro-and nano-domain
+engineering in lithium niobate,” Applied Physics Reviews 2 (2015).
+64M. Yamada, N. Nada, M. Saitoh, and K. Watanabe, “First-order quasiphase matched linbo3 waveguide periodically poled by applying an external field for efficient blue second-harmonic generation,” Applied Physics
+Letters 62, 435–436 (1993).
+65J. Clausen, H. Hansen, L. Knöll, J. Mlynek, and D.-G. Welsch, “Conditional quantum-state engineering in repeated 2-photon down-conversion,”
+Applied Physics B 72, 43–50 (2001).
+66T. Pittman, B. Jacobs, and J. Franson, “Single photons on pseudodemand
+from stored parametric down-conversion,” Physical Review A 66, 042303
+(2002).
+67A. Christ and C. Silberhorn, “Limits on the deterministic creation of pure
+single-photon states using parametric down-conversion,” Physical Review
+A 85, 023829 (2012).
+68J. Tiedau, T. J. Bartley, G. Harder, A. E. Lita, S. W. Nam, T. Gerrits, and
+C. Silberhorn, “Scalability of parametric down-conversion for generating
+higher-order fock states,” Physical Review A 100, 041802 (2019).
+69C. Xiong, T. D. Vo, M. Collins, J. Li, T. Krauss, M. Steel, A. Clark, and
+B. Eggleton, “Bidirectional multiplexing of heralded single photons from
+a silicon chip,” Optics letters 38, 5176–5179 (2013).
+70T. Meany, L. A. Ngah, M. J. Collins, A. S. Clark, R. J. Williams, B. J.
+Eggleton, M. Steel, M. J. Withford, O. Alibart, and S. Tanzilli, “Hybrid
+photonic circuit for multiplexed heralded single photons,” Laser & photonics reviews 8, L42–L46 (2014).
+71C. Joshi, A. Farsi, S. Clemmen, S. Ramelow, and A. L. Gaeta, “Frequency
+multiplexing for quasi-deterministic heralded single-photon sources,” Nature communications 9, 847 (2018).
+72M. J. Collins, C. Xiong, I. H. Rey, T. D. Vo, J. He, S. Shahnia, C. Reardon,
+T. F. Krauss, M. Steel, A. S. Clark, et al., “Integrated spatial multiplexing of heralded single-photon sources,” Nature communications 4, 2582
+(2013).
+73W. D. Sacher, Y. Huang, L. Ding, B. J. Taylor, H. Jayatilleka, G.-Q. Lo,
+and J. K. Poon, “Wide bandwidth and high coupling efficiency si3n4-onsoi dual-level grating coupler,” Optics express 22, 10938–10947 (2014).
+74R. Marchetti, C. Lacava, A. Khokhar, X. Chen, I. Cristiani, D. J. Richardson, G. T. Reed, P. Petropoulos, and P. Minzioni, “High-efficiency gratingcouplers: demonstration of a new design strategy,” Scientific reports 7,
+16670 (2017).
+75Y. Wang, X. Wang, J. Flueckiger, H. Yun, W. Shi, R. Bojko, N. A. Jaeger,
+and L. Chrostowski, “Focusing sub-wavelength grating couplers with low
+back reflections for rapid prototyping of silicon photonic circuits,” Optics
+express 22, 20652–20662 (2014).
+76N. V. Sapra, D. Vercruysse, L. Su, K. Y. Yang, J. Skarda, A. Y. Piggott,
+and J. Vuˇckovi´c, “Inverse design and demonstration of broadband grating
+couplers,” IEEE Journal of Selected Topics in Quantum Electronics 25,
+1–7 (2019).
+77D. Gu, C. Liang, L. Sun, H. Chen, Y. Chen, and L. Yang, “Optical metasurfaces for waveguide couplers with uniform efficiencies at rgb wavelengths,” Optics Express 29, 29149–29164 (2021).
+78T. Chen, M. Xu, M. Pu, Q. Zeng, Y. Zheng, Y. Xiao, Y. Ha, Y. Guo,
+F. Zhang, N. Chi, et al., “Freeform metasurface-assisted waveguide coupler for guided wave polarization manipulation and spin–orbit angular momentum conversion,” ACS Photonics 11, 1051–1059 (2024).
+79C. Gong, J. Zhang, and S. He, “Hybrid unidirectional meta-coupler for
+vertical incidence to a high-refractive-index waveguide in telecom wavelength,” Optics Letters 42, 5098–5101 (2017).
+80B. B. Bakir, A. V. De Gyves, R. Orobtchouk, P. Lyan, C. Porzier, A. Roman, and J.-M. Fedeli, “Low-loss (<1 db) and polarization-insensitive
+edge fiber couplers fabricated on 200-mm silicon-on-insulator wafers,”
+IEEE Photonics Technology Letters 22, 739–741 (2010).
+81G. Gol’Tsman, O. Okunev, G. Chulkova, A. Lipatov, A. Semenov,
+K. Smirnov, B. Voronov, A. Dzardanov, C. Williams, and R. Sobolewski,
+“Picosecond superconducting single-photon optical detector,” Applied
+physics letters 79, 705–707 (2001).
+82N. J. Martinez, M. Gehl, C. T. Derose, A. L. Starbuck, A. T. Pomerene,
+A. L. Lentine, D. C. Trotter, and P. S. Davids, “Single photon detection in a
+waveguide-coupled ge-on-si lateral avalanche photodiode,” Optics express
+25, 16130–16139 (2017).
+83J. Sprengers, A. Gaggero, D. Sahin, S. Jahanmirinejad, G. Frucci, F. Mattioli, R. Leoni, J. Beetz, M. Lermer, M. Kamp, et al., “Waveguide superconducting single-photon detectors for integrated quantum photonic circuits,”
+Applied Physics Letters 99 (2011).
+84J. P. Höpker, T. Gerrits, A. Lita, S. Krapick, H. Herrmann, R. Ricken,
+V. Quiring, R. Mirin, S. W. Nam, C. Silberhorn, et al., “Integrated transition edge sensors on titanium in-diffused lithium niobate waveguides,”
+APL Photonics 4 (2019).
+85D. Sahin, A. Gaggero, Z. Zhou, S. Jahanmirinejad, F. Mattioli, R. Leoni,
+J. Beetz, M. Lermer, M. Kamp, S. Höfling, et al., “Waveguide photonnumber-resolving detectors for quantum photonic integrated circuits,” Applied Physics Letters 103 (2013).
+86R. H. Haitz, “Model for the electrical behavior of a microplasma,” Journal
+of Applied Physics 35, 1370–1376 (1964).
+87R. H. Haitz, “Mechanisms contributing to the noise pulse rate of avalanche
+diodes,” Journal of Applied Physics 36, 3123–3131 (1965).
+88K. M. Rosfjord, J. K. Yang, E. A. Dauler, A. J. Kerman, V. Anant, B. M.
+Voronov, G. N. Gol’Tsman, and K. K. Berggren, “Nanowire single-photon
+detector with an integrated optical cavity and anti-reflection coating,” Optics express 14, 527–534 (2006).
+89F. Marsili, V. B. Verma, J. A. Stern, S. Harrington, A. E. Lita, T. Gerrits,
+I. Vayshenker, B. Baek, M. D. Shaw, R. P. Mirin, et al., “Detecting single
+infrared photons with 93% system efficiency,” Nature Photonics 7, 210–
+214 (2013).
+90B. Cabrera, R. Clarke, P. Colling, A. Miller, S. Nam, and R. Romani,
+“Detection of single infrared, optical, and ultraviolet photons using superconducting transition edge sensors,” Applied Physics Letters 73, 735–737
+(1998).
+91B. Calkins, A. E. Lita, A. E. Fox, and S. Woo Nam, “Faster recovery time
+of a hot-electron transition-edge sensor by use of normal metal heat-sinks,”
+Applied Physics Letters 99 (2011).
+92A. Lamas-Linares, B. Calkins, N. A. Tomlin, T. Gerrits, A. E. Lita,
+J. Beyer, R. P. Mirin, and S. Woo Nam, “Nanosecond-scale timing jitter for single photon detection in transition edge sensors,” Applied Physics
+Letters 102 (2013).
+93Y. Ma, Y. Liu, H. Guan, A. Gazman, Q. Li, R. Ding, Y. Li, K. Bergman,
+T. Baehr-Jones,
+and M. Hochberg, “Symmetrical polarization splitter/rotator design and application in a polarization insensitive wdm receiver,” Optics express 23, 16052–16062 (2015).
+94D. Dai and H. Wu, “Realization of a compact polarization splitter-rotator
+on silicon,” Optics letters 41, 2346–2349 (2016).
+95P. Xu, J. Zheng, J. K. Doylend, and A. Majumdar, “Low-loss and broadband nonvolatile phase-change directional coupler switches,” Acs Photonics 6, 553–557 (2019).
+96T. Ikeda, K. Takahashi, Y. Kanamori, and K. Hane, “Phase-shifter using
+submicron silicon waveguide couplers with ultra-small electro-mechanical
+actuator,” Optics express 18, 7031–7037 (2010).
+97N. C. Harris, Y. Ma, J. Mower, T. Baehr-Jones, D. Englund, M. Hochberg,
+and C. Galland, “Efficient, compact and low loss thermo-optic phase
+shifter in silicon,” Optics express 22, 10487–10493 (2014).
+
+===== Page 12 =====
+
+Quantum-on-chip
+12
+98P. O. Weigel, J. Zhao, K. Fang, H. Al-Rubaye, D. Trotter, D. Hood, J. Mudrick, C. Dallo, A. T. Pomerene, A. L. Starbuck, et al., “Bonded thin
+film lithium niobate modulator on a silicon photonics platform exceeding
+100 ghz 3-db electrical modulation bandwidth,” Optics express 26, 23728–
+23739 (2018).
+99F. Morozko, A. Novitsky, A. Mikhalychev, and A. Karabchevsky, “Onchip polarization-encoded single-qubit gates with twisted waveguides,”
+Physical Review Research 5, 043155 (2023).
+100B. Sun, F. Morozko, P. S. Salter, S. Moser, Z. Pong, R. B. Patel, I. A.
+Walmsley, M. Wang, A. Hazan, N. Barré, et al., “On-chip beam rotators, adiabatic mode converters, and waveplates through low-loss waveguides with variable cross-sections,” Light: Science & Applications 11, 214
+(2022).
+101X. Qiang, X. Zhou, J. Wang, C. M. Wilkes, T. Loke, S. O’Gara, L. Kling,
+G. D. Marshall, R. Santagati, T. C. Ralph, et al., “Large-scale silicon quantum photonics implementing arbitrary two-qubit processing,” Nature photonics 12, 534–539 (2018).
+102J. C. Adcock, C. Vigliar, R. Santagati, J. W. Silverstone,
+and M. G.
+Thompson, “Programmable four-photon graph states on a silicon chip,”
+Nature communications 10, 3528 (2019).
+103P. Sibson, C. Erven, M. Godfrey, S. Miki, T. Yamashita, M. Fujiwara,
+M. Sasaki, H. Terai, M. G. Tanner, C. M. Natarajan, et al., “Chip-based
+quantum key distribution,” Nature communications 8, 13984 (2017).
+104B. Bai, J. Huang, G.-R. Qiao, Y.-Q. Nie, W. Tang, T. Chu, J. Zhang, and
+J.-W. Pan, “18.8 gbps real-time quantum random number generator with a
+photonic integrated chip,” Applied Physics Letters 118 (2021).
+105Y. Manin, “Computable and uncomputable,” Sovetskoye Radio, Moscow
+128, 15 (1980).
+106R. P. Feynman, “Simulating physics with computers,” in Feynman and
+computation (CRC Press, 2018) pp. 133–153.
+107A. Politi, M. J. Cryan, J. G. Rarity, S. Yu, and J. L. O’brien, “Silica-onsilicon waveguide quantum circuits,” Science 320, 646–649 (2008).
+108M. Greiner, O. Mandel, T. Esslinger, T. W. Hänsch, and I. Bloch, “Quantum phase transition from a superfluid to a mott insulator in a gas of ultracold atoms,” nature 415, 39–44 (2002).
+109A. D. Ludlow, M. M. Boyd, J. Ye, E. Peik, and P. O. Schmidt, “Optical
+atomic clocks,” Reviews of Modern Physics 87, 637 (2015).
+110J. M. Boss, K. Chang, J. Armijo, K. Cujia, T. Rosskopf, J. R. Maze, and
+C. L. Degen, “One-and two-dimensional nuclear magnetic resonance spectroscopy with a diamond quantum sensor,” Physical review letters 116,
+197601 (2016).
+111D. A. Simpson, R. G. Ryan, L. T. Hall, E. Panchenko, S. C. Drew,
+S. Petrou, P. S. Donnelly, P. Mulvaney, and L. C. Hollenberg, “Electron
+paramagnetic resonance microscopy using spins in diamond under ambient conditions,” Nature Communications 8, 458 (2017).
+112L. Pezzé and A. Smerzi, “Phase sensitivity of a mach-zehnder interferometer,” Physical Review A 73, 011801 (2006).
+113L. Pezzé and A. Smerzi, “Mach-zehnder interferometry at the heisenberg
+limit with coherent and squeezed-vacuum light,” Physical review letters
+100, 073601 (2008).
+114M. Oudich, N. J. Gerard, Y. Deng, and Y. Jing, “Tailoring structure-borne
+sound through bandgap engineering in phononic crystals and metamaterials: a comprehensive review,” Advanced Functional Materials 33, 2206309
+(2023).
+115F. Wu, T. Liu, M. Chen, and S. Xiao, “Photonic bandgap engineering in
+hybrid one-dimensional photonic crystals containing all-dielectric elliptical metamaterials,” Optics Express 30, 33911–33925 (2022).
+116B. Mirzapourbeinekalaye, S. Samudrala, M. Mansouree, A. McClung,
+and A. Arbabi, “Free-space-coupled wavelength-scale disk resonators,”
+Nanophotonics 11, 2901–2908 (2022).
+117A. Belsley, E. J. Allen, A. Datta, and J. C. Matthews, “Advantage of coherent states in ring resonators over any quantum probe single-pass absorption
+estimation strategy,” Physical Review Letters 128, 230501 (2022).
+118S. B. Ivriq, M. H. Mohammadi, and R. S. Davidsen, “Enhancing photovoltaic efficiency in half-tandem mapbi3/masni3 perovskite solar cells
+with triple core-shell plasmonic nanoparticles,” Scientific Reports 15, 1478
+(2025).
+119A. V. Kuznetsov, A. Canós Valero, H. K. Shamkhi, P. Terekhov, X. Ni,
+V. Bobrovs, M. V. Rybin, and A. S. Shalin, “Special scattering regimes for
+conical all-dielectric nanoparticles,” Scientific reports 12, 21904 (2022).
+120W. K. Wootters and W. H. Zurek, “A single quantum cannot be cloned,”
+Nature 299, 802–803 (1982).
+121S. Wiesner, “Conjugate coding,” ACM Sigact News 15, 78–88 (1983).

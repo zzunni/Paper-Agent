@@ -1,0 +1,1123 @@
+
+
+===== Page 1 =====
+
+SEM-CLIP: Precise Few-Shot Learning for Nanoscale Defect
+Detection in Scanning Electron Microscope Image
+Qian Jin
+Zhejiang University
+Hangzhou, China
+Yuqi Jiang
+Zhejiang University
+Hangzhou, China
+Xudong Lu
+Zhejiang University
+Hangzhou, China
+Yumeng Liu
+Zhejiang University
+Hangzhou, China
+Yining Chen
+Zhejiang University, HIC-ZJU
+Hangzhou, China
+Dawei Gao
+Zhejiang University, HIC-ZJU
+Hangzhou, China
+Qi Sun#
+Zhejiang University
+Hangzhou, China
+qisunchn@zju.edu.cn
+Cheng Zhuo#
+Zhejiang University
+Hangzhou, China
+czhuo@zju.edu.cn
+ABSTRACT
+In the field of integrated circuit manufacturing, the detection and
+classification of nanoscale wafer defects are critical for subsequent
+root cause analysis and yield enhancement. The complex background patterns observed in scanning electron microscope (SEM)
+images and the diverse textures of the defects pose significant challenges. Traditional methods usually suffer from insufficient data,
+labels, and poor transferability. In this paper, we propose a novel
+few-shot learning approach, SEM-CLIP, for accurate defect classification and segmentation. SEM-CLIP customizes the Contrastive
+Language-Image Pretraining (CLIP) model to better focus on defect
+areas and minimize background distractions, thereby enhancing
+segmentation accuracy. We employ text prompts enriched with
+domain knowledge as prior information to assist in precise analysis.
+Additionally, our approach incorporates feature engineering with
+textual guidance to categorize defects more effectively. SEM-CLIP
+requires little annotated data, substantially reducing labor demands
+in the semiconductor industry. Extensive experimental validation
+demonstrates that our model achieves impressive classification and
+segmentation results under few-shot learning scenarios.
+1
+INTRODUCTION
+Semiconductor manufacturing is a complex and multifaceted process where defects occur due to ill processes or equipment issues.
+To provide real-time monitoring for the fabrication, SEM images
+are captured and then classified based on the appearance of the
+defects, helping the defect detection and root cause analysis. Unlike rough wafer-level defect maps, SEM images can provide more
+# Corresponding authors.
+Permission to make digital or hard copies of all or part of this work for personal or
+classroom use is granted without fee provided that copies are not made or distributed
+for profit or commercial advantage and that copies bear this notice and the full citation
+on the first page. Copyrights for components of this work owned by others than the
+author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or
+republish, to post on servers or to redistribute to lists, requires prior specific permission
+and/or a fee. Request permissions from permissions@acm.org.
+ICCAD ’24, October 27–31, 2024, New York, NY, USA
+© 2024 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+ACM ISBN 979-8-4007-1077-3/24/10...$15.00
+https://doi.org/10.1145/3676536.3676752
+Inspection
+Wafer Map
+Hole
+Manual Defect 
+Detection
+Particle
+SEM Review
+Replace
+Scanning Electron 
+Microscope (SEM)
+Root Cause Analysis
+Yield Enhancement 
+Pre-trained 
+CLIP
+SEM-CLIP
+Expert Knowledgebased Prompts
++
+Few-shot 
+Samples
+SEM-CLIP-based Automatic Diagnosis Framework
+Customization
+Segmentation
+Classification
+Particle, Hole …
+Figure 1: The workflow of SEM image defect analysis. We
+replace the cumbersome manual defect detection flow with
+our automatic SEM-CLIP method, substantially enhancing
+defect detection performance with few-shot learning as the
+shining point.
+detailed characteristics of defects, thereby helping to determine the
+specific process steps and equipment. Currently, defect detection
+primarily relies on manual efforts, making it both cumbersome and
+error-prone. Developing an automated defect detection system has
+become a trend.
+The current wafer surface defect detection and classification
+research predominantly employs supervised learning methods, requiring substantial amounts of data and detailed annotated labels.
+Some methods are presented to classify defects [1–3]. Furthermore,
+some segmentation methods are proposed to provide detailed location and shape information [4–6]. Although these methods achieve
+outstanding performance, they usually require many annotated data
+for training, resulting in heavy workloads. Besides, these methods
+also suffer from poor transferability for new defect detection due to
+a lack of adequate training data. Annotated data is always precious
+in industry.
+Consequently, there has been a shift in the field of industrial
+defect detection toward unsupervised or self-supervised anomaly
+arXiv:2502.14884v1  [cs.CV]  15 Feb 2025
+
+===== Page 2 =====
+
+segmentation methods [7–10]. These approaches only require normal samples to learn their distribution, and they detect anomalies by
+calculating the distributional differences between test samples and
+normal samples. However, this method still requires a substantial
+number of normal samples for training. Due to the highly variable
+backgrounds where defects occur, there are significant differences
+among normal samples, making applying this approach in wafer
+surface defect detection scenarios challenging.
+Recently, pre-trained vision-language models like CLIP [11] and
+SAM [12] have rapidly advanced, utilizing prompts to access stored
+prior knowledge and thus exhibiting strong zero-shot visual perception capabilities [13]. Considering this, we are exploring using a CLIP model-based approach to address data scarcity issues.
+However, given the unique aspects of integrated circuit application scenarios, the text-image pairs used in network pre-training
+may contain minimal or no SEM images of semiconductors. Consequently, it becomes essential to adjust the base structure of the CLIP
+model and to incorporate a small number of SEM images of both
+normal and anomalous samples as support images for the target categories. These adaptations will enable the model to more effectively
+recognize and classify the specific types of defects encountered in
+semiconductor manufacturing.
+This strategy allows us to leverage the model’s inherent ability
+to understand complex visual concepts through minimal samples,
+adapting it to the specific requirements of semiconductor manufacturing. We can create a more efficient and effective model for
+detecting and classifying wafer surface defects without heavily
+relying on large, annotated datasets. To this end, we propose SEMCLIP, a crafted CLIP method for defect detection, following the
+few-shot learning mechanism. The contributions of our work are
+summarized as follows:
+• We propose a novel few-shot learning-based approach, SEMCLIP, for accurate SEM image defect classification and segmentation with little data and label requirements. To the best of our
+knowledge, it is the first few-shot learning work for SEM-level
+IC defect detection tasks.
+• We customize the Contrastive Language-Image Pretraining
+model to focus on the defect areas and adopt a novel feature
+extraction method by adding 𝑉-𝑉attention blocks to minimize
+the complex background distractions and improve the segmentation accuracies.
+• Prompts enriched with expert knowledge are crafted and employed as prior information to guide both classification and
+segmentation processes. Feature engineering with textual guidance is incorporated with a classification head to boost the
+classification performance.
+• We conduct comprehensive experiments across various fewshot settings, benchmarked on an in-house SEM image defect
+dataset. The results demonstrate that our method significantly
+outperforms others in terms of iAUROC, pAUROC, and 𝐹1𝑚𝑎𝑥scores. For instance, SEM-CLIP surpasses the recent SOTA
+method PromptAD, showing improvements of 2.0%, 1.3%, and
+21.1%, respectively, under the 10-shot setting. Our approach
+will help fabs alleviate the issues of insufficient labeling and
+expensive labor, thereby facilitating intelligent manufacturing.
+2
+PRELIMINARIES
+2.1
+Pre-trained Vision-language Model
+Vision-language models process and integrate visual and textual
+data, enabling tasks that require a cohesive understanding of both
+domains. The CLIP model [11], which was pre-trained on 400 million image-text pairs, has robust generalization and enables it to
+utilize natural language to refer to learned visual concepts. These
+Transformer-based encoders [14] project features into a shared
+embedding space where similarity is computed, guided by a contrastive loss function that aligns matching pairs and separates nonmatching pairs. This design allows CLIP to generalize effectively
+across various tasks without task-specific training, demonstrating
+its flexibility in downstream applications [15–18].
+2.2
+Wafer Surface Defect Detection
+Defect detection is essential for improving yields in integrated
+circuit fabrication. Traditional research has focused on wafer maps,
+where faulty chips are marked with colors based on test results.
+While these maps can provide spatial insights into defects, the increasing complexity of chip components has made wafer map-level
+detection more challenging and less precise [19–22]. To address
+these limitations, magnified imaging techniques like scanning electron microscopy (SEM) are crucial for closely examining wafer
+surfaces. As shown in Figure 1, advanced methods are needed to
+accurately detect, classify, and analyze microscopic defects, pinpointing the exact process steps where defects originate.
+2.3
+SEM Image Defect Data
+In the absence of a public SEM Image dataset, we collect some
+data from an in-house 12-inch, 55𝑛𝑚CMOS fabrication line. The
+dataset includes 1332 grayscale images, with 226 non-defective and
+1106 defective images, categorized into six common defect types:
+59 bridges, 141 copper residues, 230 holes, 77 infilm defects, 455
+particles, and 144 scratches. Figure 2 illustrates some examples.
+Good
+Bridge
+Copper Residue
+Hole
+Infilm
+Particle 
+Scratch
+Figure 2: Non-defect and defective images.
+2.4
+Related Work
+Wafer surface defect detection was traditionally performed by
+engineers, relying on expertise that is time-consuming and inconsistent. With advancements in artificial intelligence, deep learning
+techniques have become highly effective for this task [23]. Several
+classification approaches have been developed. Chen et al. proposed
+a defect recognition algorithm using PCA and SVM [1]. Chang et al.
+utilized SVM with features like smoothness and texture [2]. Cheon
+et al. introduced a CNN model for feature extraction [3]. Defect
+2
+
+===== Page 3 =====
+
+segmentation is crucial for determining defect locations and sizes.
+Encoder-decoder networks like UNet [4] and SegNet [5] are commonly used. Han Hui et al. combined a Region Proposal Network
+(RPN) with UNet for defect area suggestion [24]. Subhrajit Nag et al.
+introduced WaferSegClassNet, which performs both classification
+and segmentation [6]. Recently, Vic De Ridder et al. applied diffusion models to predict and reconstruct masks for semiconductor
+defects, achieving high precision but at a high computational cost,
+and with limitations in handling only a single defect type [25].
+Despite these advancements, these methods rely heavily on large
+amounts of accurately labeled data, which is scarce, and they struggle with transferring to new defect types.
+2.5
+Few-shot Anomaly Detection
+Traditional anomaly detection relies on extensive training data,
+which limits its effectiveness in dynamic environments with diverse
+anomaly types. Recent research has focused on using few or zero
+samples to overcome these challenges. Ding et al. introduced DRA
+[26], which, although not specifically mentioning the concept of
+few-shot learning, effectively identifies both seen and unseen anomalies through disentangled representations by learning from a small
+number of labeled samples. Recent studies show that pre-trained
+vision-language models such as CLIP can significantly enhance performance in this task. Jeong et al. developed WinCLIP [27], the first
+framework to use visual language models for few-shot anomaly
+detection, integrating state words and prompt templates with a
+novel window-based technique for improved performance. Gu et
+al. introduced AnomalyGPT [28], leveraging large vision-language
+models trained on simulated anomalies to effectively locate them.
+Chen et al. proposed CLIP-AD (zero-shot) [29], and Li et al. introduced PromptAD (few-shot) [30], both using dual-path models and
+feature surgery to enhance CLIP’s anomaly detection capabilities.
+These studies push the boundaries of traditional anomaly detection, showing how few-shot learning can rapidly and effectively
+address dynamic, data-scarce environments. Our research extends
+the CLIP method to support SEM image defect detection.
+2.6
+Problem Definition
+Problem 1 (Few-shot Learning for SEM Image Defect Detection).
+Given dataset of 𝑁-way𝐾-shot SEM images 𝑿= {𝒙1, 𝒙2 · · · , 𝒙𝐾·𝑁},
+annotated with classification labels 𝒀𝑐= {𝒚𝑐
+1,𝒚𝑐
+2, · · · ,𝒚𝑐
+𝐾·𝑁} and
+segmentation masks 𝒀𝑠= {𝒚𝑠
+1,𝒚𝑠
+2, · · · ,𝒚𝑠
+𝐾·𝑁}. Typically, 𝑁represents the total number of categories in the dataset, including the
+“good” (non-defect) category, and all defect categories. 𝐾is a small
+number denoting the number of images for each category, such as
+1, 2, or 10, which is why this is referred to as few-shot learning.
+We aim to construct a model with few-shot learning capabilities
+based on the 𝑿. It can generate accurate defect classification labels
+and pixel-level segmentation results for the 𝑀SEM image testing
+set with 𝑀≫𝐾. By default, 𝑁= 7 in our context without further
+explanations.
+3
+SEM-CLIP FRAMEWORK
+In this section, we introduce SEM-CLIP, as shown in Figure 4,
+specifically designed for classifying and segmenting wafer surface
+defects under the few-shot setting. Initially, we construct a text
+Scratch
+Scratch
+Scratch
+Copper Residue
+Particle
+Infilm
+Particle
+Particle
+Inter-Type Homogeneity
+Intra-Type Heterogeneity
+(b)
+(a)
+Figure 3: Complexity of defect morphologies. (a) Differences
+within the same type; (b) Similarity between different types.
+prompt incorporating expert knowledge regarding wafer surface
+defect patterns. This prompt enables us to avoid detailed labels
+for each sample. Following this, we implement a dual path block
+by adding a 𝑉-𝑉attention block to the transformer block within
+the vanilla ViT architecture [31]. We extract features at various
+levels from this architecture and employ a new method to remove
+redundant features to calculate similarity. Additionally, we finetune the Transformation Layer and Classification Head using fewshot samples, ultimately achieving precise defect classification and
+segmentation results.
+3.1
+Text Prompt Design
+Due to the complexity of integrated circuit manufacturing processes, wafer surface defects can vary greatly in appearance, resulting in significant morphological differences within the same type
+of defect and similar textures between different types of defects
+Figure 3. Consequently, it is essential to utilize domain expert knowledge to refine the rough cues such as “anomaly” or “defect” into
+more detailed descriptions of defect morphologies by useful prior
+information about the target defect areas. For instance, defects of
+the “scratch” type typically appear as fine, long, linear marks in the
+back-end-of-line (BEOL) processes but may manifest as fish-scale
+patterns in the front-end-of-line (FEOL) processes. These elliptical
+depressions, which exhibit a continuous distribution, can easily be
+mistaken for hole-type defects without careful observation.
+This task employs a composite prompt structure, as illustrated in
+Figure 5. We decompose the prompts into template-level and statelevel components, where the state-level prompts provide detailed
+descriptions of the possible appearances of each type of defect,
+such as “{ } image with a linear scratch” or “{ } image with fish
+scale-shaped scratches”. Additionally, since scanning electron microscopes can produce blur due to focusing issues or variations
+in image brightness caused by different electron beam intensities,
+the template-level prompts can describe the effects on SEM images, such as “a blurry photo of the { }” or “a dark photo of a { }”.
+Finally, by replacing the state in the template-level prompts with
+the state-level prompts, we combine them to form the final text
+prompts.
+The text prompts are designed and shared for all SEM images.
+During the practical application of our model and the analysis of
+query images, there is no need to adjust the prompts.
+3
+
+===== Page 4 =====
+
+Encoding Block
+Dual Path Block
+Extra Learnable 
+[CLS] Embedding
+Vanilla Image  
+Embedding
+Text 
+Embedding
+Cosine 
+Similarity
+Sum
+New Image  
+Embedding
+Layer 
+Norm.
+Layer 
+Norm.
+MLP
+Query
+Key
+Value
+Softmax
+Linear 
+Projection
+Layer 
+Norm.
+Value Value Value
+Softmax
+Linear 
+Projection
+Vanilla Q-K Attention Block
+V-V Attention Block
+!!
+"#$
+!!
+"
+"!
+"
+C
+S
+Cosine Similarity 
+w/o Redundancy
+Query Image
+Image 
+Encoder
+Encoding 
+Block
+Query 
+Segmentation
+Embedded patch
+…
+…
+…
+…
+…
+…
+…
+…
+…
+Transformation Layer
+Classification 
+Head
+…
+…
+…
+Defect Class
+Text Prompt !
+CLIP Text 
+Encoder
+CLIP Text 
+Encoder
+Encoding 
+Block
+Encoding 
+Block
+Encoding 
+Block
+C
+C
+C
+C
+S
+S
+S
+S
+!
+Text Prompt !
+!
+!
+"!
+""
+"#
+"$
+#!
+#"
+##
+#$
+"!
+%
+""
+%
+"#
+%
+"$
+%
+Dual 
+Path 
+Block
+Dual 
+Path 
+Block
+Dual 
+Path 
+Block
+!!
+"!
+Figure 4: Our SEM-CLIP framework.
+Text Prompt
+perfect {obj}
+{obj} with a linear scratch
+{obj} without defect
+a photo of a {State}
+a dark photo of the {State}
+a photo of the {State} for 
+anomaly detection.
+…
+…
+…
+State-level
+Template-level
+flawless {obj}
+{obj} with an infilm defect
+{obj} with accidental connectivity
+{obj} exhibiting particulate matter
+Figure 5: Text prompts are built on state-level prompts and
+template-level prompts.
+3.2
+Image Feature Extraction
+For SEM images, the variability and complexity of background
+patterns tend to interfere with defect detection, which is undesirable. Recent studies have reported that 𝑄-𝐾self-attention [14]
+may lead to incorrectly establishing connections in semantically
+irrelevant areas , resulting in dispersed attention [32]. The vanilla
+self-attention mechanism is described as follows:
+Attention(𝑸, 𝑲, 𝑽) = Softmax
+ 
+𝑸𝑲⊤
+√︁
+𝑑𝑘
+!
+𝑽.
+(1)
+In contrast,𝑉-𝑉attention [32], by directly comparing and associating similar feature values, can more accurately focus on relevant
+feature areas, effectively reducing interference from the background.
+The 𝑉-𝑉attention is formulated as follows:
+Attention(𝑽, 𝑽, 𝑽) = Softmax
+ 
+𝑽𝑽⊤
+√︁
+𝑑𝑘
+!
+𝑽.
+(2)
+Therefore, we modify the vanilla CLIP ViT [31] backbone for
+feature extraction by adding a branch while retaining the vanilla
+transformer structure. This branch incorporates the 𝑉-𝑉attention
+block, constructing a new dual-path block, and the encoding block is
+composed of 𝑛dual-path blocks. The entire ViT backbone contains
+𝑚encoding blocks, as shown in Figure 4. Taking the 𝑖-th dual-path
+block within the 𝑗-th encoding block as an example, the input is
+𝑭𝒊−1
+𝒋
+, and it gives two outputs:
+𝑭𝒊
+𝒋= Arch𝑸𝑲𝑽(𝑭𝒊−1
+𝒋
+) + 𝑭𝒊−1
+𝒋
+,
+(3)
+𝑽𝒊
+𝒋= Arch𝑽𝑽𝑽(𝑭𝒊−1
+𝒋
+),
+(4)
+where Arch𝑸𝑲𝑽and Arch𝑽𝑽𝑽signify the vanilla 𝑄𝐾𝑉block and
+the 𝑉𝑉𝑉block respectively. 𝑭𝒊
+𝒋and 𝑽𝒊
+𝒋denote the outputs of these
+two blocks.
+The input of the 𝑗-th encoding block is the output of the last
+layer (the 𝑛-th dual-path block) of the (𝑗−1)-th encoding block:
+𝑭0
+𝒋= 𝑭𝒏
+𝒋−1 = 𝑭𝒋−1.
+(5)
+Therefore, for the 𝑗-th encoding block, the output is:
+𝑭𝒋= 𝑭𝒏
+𝒋= Arch𝑸𝑲𝑽(𝑭𝒏−1
+𝒋
+) + 𝑭𝒏−1
+𝒋
+,
+(6)
+𝑽𝒋=
+𝑛
+∑︁
+𝑖=0
+𝑽𝒊
+𝒋.
+(7)
+We extract features at multi-levels from the output of the encoding block, resulting in𝑚vanilla image embeddings [𝑭1, 𝑭2, · · · , 𝑭𝒎]
+and 𝑚new image embeddings [𝑽1, 𝑽2, · · · , 𝑽𝒎] transformed by
+𝑉-𝑉attention.
+Notably, the weights for our vanilla 𝑄𝐾𝑉block are loaded from
+the weight file of the pre-trained CLIP image encoder. Additionally,
+the 𝑉𝑉𝑉block parameters are directly copied from those in the
+𝑄𝐾𝑉block. We merely modify the method of data computation
+rather than the data itself. Therefore, retraining is unnecessary.
+4
+
+===== Page 5 =====
+
+3.3
+Defect Segmentation
+When using a pre-trained CLIP model for zero-shot defect segmentation, the typical method is directly calculating the similarity
+between text and image embeddings to get a defect map. However,
+this approach is not suitable for our task. Although we have constructed a detailed textual prompt with expert knowledge, the text
+still struggles to fully describe all information for corresponding
+images, especially for our unusual SEM images. This means our
+problem cannot be addressed with a zero-shot approach. Instead, it
+requires few-shot samples for fine-tuning. In this study, we adopt
+a few-shot learning approach to improve the detection of SEM
+defects. The specific implementation details are as follows:
+First, we utilize a pre-trained CLIP text encoder to transform the
+text prompt 𝑻into a text embedding 𝒕:
+𝒕= TextEncoder(𝑻).
+(8)
+As mentioned in the previous section, we modify the structure
+of the image encoder, resulting in two different types of image
+embeddings, denoted as 𝑭and 𝑽. These embeddings are extracted
+from 𝑚different levels.
+Segmentation based on 𝑭. The vanilla image embedding 𝑭=
+{𝒇𝐶𝐿𝑆,𝒇1,𝒇2, . . . ,𝒇𝑇}, where 𝒇𝐶𝐿𝑆serves as the 𝐶𝐿𝑆token aggregating the global features of the image, commonly used in imagelevel defect detection, consider applying it to defect classification
+tasks. 𝑭[1 :] = {𝒇1,𝒇2, . . . ,𝒇𝑇} contains more detailed information,
+so we use it for pixel-level defect segmentation.
+To enhance the model’s understanding of our application scenario, we introduce a transformation layer fine-tuned with a few
+samples. Specifically, this transformation layer functions by mapping the image embeddings to a joint embedding space through a
+linear layer. The input for the mapping is represented as [𝑭1[1 :
+], 𝑭2[1 :], · · · , 𝑭𝒎[1 :]], and the output is [𝑭
+′
+1, 𝑭
+′
+2, · · · , 𝑭
+′
+𝒎]. Taking the output image embedding 𝑭𝒋from the 𝑗-th encoding block
+as an example, the mapping process is as follows:
+𝑭
+′
+𝒋= Transformation(𝑭𝒋[1 :]).
+(9)
+For the transformed vanilla image embedding 𝑭
+′
+𝒋, we calculate
+its cosine similarity with the text embedding 𝒕. The formula is as
+follows:
+𝒔(𝑭
+′
+𝒋, 𝒕) =
+𝑭
+′
+𝒋· 𝒕
+∥𝑭
+′
+𝒋∥2∥𝒕∥2
+,
+(10)
+where 𝑭
+′
+𝒋· 𝒕represents the dot product of 𝑭
+′
+𝒋and 𝒕, ∥𝑭
+′
+𝒋∥2 and ∥𝒕∥2
+are the 𝐿2 norms of the vectors 𝑭
+′
+𝒋and 𝒕along 𝐶dimension.
+After processing through the softmax layer, we obtain the defect
+map calculated from 𝑭𝒋of the 𝑗-th encoding block:
+𝑨𝑭
+𝒋= Softmax(𝒔(𝑭
+′
+𝒋, 𝒕)),
+(11)
+and then sum the defect maps corresponding to 𝑚vanilla images
+embeddings to obtain the segmentation result 𝑨𝑭,
+𝑨𝑭=
+𝒎
+∑︁
+𝒋=1
+𝑨𝑭
+𝒋.
+(12)
+Segmentation based on 𝑽. Similar to the operations performed
+on 𝑭, for the new image embedding 𝑽, we discard the 𝐶𝐿𝑆token
+to obtain 𝑽[1 :] to calculate the defect map. Research indicates
+that erroneous bright spots often appear in the same non-defective
+areas regardless of the textual prompts. Identifying and removing
+these irrelevant bright spots as redundant features can effectively
+reduce noise in the predicted segmentation results [32]. Taking the
+output of the 𝑗-th encoding block 𝑽𝒋as an example, the specific
+operations are as follows:
+First, perform 𝐿2 normalization on the image embedding 𝑽[1 :]
+and text embedding 𝒕, and then conduct element-wise multiplication to generate a multiplied feature 𝑽𝒎
+𝒋containing information
+from both image and text:
+𝑽𝒎
+𝒋=
+𝑽𝒋
+∥𝑽𝒋∥2
+⊙
+𝒕
+∥𝒕∥2
+.
+(13)
+We calculate the mean of the multiplied feature 𝑽𝒎
+𝒋to obtain
+the redundant feature 𝑽𝒓
+𝒋:
+𝑽𝑟
+𝑗= mean(𝑽𝑚
+𝑗),
+(14)
+then remove the redundant feature 𝑽𝒓
+𝒋from the multiplied feature
+𝑽𝒎
+𝒋to get the defect map:
+𝑨𝑽
+𝒋= Softmax(𝑽𝒎
+𝒋−𝑽𝒓
+𝒋).
+(15)
+Sum defect maps corresponding to 𝑚new image embeddings 𝑽
+to get the segmentation result 𝑨𝑽:
+𝑨𝑽=
+𝒎
+∑︁
+𝒋=1
+𝑨𝑽
+𝒋.
+(16)
+Considering the segmentation results from these two image
+embeddings, the final overall defect map is given by:
+𝑨= 𝑨𝑭+ 𝑨𝑽.
+(17)
+3.4
+Defect Classification
+The self-supervised contrastive learning ability of CLIP [11]
+enables it to understand the semantic relationships between images and text, thereby possessing zero-shot classification capability.
+Specifically, the CLIP model encodes the query image 𝑿to obtain
+image embeddings, then computes the inner product between the
+image embeddings with all possible text embeddings, obtaining the
+label corresponding to the maximum inner product as the classification result. Thereby, we can directly utilize Equation (10). Since
+there are 𝑚different similarity scores corresponding to 𝑚different
+level image embeddings, we take the maximum score as follows:
+𝒔𝒎𝒂𝒙= Max(𝒔(𝑭
+′
+𝒋, 𝒕)), 𝑗= 1, · · · ,𝑚.
+(18)
+The classification prediction probability obtained through similarity
+calculation is given by:
+𝑷𝑺= Softmax(𝒔𝒎𝒂𝒙).
+(19)
+Although CLIP’s contrastive learning capability enables direct
+completion of image classification tasks, as we mentioned in Section 3.3, it is challenging for pre-trained vision-language models
+to achieve satisfactory performance directly in specific scenarios.
+Therefore, we require a few SEM defect images for fine-tuning.
+Inspired by the Vision Transformer [31], which utilizes an extra
+learnable [𝐶𝐿𝑆] embedding to aggregate information from other
+tokens during the subsequent image encoding process, resulting
+5
+
+===== Page 6 =====
+
+in a 𝐶𝐿𝑆token aggregating global features, we naturally consider
+using it to implement classification functionality. The 𝐶𝐿𝑆token
+occupies the first encoding position in the vanilla image embedding
+𝑭. Since there are 𝑚encoding blocks, we obtain m vanilla image
+embeddings 𝑭. The classification 𝐶𝐿𝑆vectors are represented as:
+𝑭𝑪= [𝒇𝑪𝑳𝑺
+1
+,𝒇𝑪𝑳𝑺
+2
+, · · · ,𝒇𝑪𝑳𝑺
+𝒎
+],
+(20)
+After obtaining effective feature vectors 𝑭𝑪, we then use it to finetune a simple classification head, such as a linear classifier, resulting
+in the classification prediction probability 𝑷𝑪:
+𝑭
+′
+𝑪= 𝑾· 𝑭𝑪+ 𝒃,
+(21)
+𝑷𝑪= Softmax(𝑭
+′
+𝑪),
+(22)
+here 𝑾denotes the weight matrix, and 𝒃signifies the bias of the
+classification head.
+The final classification prediction probabilities are derived from
+the image-text contrast score calculated by CLIP and the prediction
+scores of the classification head, expressed as follows:
+𝑷= (1 −𝜶) · 𝑷𝑺+ 𝜶· 𝑷𝑪,
+(23)
+where 𝜶is a scalar weight that balances these two probabilities.
+4
+EXPERIMENTS
+4.1
+Experiments Settings
+Evaluation metrics include iAUROC, pAUROC, and pixel-level
+𝐹1-𝑚𝑎𝑥for segmentation, and Accuracy, Precision, Recall, and 𝐹1
+score for classification. We utilize the LAION-400M-based CLIP
+model equipped with ViT-B/16+ for our experiments. The image
+encoder backbone consists of 12 layers, we divide them into 4
+encoding blocks, i.e., m = 4. Thus, each encoding block contains
+3 layers, corresponding to 3 dual path blocks, namely, n = 3. All
+experiments are conducted on NVIDIA RTX 4090. For fine-tuning
+strategies, we employ the Adam optimizer for parameter updates.
+The hyperparameter 𝛼in Equation (23) is set to 0.8.
+4.2
+Benchmarks and Baselines
+For defect segmentation performance, we primarily compare
+our method with WinCLIP+ [27], PromptAD [30], DRA [26], and
+AnomalyGPT [28] under a series of few-shot settings. These methods represent popular anomaly detection (AD) approaches and recent state-of-the-art (SOTA) AD models. Both WinCLIP and PromptAD are based on CLIP for anomaly detection. Thus, we configure
+them with ViT-B/16+, pre-trained on LAION-400M. These baselines
+are introduced in detail in Section 2.
+Given the lack of multi-category classification in previous methods, we compare classification performance using models pre-trained
+on ImageNet-21K [33], including ViT [31], ResNet50+ViT [31],
+ResNet101 [34], and EfficientNet [35]. Each model is fine-tuned
+on our SEM dataset with 10-shot samples and compared to our
+SEM-CLIP model on the same test set.
+4.3
+Results Analysis
+Segmentation performance comparisons. We evaluated iAUROC, pAUROC, and 𝐹1-𝑚𝑎𝑥scores across various shot settings, as
+shown in Table 1. The results show that SEM-CLIP outperforms
+the SOTA scores in BSL across all few-shot settings. Specifically,
+Table
+1:
+Comparison
+of
+evaluation
+metrics
+(iAUROC/pAUROC/F1-max)
+under
+different
+shot
+settings (%).
+Models
+1-shot
+2-shot
+5-shot
+10-shot
+WinCLIP+ [27]
+51.4/84.5/28.5
+55.5/85.3/29.5
+64.9/86.1/29.7
+72.2/87.0/31.1
+PromptAD [30]
+94.1/95.8/58.2
+96.1/96.5/60.4
+96.3/96.9/61.5
+97.8/97.3/62.7
+DRA [26]
+96.6/81.2/67.9
+97.3/91.7/70.5
+97.6/96.9/78.2
+98.5/98.2/82.3
+AnomalyGPT [28]
+86.8/96.3/61.6
+89.8/96.6/63.1
+86.3/96.5/65.8
+86.4/96.5/65.2
+SEM-CLIP (Ours)
+98.0/96.7/69.6
+98.8/96.8/74.4
+99.7/97.8/78.6
+99.8/98.6/83.8
+Table 2: Comparison of defect classification performance (%).
+Models
+Accuracy
+Precision
+Recall
+𝐹1
+ViT [31]
+81.2
+78.5
+84.5
+78.9
+ResNet101 [34]
+71.4
+72.8
+76.1
+70.2
+ResNet50+ViT [31]
+81.2
+75.8
+85.3
+78.4
+EfficientNet [35]
+78.5
+89.5
+83.3
+81.6
+SEM-CLIP (Ours)
+83.7
+87.2
+86.7
+84.4
+our method improved by 1.4 ↑/0.4 ↑/1.7 ↑in the 1-shot setting,
+1.5 ↑/0.2 ↑/11.3 ↑in the 2-shot setting, 2.1 ↑/1.9 ↑/0.4 ↑in the
+5-shot setting, and 1.3 ↑/0.4 ↑/1.5 ↑in the 10-shot setting.
+Additionally, under the 10-shot setting, SEM-CLIP demonstrated
+precise defect localization and segmentation, effectively distinguishing between normal and defective areas, as shown in Figure 6.
+Classification performance comparisons.
+SEM-CLIP excels in nearly all metrics, especially in the 𝐹1 score,
+demonstrating its ability to identify defect categories while minimizing the false negatives. This makes it ideal for our SEM image
+classification task involving imbalanced defect categories. As shown
+in Table 2, our method achieves the highest accuracy, recall, and 𝐹1
+score, although the pre-trained EfficientNet model surpasses ours
+in precision. This advantage is likely due to EfficientNet’s extensive
+prior knowledge of the diverse ImageNet dataset and advanced
+regularization techniques. However, EfficientNet’s lower overall accuracy suggests weaker recognition capabilities. SEM-CLIP excels
+in nearly all metrics, particularly in the 𝐹1 score, highlighting its
+ability to accurately identify defect categories while minimizing
+false negatives, making it ideal for SEM image classification with
+imbalanced categories. The confusion matrix in Figure 7 shows
+that SEM-CLIP classifies most defects with high accuracy, though
+it struggles with the “particle” category. This challenge arises from
+the varied morphologies of particles, which are easily confused with
+other defects, especially inflim, as these are essentially particles
+embedded within the film, sharing similar morphology, as shown
+in Figure 3.
+4.4
+Abalation Studies
+SEM-CLIP for defect Segmentation. We first examined the impact of fine-tuning with few-shot samples. In Table 3, “w/o Transformation Layer” indicates that the Transformation Layer was not
+used, resulting in direct use of 𝑭𝒋for segmentation, as shown in
+Figure 8. Our SEM images are captured from the production line
+and display textual information at the top and bottom of the image. Without fine-tuning, the model tends to identify this textual
+information as defects erroneously. Furthermore, the lack of understanding regarding the complexity of SEM image backgrounds also
+6
+
+===== Page 7 =====
+
+Ground 
+Truth
+Scratch
+Copper 
+Residue
+Hole
+Infilm
+Particle
+Bridge
+Ours
+WinCLIP
+Anomaly
+GPT
+PromptAD
+DRA
+SEM 
+Image
+Ground 
+Truth
+Ours
+WinCLIP
+Anomaly
+GPT
+PromptAD
+DRA
+SEM 
+Image
+Figure 6: Visualization of 10-shot segmentation.
+A:  Bridge
+B:  Copper Residue
+C:  Good
+D:  Hole
+E:  Infilm
+F:  Particle
+G:  Scratch
+A
+B
+C
+D
+E
+F
+G
+Predicted Label
+Actual Label
+A
+B
+C
+D
+E
+F
+G
+Figure 7: Classification confusion matrix of 10-shot.
+(a) 
+(b) 
+w/o
+w/
+ok
+Figure 8: Segmentation results w/o (top row) and w/ (bottom
+row) the Transformation Layer after 10-shot fine-tuning: (a)
+textual information interference; (b) background patterns
+interference.
+makes it susceptible to mistakenly classifying normal background
+patterns as defects.
+We also assessed the influence of prompt design. “w/o Detailed
+Prompt” refers to using generic prompts instead of detailed, expertinformed ones. The results show that detailed prompts, like “{ }
+image with a linear scratch” are more effective.
+Lastly, we analyzed the role of multi-layer features. Our SEMCLIP model uses outputs from four encoding blocks, including
+vanilla and new image embeddings, to compute defect maps. "w/o
+multi-layer" refers to using only the last encoding block’s outputs.
+Incorporating multi-layer information significantly improves segmentation performance.
+SEM-CLIP for defect Classification.
+Table 3: Ablation Studies under the 10-Shot setting.
+Methods
+Segmentation (%)
+Classification (%)
+iAUROC
+pAUROC
+𝐹1-𝑚𝑎𝑥
+Acc.
+Prec.
+Recall
+𝐹1
+w/o Transformation Layer
+86.8
+79.2
+29.6
+-
+-
+-
+-
+w/o Detailed Prompt
+99.6
+98.1
+82.1
+-
+-
+-
+-
+w/o 𝑷𝑺
+-
+-
+-
+83.6
+87.2
+86.6
+84.3
+w/o 𝑷𝑪
+-
+-
+-
+25.7
+20.2
+30.1
+16.0
+w/o multi-layer
+99.4
+96.2
+75.9
+80.5
+75.6
+83.8
+77.7
+SEM-CLIP
+99.8
+98.6
+83.8
+83.7
+87.2
+86.7
+84.4
+Table 3 shows the effects of various components on classification. “w/o 𝑷𝑺” indicates the exclusion of CLIP’s prior knowledge,
+leading to classification based solely on the classification head, as
+in Equation (23) with 𝛼= 1. “w/o 𝑷𝑪” relies only on text promptguided predictions (𝛼= 0). The results demonstrate that solely
+relying on pre-trained CLIP is inadequate for SEM defect classification. Fine-tuning with few-shot samples significantly improves
+performance, highlighting the importance of few-shot learning
+in specialized tasks. For classification, “w/o multi-layer” refers to
+using only the last layer’s CLS token. The results show that employing a multi-layer approach enhances feature detection, leading
+to superior classification performance by capturing both global and
+local image features.
+5
+CONCLUSIONS
+In this paper, we introduce SEM-CLIP, a novel few-shot learning approach that innovatively integrates defect classification and
+segmentation functionalities. This method utilizes carefully crafted
+prompts to optimize the vision-language model for more effective
+text-guided learning. Additionally, it features a customized architecture for the distinct needs of segmentation and classification
+tasks. SEM-CLIP effectively minimizes the impact of complex backgrounds inherent in SEM defect data and addresses the challenges
+of intricate defect textures.
+ACKNOWLEDGMENTS
+This work is supported by the Zhejiang University Education
+Foundation Qizhen Scholar Foundation, the Zhejiang Provincial
+Key R&D Programs (Grant No. 2024C01002, No. 2024SJCZX0031).
+7
+
+===== Page 8 =====
+
+REFERENCES
+[1] S. Chen, T. Hu, G. Liu, Z. Pu, M. Li, and L. Du, “Defect classification algorithm
+for ic photomask based on pca and svm,” in 2008 Congress on Image and Signal
+Processing, vol. 1.
+IEEE, 2008, pp. 491–496.
+[2] C.-F. Chang, J.-L. Wu, and Y.-C. Wang, “A hybrid defect detection method for
+wafer level chip scale package images,” International Journal on Computer, Consumer and Control, vol. 2, no. 2, pp. 25–36, 2013.
+[3] S. Cheon, H. Lee, C. O. Kim, and S. H. Lee, “Convolutional neural network for
+wafer surface defect classification and the detection of unknown defect class,”
+IEEE Transactions on Semiconductor Manufacturing, vol. 32, no. 2, pp. 163–170,
+2019.
+[4] O. Ronneberger, P. Fischer, and T. Brox, “U-net: Convolutional networks for
+biomedical image segmentation,” in Medical image computing and computerassisted intervention–MICCAI 2015: 18th international conference, Munich, Germany, October 5-9, 2015, proceedings, part III 18.
+Springer, 2015, pp. 234–241.
+[5] V. Badrinarayanan, A. Kendall, and R. Cipolla, “Segnet: A deep convolutional
+encoder-decoder architecture for image segmentation,” IEEE transactions on pattern analysis and machine intelligence, vol. 39, no. 12, pp. 2481–2495, 2017.
+[6] S. Nag, D. Makwana, S. Mittal, C. K. Mohan et al., “Wafersegclassnet-a lightweight network for classification and segmentation of semiconductor wafer
+defects,” Computers in Industry, vol. 142, p. 103720, 2022.
+[7] V. Zavrtanik, M. Kristan, and D. Skočaj, “Draem-a discriminatively trained reconstruction embedding for surface anomaly detection,” in Proceedings of the
+IEEE/CVF International Conference on Computer Vision, 2021, pp. 8330–8339.
+[8] J. Jiang, J. Zhu, M. Bilal, Y. Cui, N. Kumar, R. Dou, F. Su, and X. Xu, “Masked
+swin transformer unet for industrial anomaly detection,” IEEE Transactions on
+Industrial Informatics, vol. 19, no. 2, pp. 2200–2209, 2022.
+[9] X. Jiang, J. Liu, J. Wang, Q. Nie, K. Wu, Y. Liu, C. Wang, and F. Zheng, “Softpatch:
+Unsupervised anomaly detection with noisy data,” Advances in Neural Information
+Processing Systems, vol. 35, pp. 15 433–15 445, 2022.
+[10] Y. Wang, J. Peng, J. Zhang, R. Yi, Y. Wang, and C. Wang, “Multimodal industrial
+anomaly detection via hybrid fusion,” in Proceedings of the IEEE/CVF Conference
+on Computer Vision and Pattern Recognition, 2023, pp. 8032–8041.
+[11] A. Radford, J. W. Kim, C. Hallacy, A. Ramesh, G. Goh, S. Agarwal, G. Sastry,
+A. Askell, P. Mishkin, J. Clark et al., “Learning transferable visual models from
+natural language supervision,” in International conference on machine learning.
+PMLR, 2021, pp. 8748–8763.
+[12] A. Kirillov, E. Mintun, N. Ravi, H. Mao, C. Rolland, L. Gustafson, T. Xiao, S. Whitehead, A. C. Berg, W.-Y. Lo, P. Dollár, and R. Girshick, “Segment anything,”
+arXiv:2304.02643, 2023.
+[13] D. Li, J. Li, H. Li, J. C. Niebles, and S. C. Hoi, “Align and prompt: Video-andlanguage pre-training with entity prompts,” in 2022 IEEE/CVF Conference on
+Computer Vision and Pattern Recognition (CVPR), Jun 2022. [Online]. Available:
+http://dx.doi.org/10.1109/cvpr52688.2022.00490
+[14] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, Ł. Kaiser,
+and I. Polosukhin, “Attention is all you need,” Advances in neural information
+processing systems, vol. 30, 2017.
+[15] T. Lüddecke and A. Ecker, “Image segmentation using text and image prompts,” in
+Proceedings of the IEEE/CVF conference on computer vision and pattern recognition,
+2022, pp. 7086–7096.
+[16] C. Zhou, C. C. Loy, and B. Dai, “Extract free dense labels from clip,” in European
+Conference on Computer Vision (ECCV), 2022.
+[17] Z. Zhou, B. Zhang, Y. Lei, L. Liu, and Y. Liu, “Zegclip: Towards adapting clip for
+zero-shot semantic segmentation,” Cornell University - arXiv,Cornell University -
+arXiv, Dec 2022.
+[18] W. Chen, C. Si, Z. Zhang, L. Wang, Z. Wang, and T. Tan, “Semantic prompt for
+few-shot image recognition,” Mar 2023.
+[19] M. Saqlain, Q. Abbas, and J. Y. Lee, “A deep convolutional neural network for wafer
+defect identification on an imbalanced dataset in semiconductor manufacturing
+processes,” IEEE Transactions on Semiconductor Manufacturing, vol. 33, no. 3, pp.
+436–444, 2020.
+[20] Y. Wei and H. Wang, “Mixed-type wafer defect recognition with multi-scale information fusion transformer,” IEEE Transactions on Semiconductor Manufacturing,
+vol. 35, no. 2, pp. 341–352, 2022.
+[21] H. Geng, Q. Sun, T. Chen, Q. Xu, T.-Y. Ho, and B. Yu, “Mixed-type wafer failure
+pattern recognition (invited paper),” in 2023 28th Asia and South Pacific Design
+Automation Conference (ASP-DAC), 2023, pp. 727–732.
+[22] J. Ma, T. Zhang, C. Yang, Y. Cao, L. Xie, H. Tian, and X. Li, “Review of wafer
+surface defect detection methods,” Electronics, vol. 12, no. 8, p. 1787, 2023.
+[23] Y. Gao, X. Li, X. V. Wang, L. Wang, and L. Gao, “A review on recent advances
+in vision-based defect recognition towards industrial intelligence,” Journal of
+Manufacturing Systems, vol. 62, pp. 753–766, 2022.
+[24] H. Han, C. Gao, Y. Zhao, S. Liao, L. Tang, and X. Li, “Polycrystalline silicon
+wafer defect segmentation based on deep convolutional neural networks,” Pattern
+Recognition Letters, vol. 130, pp. 234–241, 2020.
+[25] V. De Ridder, B. Dey, S. Halder, and B. Van Waeyenberge, “Semi-diffusioninst:
+A diffusion model based approach for semiconductor defect classification and
+segmentation,” in 2023 International Symposium ELMAR.
+IEEE, 2023, pp. 61–66.
+[26] C. Ding, G. Pang, and C. Shen, “Catching both gray and black swans: Open-set
+supervised anomaly detection,” in Proceedings of the IEEE/CVF Conference on
+Computer Vision and Pattern Recognition, 2022.
+[27] J. Jeong, Y. Zou, T. Kim, D. Zhang, A. Ravichandran, and O. Dabeer, “Winclip:
+Zero-/few-shot anomaly classification and segmentation,” in Proceedings of the
+IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), June
+2023, pp. 19 606–19 616.
+[28] Z. Gu, B. Zhu, G. Zhu, Y. Chen, M. Tang, and J. Wang, “Anomalygpt: Detecting
+industrial anomalies using large vision-language models,” in Proceedings of the
+AAAI Conference on Artificial Intelligence, vol. 38, no. 3, 2024, pp. 1932–1940.
+[29] X. Chen, J. Zhang, G. Tian, H. He, W. Zhang, Y. Wang, C. Wang, Y. Wu, and
+Y. Liu, “Clip-ad: A language-guided staged dual-path model for zero-shot anomaly
+detection,” arXiv preprint arXiv:2311.00453, 2023.
+[30] Y. Li, A. Goodge, F. Liu, and C.-S. Foo, “Promptad: Zero-shot anomaly detection using text prompts,” in Proceedings of the IEEE/CVF Winter Conference on
+Applications of Computer Vision, 2024, pp. 1093–1102.
+[31] A. Dosovitskiy, L. Beyer, A. Kolesnikov, D. Weissenborn, X. Zhai, T. Unterthiner,
+M. Dehghani, M. Minderer, G. Heigold, S. Gelly et al., “An image is worth
+16x16 words: Transformers for image recognition at scale,” arXiv preprint
+arXiv:2010.11929, 2020.
+[32] Y. Li, H. Wang, Y. Duan, and X. Li, “Clip surgery for better explainability with
+enhancement in open-vocabulary tasks,” arXiv preprint arXiv:2304.05653, 2023.
+[33] T. Ridnik, E. Ben-Baruch, A. Noy, and L. Zelnik-Manor, “Imagenet-21k pretraining
+for the masses,” Annual Conference on Neural Information Processing Systems
+(NeurIPS), 2021.
+[34] K. He, X. Zhang, S. Ren, and J. Sun, “Deep residual learning for image recognition,”
+in Proceedings of the IEEE conference on computer vision and pattern recognition,
+2016, pp. 770–778.
+[35] M. Tan and Q. Le, “Efficientnet: Rethinking model scaling for convolutional neural
+networks,” in International conference on machine learning.
+PMLR, 2019, pp.
+6105–6114.
+8

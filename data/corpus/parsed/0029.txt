@@ -1,0 +1,2050 @@
+
+
+===== Page 1 =====
+
+Bayesian Nonparametric Classiﬁcation for Incomplete Data
+With a High Missing Rate: an Application to Semiconductor
+Manufacturing Data
+Sewon Park1, Kyeongwon Lee1, Da-Eun Jeong2, Heung-Kook Ko2, and Jaeyong Lee1
+1Department of Statistics, Seoul National University
+2Samsung Electronics
+August 3, 2021
+Abstract
+During the semiconductor manufacturing process, predicting the yield of the semiconductor is an important problem. Early detection of defective product production in the manufacturing process can save huge production cost. The data generated from the semiconductor
+manufacturing process have characteristics of highly non-normal distributions, complicated
+missing patterns and high missing rate, which complicate the prediction of the yield. We
+propose Dirichlet process - naive Bayes model (DPNB), a classiﬁcation method based on
+the mixtures of Dirichlet process and naive Bayes model. Since the DPNB is based on the
+mixtures of Dirichlet process and learns the joint distribution of all variables involved, it can
+handle highly non-normal data and can make predictions for the test dataset with any missing patterns. The DPNB also performs well for high missing rates since it uses all information
+of observed components. Experiments on various real datasets including semiconductor manufacturing data show that the DPNB has better performance than MICE and MissForest in
+terms of predicting missing values as percentage of missing values increases.
+Key words: Missing Data; Imputation; Dirichlet process Mixture Model; Naive Bayes Model;
+Classiﬁcation.
+1
+arXiv:2107.14409v2  [stat.AP]  2 Aug 2021
+
+===== Page 2 =====
+
+1
+Introduction
+Missing data occur widely in engineering problems and scientiﬁc research. Especially, handling
+missing value is often the ﬁrst problem to consider in analyzing the data from the ﬁelds of the
+manufacturing process, social sciences, and biology. Prediction improvement of the yield of semiconductor manufacturing are the major issues for having stable and consistent manufacturing
+processes. For the purpose, a huge amount of data consisting of hundreds of variables or factors
+and millions of observations in the semiconductor manufacturing process is collected and analyzed. However, about 90 percent of data generated from manufacturing process is not recorded
+due to data storage limit. Metabolomics data contain typically 10-20 percent missing values,
+which are caused by biological factors such as metabolites being absent, technical reasons such
+as the limit of detection (LOD), and measurement error (Lee and Styczynski; 2018; Playdon
+et al.; 2019). Furthermore, social scientists conduct empirical research to test or verify theoretical concepts and hypotheses through survey experiments. Some respondents unfortunately
+provide no information for the survey item. If the missing data are not dealt with appropriately,
+researchers may draw a wrong conclusion and waste valuable time and resources.
+Rubin (1976) and Little and Rubin (2019) established three types of missingness mechanisms:
+(a) missing completely at random (MCAR), (b) missing at random (MAR), and (c) missing not
+at random (MNAR). When missingness is unrelated to both observed and unobserved variables,
+the data are called MCAR. When missingness only depends on observed data, the data are MAR.
+MAR is a more plausible assumption than MCAR. When missingness depends on unobserved
+data or the missing value itself, the data are said to be MNAR. An example of the MNAR is
+censored missing values caused by the LOD (Wei et al.; 2018). In this paper, we present empirical
+comparisons between the DPNB and other competitors under all missingness mechanisms.
+The simplest approach to missing data is to remove incomplete observations or cases. But
+this method may lead to biased conclusions and lose some useful information. Another approach
+is the imputation which substitutes missing data for plausible values generated from statistical
+learning. Imputing missing data may be a more reasonable way than discarding missing values
+but not necessarily give better results.
+We review several popular imputation techniques for estimating missing values. The basic
+method is the mean imputation, which replaces missing values with the mean of the observed
+2
+
+===== Page 3 =====
+
+values in a certain variable. The mean imputation is simple to apply but underestimates the
+variance and produces biased results under both MAR and MNAR (Little and Rubin; 2019).
+Another method is the multivariate imputation by chained equations (MICE) developed by
+Buuren and Groothuis-Oudshoorn (2010). The MICE as a type of multiple imputations (Rubin;
+1976) constructs separate conditional models for each incomplete variable and iteratively imputes
+the missing values. Gaussian mixture model (GMM) is one of the most widely used model-based
+imputation methods (Ghahramani and Jordan; 1994; Lin et al.; 2006; Williams et al.; 2007).
+Model-based methods assume the joint distribution of all variables in the data and estimate
+parameters of the distribution (Das et al.; 2018). GMM on incomplete data imputes missing
+values using conditional distribution properties of a multivariate normal distribution.
+Contrary to the model-based methods, there are imputation strategies based on machine
+learning algorithms that do not rely upon distributional assumption on the data. Burgette and
+Reiter (2010) and Stekhoven and B¨uhlmann (2012) designed decision tree-based imputation
+methods using classiﬁcation and regression tree and random forest, respectively. Another nonparametric approach is K-Nearest Neighbors (KNN) based imputation (Troyanskaya et al.; 2001).
+Caruana (2001) and Br´as and Menezes (2007) improved the accuracy of estimated missing values
+using an iterative process. The aforementioned imputation methods from machine learning can
+deal with both numerical and categorical data as well as mixed-type data. Thus, these methods
+have been commonly used in various ﬁelds related to missing data problems.
+Deep learning-based imputation methods have been proposed in diﬀerent neural network
+architectures. Sharpe and Solly (1995), Gupta and Lam (1996), and Silva-Ram´ırez et al. (2011)
+reconstructed missing values by using feed-forward neural networks (FNN). Bengio and Gingras
+(1996), Che et al. (2018), and Kim and Chi (2018) introduced recurrent neural networks to handle
+incomplete sequential data. Vincent et al. (2008) and Gondara and Wang (2018) designed deep
+generative models combining denoising autoencoders (DAE) to create the clean output from
+the noisy input considered as missing data. Yeh et al. (2017) and Yoon et al. (2018) provided
+modiﬁed generative adversarial nets (GAN) for ﬁlling missing values or regions.
+In this paper, we propose a new combined method that performs both imputation and classiﬁcation tasks. Our proposed method has several advantages over the existing methods. First,
+the class conditional distribution is an inﬁnite Gaussian mixture model instead of a Gaussian
+used in a standard naive Bayes classiﬁer. The proposed classiﬁer can construct ﬂexible decision
+3
+
+===== Page 4 =====
+
+boundaries and learn various types of non-linear decision boundaries. Second, the proposed imputer is more accurate than other imputation methods on incomplete data with high missing
+rates. In other words, as the percentage of missing values increases, the imputation technique
+based on class conditional distribution outperforms state-of-the-art methods under both MCAR
+and MAR assumptions. While other imputation methods utilize partial observed information
+by missing patterns and algorithms, the DPNB uses all information of observed components.
+Thus, this gap will be more apparent when the rate of missing data is high. Third, the DPNB
+is capable of predicting the labels of a set of new cases which have any missing patterns from
+a predictive model. Imputation techniques described above focus on estimating missing values
+and cannot conduct subsequent statistical analyses such as classiﬁcation or regression. Most
+classiﬁcation approaches on incomplete data designed combinations of a predictive model and
+imputation strategy. They used to transform missing data to complete cases and build a classiﬁer in the training phase. However, missing data may exist not only in the training set but also
+in the test set. Our method can address the test set which has missing values with any missing
+patterns. Experiments also show that the proposed method gives better classiﬁcation accuracy
+on multiple datasets with high missing rates from the UCI Machine Learning Repository.
+The remainder of the paper is structured as follows. Section 2 provides preliminary notions
+of imputation through ﬁnite Gaussian mixture models and the Dirichlet process prior as a key
+factor in our proposed method. In section 3, we propose an extension of the well-known Mixture
+Discriminant Analysis (MDA), which uses an inﬁnite Gaussian mixture model on incomplete
+data. Section 4 shows empirical results on the accuracy of imputation and classiﬁcation in
+diﬀerent settings. A real data example is presented in Section 5. We end this paper in section 6
+with conclusions.
+2
+Preliminaries
+In this section, we review the Gaussian mixture models on missing data and the Dirichlet
+process, which are core concepts of our proposed method.
+4
+
+===== Page 5 =====
+
+2.1
+Gaussian mixture models for missing Data
+Algorithms for Gaussian mixture models on missing data have been studied in the last few
+decades. Ghahramani and Jordan (1994) used the Expectation-Maximization (EM) algorithm to
+ﬁnd parameter values and missing components maximizing the likelihood of Gaussian mixture
+models. Zhang and Everson (2004) developed a Bayesian approach of mixture models using
+Gibbs sampler. This method utilizes full conditional distributions to obtain the joint posterior
+distribution of parameters and missing values. Williams et al. (2007) introduced variational
+inference based on the mean-ﬁeld approximation for Bayesian mixture models. Both missing
+values and parameters are iteratively updated until the evidence lower bound (ELBO) converges.
+We focus on the estimation of a Gaussian mixture model, permitting simultaneous inference
+of missing values through Gibbs sampling is a Markov Chain Monte Carlo (MCMC). Let xi, i =
+1, . . . , n be n independent p-dimensional observations from the mixture distribution consists of
+H Gaussian components. We partition an observation into two components xi = {xoi
+i , xmi
+i },
+where oi ⊂{1, 2, . . . , p} is an index set of observed variables and mi ⊂{1, 2, . . . , p} is an index
+set of missing variables . That is, xoi
+i
+and xmi
+i
+indicate the observed components and missing
+components from the ith observation xi, respectively. We can express the mixture distribution
+as follows:
+f(xi) =
+H
+X
+h=1
+whNp(xi|µh, Σh) =
+H
+X
+h=1
+wh Np
+
+
+
+xoi
+i
+xmi
+i
+
+
+
+
+µoi
+h
+µmi
+h
+
+,
+
+Σoi,oi
+h
+Σoi,mi
+h
+Σmi,oi
+h
+Σmi,mi
+h
+
+
+
+
+(1)
+Here, wh is the non-negative mixing proportion and sum up to one, i.e., PH
+h=1 wh = 1.
+To implement the Gibbs sampling for mixture models with incomplete data, we need the full
+conditional posterior distributions of model parameters and missing values. In this paper we
+only cover the full conditional posterior for missing values and skip other parameters of mixture
+models; see the paper by Franz´en (2006) for more details. If the data come from a multivariate
+normal distribution with mean µ and covariance Σ, a full conditional density for missing values
+based on the observed data can derive easily the following equations (2) by using a special
+property of multivariate normal distribution.
+f(xmi
+i |xoi
+i , others) ∼N|mi|(xmi
+i ; µmi|oi, Σmi|oi),
+µmi|oi = µmi + Σmi,oi(Σoi,oi)−1(xoi
+i −µoi),
+Σmi|oi = Σmi,mi −Σmi,oi(Σoi,oi)−1Σoi,mi.
+(2)
+5
+
+===== Page 6 =====
+
+Missing values are ﬁlled with samples drawn from its full conditional distribution and combined
+with the ﬁxed observed values to update subsequently other parameters from full conditionals.
+This updating process is called the multivariate normal imputation, ﬁrst implemented by Schafer
+(1997), which is one of the multiple imputation methods. In the case of the mixture models, we
+assume all data points are generated from the mixture of multivariate normal distributions. A
+observation with the missing values belong to hth mixure component is imputed by sampling
+full conditional distribution for xmi
+i
+given µh and Σh associated with hth mixture component.
+Mixture components that indicate clusters are determined by latent auxiliary variables. See
+Zhang and Everson (2004).
+2.2
+Dirichlet process
+Dirichlet process (DP) introduced by Ferguson (1973) is the most popular Bayesian nonparametric model and used in many applications for clustering in the last two decades. Let X be a
+measurable space and B the Borel σ-ﬁeld of subsets of X. Then we say that the random probability measure G on (X, B) follows a Dirichlet process with a concentration parameter α > 0
+and a baseline probability measure G0, denoted by G ∼DP(α, G0), if for every ﬁnite disjoint
+partition A1, . . . Ak of X,
+(G(A1), . . . , G(Ak)) ∼Dir(αG0(A1), . . . , αG0(Ak)),
+where Dir denotes the Dirichlet distribution. Dirichlet process can be represented in three diﬀerent ways: (1) p´olya urn scheme (Blackwell et al.; 1973) (2) Chinese restaurant process (Aldous;
+1985) (3) stick-breaking process (Sethuraman; 1994).
+Sethuraman (1994) also showed that its realizations are discrete almost surely, even if G0 is
+a continuous distribution. The discreteness of the DP implies that it is unsuitable prior for data
+generated from continuous distributions. To eliminate this drawback, Antoniak (1974) adopted
+Dirichlet process mixture models (DPMM) having the following hierarchical model formulations:
+for i = 1, . . . , n,
+xi|θi
+ind
+∼f(xi|θi),
+θi
+iid
+∼G,
+G ∼DP(α, G0),
+6
+
+===== Page 7 =====
+
+where f is a parametric density function. The DPMM can be expressed as a limit of ﬁnite
+mixture models, where the number of mixture components is taken to inﬁnity (Teh et al.; 2006).
+For example, if a base measure G0 is a multivariate normal Inverse-Wishart conjugate prior
+and f(xi|θi) is multivariate normal, the DPMM can be an inﬁnite normal mixture model. The
+advantage of the DPMM is the number of mixture components is not ﬁxed in advance of ﬁtting
+the data and automatically infer the number of clusters from the data unlike ﬁnite normal
+mixture models. Various algorithms have been developed for posterior inference of the DPMM
+such as marginal Gibbs sampling (MacEachern; 1994; Escobar; 1994; Escobar and West; 1995;
+Bush and MacEachern; 1996; Neal; 2000), conditional Gibbs sampling (Ishwaran and James;
+2001; Walker; 2007; Kalli et al.; 2011; Ge et al.; 2015), split-merge MCMC sampling (Jain and
+Neal; 2004), sequential updating and greedy search (SUGS) algorithms (Wang and Dunson;
+2011) and variational approximation (Blei et al.; 2006).
+3
+Proposed model
+In this section we propose a new classiﬁcation approach for handling incomplete data based
+on the Dirichlet process mixture model. We call the proposed method as Dirichlet Process-Naive
+Bayes model (DPNB).
+3.1
+Generative model with DPMM
+Generative models employ the Bayes theorem to build a classiﬁer. Let the input or feature
+vector be X and the class labels be Y . We need the density of X conditioned on the class k,
+P(X = x|Y = k) and the prior probability, P(Y = k) to compute the posterior probability:
+P(Y = k|X = x) =
+P(Y = k) · P(X = x|Y = k)
+PK
+l=1 P(Y = l) · P(X = x|Y = l)
+.
+(3)
+Then, input x is assigned to the class having the highest posterior probability. Typical examples
+of generative models include linear discriminant analysis (LDA), quadratic discriminant, analysis (QDA), and Gaussian naive Bayes (GNB). The three models assume multivariate normal
+densities for P(X = x|Y = k). Another example is to assume that the class-conditional density
+of X is a ﬁnite mixture of normals. This method is called mixture discriminant analysis (MDA)
+(Hastie and Tibshirani; 1996; Fraley and Raftery; 2002). Instead of using a ﬁnite mixture of
+7
+
+===== Page 8 =====
+
+normals, we propose to use the Dirichlet process mixture model, as the number of clusters is
+automatically determined and not limited.
+We consider a binary classiﬁcation problem and assume class labels Y ∈{0, 1} has a binomial
+distribution with parameters n and p. If we have K (> 2) classes, Y ∈{1, . . . , K} is assumed to
+have a multinomial distribution with n and p = (p1, . . . , pK). The distribution of X conditioned
+on the class k is modeled by the following hierarchical formulation for DPMM:
+xi|yi = k ind
+∼N(xk
+i ; µk
+i , Σk
+i ),
+(µk
+i , Σk
+i ) iid
+∼Gk,
+i = 1, 2, . . . , nk,
+Gk ∼DP(α, Mk),
+k = 0, 1,
+(4)
+where xk
+i is the ith feature vector and µk and Σk are parameters of a normal distribution which
+belongs to only class k. Here, the base measure for class k, Mk is the conjugate multivariate
+normal–inverse Wishart distribution, i.e. Mk := N(µk; mk
+0, Σk/τ k
+0 ) · IW(Σk; Bk
+0, νk
+0). Then the
+class-conditional density of X is given by
+P(X = x|Y = k) =
+∞
+X
+h=1
+wk
+hN(x; µk
+h, Σk
+h),
+k ∈{0, 1}
+(5)
+using posterior samples for mixing proportion and cluster speciﬁc parameters. We use the improved slice sampler suggested by Ge et al. (2015) to generate samples from the posterior distribution. We describe the detailed MCMC algorithm for the DPMM on incomplete data in
+Appendix A. Since Y has a binomial distribution, marginal probabilities over classes are estimated by
+P(Y = k) = nk
+n ,
+k ∈{0, 1},
+(6)
+where nk denotes the number of observations belonging to the class k. Putting (5) and (6)
+together in the equation (3), we can produce the following posterior probabilities for classes:
+P(Y = k|X = x) =
+nk × P∞
+h=1 whN(x; µk
+h, Σk
+h)
+P
+l∈{0,1}
+ nl × P∞
+h=1 whN(x; µl
+h, Σl
+h)
+.
+We compute posterior probabilities for all k and choose only one class associated with the highest
+probability.
+Both LDA and QDA assume multivariate normal densities for P(X = x|Y = k) and GNB
+assumes that the features, x1, x2, . . . , xp are conditional independent on Y and P(xj|Y = k) is
+8
+
+===== Page 9 =====
+
+univariate normal density:
+P(X = x|Y = k) =
+p
+Y
+j=1
+P(xj|Y = k).
+Since three generative models are designed to diﬀerent covariance structures of multivariate
+normal distributions, they have their respective classiﬁers. The decision boundaries for LDA are
+linear, while those for QDA are quadratic. GNB has not necessarily linear classiﬁcation according
+to the data. However, MDA allows close approximation of not only linear but also nonlinear
+decision boundaries since mixture models can approximate arbitrary continuous distributions
+(Fraley and Raftery; 2002; Wang et al.; 2010). Figure 1 shows that DPNB more accurately
+approximates most decision boundaries than do LDA, QDA, and GNB. In other words, DPNB
+is a much more ﬂexible classiﬁer than them. Furthermore, the classiﬁer of DPNB provides
+comparable results with that of Support Vector Machine (SVM) and Random Forest (RF).
+3.2
+Imputation and prediction strategy
+The DPNB can make inferences simultaneously on both unknown quantities and missing values. The same imputation approach described in the previous subsection 2.1 is capable of being
+applied in the mixture models with inﬁnite components. For estimating (5), DPNB should divide
+the data into subsets where each subset belongs to only one class according to the inference process. Then it substitutes separately missing values with plausible values generated from samplers
+(2) based on respective subsets. We expect that imputation based on subsets is more accurate
+than that based on the full data. Because it is easy to ﬁnd easily probable values estimated from
+homogeneous input data which belongs to only one class. If we spotlight imputation problems
+in the classiﬁcation data, complete subsets are put together into a complete full dataset. In
+practice, the empirical results on 4 UCI datasets provide that this split and merge imputer has
+better performance than state-of-the-art imputation algorithms as the missing rate increases.
+In reality, missing data may occur both training and test dataset. DPNB can make predictions
+for classes even if all elements of some features in the test set are absent. Let a new observed
+input vector denote xo⋆
+⋆
+and a new predicted class label Y ⋆. The prediction rule for DPNB is
+given by
+P(Y ⋆= k|xo⋆
+⋆) =
+P(Y ⋆= k) · P(xo⋆
+⋆|Y ⋆= k)
+P
+l∈{0,1} P(Y ⋆= l) · P(xo⋆
+⋆|Y ⋆= l),
+k ∈{0, 1}.
+(7)
+9
+
+===== Page 10 =====
+
+(a) Linearly separable dataset
+(b) Circle dataset
+(c) Two moons dataset
+(d) XOR dataset
+(e) Two spirals dataset
+Figure 1: Comparison of decision boundaries of the DPNB model using the approximate prediction rule and ﬁve classiﬁers.
+10
+
+===== Page 11 =====
+
+We need to compute the predictive density of xo⋆
+⋆
+conditioned on the class k to complete the
+equation (7), the posterior probability of the new class label. It can be approximated by using
+the Monte Carlo Integration from the posterior samples in the training process as shown in
+(8). Therefore, DPNB can build classiﬁers regardless of missingness and missing rate on both
+training set and test set. Experiments also support that it predicts classes more accurately than
+do competitive models.
+P(xo⋆
+⋆|Y ⋆= k) =
+Z
+P(xo⋆
+⋆, xm⋆
+⋆
+|Y ⋆= k) dxm⋆
+⋆
+=
+Z
+P(xo⋆
+⋆, xm⋆
+⋆
+| µ, Σ, Y ⋆= k)π(µ, Σ |Y ⋆= k) dµ dΣdxm⋆
+⋆
+=
+Z X
+h
+πk
+h P(xo⋆
+⋆, xm⋆
+⋆
+|µh, Σh, Y ⋆= k)π(µh, Σh |Y ⋆= k) dµh dΣh dxm⋆
+⋆
+≈1
+M
+M
+X
+j=1
+X
+hj
+πk
+hj
+Z
+P(xo⋆
+⋆, xm⋆
+⋆
+|µhj, Σhj, Y ⋆= k) dxm⋆
+⋆
+(∵MC integration)
+= 1
+M
+M
+X
+j=1
+X
+hj
+πk
+hjP(xo⋆
+⋆|µo⋆
+hj, Σo⋆,o⋆
+hj
+, Y ⋆= k)
+= 1
+M
+M
+X
+j=1
+X
+hj
+πk
+hj · N|o⋆|
+
+xo⋆
+⋆| [µk
+hj]o⋆, [Σk
+hj]o⋆,o⋆
+,
+(8)
+where M is the number of posterior samples generated by MCMC.
+4
+Experiments
+In this section, we evaluate both the imputation and prediction performance of the DPNB
+model and competitors using multiple datasets. First, we assess the imputation accuracy of our
+proposed methods with state-of-the-art imputation techniques in various settings. Second, we
+quantitatively compare the prediction accuracy of the DPNB model and benchmark classiﬁcation
+algorithms based on multiple incomplete datasets in diﬀerent conditions. In all experiments we
+apply various missing rates for the covariates (from 10% to 60%) and two missingness scenarios:
+missing completely at random (MCAR), missing at random (MAR).
+We conduct experiments on four real-life datasets from UCI Machine Learning Repository
+Dua and Graﬀ(2017): Ecoli, Wine, Breast Cancer Wisconsin (Diagnostic), and Wine Quality
+datasets. Speciﬁcally, the Ecoli dataset contains 336 observations with 8 features and multiple
+classes. We transform multi-class labels into binary labels which have positive (type im) and
+11
+
+===== Page 12 =====
+
+negative (the rest). Two discrete variables, Lip and Chg are also removed. The red wine quality
+dataset contains 1599 observations on 11 attributes of wine and 6 wine quality classes. We
+divide them into 3 groups for quality: Excellent (≥7), Good (6), and Poor (≤5). The rest of
+the multiple datasets are originally used in this experiment. Those datasets have only continuous
+input variables. The summary of UCI datasets is given in Table 1. Here, the imbalanced ratio
+(IR) is deﬁned by
+IR = maxC∈A |C|
+minC∈A |C| ,
+where A is the set of all classes. The higher the imbalance ratio is, the bigger disproportion
+exists between majority class and minority class.
+Dataset
+# Samples
+# Features
+# Classes
+Class distribution
+IR
+Ecoli
+336
+5
+2
+(259/77)
+3.4
+Breast Cancer Wisconsin (Diagnostic)
+569
+30
+2
+(357/212)
+1.7
+Wine
+178
+13
+3
+(59/71/48)
+1.5
+Wine Quality
+1599
+11
+3
+(744/638/217)
+3.4
+Table 1: Detailed information of UCI datasets.
+4.1
+Imputation performance
+For each UCI dataset, we generate 100 diﬀerent incomplete datasets removing 10% to 60% of
+the complete values based on the MCAR or MAR missing assumptions. We make use of the
+normalized root mean squared errors (NRMSE) as the imputation accuracy measure along with
+its standard deviation across the 100 replicated datasets. The NRMSE is deﬁned as
+NRMSE =
+s
+mean((Xtrue −Ximp)2)
+Var(Xtrue)
+,
+where Xtrue is the original data and Ximp the imputed data.
+We compare our proposed methods with several popular imputation methods such as multivariate imputation by chained equations using the predictive mean matching; Buuren and
+Groothuis-Oudshoorn (2010) (denoted by MICE), random forest based imputation; Stekhoven
+and B¨uhlmann (2012) (denoted by RF), KNN based imputation with the optimal number of
+neighbors which minimizes cross-validation errors; Troyanskaya et al. (2001) (denoted by KNN),
+imputer utilizing deep denoising autoencoders; Gondara and Wang (2018) (denoted by MIDA),
+12
+
+===== Page 13 =====
+
+and imputation technique by adapting generative adversarial nets; Yoon et al. (2018) (denoted
+by GAIN).
+Figure 2 shows that the imputer of the DPNB model performs well in most datasets with
+either the lowest or the second lowest average NRMSE values across 100 replicates irrespective of the missingness mechanism (see Table 9 of Appendix B for details). In particular, we
+ﬁnd out from both Table 2 and Table 3 that the proposed model is more accurate than other
+imputation algorithms as missing rates increase. The DPNB model can ﬁll missing values via
+diﬀerent covariance structures constructed by all available observations. However, methods to
+form conditional distributions using RF and MICE are less accurate than the DPNB because
+they utilize partial observations and variables instead of full information. Deep learning-based
+imputation methods such as GAIN and MIDA have poor performance due to model complexity
+relative to the number of observed data points. Among all models, the worst-performing method
+is the KNN based imputation.
+Method
+Missing Rate
+10%
+20%
+30%
+40%
+50%
+60%
+RF
+0.09 (0.038)
+0.099 (0.0258)
+0.11 (0.019)
+0.121 (0.0168)
+0.136 (0.0156)
+0.161 (0.0167)
+MICE
+0.066 (0.029)
+0.08 (0.0217)
+0.093 (0.0163)
+0.115 (0.0181)
+0.138 (0.0194)
+0.183 (0.0173)
+KNN
+0.219 (0.0356)
+0.284 (0.027)
+0.347 (0.0215)
+0.392 (0.0166)
+0.441 (0.0188)
+0.479 (0.0175)
+MIDA
+0.156 (0.0346)
+0.184 (0.0304)
+0.189 (0.0245)
+0.215 (0.0223)
+0.239 (0.0271)
+0.265 (0.0221)
+GAIN
+0.113 (0.0228)
+0.125 (0.0183)
+0.13 (0.0137)
+0.142 (0.0175)
+0.156 (0.0165)
+0.184 (0.0204)
+DPNB
+0.085 (0.0522)
+0.098 (0.0431)
+0.107 (0.0362)
+0.114 (0.029)
+0.134 (0.0315)
+0.142 (0.0211)
+Table 2: Average normalized mean squared errors with estimated standard errors in parentheses
+from 100 replications for Breast Cancer Wisconsin (Diagnostic) dataset with varying percentage
+of missing under MCAR. The best method for each data set is given in bold.
+4.2
+Predictive performance
+We perform 10-fold cross-validation to obtain an estimate of the classiﬁcation accuracy using
+simulated missing datasets generated from the previous subsection 4.1. The cross-validation
+process is repeated 10 times for fair comparisons. Since four UCI datasets have various class
+distributions and binary or multi-class classiﬁcation problems, we use three types of classiﬁcation
+13
+
+===== Page 14 =====
+
+Figure 2: Imputation error for DPNB and competitive models on four UCI datasets with different missing assumptions and missing rates. Curves represent the average of NRMSEs for 100
+randomly generated missingness datasets from the four UCI datasets.
+performance metrics to measure the performance of classiﬁers:(a) accuracy rate, (b) area under
+the ROC curve (AUC), and (c) F1 score. The classiﬁcation metrics corresponding to datasets
+are also shown in Table 4.
+We compare the DPNB model with other prediction models on the incomplete dataset. Other
+14
+
+===== Page 15 =====
+
+Method
+Missing Rate
+10%
+20%
+30%
+40%
+50%
+60%
+RF
+0.343 (0.0272)
+0.395 (0.0244)
+0.453 (0.0215)
+0.511 (0.0195)
+0.563 (0.0216)
+0.614 (0.0226)
+MICE
+0.487 (0.0285)
+0.506 (0.0192)
+0.532 (0.0156)
+0.556 (0.0144)
+0.579 (0.0128)
+0.601 (0.0123)
+KNN
+0.461 (0.0413)
+0.536 (0.0285)
+0.563 (0.0192)
+0.638 (0.0188)
+0.629 (0.0148)
+0.707 (0.0221)
+MIDA
+0.577 (0.0266)
+0.583 (0.0225)
+0.587 (0.0179)
+0.599 (0.013)
+0.605 (0.011)
+0.613 (0.0106)
+GAIN
+0.569 (0.0537)
+0.566 (0.0443)
+0.578 (0.044)
+0.586 (0.0573)
+0.597 (0.0562)
+0.628 (0.0462)
+DPNB
+0.381 (0.0277)
+0.428 (0.0271)
+0.463 (0.0207)
+0.5 (0.0186)
+0.526 (0.0182)
+0.551 (0.0146)
+Table 3: Average normalized mean squared errors with estimated standard errors in parentheses
+from 100 replications for Wine Quality dataset with varying percentage of missing under MAR.
+The best method for each data set is given in bold.
+Ecoli
+Breast Cancer
+Wine
+Wine Quality
+F1 score
+AUC
+Accuracy rate
+F1 score
+Table 4: Classiﬁcation performance measures of four UCI datasets.
+approaches predict test cases after the imputation stage. Some details of the procedures regarding
+post-imputation prediction are as follows. First, we divide the dataset with missing values into
+training and test sets. Imputation algorithms utilized in subsection 4.1 ﬁll missing values of
+training sets. Second, we build the support vector machines (SVM) with radial basis function
+(RBF) kernels as a benchmark classiﬁer on the imputed training datasets. Third, missing values
+in test sets are replaced with the mean of the features of the imputed training set. Finally,
+we make predictions on the imputed test set using the trained model. We call all competing
+methods types of imputation algorithms used in both training and test phases.
+Figure 3 provides that the DPNB model comes up with the best performance except for
+the Breast Cancer Wisconsin (Diagnostic) dataset, where it is competitive. Both Table 5 and
+Table 6 also show that the DPNB has a better classiﬁcation performance than the others on a
+dataset for higher missing rates. As missing rates increase, the prediction accuracy of the DPNB
+is not greatly reduced unlike other competitive approaches. This supports that the DPNB is
+less aﬀected by both missing data mechanisms and proportions missing proportions than other
+methods. See Table 10 of Appendix B for further details about these results.
+15
+
+===== Page 16 =====
+
+Figure 3: Classiﬁcation performance for DPNB and competitive models on four UCI datasets
+with diﬀerent missing assumptions and missing rates. Curves represent the average of 10 times repeated cross-validation scores such as accuracy, AUC, and F1-score obtained from each method.
+5
+Applications
+The main goal of our study is to impute and predict the class of given data with high missing rate.
+We now apply the DP-Naive Bayes model to a semiconductor manufacturing dataset provided by
+16
+
+===== Page 17 =====
+
+Method
+Missing Rate
+10%
+20%
+30%
+40%
+50%
+60%
+RF
+0.995 (0.0011)
+0.992 (0.0016)
+0.989 (0.0032)
+0.981 (0.0057)
+0.972 (0.007)
+0.952 (0.0077)
+MICE
+0.995 (0.0011)
+0.993 (0.002)
+0.99 (0.0024)
+0.984 (0.0059)
+0.979 (0.0079)
+0.967 (0.0041)
+KNN
+0.995 (8e-04)
+0.993 (0.0017)
+0.99 (0.0019)
+0.987 (0.0044)
+0.985 (0.0029)
+0.979 (0.0038)
+MIDA
+0.994 (9e-04)
+0.992 (0.0025)
+0.989 (0.0029)
+0.981 (0.0056)
+0.975 (0.0074)
+0.96 (0.0057)
+GAIN
+0.995 (0.0013)
+0.992 (0.0023)
+0.989 (0.002)
+0.983 (0.0059)
+0.978 (0.0052)
+0.965 (0.0059)
+DPNB
+0.993 (0.0025)
+0.992 (0.0029)
+0.991 (0.002)
+0.989 (0.0027)
+0.987 (0.0037)
+0.984 (0.004)
+Table 5: Mean and standard deviation (in parentheses) for the average AUCs of 10-fold crossvalidations on Breast Cancer Wisconsin (Diagnostic) dataset with varying missing rate under
+MCAR. The best method for each experiment is given in bold.
+Method
+Missing Rate
+10%
+20%
+30%
+40%
+50%
+60%
+RF
+0.994 (0.0017)
+0.992 (0.0015)
+0.989 (0.0028)
+0.979 (0.005)
+0.971 (0.0069)
+0.953 (0.0083)
+MICE
+0.994 (0.0012)
+0.993 (0.001)
+0.99 (0.0028)
+0.984 (0.0042)
+0.977 (0.007)
+0.97 (0.0055)
+KNN
+0.995 (0.0015)
+0.992 (0.0013)
+0.991 (0.0022)
+0.986 (0.0047)
+0.98 (0.0052)
+0.981 (0.0057)
+MIDA
+0.995 (0.0015)
+0.991 (0.0019)
+0.989 (0.0025)
+0.982 (0.0037)
+0.972 (0.0061)
+0.96 (0.0127)
+GAIN
+0.994 (0.002)
+0.991 (0.0014)
+0.99 (0.0031)
+0.984 (0.0039)
+0.978 (0.0062)
+0.97 (0.0068)
+DPNB
+0.991 (0.0024)
+0.991 (0.0019)
+0.99 (0.0029)
+0.989 (0.0031)
+0.988 (0.0032)
+0.988 (0.003)
+Table 6: Mean and standard deviation (in parentheses) for the average AUCs of 10-fold crossvalidations on Breast Cancer Wisconsin (Diagnostic) dataset with varying missing rate under
+MAR. The best method for each experiment is given in bold.
+Samsung Electronics’ DS division, which consists of manufacturing operation variables and the
+semiconductor quality variable related to defect rates. This dataset also includes many missing
+values and aims to reduce defective wafers made up of semiconductor materials. These challenges
+are expected to further illustrate the features of the DP-Naive Bayes model.
+For our analysis, we used the data of 2218 wafer records and 60 manufacturing process variables, discarding features with missing rates larger than 97.5% and categorical values. Figure 4a
+depicts the observed and missing values of the pre-processing data in colored tiles and white
+tiles, respectively. It is made up of mostly white tiles. Missing values in the dataset account
+17
+
+===== Page 18 =====
+
+for about 95% of all values and most manufacturing operation variables have over 90% missing
+rate, as can be seen in the Figure 4b. We can say that the data is MCAR since missing values
+seem to be pretty randomly scattered and occur at random in the manufacturing processes.
+Furthermore, the target metrology variable related to defect rates is highly imbalanced, with
+most records falling in the “No defect” class. The imbalance ratio of this dataset is roughly 9.4.
+(a)
+(b)
+Figure 4: (a) Missing values (white) of a semiconductor manufacturing dataset, (b) percentage
+of missing values in each variable.
+5.1
+Imputation performance
+To assess the imputation accuracy based on the real world dataset, we consider three scenarios by
+deleting artiﬁcially 50, 100, and 500 complete values in the semiconductor dataset under MCAR
+assumption. In every cases, we made 100 replicates, respectively. For performance comparisons,
+we then compute the average of normalized root mean squared errors obtained by each method
+in all cases.
+The results of the DPNB and competing models are provided in Figure 5 and Table 7. They
+demonstrate that the DPNB model provides more accurate values and consistent performance
+through both minimum mean and the lowest standard deviation values over 100 replications of
+NRMSEs. As shown in the Breast Cancer example, both RF and MICE yield similar imputation
+performance with the DPNB model. Imputation methods based on deep architectures including
+18
+
+===== Page 19 =====
+
+MIDA and GAIN have diﬃculty selecting appropriate parameters to prevent the problem of
+overﬁtting. These methods have then lower imputation accuracy than the DPNB, RF and MICE.
+Figure 5: Boxplots of NRMSEs over 100 replications for semiconductor dataset with varying
+number of artiﬁcial missing values.
+#50
+#100
+#500
+RF
+0.0226 (0.00452)
+0.0226 (0.00296)
+0.0233 (0.00163)
+MICE
+0.023 (0.00457)
+0.0233 (0.00287)
+0.0234 (0.0014)
+KNN
+0.0284 (0.00562)
+0.0309 (0.00566)
+0.0325 (0.00442)
+MIDA
+0.031 (0.00513)
+0.0312 (0.00394)
+0.0312 (0.00394)
+GAIN
+0.029 (0.00617)
+0.0281 (0.00418)
+0.0281 (0.00418)
+DPNB
+0.0219 (0.00423)
+0.0222 (0.00282)
+0.0224 (0.0013)
+Table 7: Average of NRMSEs over 100 replications for semiconductor dataset with diﬀerent
+numbers of artiﬁcial missing values under MCAR. Estimated standard errors of NRMSEs are
+shown in parentheses. The best method for each experiment is given in bold.
+5.2
+Predictive performance
+In this experiment, we randomly partitioned the real dataset into training and test sets with
+diﬀerent ratios. The training set was set from 50% to 90% of the overall dataset and the test
+set was accordingly set from 50% to 10% of it. For example, if 90% of the data is used as
+19
+
+===== Page 20 =====
+
+the training set, then the remaining 10% is used as the test set. Likewise, we created 100
+replicate datasets in all cases. Furthermore, the bootstrapping-based oversampling technique
+that replicates observations from minority class was applied into training sets in order to balance
+the two classes. Note that the same indices of observations selected from the minority class were
+used in all methods given percentages of the training sets.
+We add the SVM with a linear kernel as another base classiﬁer. We will name competitive methods by combining imputation techniques and kernels of support vector machine, e.g.,
+“RF+L” means that the RF imputes missing values of training sets and the SVM with a linear
+kernel is ﬁtted on the imputed training sets and predicts the test set values. The results of this
+experiment are given in Table 8. The columns of competing methods represent their average F1score over 100 replicate datasets, normalized by the average F1-score of the DPNB model. The
+values higher than one indicate that the methods provide better performance than the DPNB
+and values lower than one indicate worse performance in imbalanced settings.
+RF+L
+RF+R
+MICE+L
+MICE+R
+KNN+L
+KNN+R
+MIDA+L
+MIDA+R
+GAIN+L
+GAIN+R
+DPNB
+50% / 50%
+0.9516 (3)
+0.6638 (9)
+0.8618 (6)
+0.0349 (11)
+0.8359 (7)
+0.7016 (8)
+0.6508 (10)
+0.9813 (2)
+0.8891 (5)
+0.9461 (4)
+1 (1)
+60% / 40%
+0.9829 (3)
+0.7192 (8)
+0.8833 (6)
+0.0282 (11)
+0.8559 (7)
+0.7067 (9)
+0.6434 (10)
+0.9786 (4)
+0.9262 (5)
+1.0096 (1)
+1 (2)
+70% / 30%
+0.9845 (5)
+0.7248 (9)
+0.9186 (6)
+0.0427 (11)
+0.8752 (7)
+0.7423 (8)
+0.7174 (10)
+1.0419 (1)
+1.0051 (2)
+0.9851 (4)
+1 (3)
+80% / 20%
+1.0184 (1)
+0.6591 (10)
+0.9391 (6)
+0.0453 (11)
+0.9019 (7)
+0.7314 (9)
+0.7814 (8)
+0.9965 (4)
+1.0124 (2)
+0.971 (5)
+1 (3)
+90% / 10%
+0.9982 (2)
+0.6281 (10)
+0.9621 (6)
+0.0298 (11)
+0.8186 (7)
+0.7394 (8)
+0.7329 (9)
+0.9841 (3)
+0.9662 (5)
+0.9825 (4)
+1 (1)
+Average nomalized F1-score
+0.987
+0.679
+0.913
+0.036
+0.857
+0.724
+0.705
+0.996
+0.960
+0.979
+1.000
+Average rank
+2.8
+9.2
+6.0
+11.0
+7.0
+8.4
+9.4
+2.8
+3.8
+3.6
+2.0
+Table 8: Normalized average F1-scores over 100 replications for the semiconductor dataset with
+diﬀerent ratios between training and test sets. The rank of the methods judged by normalized
+F1-scores is shown in parentheses. The best method for each experiment is given in bold.
+As shown in Table 8, the DPNB method performs well in practice since it ranks high in
+almost all cases. In particular, it yields the best prediction performance on two out of the ﬁve
+ratios. We can say that the DPNB model provides stable performance by obtaining the highest
+average normalized F1-score and average rank and stable inference in the incomplete data with
+high missing rates. However, since the semiconductor dataset has very high missing rates, the
+DPNB does not provide remarkable performance against other methods as shown in the previous
+section. The methods using the KNN imputer have poor performance irrespective of the type
+of classiﬁers. We also present the actual average F1-score in Table 11 of Appendix B for more
+20
+
+===== Page 21 =====
+
+details.
+6
+Conclusions
+We propose a new method for classiﬁcation problems with incomplete data based on the Dirichlet process and naive Bayes model, DPNB. The DPNB method is free from the distribution
+assumption and constructs ﬂexible imputer and classiﬁer. The ﬂexibility and eﬀect of the DPNB
+model are veriﬁed by various experiments. Moreover, the DPNB model suﬀers less from the
+overﬁtting problem, which frequently occurs using a ﬂexible model, by considering proper prior.
+The DPNB model shows stable and better performance than other methods on experiments
+even missing rate is high. As an improvement to the DPNB model, we would like to address the
+problem with computational time. Due to the limit of the MCMC algorithm, the DPNB model
+takes a longer time compared to other models. In future studies, we would like to propose ways
+to reduce computational time for the DPNB model such as variational methods.
+Acknowledgement
+This work was supported by Samsung Electronics Co., Ltd. (IO210216-08417-01).
+References
+Aldous, D. J. (1985). Exchangeability and related topics, ´Ecole d’´Et´e de Probabilit´es de SaintFlour XIII—1983, Springer, pp. 1–198.
+Antoniak, C. E. (1974). Mixtures of dirichlet processes with applications to bayesian nonparametric problems, The annals of statistics pp. 1152–1174.
+Bengio, Y. and Gingras, F. (1996). Recurrent neural networks for missing or asynchronous data,
+Advances in neural information processing systems, pp. 395–401.
+Blackwell, D., MacQueen, J. B. et al. (1973). Ferguson distributions via p´olya urn schemes, The
+annals of statistics 1(2): 353–355.
+21
+
+===== Page 22 =====
+
+Blei, D. M., Jordan, M. I. et al. (2006). Variational inference for dirichlet process mixtures,
+Bayesian analysis 1(1): 121–143.
+Br´as, L. P. and Menezes, J. C. (2007). Improving cluster-based missing value estimation of dna
+microarray data, Biomolecular engineering 24(2): 273–282.
+Burgette, L. F. and Reiter, J. P. (2010). Multiple imputation for missing data via sequential
+regression trees, American journal of epidemiology 172(9): 1070–1076.
+Bush, C. A. and MacEachern, S. N. (1996). A semiparametric bayesian model for randomised
+block designs, Biometrika 83(2): 275–285.
+Buuren, S. v. and Groothuis-Oudshoorn, K. (2010). mice: Multivariate imputation by chained
+equations in r, Journal of statistical software pp. 1–68.
+Caruana, R. (2001). A non-parametric em-style algorithm for imputing missing values., AISTATS.
+Che, Z., Purushotham, S., Cho, K., Sontag, D. and Liu, Y. (2018). Recurrent neural networks
+for multivariate time series with missing values, Scientiﬁc reports 8(1): 1–12.
+Das, S., Datta, S. and Chaudhuri, B. B. (2018). Handling data irregularities in classiﬁcation:
+Foundations, trends, and future challenges, Pattern Recognition 81: 674–693.
+Dua, D. and Graﬀ, C. (2017). UCI machine learning repository.
+URL: http://archive.ics.uci.edu/ml
+Escobar, M. D. (1994). Estimating normal means with a dirichlet process prior, Journal of the
+American Statistical Association 89(425): 268–277.
+Escobar, M. D. and West, M. (1995). Bayesian density estimation and inference using mixtures,
+Journal of the american statistical association 90(430): 577–588.
+Ferguson, T. S. (1973). A bayesian analysis of some nonparametric problems, The annals of
+statistics pp. 209–230.
+Fraley, C. and Raftery, A. E. (2002). Model-based clustering, discriminant analysis, and density
+estimation, Journal of the American statistical Association 97(458): 611–631.
+22
+
+===== Page 23 =====
+
+Franz´en, J. (2006). Bayesian inference for a mixture model using the gibbs sampler, MResearch
+Report 1.
+Ge, H., Chen, Y., Wan, M. and Ghahramani, Z. (2015).
+Distributed inference for dirichlet
+process mixture models, International Conference on Machine Learning, pp. 2276–2284.
+Ghahramani, Z. and Jordan, M. I. (1994). Supervised learning from incomplete data via an em
+approach, Advances in neural information processing systems, pp. 120–127.
+Gondara, L. and Wang, K. (2018). Mida: Multiple imputation using denoising autoencoders,
+Paciﬁc-Asia Conference on Knowledge Discovery and Data Mining, Springer, pp. 260–272.
+Gupta, A. and Lam, M. S. (1996). Estimating missing values using neural networks, Journal of
+the Operational Research Society 47(2): 229–238.
+Hastie, T. and Tibshirani, R. (1996). Discriminant analysis by gaussian mixtures, Journal of
+the Royal Statistical Society: Series B (Methodological) 58(1): 155–176.
+Ishwaran, H. and James, L. F. (2001). Gibbs sampling methods for stick-breaking priors, Journal
+of the American Statistical Association 96(453): 161–173.
+Jain, S. and Neal, R. M. (2004). A split-merge markov chain monte carlo procedure for the
+dirichlet process mixture model, Journal of computational and Graphical Statistics 13(1): 158–
+182.
+Kalli, M., Griﬃn, J. E. and Walker, S. G. (2011). Slice sampling mixture models, Statistics and
+computing 21(1): 93–105.
+Kim, Y.-J. and Chi, M. (2018). Temporal belief memory: Imputing missing data during rnn
+training., In Proceedings of the 27th International Joint Conference on Artiﬁcial Intelligence
+(IJCAI-2018).
+Lee, J. Y. and Styczynski, M. P. (2018). Ns-knn: A modiﬁed k-nearest neighbors approach for
+imputing metabolomics data, Metabolomics 14(12): 153.
+Lin, T. I., Lee, J. C. and Ho, H. J. (2006). On fast supervised learning for normal mixture
+models with missing information, Pattern Recognition 39(6): 1177–1187.
+23
+
+===== Page 24 =====
+
+Little, R. J. and Rubin, D. B. (2019). Statistical analysis with missing data, Vol. 793, John
+Wiley & Sons.
+MacEachern, S. N. (1994). Estimating normal means with a conjugate style dirichlet process
+prior, Communications in Statistics-Simulation and Computation 23(3): 727–741.
+Neal, R. M. (2000).
+Markov chain sampling methods for dirichlet process mixture models,
+Journal of computational and graphical statistics 9(2): 249–265.
+Playdon, M. C., Joshi, A. D., Tabung, F. K., Cheng, S., Henglin, M., Kim, A., Lin, T., van
+Roekel, E. H., Huang, J., Krumsiek, J. et al. (2019). Metabolomics analytics workﬂow for
+epidemiological research: Perspectives from the consortium of metabolomics studies (comets),
+Metabolites 9(7): 145.
+Rubin, D. B. (1976). Inference and missing data, Biometrika 63(3): 581–592.
+Schafer, J. L. (1997). Analysis of incomplete multivariate data, CRC press.
+Sethuraman, J. (1994). A constructive deﬁnition of dirichlet priors, Statistica sinica pp. 639–650.
+Sharpe, P. K. and Solly, R. (1995). Dealing with missing values in neural network-based diagnostic systems, Neural Computing & Applications 3(2): 73–77.
+Silva-Ram´ırez, E.-L., Pino-Mej´ıas, R., L´opez-Coello, M. and Cubiles-de-la Vega, M.-D. (2011).
+Missing value imputation on missing completely at random data using multilayer perceptrons,
+Neural Networks 24(1): 121–129.
+Stekhoven, D. J. and B¨uhlmann, P. (2012). Missforest—non-parametric missing value imputation for mixed-type data, Bioinformatics 28(1): 112–118.
+Teh, Y. W., Jordan, M. I., Beal, M. J. and Blei, D. M. (2006). Hierarchical dirichlet processes,
+Journal of the American Statistical Association 101(476): 1566–1581.
+Troyanskaya, O., Cantor, M., Sherlock, G., Brown, P., Hastie, T., Tibshirani, R., Botstein, D. and
+Altman, R. B. (2001). Missing value estimation methods for dna microarrays, Bioinformatics
+17(6): 520–525.
+24
+
+===== Page 25 =====
+
+Vincent, P., Larochelle, H., Bengio, Y. and Manzagol, P.-A. (2008). Extracting and composing
+robust features with denoising autoencoders, Proceedings of the 25th international conference
+on Machine learning, pp. 1096–1103.
+Walker, S. G. (2007). Sampling the dirichlet mixture model with slices, Communications in
+Statistics—Simulation and Computation® 36(1): 45–54.
+Wang, C., Liao, X., Carin, L., Dunson, D. B. and Blei, D. (2010). Classiﬁcation with incomplete
+data using dirichlet process priors., Journal of Machine Learning Research 11(12).
+Wang, L. and Dunson, D. B. (2011). Fast bayesian inference in dirichlet process mixture models,
+Journal of Computational and Graphical Statistics 20(1): 196–216.
+Wei, R., Wang, J., Su, M., Jia, E., Chen, S., Chen, T. and Ni, Y. (2018). Missing value imputation
+approach for mass spectrometry-based metabolomics data, Scientiﬁc reports 8(1): 1–10.
+Williams, D., Liao, X., Xue, Y., Carin, L. and Krishnapuram, B. (2007). On classiﬁcation with
+incomplete data, IEEE transactions on pattern analysis and machine intelligence 29(3): 427–
+436.
+Yeh, R. A., Chen, C., Yian Lim, T., Schwing, A. G., Hasegawa-Johnson, M. and Do, M. N.
+(2017). Semantic image inpainting with deep generative models, Proceedings of the IEEE
+conference on computer vision and pattern recognition, pp. 5485–5493.
+Yoon, J., Jordon, J. and Van Der Schaar, M. (2018).
+Gain: Missing data imputation using
+generative adversarial nets, arXiv preprint arXiv:1806.02920 .
+Zhang, J. and Everson, R. (2004). Bayesian estimation and classiﬁcation with incomplete data
+using mixture models, 2004 International Conference on Machine Learning and Applications,
+2004. Proceedings., IEEE, pp. 296–303.
+25
+
+===== Page 26 =====
+
+Appendix A
+Slice sampling for the DPMM on incomplete data
+Based on the model (4), approximate posterior of X conditioned on the class k is computed
+using an improved slice sampler for the DPMM presented by Ge et al. (2015). However, since
+observations xi := {xoi
+i , xmi
+i }, i = 1, . . . , n contain missing values, we additionally embed updating steps (2) for estimating the missing values in the slice sampling algorithm for the DPMM.
+We can summarize the MCMC algorithm for X conditioned on the class k as follows:
+[Step 1] For each cluster h, sample mixing proportions wk := (wk
+1, wk
+2, . . . , wk
+H, wk
+∗)
+[ wk | others ] ∼Dir(πk
+1, . . . , πk
+H, α),
+where πk
+h := |{i : zk
+i = h}| and H is the number of (current) clusters.
+[Step 2] Sample auxilrary variables and set the minimum
+[ uk
+i | others ] ∼U(0, wk
+zk
+i ),
+∀i = 1, . . . , nk,
+uk
+∗= min
+i
+uk
+i .
+[Step 3] Generate new clusters through stick-breaking processes until wk
+∗< uk
+∗
+Hk ←Hk + 1,
+νk
+Hk ∼Beta(1, α),
+wk
+Hk = wk
+∗× νk
+Hk,
+wk
+∗←wk
+∗× (1 −νk
+Hk),
+(µk
+Hk, Σk
+Hk) ∼N(µk; mk
+0, Σk/τ k
+0 ) · IW(Σk; Bk
+0, νk
+0),
+where wk
+∗is the remaining stick length.
+[Step 4] For each observation xk
+i , sample the assignment variable zk
+i
+p(zi = h | others) ∝I(wk
+h ≥uk
+i ) · N(xk
+i ; µk
+i , Σk
+i ).
+for h = 1, . . . , Hk.
+[Step 5] For each cluster h, sample cluster parameters (µk
+h, Σk
+h)
+p(µk
+h, Σk
+h | others) ∝N(µk
+h; mk
+0, Σk/τ k
+0 ) · IW(Σk
+h; Bk
+0, νk
+0)
+Y
+{i: zk
+i =h}
+N(xk
+i ; µk
+i , Σk
+i ).
+26
+
+===== Page 27 =====
+
+[Step 6] For each observation xk
+i that belongs to speciﬁc hth mixure component, sample the
+missing values xmi
+i
+[ xmi
+i
+| others ] ∼N|mi|((µk
+h)mi|oi, (Σk
+h)mi|oi),
+(µk
+h)mi|oi = (µk
+h)mi + (Σk
+h)mi,oi((Σk
+h)oi,oi)−1(xoi
+i −(µk
+h)oi),
+(Σk
+h)mi|oi = (Σk
+h)mi,mi −(Σk
+h)mi,oi((Σk
+h)oi,oi)−1(Σk
+h)oi,mi.
+[Step 7] Repeat steps 1-6 until convergence.
+27
+
+===== Page 28 =====
+
+Appendix B
+Full simulation results
+In this section we present additional simulation results for imputation and predictive performance reported in section 4 and section 5.
+Dataset
+Model
+MCAR
+MAR
+10%
+20%
+30%
+40%
+50%
+60%
+10%
+20%
+30%
+40%
+50%
+60%
+Ecoli
+RF
+0.705 (0.0564)
+0.746 (0.0398)
+0.804 (0.0341)
+0.864 (0.0391)
+0.889 (0.0323)
+0.984 (0.0367)
+0.709 (0.055)
+0.761 (0.0467)
+0.818 (0.0385)
+0.868 (0.0345)
+0.924 (0.0463)
+1.02 (0.0857)
+MICE
+0.786 (0.0589)
+0.814 (0.0346)
+0.847 (0.0279)
+0.885 (0.0229)
+0.888 (0.022)
+0.941 (0.0225)
+0.791 (0.055)
+0.822 (0.0371)
+0.857 (0.0297)
+0.887 (0.0244)
+0.909 (0.0385)
+0.962 (0.0598)
+KNN
+0.737 (0.0619)
+0.781 (0.0427)
+0.841 (0.0386)
+0.897 (0.0369)
+0.9 (0.0339)
+0.971 (0.0393)
+0.744 (0.0553)
+0.794 (0.0383)
+0.849 (0.0343)
+0.912 (0.0319)
+0.924 (0.0486)
+0.978 (0.0851)
+MIDA
+0.898 (0.0416)
+0.908 (0.0415)
+0.927 (0.0295)
+0.936 (0.0229)
+0.949 (0.0243)
+0.987 (0.0247)
+0.891 (0.0429)
+0.916 (0.0431)
+0.926 (0.0287)
+0.936 (0.0233)
+0.946 (0.0269)
+0.966 (0.0259)
+GAIN
+0.824 (0.0675)
+0.839 (0.052)
+0.865 (0.0477)
+0.898 (0.0489)
+0.95 (0.0801)
+1.058 (0.1221)
+0.833 (0.068)
+0.85 (0.0498)
+0.866 (0.0402)
+0.906 (0.0565)
+0.945 (0.0784)
+1.008 (0.0888)
+DPNB
+0.616 (0.0521)
+0.643 (0.0422)
+0.682 (0.0383)
+0.717 (0.0265)
+0.743 (0.0287)
+0.793 (0.0256)
+0.629 (0.0481)
+0.641 (0.0425)
+0.682 (0.0327)
+0.719 (0.0268)
+0.75 (0.0278)
+0.793 (0.0253)
+Breast Cancer
+RF
+0.09 (0.038)
+0.099 (0.0258)
+0.11 (0.019)
+0.121 (0.0168)
+0.136 (0.0156)
+0.161 (0.0167)
+0.091 (0.03)
+0.099 (0.024)
+0.11 (0.0183)
+0.117 (0.0174)
+0.131 (0.016)
+0.15 (0.0143)
+MICE
+0.066 (0.029)
+0.08 (0.0217)
+0.093 (0.0163)
+0.115 (0.0181)
+0.138 (0.0194)
+0.183 (0.0173)
+0.065 (0.0236)
+0.077 (0.0206)
+0.091 (0.017)
+0.106 (0.0162)
+0.127 (0.0176)
+0.173 (0.0158)
+KNN
+0.219 (0.0356)
+0.284 (0.027)
+0.347 (0.0215)
+0.392 (0.0166)
+0.441 (0.0188)
+0.479 (0.0175)
+0.233 (0.0357)
+0.279 (0.0261)
+0.355 (0.0199)
+0.389 (0.0206)
+0.457 (0.0178)
+0.479 (0.0169)
+MIDA
+0.156 (0.0346)
+0.184 (0.0304)
+0.189 (0.0245)
+0.215 (0.0223)
+0.239 (0.0271)
+0.265 (0.0221)
+0.165 (0.0351)
+0.18 (0.0305)
+0.191 (0.0245)
+0.213 (0.0243)
+0.225 (0.0223)
+0.259 (0.0225)
+GAIN
+0.113 (0.0228)
+0.125 (0.0183)
+0.13 (0.0137)
+0.142 (0.0175)
+0.156 (0.0165)
+0.184 (0.0204)
+0.115 (0.0235)
+0.122 (0.0164)
+0.127 (0.0141)
+0.134 (0.013)
+0.149 (0.0159)
+0.172 (0.0195)
+DPNB
+0.085 (0.0522)
+0.098 (0.0431)
+0.107 (0.0362)
+0.114 (0.029)
+0.134 (0.0315)
+0.142 (0.0211)
+0.087 (0.0585)
+0.101 (0.0464)
+0.109 (0.0384)
+0.115 (0.0298)
+0.124 (0.0291)
+0.144 (0.0208)
+Wine
+RF
+0.232 (0.0361)
+0.236 (0.0326)
+0.25 (0.0293)
+0.275 (0.027)
+0.293 (0.0236)
+0.315 (0.025)
+0.225 (0.036)
+0.241 (0.0315)
+0.253 (0.0288)
+0.271 (0.0259)
+0.289 (0.0209)
+0.317 (0.0229)
+MICE
+0.273 (0.0521)
+0.281 (0.0352)
+0.297 (0.031)
+0.311 (0.0275)
+0.327 (0.023)
+0.352 (0.018)
+0.272 (0.0456)
+0.283 (0.0348)
+0.294 (0.0304)
+0.31 (0.0291)
+0.326 (0.0243)
+0.353 (0.0234)
+KNN
+0.249 (0.052)
+0.259 (0.0486)
+0.287 (0.04)
+0.315 (0.0358)
+0.338 (0.038)
+0.361 (0.0409)
+0.261 (0.0576)
+0.268 (0.0446)
+0.31 (0.0416)
+0.305 (0.0338)
+0.373 (0.0363)
+0.372 (0.0368)
+MIDA
+0.319 (0.0604)
+0.324 (0.039)
+0.336 (0.0321)
+0.349 (0.0257)
+0.359 (0.0228)
+0.37 (0.0208)
+0.309 (0.0511)
+0.325 (0.0345)
+0.334 (0.0287)
+0.345 (0.0256)
+0.357 (0.0253)
+0.372 (0.024)
+GAIN
+0.279 (0.0382)
+0.288 (0.0317)
+0.312 (0.0293)
+0.333 (0.0354)
+0.352 (0.032)
+0.375 (0.0312)
+0.274 (0.0429)
+0.295 (0.0332)
+0.312 (0.0293)
+0.326 (0.0315)
+0.349 (0.0286)
+0.376 (0.0298)
+DPNB
+0.222 (0.0391)
+0.227 (0.0305)
+0.229 (0.0237)
+0.234 (0.0166)
+0.241 (0.0185)
+0.242 (0.0169)
+0.222 (0.0413)
+0.228 (0.0284)
+0.23 (0.0217)
+0.232 (0.0216)
+0.24 (0.0178)
+0.242 (0.0187)
+Wine Quality
+RF
+0.346 (0.0263)
+0.404 (0.0258)
+0.463 (0.0225)
+0.52 (0.0243)
+0.566 (0.0216)
+0.62 (0.0224)
+0.343 (0.0272)
+0.395 (0.0244)
+0.453 (0.0215)
+0.511 (0.0195)
+0.563 (0.0216)
+0.614 (0.0226)
+MICE
+0.486 (0.031)
+0.511 (0.0193)
+0.535 (0.018)
+0.56 (0.0136)
+0.584 (0.0148)
+0.607 (0.0097)
+0.487 (0.0285)
+0.506 (0.0192)
+0.532 (0.0156)
+0.556 (0.0144)
+0.579 (0.0128)
+0.601 (0.0123)
+KNN
+0.473 (0.0377)
+0.526 (0.0291)
+0.598 (0.0207)
+0.592 (0.0167)
+0.67 (0.0195)
+0.642 (0.0134)
+0.461 (0.0413)
+0.536 (0.0285)
+0.563 (0.0192)
+0.638 (0.0188)
+0.629 (0.0148)
+0.707 (0.0221)
+MIDA
+0.577 (0.027)
+0.587 (0.0209)
+0.594 (0.0166)
+0.6 (0.0143)
+0.611 (0.012)
+0.617 (0.0102)
+0.577 (0.0266)
+0.583 (0.0225)
+0.587 (0.0179)
+0.599 (0.013)
+0.605 (0.011)
+0.613 (0.0106)
+GAIN
+0.564 (0.0562)
+0.567 (0.0457)
+0.576 (0.0438)
+0.587 (0.0423)
+0.6 (0.0443)
+0.624 (0.0477)
+0.569 (0.0537)
+0.566 (0.0443)
+0.578 (0.044)
+0.586 (0.0573)
+0.597 (0.0562)
+0.628 (0.0462)
+DPNB
+0.383 (0.029)
+0.429 (0.0311)
+0.471 (0.0267)
+0.507 (0.022)
+0.532 (0.0189)
+0.553 (0.0149)
+0.381 (0.0277)
+0.428 (0.0271)
+0.463 (0.0207)
+0.5 (0.0186)
+0.526 (0.0182)
+0.551 (0.0146)
+Table 9: Average of NRMSEs over 100 replications for four UCI datasets with diﬀerent missingness patterns and missing rates. Estimated standard errors of NRMSEs are shown in parentheses.
+28
+
+===== Page 29 =====
+
+Dataset
+Metric
+Model
+MCAR
+MAR
+10%
+20%
+30%
+40%
+50%
+60%
+10%
+20%
+30%
+40%
+50%
+60%
+Ecoli
+F1 score
+RF
+0.737 (0.027)
+0.695 (0.0304)
+0.63 (0.0378)
+0.575 (0.0777)
+0.537 (0.0516)
+0.391 (0.065)
+0.743 (0.0286)
+0.666 (0.0371)
+0.642 (0.0418)
+0.529 (0.0747)
+0.483 (0.0656)
+0.29 (0.0859)
+MICE
+0.728 (0.0268)
+0.688 (0.0308)
+0.619 (0.0337)
+0.556 (0.0577)
+0.523 (0.0565)
+0.348 (0.0627)
+0.737 (0.029)
+0.669 (0.0296)
+0.63 (0.0548)
+0.543 (0.0605)
+0.446 (0.0758)
+0.294 (0.0826)
+KNN
+0.732 (0.0334)
+0.682 (0.0288)
+0.621 (0.0262)
+0.547 (0.0587)
+0.51 (0.0399)
+0.356 (0.1007)
+0.732 (0.0284)
+0.666 (0.0434)
+0.626 (0.0322)
+0.523 (0.0628)
+0.445 (0.095)
+0.31 (0.0815)
+MIDA
+0.733 (0.0309)
+0.719 (0.0498)
+0.672 (0.0291)
+0.63 (0.0475)
+0.606 (0.0408)
+0.499 (0.0483)
+0.754 (0.0237)
+0.696 (0.0301)
+0.665 (0.0387)
+0.626 (0.0377)
+0.542 (0.0463)
+0.429 (0.067)
+GAIN
+0.747 (0.0248)
+0.702 (0.0365)
+0.664 (0.016)
+0.611 (0.0571)
+0.581 (0.0361)
+0.459 (0.072)
+0.745 (0.0237)
+0.68 (0.0376)
+0.653 (0.0379)
+0.609 (0.0609)
+0.533 (0.0725)
+0.381 (0.0545)
+DPNB
+0.758 (0.0182)
+0.744 (0.0302)
+0.699 (0.0225)
+0.678 (0.034)
+0.643 (0.0429)
+0.589 (0.0302)
+0.767 (0.0254)
+0.745 (0.0202)
+0.707 (0.0242)
+0.681 (0.0457)
+0.63 (0.0384)
+0.551 (0.0715)
+Breast Cancer
+AUC
+RF
+0.995 (0.0011)
+0.992 (0.0016)
+0.989 (0.0032)
+0.981 (0.0057)
+0.972 (0.007)
+0.952 (0.0077)
+0.994 (0.0017)
+0.992 (0.0015)
+0.989 (0.0028)
+0.979 (0.005)
+0.971 (0.0069)
+0.953 (0.0083)
+MICE
+0.995 (0.0011)
+0.993 (0.002)
+0.99 (0.0024)
+0.984 (0.0059)
+0.979 (0.0079)
+0.967 (0.0041)
+0.994 (0.0012)
+0.993 (0.001)
+0.99 (0.0028)
+0.984 (0.0042)
+0.977 (0.007)
+0.97 (0.0055)
+KNN
+0.995 (8e-04)
+0.993 (0.0017)
+0.99 (0.0019)
+0.987 (0.0044)
+0.985 (0.0029)
+0.979 (0.0038)
+0.995 (0.0015)
+0.992 (0.0013)
+0.991 (0.0022)
+0.986 (0.0047)
+0.98 (0.0052)
+0.981 (0.0057)
+MIDA
+0.994 (9e-04)
+0.992 (0.0025)
+0.989 (0.0029)
+0.981 (0.0056)
+0.975 (0.0074)
+0.96 (0.0057)
+0.995 (0.0015)
+0.991 (0.0019)
+0.989 (0.0025)
+0.982 (0.0037)
+0.972 (0.0061)
+0.96 (0.0127)
+GAIN
+0.995 (0.0013)
+0.992 (0.0023)
+0.989 (0.002)
+0.983 (0.0059)
+0.978 (0.0052)
+0.965 (0.0059)
+0.994 (0.002)
+0.991 (0.0014)
+0.99 (0.0031)
+0.984 (0.0039)
+0.978 (0.0062)
+0.97 (0.0068)
+DPNB
+0.993 (0.0025)
+0.992 (0.0029)
+0.991 (0.002)
+0.989 (0.0027)
+0.987 (0.0037)
+0.984 (0.004)
+0.991 (0.0024)
+0.991 (0.0019)
+0.99 (0.0029)
+0.989 (0.0031)
+0.988 (0.0032)
+0.988 (0.003)
+Wine
+Accuracy rate
+RF
+0.96 (0.0143)
+0.936 (0.0205)
+0.917 (0.0302)
+0.86 (0.0174)
+0.806 (0.0301)
+0.743 (0.019)
+0.966 (0.01)
+0.95 (0.0155)
+0.919 (0.0168)
+0.867 (0.0148)
+0.788 (0.0316)
+0.687 (0.0451)
+MICE
+0.963 (0.0115)
+0.935 (0.0179)
+0.921 (0.0169)
+0.878 (0.0219)
+0.827 (0.0217)
+0.784 (0.0243)
+0.969 (0.0095)
+0.943 (0.0183)
+0.913 (0.0167)
+0.867 (0.0238)
+0.805 (0.0376)
+0.754 (0.02)
+KNN
+0.961 (0.0133)
+0.948 (0.0137)
+0.925 (0.0187)
+0.888 (0.0223)
+0.853 (0.0323)
+0.823 (0.0228)
+0.96 (0.0079)
+0.944 (0.0093)
+0.922 (0.019)
+0.875 (0.02)
+0.832 (0.0294)
+0.782 (0.0247)
+MIDA
+0.959 (0.0128)
+0.941 (0.0148)
+0.925 (0.0193)
+0.883 (0.0158)
+0.827 (0.0123)
+0.801 (0.0257)
+0.964 (0.0124)
+0.948 (0.0163)
+0.925 (0.0179)
+0.873 (0.0225)
+0.831 (0.0353)
+0.761 (0.0277)
+GAIN
+0.961 (0.0113)
+0.947 (0.0162)
+0.927 (0.0221)
+0.889 (0.0234)
+0.851 (0.0196)
+0.807 (0.0245)
+0.969 (0.0134)
+0.946 (0.0137)
+0.924 (0.0198)
+0.882 (0.016)
+0.817 (0.0249)
+0.767 (0.0185)
+DPNB
+0.968 (0.0117)
+0.961 (0.0157)
+0.952 (0.0111)
+0.932 (0.0186)
+0.91 (0.0219)
+0.875 (0.0202)
+0.973 (0.0107)
+0.964 (0.0125)
+0.95 (0.0181)
+0.939 (0.016)
+0.897 (0.0202)
+0.862 (0.0298)
+Wine Quality
+F1 Score
+RF
+0.587 (0.0087)
+0.544 (0.0133)
+0.525 (0.0149)
+0.498 (0.018)
+0.448 (0.0167)
+0.401 (0.0192)
+0.594 (0.0118)
+0.544 (0.0122)
+0.528 (0.0114)
+0.496 (0.014)
+0.445 (0.0133)
+0.401 (0.0148)
+MICE
+0.587 (0.0145)
+0.548 (0.0099)
+0.515 (0.0163)
+0.481 (0.0263)
+0.438 (0.0271)
+0.403 (0.0137)
+0.592 (0.0108)
+0.548 (0.0091)
+0.529 (0.0108)
+0.486 (0.02)
+0.437 (0.0219)
+0.404 (0.0284)
+KNN
+0.592 (0.0115)
+0.55 (0.0097)
+0.52 (0.0114)
+0.493 (0.0117)
+0.466 (0.0238)
+0.419 (0.0146)
+0.594 (0.0105)
+0.555 (0.0106)
+0.539 (0.017)
+0.499 (0.0139)
+0.457 (0.0245)
+0.427 (0.0176)
+MIDA
+0.589 (0.011)
+0.548 (0.0159)
+0.526 (0.0147)
+0.494 (0.0259)
+0.459 (0.031)
+0.423 (0.0186)
+0.592 (0.0102)
+0.552 (0.0088)
+0.525 (0.0143)
+0.5 (0.0164)
+0.456 (0.0221)
+0.421 (0.0261)
+GAIN
+0.589 (0.0106)
+0.551 (0.0124)
+0.515 (0.0183)
+0.489 (0.0198)
+0.448 (0.0273)
+0.407 (0.0161)
+0.586 (0.012)
+0.55 (0.0097)
+0.526 (0.0166)
+0.493 (0.025)
+0.453 (0.0243)
+0.409 (0.0152)
+DPNB
+0.597 (0.0092)
+0.566 (0.0077)
+0.547 (0.014)
+0.528 (0.0149)
+0.51 (0.0082)
+0.488 (0.0078)
+0.596 (0.0108)
+0.567 (0.0111)
+0.544 (0.0104)
+0.527 (0.0135)
+0.511 (0.013)
+0.487 (0.0108)
+Table 10: Average of 10 times repeated 10-folds cross-validated metrics for four UCI datasets
+with diﬀerent missingness patterns and missing rates. Estimated standard errors of the average
+cross-validated scores are shown in parentheses.
+29
+
+===== Page 30 =====
+
+50%
+60%
+70%
+80%
+90%
+RF+L
+0.161 (0.032)
+0.168 (0.0306)
+0.168 (0.0322)
+0.182 (0.0344)
+0.177 (0.0467)
+RF+R
+0.112 (0.0632)
+0.123 (0.0585)
+0.124 (0.0647)
+0.118 (0.0655)
+0.111 (0.0789)
+MICE+L
+0.146 (0.0346)
+0.151 (0.0322)
+0.157 (0.0365)
+0.168 (0.0409)
+0.171 (0.0595)
+MICE+R
+0.006 (0.0118)
+0.005 (0.0117)
+0.007 (0.0163)
+0.008 (0.0186)
+0.005 (0.0194)
+KNN+L
+0.141 (0.0234)
+0.146 (0.0324)
+0.149 (0.0362)
+0.161 (0.0446)
+0.145 (0.0587)
+KNN+R
+0.118 (0.0492)
+0.121 (0.0528)
+0.127 (0.0527)
+0.131 (0.0531)
+0.131 (0.0618)
+MIDA+L
+0.11 (0.0306)
+0.11 (0.0338)
+0.122 (0.0403)
+0.14 (0.0489)
+0.13 (0.0641)
+MIDA+R
+0.166 (0.0256)
+0.167 (0.0324)
+0.178 (0.0215)
+0.178 (0.0232)
+0.174 (0.0334)
+GAIN+L
+0.15 (0.0316)
+0.158 (0.0316)
+0.171 (0.0289)
+0.181 (0.0343)
+0.171 (0.0602)
+GAIN+R
+0.16 (0.0387)
+0.172 (0.0216)
+0.168 (0.0347)
+0.174 (0.0291)
+0.174 (0.0353)
+DPNB
+0.169 (0.0223)
+0.171 (0.0182)
+0.171 (0.0248)
+0.179 (0.0309)
+0.177 (0.042)
+Table 11: Average of F1-scores over 100 replications for the semiconductor dataset with diﬀerent
+ratios between training and test sets. Estimated standard errors of F1-scores are shown in
+parentheses.
+30

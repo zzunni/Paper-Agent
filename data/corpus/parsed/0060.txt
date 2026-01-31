@@ -1,0 +1,632 @@
+
+
+===== Page 1 =====
+
+Automatic Visual Inspection of Rare Defects: A
+Framework based on GP-WGAN and Enhanced
+Faster R-CNN
+Masoud Jalayer1,2, Reza Jalayer3, Amin Kaboli4, Carlotta Orsenigo1 and
+Carlo Vercellis1
+1Department of Management, Economics and Industrial Engineering, Politecnico di Milano, Via Lambruschini 24/b,
+20156, Milan, Italy
+2Advanced Control & Intelligent Systems Laboratory, School of Engineering, University of British Columbia, Kelowna,
+BC, Canada
+3Center of Excellence in Experimental Solid Mechanics and Dynamics, School of Mechanical Engineering, Iran
+University of Science and Technology, Narmak 16846, Tehran, Iran
+4Institute of Mechanical Engineering, School of Engineering, Swiss Federal Institute of Technology at Lausanne (EPFL),
+Lausanne, Switzerland
+Abstract
+A current trend in industries such as semiconductors and foundry is to shift their visual inspection
+processes to Automatic Visual Inspection (AVI) systems, to reduce their costs, mistakes, and dependency
+on human experts. This paper proposes a two-staged fault diagnosis framework for AVI systems. In
+the first stage, a generation model is designed to synthesize new samples based on real samples. The
+proposed augmentation algorithm extracts objects from the real samples and blends them randomly,
+to generate new samples and enhance the performance of the image processor. In the second stage, an
+improved deep learning architecture based on Faster R-CNN, Feature Pyramid Network (FPN), and a
+Residual Network is proposed to perform object detection on the enhanced dataset. The performance of
+the algorithm is validated and evaluated on two multi-class datasets. The experimental results performed
+over a range of imbalance severities demonstrate the superiority of the proposed framework compared
+to other solutions.
+1. Introduction
+1.1. Motivation
+The paper proposes a defect detection framework towards an efficient Automatic Visual Inspection (AVI) system for industries that lack sufficient amount of annotated samples. Nowadays,
+due to their high generalization abilities and easy-to-use nature, AVI systems based on deep
+learning (DL) models have been proposed everywhere in the literature. Nonetheless, DL-based
+classifiers require an adequate amount of samples to reach high performances. Furthermore,
+creating a large and accurately labelled dataset needs a high number of defective samples and a
+ArXiv preprint
+" masoud.jalayer@polimi.it (M. Jalayer); reza.jalayer74@gmail.com (R. Jalayer); amin.kaboli@epfl.ch (A. Kaboli);
+carlotta.orsenigo@polimi.it (C. Orsenigo); carlo.vercellis@polimi.it (C. Vercellis)
+ 0000-0001-8013-8613 (M. Jalayer)
+1
+arXiv:2105.00447v1  [cs.CV]  2 May 2021
+
+===== Page 2 =====
+
+Masoud Jalayer et al. - Preprint
+1–13
+considerable amount of time for the annotation. On the other hand, annotation is the requirement of any image object detection algorithm. In this paper, therefore, alongside an enhanced
+image object detection model for AVI systems, we propose a novel data augmentation model
+that alleviates this burden for the practitioners and automatically synthesizes and annotates
+new images from a limited number of samples.
+1.2. AVI systems
+AVI plays a key role in quality control and process monitoring in the automated production line
+technologies. It is aimed to ensure that the product is healthy based on a visual control and
+there is no defect on its surface. A successful implementation of AVI can drastically lower the
+production costs and respond to the increasing demand of high-quality and reliable productions
+in different industries. Hence, in recent years, AVI systems have been receiving more and more
+research attention in quality control and, as a comprehensive technology, they have been widely
+used in industries such as steel and aluminum productions [1], electronic devices and boards [2],
+railway health monitoring [3], wood flooring [4], silicon wafers [5], fabric and textile materials
+[6] and fruit and vegetable productions [7].
+AVI systems are chiefly configured by two parts, represented by optical imaging devices and an
+image processing software. These systems can comprise different types of cameras to detect
+moving products and their components, and can be regarded as decision support systems able
+to conduct quality control based on the images they receive in input. Fundamentally, the image
+processing software of an AVI method accomplishes two main tasks: (1) feature extraction,
+which contains a set of hand-crafted and automatic encoding-decoding techniques to pull out
+the defect signs; (2) classification, which incorporates a set of methods to diagnose the sample
+condition based on the extracted features.
+Current AVI image processing systems are mostly based on hand-crafted feature extraction
+techniques, such as threshold models, statistical methods, filter-based techniques, transformbased and model-based methods, requiring skilled workers with prior knowledge of the specific
+application and domain. Such systems need long development time and more complex installations, and lack the generalization ability required to be easily applied to other similar settings
+and applications. It is worthwhile to observe that, state-of-the-art AVI systems, based on deep
+learning (DL) architectures, do not require expert designers and have a satisfactory generalization ability. However, they usually get poor results when they are dealing with insufficient
+number of samples and imbalanced datasets, as in the case of real-world applications, in which
+some defect types happen infrequently. This hinders current AVI systems to perform accurately.
+1.3. Related works
+Some AVI methods are characterized by spatial distribution of grayscale images: Tsai et al.
+[8] proposed a mathematical morphology technique to detect the machine circular tool-mark
+textures. [9] introduced a similar mathematical model to extract relevant pixels corresponding to
+the presence of a discontinuity for crack recognition. Wu and Hu [10] suggested co-occurrence
+matrices of metal grayscale images to access the information of metal surfaces. Despite their
+quick runtime, these methods are highly dependent on the interference conditions and presence
+2
+
+===== Page 3 =====
+
+Masoud Jalayer et al. - Preprint
+1–13
+of noise. Moreover, they are not capable of detecting rare patterns. Traditional machine learning
+techniques, such as Support Vector Machines [11], Decision Trees[12], Naive Bayesian network
+[13], are also widely used in the literature of AVI systems. However, these so-called “shallow
+learning”-based systems have shown shortcomings when they are dealing with images of multi
+defect types, noisy samples or rare patterns[14].
+In the literature of AVI systems an increasing attention has been paid to DL-based computer
+vision algorithms. Convolutional neural networks (CNN) have boosted the image classification
+performance and have been employed in different quality control systems. Soukup et al. [15]
+introduced a CNN-based setup for rail surface inspection using photometric stereo images.
+Weimer et al. [16] investigated different CNN hyper-parameters involved in the process of an
+industrial optical inspection. To discriminate defect-free and defective samples, [17] employed
+a convolutional auto-encoder (CAE) architecture with two different regularization penalties
+which confine the spread of the extracted features in a very limited space from a set of defectfree samples and divide the background texture. These DL-based models are mostly efficient
+when they cope with image classification problems. On the other hand, to locate the defects
+in the sample images, image object detection and image segmentation techniques should be
+used. Enshaei et al. [18] proposed a U-Net image segmentation architecture for different
+surface types. [19] developed an AVI system of steel surfaces based on Fast R-CNN architecture
+with a feature fusion network, generating high-quality multi-resolution feature maps for the
+inspection of multi-size defects. In comparison with R-CNN and Fast R-CNN, Faster R-CNN
+can achieve a higher accuracy with a considerable faster training speed. In terms of runtime,
+Faster R-CNN is almost ten times as quick as Fast R-CNN, which makes it suitable for on-line
+detection applications. Compared to some one-step detectors such as YOLO-v3, Faster R-CNN
+is slightly slower. However, it achieves more accurate solutions in different domains and image
+contexts[20]. [21] used a Faster R-CNN to detect and locate the fiber paper tube defects. To
+detect the printed circuit boards, [22] also employed a Faster R-CNN architecture, coupled
+with a ResNet-50 for its feature extraction ability. In spite of their satisfactory performances,
+these solutions require a sufficient number of samples for each defect type, which is in practice
+hard to obtain. DL-based solutions need a huge amount of samples representing different
+defect types and defect-free conditions. To respond to this need, Niu et al. [23] proposed a
+generative algorithm called surface defect-generation adversarial network (SDGAN) which
+creates synthetic samples suitable for image classification, since it does not generate image
+annotations but only image labels.
+1.4. The Key Contributions
+The main contributions of this paper are four-fold:
+• We propose a new automated visual inspection system combining a generative algorithm
+and an image object detection model aimed to conduct the automated surface inspection
+on various products and to alleviate the adverse effect of imbalanced datasets.
+• We propose a heuristic data augmentation model based on the state-of-the-art GP-WGAN
+network, which generates small and medium-sized synthetic defects which are heuristically allocated on the augmented samples and annotated. This algorithm is suitable
+3
+
+===== Page 4 =====
+
+Masoud Jalayer et al. - Preprint
+1–13
+for image object detection and segmentation and creates a sheer amount of high-quality
+synthetic images.
+• We implement an enhanced Faster R-CNN as the automated object detection tool for
+defect detection and localization, using state-of-the-art Feature Pyramid Network (FPN)
+with Residual Network (ResNet).
+• We analyze the performance of the algorithm with different settings and compare it with
+some other state-of-the art methods.
+The rest of the paper is organized as follows. Section 2 introduces the Faster R-CNN principle
+and the gradient-penalty GAN model. In section 3 the proposed data augmentation and the AVI
+model architecture are explained. Section 4 is devoted to illustrate the results of our experiments
+and the performance of the tested models. Finally, conclusions and future research paths are
+summarized in section 5.
+2. Methods and Materials
+2.1. Faster R-CNN Principle
+In this section the basic idea of Faster R-CNN is introduced, being one of the cores of the
+proposed fault localization algorithm.
+R-CNN, proposed by [24], is intrinsically a Convolutional Neural Network (CNN) coupled
+with a region-proposal algorithm that suggests the object locations within an image. A selective
+search is designed to extract a fixed number of regions. The similar regions are merged together
+afterwards to obtain the candidate regions to be fed into the object detection algorithm. To
+cope with the slow runtime due to the comprehensive CNN feature extraction, [25] introduced
+Fast R-CNN, which employs a shared convolutional feature map as the output of the the CNN
+layer. This let the region of interests (RoI) to be extracted from these feature maps subsequently
+and faster.
+By combining R-CNN and Fast R-CNN, [26] proposed Faster R-CNN which demonstrated
+superior object detection capabilities in different domains. Like R-CNN and Fast R-CNN, Faster
+R-CNN divides the detection problem into two parts: (1) the region proposal stage, whose
+goal is to suggest the regions where objects may exist, and (2) the detection stage, where each
+selected region proposal is classified into different classes. In the first stage, the algorithm
+outputs the locations alongside with a binary object score which indicates if the region contains
+the corresponding object. In the detector stage, the algorithm generates class probabilities and
+refined region locations. By substituting the traditional region proposal stage with a CNN block,
+called Region Proposal Network (RPN), the network is able to share its layers with the object
+detector network, resulting in a reduced detection time.
+Faster R-CNN architecture can be divided into three parts: the convolutional layer, which
+serves as a feature extractor, the RPN module, which tells the Fast R-CNN network where to
+look, and the Fast R-CNN network, which performs the classification and the bounding box
+estimation tasks.
+4
+
+===== Page 5 =====
+
+Masoud Jalayer et al. - Preprint
+1–13
+2.2. GP-GAN Principle
+In a typical GAN model there are two networks being trained simultaneously: (1) the discriminator, 𝐷, which is aimed to identify the real and false images as accurately as possible and
+to maximize the discriminant accuracy, and (2) the generator, 𝐺, which strives to deceive the
+discriminator. Essentially, the Nash equilibrium is obtained as follows:
+min
+𝐺max
+𝐷E𝑥∼P𝑟[log(𝐷(𝑥))] + E𝑥˜∼P𝑔[log(1 −𝐷(𝑥˜))]
+(1)
+where 𝑥˜ = 𝐺(𝑧) denotes a sample generated from random noise 𝑧∼P𝑧, while P𝑟, P𝑔and
+P𝑧indicate the data distribution of the real samples, generated samples and the random noise,
+respectively. There are two general issues that traditional GAN models encounter during the
+training: first, when the discriminator becomes more accurate and gets higher performances,
+there’s a higher probability that the generator gradient vanishes. Second, minimizing the loss
+function of the generator is equivalent to minimizing an unreasonable distance measure, leading
+to gradient instability.
+In order to improve the stability of the GAN learning and cope with the mentioned issues,
+Arjovsky et al. [27] proposed a Wasserstein GAN, which employs the Earth-Mover distance,
+𝒲(P𝑟, P𝑔), instead of the Jensen-Shannon divergence. The Earth-Mover distance can be
+interpreted as the minimum cost of transporting mass to transform the distribution P𝑟into
+the distribution P𝑔.
+𝒲(P𝑟, P𝑔) =
+sup
+‖ℒ‖𝐿≤1
+E𝑥∼P𝑟[ℒ(𝑥)] −E𝑥∼P𝑔[ℒ(𝑥)]
+(2)
+where the supremum is over all the 1-Lipschitz functions ℒ: 𝒳→R. The optimal set of
+1-Lipschitz functions, ℒ*, yield the optimal solutions of the following maximization problem:
+max
+‖ℒ‖𝐿≤1 E𝑥˜∼P𝑟[ℒ(𝑥˜)] −E𝑥∼P𝑔[ℒ(𝑥)]
+(3)
+Using the Kantorovich-Rubinstein duality, the WGAN objective function can be determined as:
+min
+𝐺
+max
+𝐷∈ℒ* E𝑥∼P𝑟[𝐷(𝑥)] −E𝑥˜∼P𝑔[𝐷(𝑥˜)]
+(4)
+Let 𝛿∼𝑈[0, 1] be a random number to linearly interpolate between 𝑥and 𝑥˜:
+𝑥^ = 𝛿𝑥+ (1 −𝛿)𝑥˜
+(5)
+Consequently, the loss function of the discriminator, L𝐷, can be determined as follows:
+L𝐷= E𝑥˜∼P𝑔[𝐷(𝑥˜)] −E𝑥∼P𝑟[𝐷(𝑥)] + 𝜆E𝑥^∼P𝑧[(‖∇𝑥^𝐷(𝑥^)‖2 −1)2]
+(6)
+where 𝜆stands for the gradient penalty coefficient. The last part of Eq. 6, 𝜆E𝑥^∼P𝑧[(‖∇𝑥^𝐷(𝑥^)‖2−
+1)2], denotes the gradient penalty. Table 1 shows the pseudo-code of GP-WGAN.
+5
+
+===== Page 6 =====
+
+Masoud Jalayer et al. - Preprint
+1–13
+Table 1
+GP-WGAN pseudo-code
+Input: 𝜆, 𝑛𝑐𝑟𝑖𝑡𝑖𝑐, 𝑚, 𝛼, 𝛽1, 𝛽2, 𝜔0, 𝜃0
+1 while 𝜃is not converged do
+2
+for 𝑡←1, ..., 𝑛𝑐𝑟𝑖𝑡𝑖𝑐do
+3
+for 𝑖←1, ..., 𝑚do
+4
+Sample from real dataset 𝑥∼P𝑥,
+5
+Generate noise samples 𝑧∼P𝑧,
+6
+Generate a random number 𝛿∼𝑈[0, 1]
+7
+𝑥˜ ←𝐺𝜃(𝑧)
+8
+𝑥^ ←𝜖𝑥+ (1 −𝛿)𝑥˜
+9
+L (𝑖) ←𝐷𝜔(𝑥˜) −𝐷𝜔(𝑥) + 𝜆(‖∇𝑥˜𝐷𝜔(𝑥^)‖2 −1)2
+10
+𝜔←𝐴𝑑𝑎𝑚(∇𝜔1
+𝑚
+∑︀𝑚
+𝑖=1 𝐿𝑖, 𝜔, 𝛼, 𝛽1, 𝛽2)
+11
+Sample batch of 𝑚noise samples {𝑧𝑖}𝑚
+𝑖=1 ∼P𝑧
+12
+𝜃←𝐴𝑑𝑎𝑚(∇𝜃1
+𝑚
+∑︀𝑚
+𝑖=1 −𝐷𝜔(𝐺𝜃(𝑧)), 𝜔, 𝛼, 𝛽1, 𝛽2)
+3. The Proposed Framework
+3.1. Data Augmentation
+In this paper, in order to cope with insufficient number of samples for some fault types, we
+propose a framework which generates new high-quality synthetic samples with multiple defect
+types and annotates them subsequently. The sequence of this generative algorithm is illustrated
+in Fig. 1.
+By feeding the preprocessed bounding boxes to the GP-WGAN model, the model generates
+high-quality defects which are suitable to be processed afterwards, and to be randomly allocated
+on the synthetic and real defect-free image beds.
+3.2. Fault Diagnosis System
+The depth of the deep learning architecture is a key factor in achieving good results. Yet,
+when the network depth increases, the feature level correspondingly rises, which generates the
+gradient vanishing issue. To avoid that, we resort to ResNet-101 which uses the layers that are
+basically composed of a series of residual errors, degenerating the neural network model into a
+shallow network that solves the vanishing gradient problem. In our framework, the ResNet101
+architecture aims at extracting the initial feature maps of the raw images, based on which the
+region proposal networks of the Faster R-CNN model can work more effectively. Furthermore,
+we use a Feature Pyramid Network (FPN) layer that utilizes a hierarchical feature layers and
+generates integrated feature maps that can push up the detection accuracy, more specifically
+on the small objects[28]. The overall structure of the proposed FPN ResNet-101 Faster R-CNN
+model is shown in Fig. 2.
+6
+
+===== Page 7 =====
+
+Masoud Jalayer et al. - Preprint
+1–13
+Figure 1: The proposed data augmentation framework based on GP-WGAN
+Figure 2: The architecture of FPN ResNet Faster R-CNN
+4. Experimental Results and Discussions
+All the experiments were run on python 3.8 (PyTorch 1.8) on an Ubuntu 18, with CUDA10.2,
+GPU of Nvidia Tesla K80, and 12GB of memory as well as a CPU of Intel(R) Xenon with 2.30GHz
+of frequency.
+For the competing panel, we selected some state-of-the-art defect detection architectures
+7
+
+===== Page 8 =====
+
+Masoud Jalayer et al. - Preprint
+1–13
+which have been recently proposed in the literature and represented by Deconvolutional single
+shot detector (DSSD) [29], YOLO-v3 [30], and Faster R-CNN [26] with three different backbones:
+VGG16, FPN-ResNet-50, and FPN-ResNet-101. Running each network one time with the classic
+data augmentation strategy (e.g. by flipping, rotating and changing the image contrast), and
+the other time with the proposed data augmentation algorithm, the impact of the proposed
+GP-GAN-based technique on the results was examined. We also conducted a sensitivity analysis
+on the number of real samples (𝑚𝑟) and the number of generated samples (𝑚𝑔) to assess the
+detection ability of the proposed framework on the minority classes.
+4.1. The Performance Metrics
+To evaluate the performance of different algorithms, we used the mean Average Precision
+(𝑚𝐴𝑃) metric, which is the average of the Average Precision(𝐴𝑃) values of 𝒞different defect
+types. AP values are in fact the area under the ROC curve, determined using the following
+formula:
+𝐴𝑃=
+∫︁1
+0
+𝑝(𝑟) 𝑑𝑟=
+𝑀
+∑︁
+𝑘=1
+𝑃(𝑘)Δ𝑟(𝑘)
+(7)
+Using Eq. 7, the 𝑚𝐴𝑃values are calculated as follows:
+𝑚𝐴𝑃=
+∑︀𝒞
+𝑖=1 𝐴𝑃𝑖
+𝒞
+(8)
+4.2. Case Study 1
+For the first case study we analysed a steel surface defect dataset named NEU, containing six
+types of defects: scratches, rolled-in scale, inclusion, crazing, pitted surface and patches. For
+each defect type the dataset includes 300 images. In this experiment three-fold cross-validation
+was used. At each run, therefore, the test set comprised 100 images. In order to evaluate
+the performance of the model in imbalanced conditions, we randomly dropped out, from the
+training set, 25, 50, 75, 100 and 150 images related to the “inclusion” defect type.
+Table 2 reports the overall 𝑚𝐴𝑃values and the 𝐴𝑃𝑖𝑛𝑐., for the minority class, “inclusion”,
+when 𝑚𝑖𝑛𝑐.
+𝑟
+= 50. As it can be clearly seen in the table, the proposed data augmentation technique effectively improved the detection performance of all the five architectures. Specifically,
+it boosted the 𝐴𝑃values of DSSD-513 by 16%, of YOLOv3 by 13% and of different Faster R-CNN
+networks by more than 18%. In this case, the proposed network reached an 𝑚𝐴𝑃equal to
+80.9%, significantly outperforming the other algorithms. Fig. 3 shows the sensitivity analysis
+of 𝐴𝑃for the class “inclusion” on 25 points with respect to different 𝑚𝑖𝑛𝑐.
+𝑟
+and 𝑚𝑔. When
+𝑚𝑖𝑛𝑐.
+𝑟
+= 250 and 𝑚𝑔= 1600, the proposed framework achieves an average precision of 90.2%
+on the minority class.
+4.3. Case Study 2
+In the second case study we used a magnetic tile surface defect dataset [31] of 1344 images,
+composed of five types of defects: blowhole, crack, fray, break and uneven. We translated
+8
+
+===== Page 9 =====
+
+Masoud Jalayer et al. - Preprint
+1–13
+Table 2
+Inspection results on the NEU dataset
+Detector
+Backbone
+Aug.
+𝑚𝐴𝑃
+𝐴𝑃𝑖𝑛𝑐.
+DSSD-513
+-
+classic
+59.8
+51.9
+YOLOv3
+DarkNet
+classic
+59.2
+49.3
+Faster RCNN
+VGG16
+classic
+59.0
+45.7
+Faster RCNN
+FPN ResNet50
+classic
+68.5
+48.1
+Faster RCNN
+FPN ResNet101
+classic
+72.8
+54.5
+DSSD-513
+-
+ours
+66.1
+67.7
+YOLOv3
+DarkNet
+ours
+66.3
+62.1
+Faster RCNN
+VGG16
+ours
+74.4
+65.3
+Faster RCNN
+FPN ResNet50
+ours
+78.1
+67.6
+Faster RCNN
+FPN ResNet101
+ours
+80.9
+72.5
+Figure 3: Sensitivity analysis of 𝐴𝑃𝑖𝑛𝑐. on the NEU dataset
+the segmentation annotations to the bounding box annotations making it compatible with the
+object detection algorithms. Three-fold cross-validation was applied also in this case, to have
+even-handed results. In order to evaluate the performance of the model in different imbalanced
+conditions, we randomly selected 50, 75, 125, 150 and 175 samples from the “fray” class to
+construct the dataset.
+Table 3 compares the performance of different models in terms of 𝑚𝐴𝑃values and 𝐴𝑃𝑓𝑟𝑎𝑦
+corresponding to the minority class (fray), when 𝑚𝑓𝑟𝑎𝑦
+𝑟
+= 50. As for the first case study, this
+comparison demonstrates the effectiveness of the proposed data augmentation technique on the
+performance of the detectors. Without any augmentation, Faster R-CNN with FPN backbones
+and the DSSD-513 dominate the other two detectors. In this situation, compared to the others,
+DSSD-513 gets the highest 𝐴𝑃value on the minority class. However, with the proposed data
+augmentation, it is Faster R-CNN with FPN ResNet-101 that outperforms the others in terms
+of both 𝑚𝐴𝑃and 𝐴𝑃for the “fray” class. Fig. 4 illustrates the performance of the proposed
+model on the minority class with different 𝑚𝑓𝑟𝑎𝑦
+𝑟
+and 𝑚𝑔values.
+9
+
+===== Page 10 =====
+
+Masoud Jalayer et al. - Preprint
+1–13
+Table 3
+Inspection results on the magnet tile dataset
+Detector
+Backbone
+Aug.
+𝑚𝐴𝑃
+𝐴𝑃𝑓𝑟𝑎𝑦
+DSSD-513
+-
+classic
+59.4
+44.5
+YOLOv3
+DarkNet
+classic
+49.5
+37.8
+Faster RCNN
+VGG16
+classic
+54.3
+35.4
+Faster RCNN
+FPN ResNet50
+classic
+60
+39.7
+Faster RCNN
+FPN ResNet101
+classic
+62.8
+41.2
+DSSD-513
+-
+ours
+69.7
+64.2
+YOLOv3
+DarkNet
+ours
+66.3
+53.1
+Faster RCNN
+VGG16
+ours
+71.8
+55.8
+Faster RCNN
+FPN ResNet50
+ours
+73
+62.5
+Faster RCNN
+FPN ResNet101
+ours
+76.9
+69.1
+Figure 4: Sensitivity analysis of 𝐴𝑃𝑓𝑟𝑎𝑦on the magnetic tile dataset
+Fig. 5 and Fig. 6 depict some of the fake defective samples generated by the proposed model
+on the first and second case studies, respectively.
+5. Conclusions and Future Directions
+Efficient AVI systems are one of the highly demanded parts in the realization of Industry 4.0
+and smart manufacturing systems. Deep learning-based object detection algorithms require a
+plethora of samples for their training phase, whereas the real-world datasets lack a sufficient
+number of annotated defects to be used. This problem hinders the proposed algorithms from
+attaining satisfactory results. The main contribution of this paper is to present a generative
+algorithm based on GP-WGAN architecture, which generates high-quality defect images and
+defect-free images. The algorithm then blends them and synthesizes new images with their
+corresponding annotations. In this paper, we also used a powerful object detection architecture,
+named Faster R-CNN with a state of the art backbone, FPN-ResNet-101, which can extract the
+10
+
+===== Page 11 =====
+
+Masoud Jalayer et al. - Preprint
+1–13
+Figure 5: Three fake images with different synthetic defects
+Figure 6: Three fake images with random defect allocations on the same defect-free image
+complex features that the object detector needs and enhance its accuracy. The comparison results
+on two industrial datasets applying a range of imbalanced severities indicate the effectiveness of
+the proposed augmentation technique and of the detection algorithm. Therefore, the industrial
+practitioners with a limited number of annotated samples or highly imbalanced data can benefit
+from the implementation of our data generation model. For future work, we will investigate the
+opportunities to reduce the training time and the inference time of the detection algorithm to
+work with higher frame per-second (FPS) rates.
+References
+[1] D. Zhang, K. Song, J. Xu, Y. He, Y. Yan, Unified detection method of aluminium profile
+surface defects: Common and rare defect categories, Optics and Lasers in Engineering 126
+(2020). doi:10.1016/j.optlaseng.2019.105936.
+[2] X. Zheng, J. Chen, H. Wang, S. Zheng, Y. Kong, A deep learning-based approach for the
+automated surface inspection of copper clad laminate images, Applied Intelligence 51
+(2021) 1262–1279. doi:10.1007/s10489-020-01877-z.
+[3] M. Niu, K. Song, L. Huang, Q. Wang, Y. Yan, Q. Meng, Unsupervised Saliency Detection
+11
+
+===== Page 12 =====
+
+Masoud Jalayer et al. - Preprint
+1–13
+of Rail Surface Defects Using Stereoscopic Images,
+IEEE Transactions on Industrial
+Informatics 17 (2021) 2271–2281. doi:10.1109/TII.2020.3004397.
+[4] A. Delgado, J. de Brito, J. Silvestre, Inspection and diagnosis system for wood flooring,
+Journal of Performance of Constructed Facilities 27 (2013) 564–574.
+[5] Y. Yuan-Fu, S. Min, Double feature extraction method for wafer map classification based on
+convolution neural network, ASMC (Advanced Semiconductor Manufacturing Conference)
+Proceedings 2020-Augus (2020). doi:10.1109/ASMC49169.2020.9185393.
+[6] C. S. Tsang, H. Y. Ngan, G. K. Pang, Fabric inspection based on the Elo rating method,
+Pattern Recognition 51 (2016) 378–394. URL: http://dx.doi.org/10.1016/j.patcog.2015.09.022.
+doi:10.1016/j.patcog.2015.09.022.
+[7] S. Cubero, N. Aleixos, E. Moltó, J. Gómez-Sanchis, J. Blasco, Advances in Machine Vision
+Applications for Automatic Inspection and Quality Evaluation of Fruits and Vegetables,
+Food and Bioprocess Technology 4 (2011) 487–504. doi:10.1007/s11947-010-0411-8.
+[8] D. M. Tsai, D. E. Rivera Molina, Morphology-based defect detection in machined surfaces
+with circular tool-mark patterns, Measurement: Journal of the International Measurement
+Confederation 134 (2019) 209–217. URL: https://doi.org/10.1016/j.measurement.2018.10.079.
+doi:10.1016/j.measurement.2018.10.079.
+[9] T. Merazi-Meksen, M. Boudraa, B. Boudraa, Mathematical morphology for TOFD image
+analysis and automatic crack detection, Ultrasonics 54 (2014) 1642–1648. URL: http:
+//dx.doi.org/10.1016/j.ultras.2014.03.005. doi:10.1016/j.ultras.2014.03.005.
+[10] W. Y. Wu, C. C. Hou, Automated metal surface inspection through machine vision, Imaging
+Science Journal 51 (2003) 79–88. doi:10.1080/13682199.2003.11784415.
+[11] Y. Wu, Y. Lu, An intelligent machine vision system for detecting surface defects on packing
+boxes based on support vector machine, Measurement and Control (United Kingdom) 52
+(2019) 1102–1110. doi:10.1177/0020294019858175.
+[12] S. R. Aghdam, E. Amid, A Fast Method of Steel Surface Defect Detection Using Decision
+Trees Applied to LBP based Features, Industrial Electronics and ... (2011) 1447–1452. URL:
+http://ieeexplore.ieee.org/xpls/abs{_}all.jsp?arnumber=6360951.
+[13] F. Pernkopf,
+Detection of surface defects on raw steel blocks using Bayesian network classifiers,
+Pattern Analysis and Applications 7 (2004) 333–342. doi:10.1007/
+s10044-004-0232-3.
+[14] M. Jalayer, C. Orsenigo, C. Vercellis, Fault detection and diagnosis for rotating machinery:
+A model based on convolutional LSTM, Fast Fourier and continuous wavelet transforms,
+Computers in Industry 125 (2021) 103378. doi:10.1016/j.compind.2020.103378.
+[15] D. Soukup, R. Huber-Mörk, Convolutional neural networks for steel surface defect detection from photometric stereo images, Lecture Notes in Computer Science (including
+subseries Lecture Notes in Artificial Intelligence and Lecture Notes in Bioinformatics) 8887
+(2014) 668–677. doi:10.1007/978-3-319-14249-4_64.
+[16] D. Weimer, B. Scholz-Reiter, M. Shpitalni, Design of deep convolutional neural network
+architectures for automated feature extraction in industrial inspection, CIRP Annals -
+Manufacturing Technology 65 (2016) 417–420. URL: http://dx.doi.org/10.1016/j.cirp.2016.
+04.072. doi:10.1016/j.cirp.2016.04.072.
+[17] D. M. Tsai, P. H. Jen, Autoencoder-based anomaly detection for surface defect inspection,
+Advanced Engineering Informatics 48 (2021) 101272. URL: https://doi.org/10.1016/j.aei.
+12
+
+===== Page 13 =====
+
+Masoud Jalayer et al. - Preprint
+1–13
+2021.101272. doi:10.1016/j.aei.2021.101272.
+[18] N. Enshaei, S. Ahmad, F. Naderkhani, Automated detection of textured-surface defects
+using UNet-based semantic segmentation network, Proceedings of the Annual Conference
+of the Prognostics and Health Management Society, PHM 2020-June (2020). doi:10.1109/
+ICPHM49022.2020.9187023.
+[19] R. Hao, B. Lu, Y. Cheng, X. Li, B. Huang, A steel surface defect inspection approach
+towards smart industrial monitoring, Journal of Intelligent Manufacturing (2020). URL:
+https://doi.org/10.1007/s10845-020-01670-2. doi:10.1007/s10845-020-01670-2.
+[20] Y. Liu, P. Sun, N. Wergeles, Y. Shang, A survey and performance evaluation of deep learning
+methods for small object detection, Expert Systems with Applications 172 (2021) 114602.
+URL: https://doi.org/10.1016/j.eswa.2021.114602. doi:10.1016/j.eswa.2021.114602.
+[21] Y. Shi, Y. Li, X. Wei, Y. Zhou, A Faster-RCNN Based Chemical Fiber Paper Tube Defect
+Detection Method, Proceedings - 2017 5th International Conference on Enterprise Systems:
+Industrial Digitalization by Enterprise Systems, ES 2017 (2017) 173–177. doi:10.1109/ES.
+2017.35.
+[22] B. Hu, J. Wang, Detection of PCB Surface Defects with Improved Faster-RCNN and Feature
+Pyramid Network, IEEE Access 8 (2020) 108335–108345. doi:10.1109/ACCESS.2020.
+3001349.
+[23] S. Niu, B. Li, X. Wang, H. Lin, Defect Image Sample Generation with GAN for Improving
+Defect Recognition, IEEE Transactions on Automation Science and Engineering 17 (2020)
+1611–1622. doi:10.1109/TASE.2020.2967415.
+[24] R. Girshick, J. Donahue, T. Darrell, J. Malik, Rich feature hierarchies for accurate object
+detection and semantic segmentation, Proceedings of the IEEE Computer Society Conference on Computer Vision and Pattern Recognition (2014) 580–587. doi:10.1109/CVPR.
+2014.81. arXiv:1311.2524.
+[25] R. Girshick, Fast R-CNN, Proceedings of the IEEE International Conference on Computer Vision 2015 Inter (2015) 1440–1448. doi:10.1109/ICCV.2015.169. arXiv:1504.08083.
+[26] S. Ren, K. He, R. Girshick, J. Sun, Faster R-CNN: Towards Real-Time Object Detection with
+Region Proposal Networks, IEEE Transactions on Pattern Analysis and Machine Intelligence 39 (2017) 1137–1149. doi:10.1109/TPAMI.2016.2577031. arXiv:1506.01497.
+[27] M. Arjovsky, S. Chintala, L. Bottou, Wasserstein GaN, arXiv (2017). arXiv:1701.07875.
+[28] G. Ghiasi, T. Y. Lin, R. Pang, Q. V. Le, Nas-fpn: Learning scalable feature pyramid architecture for object detection, arXiv (2019) 7036–7045.
+[29] C. Y. Fu, W. Liu, A. Ranga, A. Tyagi, A. C. Berg, DSSD: Deconvolutional single shot
+detector, arXiv (2017). arXiv:1701.06659.
+[30] J. Redmon, A. Farhadi,
+YOLOv3:
+An incremental improvement,
+arXiv (2018).
+arXiv:1804.02767.
+[31] Y. Huang, C. Qiu, K. Yuan,
+Surface defect saliency of magnetic tile,
+Visual Computer 36 (2020) 85–96. URL: https://doi.org/10.1007/s00371-018-1588-5. doi:10.1007/
+s00371-018-1588-5.
+13

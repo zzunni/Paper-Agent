@@ -1,0 +1,430 @@
+
+
+===== Page 1 =====
+
+A Novel Visual Fault Detection and Classification
+System for Semiconductor Manufacturing Using
+Stacked Hybrid Convolutional Neural Networks
+Tobias Schlosser, Frederik Beuth, Michael Friedrich, and Danny Kowerko
+Junior Professorship of Media Computing,
+Chemnitz University of Technology,
+09107 Chemnitz, Germany,
+{firstname.lastname}@cs.tu-chemnitz.de
+Abstract—Automated visual inspection in the semiconductor
+industry aims to detect and classify manufacturing defects utilizing
+modern image processing techniques. While an earliest possible
+detection of defect patterns allows quality control and automation
+of manufacturing chains, manufacturers benefit from an increased
+yield and reduced manufacturing costs. Since classical image
+processing systems are limited in their ability to detect novel
+defect patterns, and machine learning approaches often involve
+a tremendous amount of computational effort, this contribution
+introduces a novel deep neural network based hybrid approach.
+Unlike classical deep neural networks, a multi-stage system allows
+the detection and classification of the finest structures in pixel
+size within high-resolution imagery. Consisting of stacked hybrid
+convolutional neural networks (SH-CNN) and inspired by current
+approaches of visual attention, the realized system draws the focus
+over the level of detail from its structures to more task-relevant
+areas of interest. The results of our test environment show that
+the SH-CNN outperforms current approaches of learning-based
+automated visual inspection, whereas a distinction depending on
+the level of detail enables the elimination of defect patterns in
+earlier stages of the manufacturing process.
+Index Terms—Computer Vision, Pattern and Image Recognition,
+Deep Learning, Convolutional Neural Networks, Semiconductor
+Manufacturing, Factory Automation, Fault Inspection, Wafer
+Dicing, Laser Cutting
+I. INTRODUCTION AND MOTIVATION
+Semiconductor manufacturing processes involve the development of models for capturing and monitoring manufacturing results. Hence, a manufacturing process incorporates a multitude
+of complex processing steps, ranging from the determination
+of the used material to the processing of the imaged circuits,
+whereas one of the steps is concerned with the cutting of the
+resulting components [1]. The mechanical cutting and laser
+cutting processes used are characterized by a large number
+of parameters that influence the manufacturing process as a
+result of prevailing temperature, pressure, and voltage values.
+The nature of the resulting components ultimately provides
+information about the amount of flawless chips (yield) and
+occurring manufacturing defects. The aim is therefore the
+earliest possible detection of potential manufacturing defects,
+whereby manufacturers can benefit from an increase in yield
+and the reduction of manufacturing costs. Additionally, a
+manual inspection can mean a considerable and in particular
+exhausting time expenditure. Therefore, more and more visual
+inspection processes are automated.
+The separation of silicon wafers into single components is
+called silicon wafer dicing, whereas the scribed regions of
+interest on the wafer surface are called dicing streets. As there
+exist various separation approaches, one of the more commonly
+deployed methods utilizes a dicing saw [2]. An alternative
+method is thermal laser separation, where a thermally induced
+mechanical force results in a cleave on the wafer surface
+[3]. In the case of thermally induced separation, the cleave
+is guided alongside the scribe. This process constitutes our
+quality criterion, as a cleave deviation can result in faulty chips
+and therefore a decrease in yield.
+Our wafer data were obtained from real world dicing
+processes of different semiconductor wafers, as they were
+provided to us by a third party manufacturer. Initially, each
+wafer was mounted on a taped frame. After the cleaving process,
+the dicing tape was expanded to visualize the extremely thin
+cuts under a wide-field light microscope. The microscope scans
+each wafer line-wise, whereas the scanning stage allows, as
+in our application, imaging of up to 150 mm (6 inch) wide
+wafers with the option to stitch the resulting imagery.
+Following, the detection and classification deals with manufacturing defects of wafer laser cuttings whose finest structures
+show often more complex defect patterns in pixel size and thus
+represent a particular challenge. Figure 1 shows this by means
+of a wafer segment (l.), subdivided into chip (m.) and street
+cuttings (r.), as they are produced through the cutting process
+alongside the scribes.
+Classically, the field of automated visual inspection utilizes
+image processing approaches which are most commonly
+distinguished based on their functionality in projection-, filterbased, and hybrid approaches [1]. Projection-based approaches
+often include principal component (PCA), linear discriminant
+(LDA), or independent component analysis (ICA), whereas
+filter-based approaches encompass spectral estimation and
+transformation-based approaches, including discrete cosine
+(DCT), Fourier (FT), and wavelet transforms. Furthermore,
+clustering approaches [4] are often deployed as an additional
+arXiv:1911.11250v6  [cs.LG]  7 Jun 2024
+
+===== Page 2 =====
+
+Wafer segment
+Chips and streets
+Flawless (t.) and faulty (b.) street segments
+Figure 1: Wafer overview with chip and street segments.
+Localization
+S1
+Augmentation
+Classification
+S2
+⊕
+Localization results
+Classification results
+Figure 2: Processing steps control flow graph of localization,
+augmentation, and classification with switches S1
+and S2.
+Chip processing
+Street processing
+Street-based
+chip classification
+Figure 3: Designed visual fault inspection system for chip and
+street localization, augmentation, and classification.
+Chip and street processing each undergo one iteration
+of the control flow graph shown in Fig. 2.
+classification step. However, since these approaches are also
+limited in their ability to detect novel defect patterns, they
+often result in a need for manual adaptation.
+The first learning-based and hybrid approaches make use
+of multilayer perceptron (MLP) and support vector classifiers
+(SVC), as demonstrated by Chen and Liu (2000) [5], Huang
+(2007) [6], and Xie et al. (2014) [7], including supervised and
+unsupervised approaches.
+More recent research however demonstrates the benefits of
+deep neural networks. Lee et al. (2017) [8] deploy a onedimensional time-expanded CNN that results in increased
+detection and classification rates. Even the latest research,
+following Nakazawa and Kulkarni (2018) [9] and Cheon
+et al. (2019) [10], encompasses classical single CNN-based
+architectures. However, as these CNN-based approaches do
+not allow a distinction depending on the level of detail, an
+approach has to be found which enables the correction of defect
+patterns in the earlier stages of the manufacturing process.
+In this contribution, we deal in contrast to that with the design
+of a multi-level hybrid system that combines the advantages
+of classical image processing approaches with artificial neural
+networks, thus allowing a more efficient detection of the finest
+structures in pixel size.
+The core idea of our approach is inspired by findings from
+neuroscience, more namely the concept of visual attention. We
+observed that human workers pay in fact more attention to
+task-relevant regions of interest, thus focusing them. Such a
+process is in terms of human research or neuroscience known
+as visual attention. Visual attention has many findings, whereas
+a common one is the focusing of human processing on an
+aspect of a scene [11]. This can be like in our case a region,
+also known as spatial attention [12].
+Several approaches exist to automatically identify these
+regions of interest and enhance their contribution for further
+analysis. We chose for applicability a classical computer vision
+pipeline. However, more complex and more neurosciencerelated models are surely existing, e.g. saliency models [13]
+or system-level attention models [11].
+II. FUNDAMENTALS AND IMPLEMENTED SYSTEM
+Defects typically depend on the parameterization of the
+underlying cutting process or machine malfunctions, but also on
+human carelessness or exhaustion. Their nature and frequency
+of occurrence depend on the processing step in which they are
+produced. For the manufacturing process itself, a silicon wafer
+represents the base plate. The plate is then polished, covered
+with a layer of light-resistant material, and etched as a template
+of the subsequent circuit.
+The existing error classes, such as small holes, broken out
+street corners, or misdirected laser cuts (see also Fig. 1) indicate
+the complexity of inspecting variously good, erroneous, or
+conspicuous classes of patterns in a multitude of differently
+characterized circuits and structures. For this purpose, a
+distinction is made in the three classes of flawless, anomaly,
+and faulty patterns, each of which consist of a set of subclasses
+with corresponding frequency of occurrence and characteristics.
+2/4
+
+===== Page 3 =====
+
+Unit
+Layer
+Type
+Kernel
+size
+Stride
+3 × conv
+conv1_1
+convolution
+3 × 3
+1
+conv1_2
+convolution
+3 × 3
+1
+pool1
+max pooling
+2 × 2
+2
+dropout1
+dropout
+/
+/
+fc1
+dense1
+fully connected
+/
+/
+dropout4
+dropout
+/
+/
+dense4
+fully connected
+/
+/
+Table I: CNN layer configuration, consisting of three convolution blocks and one fully connected layer.
+A. Fundamentals
+In the following, we will introduce our stacked hybrid CNNbased approach, as it allows the localization of a region of
+interest (ROI). This is advantageous for the following CNN,
+enabling the localized ROI to be processed in a much higher
+resolution. The control flow graph in Fig. 2 depicts the designed
+processing steps, divided into localization, augmentation, and
+classification.
+The localization step realizes the focusing on a specific
+region. This step utilizes a set of classical image processing
+techniques to facilitate the applicability of the system, where
+a template of the integrated circuit layout has to be selected
+by the inspector to define the ROI. These regions are then
+localized depending on the defined template, cut, and output
+for following processing steps.
+Afterwards, classical data augmentation is applied before
+the data is passed on to the CNN. For this purpose, depending
+on the level l of the augmentation, an l-fold enhancement of
+the respective method takes place (notation l×, l ∈N≥0). This
+includes a rotation by l × ±2◦, translation in x and y up to
+l × 5%, scaling up to l × ±2%, and reflection alongside the x
+axis. The classification step is then realized via CNN, whereas
+the CNN architecture is chosen task-dependent on the specific
+application case.
+B. Implementation of the system
+While the recognition of defect patterns in the finest
+structures in pixel size is dependent on the existing image
+resolution, a distinction is further made in the level of detail,
+whereby chips and streets are considered separately. Figure 3
+represents the realized system and its processing steps.
+1) Chip processing: If necessary, the wafer images are first
+separated into their chips. Afterwards, a localization of the
+separated chips takes place according to their position inside
+the wafer, i.e. the system separates the chips into inside and
+outside the wafer situated ones, including chips on the wafer
+border and beyond. In order to be able to counteract possible
+lower occurrences of individual error classes, we balanced
+all occurring classes. Afterwards, the chips are classified into
+inside and outside situated chips, as they are depending on
+the wafer border. This step is realized via convolutional neural
+network.
+Test run
+Mean accuracy
+RFC
+0.600 ± 0.005
+SVC with linear kernel
+0.677 ± 0.001
+SVC with RBF kernel
+0.696 ± 0.000
+MLP
+0.681 ± 0.020
+CNN
+0.757 ± 0.032
+SH-CNN
+0×
+0.921 ± 0.009
+1×
+0.896 ± 0.013
+2×
+0.909 ± 0.011
+4×
+0.880 ± 0.022
+Table II: Street classification test results.
+2) Street processing: The street regions are localized by
+employing a set of classical image processing techniques based
+on the template of the integrated circuit layout. At first, a
+histogram equalization is employed to enhance the recognition
+of edges. The enhanced image is then binary thresholded
+and an contour-based edge detection and border following
+is applied [14]. To remove possible artifacts, an erosion serves
+as an additional processing step before the biggest contour is
+identified. On each side, the border center is determined and
+returned as the center of the street region.
+At this point it may be noted, that the number of iterations,
+including chip and street processing, can be extended freely
+by providing additional templates.
+The localized ROIs are directly used to detect and classify
+the respective error classes. Our realized CNN architecture
+configuration is inspired by Simonyan and Zisserman’s VGG
+network [15] as shown in Table I.
+3) Street-based chip classification: In the last step, the chip
+classification is returned based on the classified streets whose
+error classes are mapped according to their classified defect
+patterns, ranging from flawless to anomaly and faulty streets.
+Thus, for each chip, the street classification of its adjacent
+streets is adopted, while the degree of error is assigned as
+descending priority from faulty to flawless streets.
+III. TEST RESULTS AND EVALUATION
+In order to quantify the detection and classification capabilities of defect patterns of the realized system over chips
+and streets an evaluation of the individual iteration steps takes
+place. This includes the chip and street localization as well as
+the street augmentation (Fig. 3), followed by the classification
+of the specific street and chip segments compared to current
+approaches of visual inspection.
+For training itself, the machine learning frameworks Keras
+and TensorFlow were used, which also enable an accelerated processing by general-purpose graphics processing units.
+However, to allow a comparison with current learning-based
+approaches, the machine learning library scikit-learn was
+utilized.
+The test run accuracies, as averaged over five runs for the
+selected approaches, random forest classifier (RFC), support
+vector classifier (SVC) with linear and RBF kernel, multilayer
+perceptron classifier (MLP), convolutional neural networks
+3/4
+
+===== Page 4 =====
+
+−10
+−5
+0
+5
+10
+15
+−10
+−5
+0
+5
+10
+15
+x
+y
+Figure 4: Street and chip classification ground truth visualized
+for flawless (•), anomaly (•), and faulty (•) streets
+and chips.
+(CNN), as well as by means of the developed stacked hybrid
+CNN (SH-CNN), are shown in Table II. We conducted our
+test runs with a randomized data set split ratio of 50/25/25 for
+training, validation, and test set. Furthermore, the augmentation
+levels for deactivated (0×) to high augmentation (4×) are
+provided.
+A comparison of all approaches reveals an evidently increased accuracy for the SH-CNN, whereby the augmentation
+level 0× achieved the best street classification result. While
+the best accuracy of the previously tested approaches differ by
+about 17 %, all SH-CNN test results show reduced differences.
+These can be explained in particular by the level of detail and
+the respective defect patterns, whereas the augmentation level
+itself enables the reduction of possible overfitting.
+The ground truth of the classified streets and resulting chip
+error classes is visualized in Fig. 4. This includes the street
+and chip classification test results for flawless (•), anomaly
+(•), and faulty (•) streets and chips according to the realized
+addressing scheme. The illustrated error classes can continue
+to differ in their respective defect pattern to be further assessed
+by an inspector.
+IV. SUMMARY AND OUTLOOK
+The realized stacked hybrid convolutional neural network
+based (SH-CNN) system combines the advantages of classical
+image processing approaches with artificial neural networks and
+thus allows a more efficient recognition of the finest structures
+in pixel size. For this purpose, the in our application identified
+chip and street error classes constitute the base of the system, as
+they are provided to draw the focus over the level of detail from
+the wafer to its chips and streets. Our test results show that the
+realized system surpasses current approaches of learning-based
+automated visual inspection, whereby a distinction depending
+on the level of detail enables the detection and classification
+of defect patterns in the earlier stages of the manufacturing
+process.
+Future projects can be built on top of this system and
+enhanced with, for example sensor-based analysis, such as
+audio or heat signatures. Furthermore, the system still has to
+be deployed under production test conditions, as the optic of
+the system, including camera and lightning settings, has to be
+investigated for further application-specific fine-tuning.
+ACKNOWLEDGMENT
+This research is partially funded by the European Social
+Fund for Germany as well as the German Federal Ministry of
+Education and Research within the project group localizeIT.
+REFERENCES
+[1] S.-H. Huang and Y.-C. Pan, “Automated visual inspection in the
+semiconductor industry: A survey,” Computers in Industry, vol. 66, pp.
+1–10, 1 2015.
+[2] A. Hooper, J. Ehorn, M. Brand, and C. Bassett, “Review of wafer dicing
+techniques for via-middle process 3DI/TSV ultrathin silicon device
+wafers,” in Proceceedings of the IEEE 65th Electronic Components and
+Technology Conference (ECTC), 2015, pp. 1436–1446.
+[3] K. Rahim and A. Mian, “A Review on Laser Processing in Electronic
+and MEMS Packaging,” Journal of Electronic Packaging, vol. 139,
+no. 3, p. 30801, 2017.
+[4] Chenn-Jung Huang, Chi-Feng Wu, and Chua-Chin Wang, “Image
+Processing Techniques for Wafer Defect Cluster Identification,” IEEE
+Design & Test of Computers, vol. 19, no. 2, pp. 44–48, 3 2002.
+[5] Fei-Long Chen and Shu-Fan Liu, “A neural-network approach to
+recognize defect spatial pattern in semiconductor fabrication,” IEEE
+Transactions on Semiconductor Manufacturing, vol. 13, no. 3, pp.
+366–373, 2000.
+[6] C.-J. Huang, “Clustered defect detection of high quality chips using
+self-supervised multilayer perceptron,” Expert Systems with Applications,
+vol. 33, no. 4, pp. 996–1003, 2007.
+[7] L. Xie, R. Huang, N. Gu, and Z. Cao, “A novel defect detection and
+identification method in optical inspection,” Neural Computing and
+Applications, vol. 24, no. 7-8, pp. 1953–1962, 6 2014.
+[8] K. B. Lee, S. Cheon, and C. O. Kim, “A Convolutional Neural Network
+for Fault Classification and Diagnosis in Semiconductor Manufacturing
+Processes,” IEEE Transactions on Semiconductor Manufacturing, vol. 30,
+no. 2, pp. 135–142, 5 2017.
+[9] T. Nakazawa and D. V. Kulkarni, “Wafer map defect pattern
+classification and image retrieval using convolutional neural network,”
+IEEE Transactions on Semiconductor Manufacturing, vol. 31, no. 2, pp.
+309–314, 2018.
+[10] S. Cheon, H. Lee, C. O. Kim, and S. H. Lee, “Convolutional Neural
+Network for Wafer Surface Defect Classification and the Detection
+of Unknown Defect Class,” IEEE Transactions on Semiconductor
+Manufacturing, vol. 32, no. 2, pp. 163–170, 5 2019.
+[11] F. H. Hamker, “The emergence of attention by population-based inference
+and its role in distributed processing and cognitive control of vision,”
+Computer Vision and Image Understanding, vol. 100, no. 1, pp. 64–106,
+2005.
+[12] M. Carrasco, “Visual attention: the past 25 years.” Vision Research,
+vol. 51, no. 13, pp. 1484–1525, 2011.
+[13] L. Itti, C. Koch, and E. Niebur, “A Model of Saliency-based Visual
+Attention for Rapid Scene Analysis,” IEEE Transactions on Pattern
+Analysis and Machine Intelligence, vol. 20, no. 11, pp. 1254–1259, 1998.
+[14] S. Suzuki and K. Abe, “Topological Structural Analysis of Digitized
+Binary Images by Border Following,” Computer Vision, Graphics, and
+Image Processing, vol. 30, no. 1, pp. 32–46, 1985.
+[15] K. Simonyan and A. Zisserman, “Very Deep Convolutional Networks
+for Large-Scale Image Recognition,” in International Conference on
+Learning Representations, 2015.
+4/4
